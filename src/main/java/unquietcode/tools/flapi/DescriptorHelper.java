@@ -11,7 +11,7 @@ import static unquietcode.tools.flapi.DescriptorClasses.*;
  * @version 12-30-2011
  */
 public class DescriptorHelper {
-	List<Block> blocks = new ArrayList<Block>();
+	List<BlockData> blocks = new ArrayList<BlockData>();
 	String packageName;
 	Boolean showLog;
 	String anotherOption;
@@ -23,30 +23,6 @@ public class DescriptorHelper {
 
 	public static ImplDescriptorBuilder_showLog_anotherOption_setPackage create() {
 		return new DescriptorClasses.ImplDescriptorBuilder_showLog_anotherOption_setPackage(new DescriptorHelper());
-	}
-
-
-
-	protected static class Block {
-		protected String blockName;
-		protected Method constructor;
-
-		private final List<Method> methods = new ArrayList<Method>();
-		private final List<Block> blocks = new ArrayList<Block>();
-
-		protected void _addBlock(Block block) {
-			blocks.add(block);
-		}
-
-		protected void _addMethod(Method method) {
-			methods.add(method);
-		}
-	}
-
-	protected static class Method {
-		protected int minOccurrances;
-		protected int maxOccurrances;
-		protected String methodSignature;
 	}
 
 
@@ -62,7 +38,7 @@ public class DescriptorHelper {
 		this.anotherOption = anotherOption;
 	}
 
-	protected void _addBlock(Block block) {
+	protected void _addBlock(BlockData block) {
 		blocks.add(block);
 	}
 }

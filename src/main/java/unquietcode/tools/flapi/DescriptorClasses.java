@@ -1,10 +1,7 @@
 package unquietcode.tools.flapi;
 
-import java.util.Map;
-
 import static unquietcode.tools.flapi.DescriptorInterfaces.*;
-import static unquietcode.tools.flapi.DescriptorHelper.*;
-import static unquietcode.tools.flapi.DescriptorInterfaces.Method;
+//import static unquietcode.tools.flapi.DescriptorInterfaces.Method;
 
 /**
  * @author Benjamin Fagin
@@ -24,28 +21,23 @@ public final class DescriptorClasses {
 		@Override
 		public void build() {
 			CodeGenerator generator = new CodeGenerator();
-			Map<String, StringBuilder> files = generator.generateFiles(descriptorHelper);
-			System.out.println(files.size());
+			generator.generateCodeModel(descriptorHelper);
+			//Map<String, StringBuilder> files = generator.generateFiles(descriptorHelper);
+			//System.out.println(files.size());
+			//TODO
 		}
 
 		@Override
-		public Method<_ReturnValue> startBlock(String blockName, String methodSignature) {
+		public MethodInterface<_ReturnValue> startBlock(String blockName, String methodSignature) {
 			// descriptor builder create block
-			Block block = new Block();
+			BlockData block = new BlockData();
 			block.blockName = blockName;
-			block.constructor = new DescriptorHelper.Method();
+			block.constructor = new MethodData();
 			block.constructor.methodSignature = methodSignature;
 
 			this.descriptorHelper.blocks.add(block);
 			return new ImplMethod<_ReturnValue>(block.constructor, new ImplBlock<_ReturnValue>(block, retval));
 			// is it the case that we don't really need to keep the retval reference, opting to ...
-		}
-
-
-		// TODO for debug mostly
-		public @Override String toString() {
-			StringBuilder sb = new StringBuilder();
-			return "";
 		}
 	}
 
@@ -164,17 +156,17 @@ public final class DescriptorClasses {
 	}
 
 
-	public static class ImplMethod<_ReturnType> implements Method<_ReturnType> {
+	public static class ImplMethod<_ReturnType> implements MethodInterface<_ReturnType> {
 		private ImplBlock<_ReturnType> retval;
-		private DescriptorHelper.Method method;
+		private MethodData method;
 
-		protected ImplMethod(DescriptorHelper.Method method, ImplBlock<_ReturnType> retval) {
+		protected ImplMethod(MethodData method, ImplBlock<_ReturnType> retval) {
 			this.retval = retval;
 			this.method = method;
 		}
 
 		@Override
-		public BlockInterfaces<_ReturnType> once() {
+		public BlockInterface<_ReturnType> once() {
 			method.minOccurrances = 1;
 			method.maxOccurrances = 1;
 
@@ -182,7 +174,7 @@ public final class DescriptorClasses {
 		}
 
 		@Override
-		public BlockInterfaces<_ReturnType> any() {
+		public BlockInterface<_ReturnType> any() {
 			method.minOccurrances = -1;
 			method.maxOccurrances = -1;
 
@@ -190,9 +182,9 @@ public final class DescriptorClasses {
 		}
 
 		@Override
-		public BlockInterfaces<_ReturnType> exactly(int num) {
+		public BlockInterface<_ReturnType> exactly(int num) {
 			if (num <= 0) {
-				throw new RuntimeException("");
+				throw new RuntimeException("value must be a positive non-zero integer");
 			}
 
 			method.minOccurrances = num;
@@ -201,27 +193,29 @@ public final class DescriptorClasses {
 		}
 
 		@Override
-		public Method_atMost<_ReturnType> atMost(int num) {
-			return new Method_atMost<_ReturnType>() {
+		public MethodInterface.Method_atLeast<_ReturnType> atMost(int num) {
+			method.minOccurrances = -1;
+			method.maxOccurrances = num;
+			
+			return new MethodInterface.Method_atLeast<_ReturnType>() {
 				@Override
-				public BlockInterfaces<_ReturnType> atMost(int num) {
-					method.minOccurrances = -1;
-					method.maxOccurrances = num;
+				public BlockInterface<_ReturnType> atLeast(int num) {
+					method.minOccurrances = num;
 					return retval;
 				}
 
 				@Override
-				public Method<BlockInterfaces<_ReturnType>> startBlock(String blockName, String methodSignature) {
+				public MethodInterface<BlockInterface<_ReturnType>> startBlock(String blockName, String methodSignature) {
 					return retval.startBlock(blockName, methodSignature);
 				}
 
 				@Override
-				public Method<_ReturnType> addBlockReference(String blockName, String methodSignature) {
+				public MethodInterface<_ReturnType> addBlockReference(String blockName, String methodSignature) {
 					return retval.addBlockReference(blockName, methodSignature);
 				}
 
 				@Override
-				public Method<_ReturnType> addMethod(String methodSignature) {
+				public MethodInterface<_ReturnType> addMethod(String methodSignature) {
 					return retval.addMethod(methodSignature);
 				}
 
@@ -238,27 +232,29 @@ public final class DescriptorClasses {
 		}
 
 		@Override
-		public Method_atLeast<_ReturnType> atLeast(int num) {
-			return new Method_atLeast<_ReturnType>() {
+		public MethodInterface.Method_atMost<_ReturnType> atLeast(int num) {
+			method.minOccurrances = num;
+			method.maxOccurrances = -1;
+
+			return new MethodInterface.Method_atMost<_ReturnType>() {
 				@Override
-				public BlockInterfaces<_ReturnType> atLeast(int num) {
-					method.minOccurrances = num;
-					method.maxOccurrances = -1;
+				public BlockInterface<_ReturnType> atMost(int num) {
+					method.maxOccurrances = num;
 					return retval;
 				}
 
 				@Override
-				public Method<BlockInterfaces<_ReturnType>> startBlock(String blockName, String methodSignature) {
+				public MethodInterface<BlockInterface<_ReturnType>> startBlock(String blockName, String methodSignature) {
 					return retval.startBlock(blockName, methodSignature);
 				}
 
 				@Override
-				public Method<_ReturnType> addBlockReference(String blockName, String methodSignature) {
+				public MethodInterface<_ReturnType> addBlockReference(String blockName, String methodSignature) {
 					return retval.addBlockReference(blockName, methodSignature);
 				}
 
 				@Override
-				public Method<_ReturnType> addMethod(String methodSignature) {
+				public MethodInterface<_ReturnType> addMethod(String methodSignature) {
 					return retval.addMethod(methodSignature);
 				}
 
@@ -275,31 +271,31 @@ public final class DescriptorClasses {
 		}
 	}
 
-	public static class ImplBlock<_ReturnType> implements BlockInterfaces<_ReturnType> {
-		private final DescriptorHelper.Block block;
+	public static class ImplBlock<_ReturnType> implements BlockInterface<_ReturnType> {
+		private final BlockData block;
 		private final _ReturnType retval;
 
-		protected ImplBlock(DescriptorHelper.Block block, _ReturnType retval) {
+		protected ImplBlock(BlockData block, _ReturnType retval) {
 			this.block = block;
 			this.retval = retval;
 		}
 
 
 		@Override
-		public Method<BlockInterfaces<_ReturnType>> startBlock(String blockName, String methodSignature) {
+		public MethodInterface<BlockInterface<_ReturnType>> startBlock(String blockName, String methodSignature) {
 			// descriptor builder create block
-			DescriptorHelper.Block nblock = new DescriptorHelper.Block();
+			BlockData nblock = new BlockData();
 			nblock.blockName = blockName;
-			nblock.constructor = new DescriptorHelper.Method();
+			nblock.constructor = new MethodData();
 			nblock.constructor.methodSignature = methodSignature;
 			block._addBlock(nblock);
 
-			return new ImplMethod<BlockInterfaces<_ReturnType>>(nblock.constructor, new ImplBlock<BlockInterfaces<_ReturnType>>(nblock, this));
+			return new ImplMethod<BlockInterface<_ReturnType>>(nblock.constructor, new ImplBlock<BlockInterface<_ReturnType>>(nblock, this));
 		}
 
 		@Override
-		public Method<_ReturnType> addBlockReference(String blockName, String methodSignature) {
-			DescriptorHelper.Method method = new DescriptorHelper.Method();
+		public MethodInterface<_ReturnType> addBlockReference(String blockName, String methodSignature) {
+			MethodData method = new MethodData();
 			method.methodSignature = methodSignature;
 			block._addMethod(method);
 
@@ -308,8 +304,8 @@ public final class DescriptorClasses {
 
 
 		@Override
-		public Method<_ReturnType> addMethod(String methodSignature) {
-			DescriptorHelper.Method method = new DescriptorHelper.Method();
+		public MethodInterface<_ReturnType> addMethod(String methodSignature) {
+			MethodData method = new MethodData();
 			method.methodSignature = methodSignature;
 			block._addMethod(method);
 

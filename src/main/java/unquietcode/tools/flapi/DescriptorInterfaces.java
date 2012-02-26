@@ -8,6 +8,11 @@ import java.lang.String; /**
  */
 public interface DescriptorInterfaces {
 	// builder is separate
+	
+	public interface DescriptorBuilder<_ReturnValue> {
+		void build();
+		MethodInterface<_ReturnValue> startBlock(String blockName, String methodSignature);
+	}
 
 	public interface DescriptorBuilder_showLog_anotherOption_setPackage extends DescriptorBuilder<DescriptorBuilder_showLog_anotherOption_setPackage> {
 		DescriptorBuilder_setPackage_anotherOption showLog(boolean neal);
@@ -42,32 +47,6 @@ public interface DescriptorInterfaces {
 		DescriptorBuilder showLog(boolean neal);
 	}
 
-	// method
-	public interface Method<_ReturnType> {
-		BlockInterfaces<_ReturnType> once();
-		BlockInterfaces<_ReturnType> any();
-		BlockInterfaces<_ReturnType> exactly(int num);
-
-		Method_atMost<_ReturnType> atMost(int num);
-		Method_atLeast<_ReturnType> atLeast(int num);
-
-		public interface Method_atMost<_ReturnType> extends BlockInterfaces<_ReturnType> {
-			BlockInterfaces<_ReturnType> atMost(int num);
-		}
-
-		public interface Method_atLeast<_ReturnType> extends BlockInterfaces<_ReturnType> {
-			BlockInterfaces<_ReturnType> atLeast(int num);
-		}
-	}
-
-	// block
-	public interface BlockInterfaces<_ReturnType> {
-		Method<BlockInterfaces<_ReturnType>> startBlock(String blockName, String methodSignature);
-		Method<_ReturnType> addBlockReference(String blockName, String methodSignature);
-		Method<_ReturnType> addMethod(String methodSignature);
-		_ReturnType endBlock();
-		_ReturnType endBlock(String methodSignature);
-	}
 }
 
 

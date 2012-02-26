@@ -8,7 +8,7 @@ package unquietcode.tools.flapi;
 public class DescriptorTest {
 
 	public static void main(String[] args) {
-		DescriptorBuilder builder =
+		DescriptorInterfaces.DescriptorBuilder builder =
 
 		DescriptorHelper.create()
 			.setPackage("dna.methylated")
@@ -43,6 +43,10 @@ public class DescriptorTest {
 
 			.showLog(true)
 		;
+		
+		builder.build();
+
+
 
 		System.out.println(builder);
 	}
