@@ -8,7 +8,7 @@ package unquietcode.tools.flapi;
 public class DescriptorTest {
 
 	public static void main(String[] args) {
-		DescriptorInterfaces.DescriptorBuilder builder =
+		DescriptorBuilder builder =
 
 		DescriptorHelper.create()
 			.setPackage("dna.methylated")
@@ -25,10 +25,10 @@ public class DescriptorTest {
 					.addBlockReference("Block", "addBlockReference(String blockName)").any()
 
 					.startBlock("Method", "addMethod(String methodSignature)").any()
-						.addMethod("once").once()
-						.addMethod("any").once()
-						.addMethod("first").once()
-						.addMethod("last").once()
+						.addMethod("once()").once()
+						.addMethod("any()").once()
+						.addMethod("first()").once()
+						.addMethod("last()").once()
 
 						.startBlock("Method_atLeast", "atLeast(int num)").once()
 							.addMethod("atMost(int num)").atMost(1)

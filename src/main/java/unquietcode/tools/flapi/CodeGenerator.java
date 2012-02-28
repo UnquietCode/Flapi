@@ -38,6 +38,7 @@ public class CodeGenerator {
 	
 	JCodeModel model = new JCodeModel();	
 	JPackage thePackage;
+	Map<String, JDefinedClass> interfaces = new HashMap<String, JDefinedClass>();
 	
 	public JCodeModel generateCodeModel(DescriptorHelper descriptorHelper) {
 		// create the package which will hold everything
@@ -45,31 +46,15 @@ public class CodeGenerator {
 		if (packageName == null) { packageName = ""; }
 		thePackage = model._package(packageName);
 
+		// create the Builder interface
+		JDefinedClass builder = generateBuilder(thePackage, "Descriptor");
+		
 		// the top level interface
-		String name = "Descriptor";
-		JDefinedClass topLevel;
-		
-		try {
-			topLevel = thePackage._interface(name + "Interfaces");    // TODO get name
-			topLevel.generify("_ReturnValue");
-		} catch (JClassAlreadyExistsException impossible) {
-			throw new RuntimeException("Impossible!");
-		}
-		
-		// add build method
-		topLevel.method(0, model.VOID, "build");
-		
-		// add first block method
-		JMethod startBlock = topLevel.method(0, MethodInterface.class, "startBlock");
-		startBlock.param(String.class, "blockName");
-		startBlock.param(String.class, "methodSignature");
-		
-		
+		JDefinedClass topLevel = getOrCreateInterface(thePackage, "Descriptor" + "Interfaces");
+
 		// process all blocks		
 		for (BlockData block : descriptorHelper.blocks) {
-			//JDefinedClass blockClass = processBlock(topLevel, block);
-			processBlock(topLevel, block);
-			// TODO should be void?
+			processBlock(topLevel, builder, block);
 
 			// the block's constructor will be added to the top level class
 //			if (topLevel != null) {
@@ -97,24 +82,32 @@ public class CodeGenerator {
 		return null;
 	}
 	
-	private void processBlock(JDefinedClass parentClass, BlockData block) {
-		// process the combinations of methods which will define the child interfaces
+	private JDefinedClass generateBuilder(JPackage _package, String name) {
+		JDefinedClass builder = getOrCreateInterface(_package, name + "Builder");
+		builder.generify("_ReturnValue");
 
+		// add build method
+		builder.method(0, model.VOID, "build");
+		
+		// get return type
+		JClass rType = model.ref(MethodInterface.class);
+		rType = rType.narrow(builder.typeParams()[0]);
+		
+		// add starting block method
+		JMethod startBlock = builder.method(0, rType, "startBlock");
+		startBlock.param(String.class, "blockName");
+		startBlock.param(String.class, "methodSignature");
+		return builder;
+	}
+	
+	private void processBlock(JDefinedClass parentClass, JDefinedClass returnClass, BlockData block) {
+		// process the combinations of methods which will define the child interfaces
 		int counter = 1;
-		Set<String> methodNames = new HashSet<String>();
 		Map<String, Integer> nameMap = new HashMap<String, Integer>();
-		Map<String, JDefinedClass> interfaces = new HashMap<String, JDefinedClass>();
 		
 		// get the complete list of method names
 		for (MethodData method : block.methods) {
 			String methodName = getMethodName(method.methodSignature);
-			
-			// make sure we haven't seen this already
-			if (methodNames.contains(methodName)) {
-				throw new RuntimeException("Duplicate methods on  the same block: " + methodName);
-			}
-			
-			methodNames.add(methodName);
 			nameMap.put(methodName, counter++);
 		}
 		
@@ -123,37 +116,20 @@ public class CodeGenerator {
 		
 		// for each combination, add an interface
 		for (Set<MethodData> combination : combinations) {
-			if (combination.isEmpty()) {
-				try {
-					JDefinedClass cls = parentClass._interface(block.blockName);
-					cls.generify("_ReturnType");
-					interfaces.put(block.blockName, cls);
-				} catch (JClassAlreadyExistsException ex) {
-					throw new RuntimeException(ex);
-				}
-				
-				continue;
-			}
+			// skip the empty one (we will end up modifying it accidentally otherwise)
+			if (combination.isEmpty()) { continue; }
 			
 			// create a new interface 
 			JDefinedClass _interface;
-			try {
-				String iName = getInterfaceName(block.blockName, combination, nameMap);
-				_interface = interfaces.get(iName);
-				if (_interface == null) {
-					_interface = parentClass._interface(iName);
-					interfaces.put(iName, _interface);
-				}
-			} catch (JClassAlreadyExistsException ex) {
-				throw new RuntimeException(ex);
-			}
+			String iName = getInterfaceName(block.blockName, combination, nameMap);
+			_interface = getOrCreateInterface(parentClass, iName);
 
 			// extends parent with type of itself
-			_interface._implements(parentClass.narrow(_interface));
+			_interface._implements(returnClass.narrow(_interface));
 			
 			// add the methods
 			for (MethodData method : combination) {
-				JDefinedClass rType;
+				JClass rType;
 				
 				if (method.isRequired()) {
 					rType = _interface;
@@ -168,15 +144,11 @@ public class CodeGenerator {
 					}
 					
 					String returnType = getInterfaceName(block.blockName, minusMethod, nameMap);
-					rType = interfaces.get(returnType);
-					if (rType == null ) {
-						try {
-							rType = parentClass._interface(returnType);
-						} catch (JClassAlreadyExistsException ex) {
-							throw new RuntimeException(ex);
-						}
+					rType = getOrCreateInterface(parentClass, returnType);
 
-						interfaces.put(returnType, rType);
+					// if we've gone terminal, then narrow to self
+					if (returnType.equals(block.blockName)) {
+						rType = rType.narrow(rType);
 					}
 				}
 				
@@ -184,14 +156,41 @@ public class CodeGenerator {
 				createMethod(m, method);
 			}
 			
-//			Set<Set<MethodData>> methods = next(new HashSet<MethodData>(combination));
-//			for (Set<MethodData> set : methods) {
-//				String name = getInterfaceName(_interface, set, nameMap);
-//				
-//			}
+			// now do any child blocks
+			for (BlockData child : block.blocks) {
+				System.err.println(child.blockName);
+			}
 		}
 		
 	}
+	
+	private JDefinedClass getOrCreateInterface(JDefinedClass parentClass, String iName) {
+		JDefinedClass _interface = interfaces.get(iName);
+		if (_interface == null) {
+			try {
+				_interface = parentClass._interface(iName);
+				interfaces.put(iName, _interface);
+			} catch (JClassAlreadyExistsException ex) {
+				throw new RuntimeException(ex);
+			}
+		}
+		
+		return _interface;
+	}
+	
+	private JDefinedClass getOrCreateInterface(JPackage _package, String iName) {
+		JDefinedClass _interface = interfaces.get(iName);
+		if (_interface == null) {
+			try {
+				_interface = _package._interface(iName);
+				interfaces.put(iName, _interface);
+			} catch (JClassAlreadyExistsException ex) {
+				throw new RuntimeException(ex);
+			}
+		}
+		
+		return _interface;
+	}	
 	
 	private void createMethod(JMethod _method, MethodData method) {
 		// get the parameter portion of the method string
@@ -207,7 +206,9 @@ public class CodeGenerator {
 		
 		for (String paramString : paramStrings) {
 			paramString = paramString.trim();
-		    int space = paramString.indexOf(" ");
+			if (paramString.isEmpty()) { continue; } // no params
+
+			int space = paramString.indexOf(" ");
 			String pType = paramString.substring(0, space);
 			String pName = paramString.substring(space).trim();
 			

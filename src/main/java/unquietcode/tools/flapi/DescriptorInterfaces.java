@@ -8,11 +8,6 @@ import java.lang.String; /**
  */
 public interface DescriptorInterfaces {
 	// builder is separate
-	
-	public interface DescriptorBuilder<_ReturnValue> {
-		void build();
-		MethodInterface<_ReturnValue> startBlock(String blockName, String methodSignature);
-	}
 
 	public interface DescriptorBuilder_showLog_anotherOption_setPackage extends DescriptorBuilder<DescriptorBuilder_showLog_anotherOption_setPackage> {
 		DescriptorBuilder_setPackage_anotherOption showLog(boolean neal);
@@ -36,15 +31,15 @@ public interface DescriptorInterfaces {
 	}
 
 	public interface DescriptorBuilder_setPackage extends DescriptorBuilder<DescriptorBuilder_setPackage> {
-		DescriptorBuilder setPackage(String packageName);
+		DescriptorBuilder<DescriptorBuilder> setPackage(String packageName);
 	}
 
 	public interface DescriptorBuilder_anotherOption extends DescriptorBuilder<DescriptorBuilder_anotherOption> {
-		DescriptorBuilder anotherOption(String packageName);
+		DescriptorBuilder<DescriptorBuilder> anotherOption(String packageName);
 	}
 
 	public interface DescriptorBuilder_showLog extends DescriptorBuilder<DescriptorBuilder_showLog> {
-		DescriptorBuilder showLog(boolean neal);
+		DescriptorBuilder<DescriptorBuilder> showLog(boolean neal);
 	}
 
 }

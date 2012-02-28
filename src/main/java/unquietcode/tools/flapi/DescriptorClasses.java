@@ -125,9 +125,11 @@ public final class DescriptorClasses {
 		}
 
 		@Override
-		public DescriptorBuilder showLog(boolean neal) {
+		public DescriptorBuilder<DescriptorBuilder> showLog(boolean neal) {
 			this.descriptorHelper.showLog(neal);
-			return this;
+			ImplDescriptorBuilder<DescriptorBuilder> retval = new ImplDescriptorBuilder<DescriptorBuilder>();
+			retval.setup(this.descriptorHelper, retval);
+			return retval;
 		}
 	}
 
@@ -137,9 +139,11 @@ public final class DescriptorClasses {
 		}
 
 		@Override
-		public DescriptorBuilder setPackage(String packageName) {
+		public DescriptorBuilder<DescriptorBuilder> setPackage(String packageName) {
 			this.descriptorHelper.setPackage(packageName);
-			return this;
+			ImplDescriptorBuilder<DescriptorBuilder> retval = new ImplDescriptorBuilder<DescriptorBuilder>();
+			retval.setup(this.descriptorHelper, this);
+			return retval;
 		}
 	}
 
@@ -149,9 +153,11 @@ public final class DescriptorClasses {
 		}
 
 		@Override
-		public DescriptorBuilder anotherOption(String anotherOption) {
+		public DescriptorBuilder<DescriptorBuilder> anotherOption(String anotherOption) {
 			this.descriptorHelper.anotherOption(anotherOption);
-			return this;
+			ImplDescriptorBuilder<DescriptorBuilder> retval = new ImplDescriptorBuilder<DescriptorBuilder>();
+			retval.setup(this.descriptorHelper, retval);
+			return retval;
 		}
 	}
 
