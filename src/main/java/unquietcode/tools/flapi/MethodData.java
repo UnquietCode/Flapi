@@ -8,9 +8,11 @@ public class MethodData {
 	Integer minOccurrances;
 	Integer maxOccurrances;
 	String methodSignature;
-
+	BlockData parent;
+	boolean isTerminal = false;
+	
 	boolean isRequired() {
-		return maxOccurrances == -1;
+		return maxOccurrances == -1 || isTerminal;
 	}
 	
 	public MethodData copy()  {

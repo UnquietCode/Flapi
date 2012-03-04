@@ -10,6 +10,7 @@ import java.util.List;
 public class BlockData {
 	String blockName;
 	MethodData constructor;
+	BlockData parent;
 
 	final List<MethodData> methods = new ArrayList<MethodData>();
 	final List<BlockData> blocks = new ArrayList<BlockData>();

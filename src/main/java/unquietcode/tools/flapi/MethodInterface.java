@@ -7,7 +7,7 @@ package unquietcode.tools.flapi;
 public interface MethodInterface<_ReturnType> {
 	BlockInterface<_ReturnType> once();
 	BlockInterface<_ReturnType> any();
-	BlockInterface<_ReturnType> exactly(int num);
+	BlockInterface<_ReturnType> only();
 
 	Method_atLeast<_ReturnType> atMost(int num);
 	Method_atMost<_ReturnType> atLeast(int num);

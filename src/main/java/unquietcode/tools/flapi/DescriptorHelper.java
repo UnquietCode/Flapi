@@ -12,6 +12,7 @@ import static unquietcode.tools.flapi.DescriptorClasses.*;
  */
 public class DescriptorHelper {
 	List<BlockData> blocks = new ArrayList<BlockData>();
+	List<MethodData> methods = new ArrayList<MethodData>();
 	String packageName;
 	Boolean showLog;
 	String anotherOption;
@@ -21,7 +22,7 @@ public class DescriptorHelper {
 	}
 
 
-	public static ImplDescriptorBuilder_showLog_anotherOption_setPackage create() {
+	public static DescriptorInterfaces.DescriptorBuilder_showLog_anotherOption_setPackage create() {
 		return new DescriptorClasses.ImplDescriptorBuilder_showLog_anotherOption_setPackage(new DescriptorHelper());
 	}
 

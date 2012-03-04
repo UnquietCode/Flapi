@@ -34,10 +34,16 @@ public final class DescriptorClasses {
 			block.blockName = blockName;
 			block.constructor = new MethodData();
 			block.constructor.methodSignature = methodSignature;
+			block.parent = null;
 
 			this.descriptorHelper.blocks.add(block);
 			return new ImplMethod<_ReturnValue>(block.constructor, new ImplBlock<_ReturnValue>(block, retval));
 			// is it the case that we don't really need to keep the retval reference, opting to ...
+		}
+
+		@Override
+		public MethodInterface<_ReturnValue> startBlock(String blockName) {
+			return startBlock(blockName, "create()");
 		}
 	}
 
@@ -173,7 +179,7 @@ public final class DescriptorClasses {
 
 		@Override
 		public BlockInterface<_ReturnType> once() {
-			method.minOccurrances = 1;
+			method.minOccurrances = 0;
 			method.maxOccurrances = 1;
 
 			return retval;
@@ -181,20 +187,18 @@ public final class DescriptorClasses {
 
 		@Override
 		public BlockInterface<_ReturnType> any() {
-			method.minOccurrances = -1;
+			method.minOccurrances = 0;
 			method.maxOccurrances = -1;
 
 			return retval;
 		}
 
 		@Override
-		public BlockInterface<_ReturnType> exactly(int num) {
-			if (num <= 0) {
-				throw new RuntimeException("value must be a positive non-zero integer");
-			}
-
-			method.minOccurrances = num;
-			method.maxOccurrances = num;
+		public BlockInterface<_ReturnType> only() {
+			method.minOccurrances = 0;
+			method.maxOccurrances = 1;
+			method.isTerminal = true;
+			
 			return retval;
 		}
 
@@ -294,6 +298,7 @@ public final class DescriptorClasses {
 			nblock.blockName = blockName;
 			nblock.constructor = new MethodData();
 			nblock.constructor.methodSignature = methodSignature;
+			nblock.parent = block;
 			block._addBlock(nblock);
 
 			return new ImplMethod<BlockInterface<_ReturnType>>(nblock.constructor, new ImplBlock<BlockInterface<_ReturnType>>(nblock, this));
@@ -301,11 +306,12 @@ public final class DescriptorClasses {
 
 		@Override
 		public MethodInterface<_ReturnType> addBlockReference(String blockName, String methodSignature) {
-			MethodData method = new MethodData();
-			method.methodSignature = methodSignature;
-			block._addMethod(method);
+			BlockReference ref = new BlockReference();
+			ref.methodSignature = methodSignature;
+			ref.blockName = blockName;
+			block._addMethod(ref);
 
-			return new ImplMethod<_ReturnType>(method, new ImplBlock<_ReturnType>(block, retval));
+			return new ImplMethod<_ReturnType>(ref, new ImplBlock<_ReturnType>(block, retval));
 		}
 
 
@@ -313,6 +319,7 @@ public final class DescriptorClasses {
 		public MethodInterface<_ReturnType> addMethod(String methodSignature) {
 			MethodData method = new MethodData();
 			method.methodSignature = methodSignature;
+			method.parent = block;
 			block._addMethod(method);
 
 			return new ImplMethod<_ReturnType>(method, this);
