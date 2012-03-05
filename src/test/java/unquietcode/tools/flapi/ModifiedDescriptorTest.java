@@ -35,9 +35,9 @@ public class ModifiedDescriptorTest {
 					.addBlockReference("Method", "addMethod(String methodSignature)").any()
 				.endBlock("endBlock()")
 
-				.build()
-			;
+			.build()
+		;
 
-		System.out.println("");
+		builder.writeCodeModel();
 	}
 }

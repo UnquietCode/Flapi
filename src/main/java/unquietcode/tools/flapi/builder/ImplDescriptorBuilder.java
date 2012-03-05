@@ -18,8 +18,6 @@ public class ImplDescriptorBuilder<_SelfType> implements DescriptorBuilder<_Self
 
 	@Override
 	public Descriptor build() {
-		// do checks
-		// TODO
 		return new Descriptor(_helper);
 	}
 
