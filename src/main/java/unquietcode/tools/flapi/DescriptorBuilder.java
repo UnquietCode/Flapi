@@ -10,3 +10,5 @@ public interface DescriptorBuilder<_ReturnValue> {
 	MethodInterface<_ReturnValue> startBlock(String blockName, String methodSignature);
 	MethodInterface<_ReturnValue> startBlock(String blockName);
 }
+
+// TODO block signatures, how when where?

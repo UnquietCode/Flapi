@@ -28,31 +28,20 @@ public class CodeGenerator {
 		if (packageName == null) { packageName = ""; }
 		thePackage = model._package(packageName);
 		
-		// the top level interface
-		//JDefinedClass topLevel = generateHelper(thePackage, "Descriptor");
+		// check for possible collisions
+		checkForCollisions(descriptorHelper.blocks);
+		
+		// create the top level builder class
+		JDefinedClass topLevel = getOrCreateClass(thePackage, descriptorHelper.descriptorName);
 
+		// generate the *Generator class
+		generateGeneratorClass(thePackage, descriptorHelper);
+		
 		// process all blocks		
 		for (BlockData block : descriptorHelper.blocks) {
-			// create the Builder interface
-			//JDefinedClass builder = generateBuilder(thePackage, "Descriptor");  // TODO getName
-
-			// create
 			processBlock(thePackage, block);
-
-			// the block's constructor will be added to the top level class
-//			if (topLevel != null) {
-//				topLevel.method(Modifier.STATIC + )
-//			} else {
-//				topLevel = blockClass;				
-//			}
-			
 		}
 		
-		// the constructor for the first block goes in the top level
-		// so maybe process constructors ahead each time
-		// but top level block also needs a 'build' added to the top level interface, so....
-
-
 		ByteArrayOutputStream stream = new ByteArrayOutputStream();
 		SingleStreamCodeWriter writer = new SingleStreamCodeWriter(stream);
 		try {
@@ -74,8 +63,62 @@ public class CodeGenerator {
 		return null;
 	}
 
+	JDefinedClass generateGeneratorClass(JPackage thePackage, DescriptorHelper helper) {
+		// figure out the top level interface name from the methods
+		Set<MethodData> dynamicMethods = new HashSet<MethodData>();
+		for (MethodData method : helper.methods) {
+			if (!method.isRequired()) {
+				dynamicMethods.add(method);
+			}
+		}
+		String topName = getGeneratedName(helper.descriptorName, dynamicMethods);
+		JDefinedClass topClass = getOrCreateClass(thePackage, topName);
+		JDefinedClass generator = getOrCreateClass(thePackage, helper.descriptorName+"Generator");
+		
+		// add the constructor methods
+		
+		JMethod createWithString = generator.method(JMod.PUBLIC+JMod.STATIC, topClass, "create");
+		createWithString.param(model.ref(String.class), "name");
+
+		// TODO return type and argument check
+
+		createWithString.body()._return(null);
+
+		JMethod create = generator.method(JMod.PUBLIC+JMod.STATIC, topClass, "create");
+		create.body()._return(JExpr.invoke(createWithString).arg("create"));
+		
+		return generator;
+	}
+	
+	
+	private void checkForCollisions(Collection<BlockData> blocks) {
+		_checkForCollisions(blocks, new HashSet<String>());
+	}
+
+	private void _checkForCollisions(Collection<BlockData> blocks, Set<String> blockNames) {
+		for (BlockData block : blocks) {
+			if (blockNames.contains(block.blockName)) {
+				throw new RuntimeException("Duplicate blocks named '"+block.blockName+"'.");
+			} else {
+				blockNames.add(block.blockName);
+			}
+
+			Set<String> methodSignatures = new HashSet<String>();
+			for (MethodData method : block.methods) {
+				if (methodSignatures.contains(method.methodSignature)) {
+					throw new RuntimeException("Duplicate methods '"+method.methodSignature+"'.");
+				} else {
+					methodSignatures.add(method.methodSignature);
+				}	
+			}
+
+			_checkForCollisions(block.blocks, blockNames);
+		}
+	}
+
+
 	/*
-		Generate the XBuilder interface.
+		Generate the *Builder interface.
 		This method makes the class and adds the required methods.
 		Then it is passed along and decorated with the any/only methods.
 	 */
@@ -84,7 +127,7 @@ public class CodeGenerator {
 		builder.generify(RETURN_TYPE_PARAM);
 
 		// add build method
-		builder.method(0, model.VOID, "build");
+		//builder.method(0, model.VOID, "build");
 
 		return builder;
 	}
@@ -111,7 +154,7 @@ public class CodeGenerator {
 		JDefinedClass iBuilder = generateBuilderInterface(thePackage, block.blockName);
 
 		// create an interface called *Helper (user will implement this for behavior)
-		JDefinedClass iHelper = getOrCreateInterface(thePackage, block.blockName+"Helper");
+		JDefinedClass iHelper = getOrCreateInterface(thePackage, block.blockName + "Helper");
 	
 		// create a class called Impl*Builder
 		JDefinedClass cBuilder = getOrCreateClass(thePackage, "Impl"+block.blockName+"Builder");
@@ -138,7 +181,7 @@ public class CodeGenerator {
 
 		// set up the base impl class
 		generateBaseImplClass(cBuilder, iBuilder, iHelper, baseMethods);
-
+		
 		// create every builder interface and associated implementation
 		Set<Set<MethodData>> combinations = next(dynamicMethods);
 		for (Set<MethodData> combination : combinations) {
@@ -164,7 +207,16 @@ public class CodeGenerator {
 				thePackage, generatedName,
 				isBase ? null : cBuilder, iSubset, iHelper,
 				combination, block
-			);
+			);	
+		}
+		
+		// process nested blocks
+		for (BlockData child : block.blocks) {
+			// add the constructor for this block
+			// return type is current block with param
+			addMethod(iBuilder, iBuilder.typeParams()[0], JMod.NONE, child.constructor);
+			
+			processBlock(thePackage, child);
 		}
 	}
 	
@@ -380,10 +432,13 @@ public class CodeGenerator {
 	}
 	
 	private String getGeneratedName(String className, Set<MethodData> methods) {
+		// change set to a sorted set for consistency
+		methods = new TreeSet<MethodData>(methods);
+		
 		StringBuilder name = new StringBuilder();
 		name.append(className);
 
-		// TODO change to mapped names after debugging
+		// TODO change to mapped names after debugging (if condensed parameter)
 
 		for (MethodData method : methods) {
 			MethodParser parsed = new MethodParser(method.methodSignature);

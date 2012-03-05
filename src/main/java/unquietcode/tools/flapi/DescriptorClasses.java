@@ -66,7 +66,6 @@ public final class DescriptorClasses {
 
 		@Override
 		public DescriptorBuilder_showLog_setPackage anotherOption(String anotherOption) {
-			this.descriptorHelper.anotherOption(anotherOption);
 			return new ImplDescriptorBuilder_showLog_setPackage(this.descriptorHelper);
 		}
 	}
@@ -84,7 +83,6 @@ public final class DescriptorClasses {
 
 		@Override
 		public DescriptorBuilder_setPackage anotherOption(String anotherOption) {
-			this.descriptorHelper.anotherOption(anotherOption);
 			return new ImplDescriptorBuilder_setPackage(this.descriptorHelper);
 		}
 	}
@@ -102,7 +100,6 @@ public final class DescriptorClasses {
 
 		@Override
 		public final DescriptorBuilder_showLog anotherOption(String anotherOption) {
-			this.descriptorHelper.anotherOption(anotherOption);
 			return new ImplDescriptorBuilder_showLog(this.descriptorHelper);
 		}
 	}
@@ -160,7 +157,6 @@ public final class DescriptorClasses {
 
 		@Override
 		public DescriptorBuilder<DescriptorBuilder> anotherOption(String anotherOption) {
-			this.descriptorHelper.anotherOption(anotherOption);
 			ImplDescriptorBuilder<DescriptorBuilder> retval = new ImplDescriptorBuilder<DescriptorBuilder>();
 			retval.setup(this.descriptorHelper, retval);
 			return retval;
@@ -319,7 +315,6 @@ public final class DescriptorClasses {
 		public MethodInterface<_ReturnType> addMethod(String methodSignature) {
 			MethodData method = new MethodData();
 			method.methodSignature = methodSignature;
-			method.parent = block;
 			block._addMethod(method);
 
 			return new ImplMethod<_ReturnType>(method, this);

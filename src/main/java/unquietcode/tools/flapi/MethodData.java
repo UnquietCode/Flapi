@@ -4,11 +4,10 @@ package unquietcode.tools.flapi;
 * @author Benjamin Fagin
 * @version 02-16-2012
 */
-public class MethodData {
+public class MethodData implements Comparable<MethodData> {
 	Integer minOccurrances;
 	Integer maxOccurrances;
 	String methodSignature;
-	BlockData parent;
 	boolean isTerminal = false;
 	
 	boolean isRequired() {
@@ -22,5 +21,9 @@ public class MethodData {
 		clone.methodSignature = methodSignature;
 		
 		return clone;
+	}
+
+	public @Override int compareTo(MethodData other) {
+		return methodSignature.compareTo(other.methodSignature);
 	}
 }

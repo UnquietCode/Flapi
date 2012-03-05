@@ -91,4 +91,11 @@ public class MethodParser_T {
 		MethodParser parsed = new MethodParser(methodSignature);
 		assertEquals("no return type", null, parsed.returnType);
 	}
+
+	@Test
+	public void emptyTest() {
+		String methodSignature = "method()";
+		MethodParser parsed = new MethodParser(methodSignature);
+		assertEquals("no params", 0, parsed.params.size());
+	}
 }

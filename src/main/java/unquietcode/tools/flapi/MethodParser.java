@@ -70,7 +70,12 @@ public class MethodParser {
 			comma = methodSignature.indexOf(",", start);
 			int end = comma != -1 ? comma : rParen;
 			String pair = methodSignature.substring(start, end).trim();
-
+			
+			// is empty?
+			if (pair.trim().isEmpty()) {
+				break;
+			}
+			
 			// is varargs (XX...XX)
 			int dots = -1;
 			if ((dots = pair.indexOf("...")) != -1) {

@@ -15,9 +15,9 @@ public class DescriptorHelper {
 	List<MethodData> methods = new ArrayList<MethodData>();
 	String packageName;
 	Boolean showLog;
-	String anotherOption;
+	String descriptorName;
 
-	DescriptorHelper() {
+	public DescriptorHelper() {
 		// nothing for now
 	}
 
@@ -27,18 +27,18 @@ public class DescriptorHelper {
 	}
 
 
-	protected void showLog(boolean neal) {
+	public void showLog(boolean neal) {
 		this.showLog = neal;
 	}
 
-	protected void setPackage(String packageName) {
+	public void setPackage(String packageName) {
 		this.packageName = packageName;
 	}
 
-	protected void anotherOption(String anotherOption) {
-		this.anotherOption = anotherOption;
+	public void setName(String name) {
+		this.descriptorName = name;
 	}
-
+	
 	protected void _addBlock(BlockData block) {
 		blocks.add(block);
 	}
