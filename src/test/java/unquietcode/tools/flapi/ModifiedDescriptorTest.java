@@ -17,6 +17,7 @@ public class ModifiedDescriptorTest {
 				
 				.addMethod("showLog(boolean value)").once()
 				.addMethod("setPackage(String packageName)").between(1, 1)
+				.addMethod("doSomething()").any()
 
 				.startBlock("Method", "addMethod(String methodSignature)").any()
 					.addMethod("once()").only()

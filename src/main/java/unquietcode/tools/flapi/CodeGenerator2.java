@@ -15,10 +15,12 @@ import java.util.*;
  */
 public class CodeGenerator2 {
 	private static final int MAX_METHODS = Integer.MAX_VALUE - 1000;
-	private static final String NAME_RETURN_TYPE_PARAM = "_ReturnValue";
+	private static final String NAME_RETURN_TYPE_PARAM = "_ReturnType";
 	private static final String NAME_BUILDER = "Builder";
 	private static final String NAME_GENERATOR = "Generator";
 	
+	
+	//==o==o==o==o==o==o==| Operational |==o==o==o==o==o==o==//    
 	
 	JCodeModel model = new JCodeModel();	
 	JPackage thePackage;
@@ -34,15 +36,25 @@ public class CodeGenerator2 {
 		// check for possible collisions
 		checkForCollisions(descriptor);
 		
-		// stub the top level builder class with required methods
-		generateBuilderInterface(descriptor);
+		// stub the top level builder interface
+		generateTopLevelInterface(descriptor);
+		
+		// stub the top level builder implementation
+		generateTopLevelImplClass(descriptor);
 		
 		// generate the *Generator class
 		generateGeneratorClass(thePackage, descriptor);
-		
+
+		// create a dummy block for the descriptor and process it
+		BlockData dummyBlock = new BlockData();
+		dummyBlock.blockName = descriptor.descriptorName;
+		dummyBlock.methods.addAll(descriptor.methods);
+		processBlock(dummyBlock);
+
 		// process all blocks		
 		for (BlockData block : descriptor.blocks) {
-			//processBlock(block);
+			processBlock(block);
+			break;
 		}
 		
 		ByteArrayOutputStream stream = new ByteArrayOutputStream();
@@ -66,108 +78,6 @@ public class CodeGenerator2 {
 		return null;
 	}
 
-	private void checkForCollisions(DescriptorData descriptor) {
-		// TODO a proper check
-		//_checkForCollisions(blocks, new HashSet<String>());
-	}
-
-	private void _checkForCollisions(Collection<BlockData> blocks, Set<String> blockNames) {
-		for (BlockData block : blocks) {
-			if (blockNames.contains(block.blockName)) {
-				throw new RuntimeException("Duplicate blocks named '"+block.blockName+"'.");
-			} else {
-				blockNames.add(block.blockName);
-			}
-
-			Set<String> methodSignatures = new HashSet<String>();
-			for (MethodData method : block.methods) {
-				if (methodSignatures.contains(method.methodSignature)) {
-					throw new RuntimeException("Duplicate methods '"+method.methodSignature+"'.");
-				} else {
-					methodSignatures.add(method.methodSignature);
-				}
-			}
-
-			_checkForCollisions(block.blocks, blockNames);
-		}
-	}	
-	
-	private JDefinedClass generateGeneratorClass(JPackage thePackage, DescriptorData descriptor) {
-		// figure out the top level interface name from the methods
-		Set<MethodData> dynamicMethods = new HashSet<MethodData>();
-		for (MethodData method : descriptor.methods) {
-			if (!method.isRequired()) {
-				dynamicMethods.add(method);
-			}
-		}
-		String topName = getGeneratedName(descriptor.descriptorName+"Builder", dynamicMethods);
-		JDefinedClass iTop = getOrCreateInterface(topName);
-		JDefinedClass generator = getOrCreateClass(descriptor.descriptorName + "Generator");
-		JDefinedClass descriptorHelper = getOrCreateInterface(descriptor.descriptorName + "Helper");
-		JDefinedClass rType = getOrCreateClass("Impl"+topName); 
-				
-		// -- add the constructor methods --
-		
-		JMethod createWithString = generator.method(JMod.PUBLIC+JMod.STATIC, iTop, descriptor.descriptorMethod);
-		JVar pName = createWithString.param(model.ref(String.class), "name");
-		JVar pMethod = createWithString.param(model.ref(String.class), "method");
-		JVar pHelper = createWithString.param(descriptorHelper, "helper");
-
-		// check arguments
-
-		// if (method == null || method.trim().isEmpty())
-		//      throw new IllegalArgumentException("Name cannot be empty.");
-		// else
-		//      method = method.trim();
-		JConditional _if = createWithString.body()
-			._if(pMethod.eq(JExpr._null()).cor(pMethod.invoke("trim").invoke("isEmpty")));
-			_if._then()._throw(JExpr._new(model.ref(IllegalArgumentException.class)).arg("Name cannot be empty."));
-			_if._else().assign(pMethod, pMethod.invoke("trim"));
-		createWithString.body().directStatement(" ");
-
-		// if (helper == null)
-		//      throw new IllegalArgumentException("Helper cannot be null.");
-		_if = createWithString.body()
-			._if(pHelper.eq(JExpr._null()));
-			_if._then()._throw(JExpr._new(model.ref(IllegalArgumentException.class)).arg("Helper cannot be null."));
-		createWithString.body().directStatement(" ");
-
-		// set and return
-		createWithString.body().invoke(pHelper, "_setDescriptorName").arg(pName);
-		createWithString.body().invoke(pHelper, "_setDescriptorMethod").arg(pMethod);
-		createWithString.body()._return(JExpr._new(rType).arg(pHelper));
-
-		// create the second constructor, which uses the default string
-		JMethod create = generator.method(JMod.PUBLIC+JMod.STATIC, iTop, "create");
-		pName = create.param(model.ref(String.class), "name");
-		pHelper = create.param(descriptorHelper, "helper");
-
-		create.body()._return(JExpr.invoke(createWithString).arg(pName).arg("create").arg(pHelper));
-		
-		return generator;
-	}
-	
-	/*
-		Generate the top level *Builder interface.
-		This method makes the class and adds the required methods.
-		Then it is passed along and decorated with the any/only methods.
-	 */
-	private JDefinedClass generateBuilderInterface(DescriptorData descriptor) {
-		JDefinedClass builder = getOrCreateInterface(descriptor.descriptorName+"Builder");
-		builder.generify("_SelfType");
-
-		// add build method
-		builder.method(JMod.NONE, model.ref(Descriptor.class), "build");
-
-		// make a dummy block and process it
-		BlockData dummyBlock = new BlockData();
-		dummyBlock.blockName = descriptor.descriptorName;
-		dummyBlock.methods.addAll(descriptor.methods);
-		processBlock(dummyBlock);
-
-		return builder;
-	}
-
 	/*
 		for each block
 			create an interface called *Builder
@@ -183,27 +93,32 @@ public class CodeGenerator2 {
 	 */
 
 	private void processBlock(BlockData block) {
+		// -- base level --
+		
 		// create an interface called *Builder
 		JDefinedClass iBuilder = getOrCreateInterface(block.blockName + "Builder");
+		iBuilder.generify("_ReturnType");
 
 		// create an interface called *Helper (user will implement this for behavior)
 		JDefinedClass iHelper = getOrCreateInterface(block.blockName + "Helper");
-	
+
 		// create a class called Impl*Builder
-		JDefinedClass cBuilder = getOrCreateClass("Impl"+block.blockName+"Builder");
-		
+		JDefinedClass cBuilder = generateBaseImplClass(block.blockName, iBuilder, iHelper);
+
 		// build the class
 		Set<MethodData> dynamicMethods = new HashSet<MethodData>();
-		Set<MethodData> baseMethods = new HashSet<MethodData>();
 
 		for (MethodData method : block.methods) {
+
 			// any' methods and the 'only' methods (required methods)
 			if (method.isRequired()) {
-				// populate the interface with the method
-				addMethod(iBuilder, model.VOID, JMod.NONE, method); // TODO this doesn't feel right
 
-				// add the methods for the base impl class
-				baseMethods.add(method);
+				// add the method to the interface (returning its self type)
+				addMethod(iBuilder, iBuilder.typeParams()[0], JMod.NONE, method);
+		
+				// add the method to the base class (returning interface self type)
+				JMethod m = addMethod(cBuilder, iBuilder.typeParams()[0], JMod.PUBLIC, method);
+				addHelperCall(m, method);
 			
 			// otherwise, it's dynamic, so remember this
 			} else {
@@ -213,33 +128,20 @@ public class CodeGenerator2 {
 			// populate the helper with all of the methods in the block, returning void
 			addMethod(iHelper, model.VOID, JMod.NONE, method);
 		}
-
-		// set up the base impl class (we needed to wait for the methods)
-		generateBaseImplClass(cBuilder, iBuilder, iHelper, baseMethods);
+		
+		// -- iterative level --
 		
 		// create every builder interface and associated implementation
-		Set<Set<MethodData>> combinations = next(dynamicMethods);
-		for (Set<MethodData> combination : combinations) {
+		for (Set<MethodData> combination : makeCombinations(dynamicMethods)) {
 			String generatedName = getGeneratedName(block.blockName+"Builder", combination);
 			boolean isBase = combination.isEmpty();
 
 			// make the interface (the empty one should be the only already created one)
-			JDefinedClass iSubset = getOrCreateInterface(generatedName);
-
-			// extend the base interface, return type of self
-			if (!isBase) {
-				iSubset._implements(iBuilder.narrow(iSubset));
-			}
-
-			// add methods to interface
-			for (MethodData method : combination) {
-				JType returnType = getReturnType(block.blockName+"Builder", method, combination, true);
-				addMethod(iSubset, returnType, JMod.NONE, method);
-			}
+			JDefinedClass iSubset = generateInterface(generatedName, iBuilder, block, combination);
 
 			// make the Impl* class
 			JDefinedClass cSubset = generateImplClass(
-				thePackage, generatedName,
+				generatedName,
 				isBase ? null : cBuilder, iSubset, iHelper,
 				combination, block
 			);	
@@ -249,65 +151,35 @@ public class CodeGenerator2 {
 		for (BlockData child : block.blocks) {
 			// add the constructor for this block
 			// return type is current block with param
-			addMethod(iBuilder, iBuilder.typeParams()[0], JMod.NONE, child.constructor);
+			//addMethod(iBuilder, iBuilder.typeParams()[0], JMod.NONE, child.constructor);
 			
 			//processBlock(thePackage, child);
 		}
 	}
 	
-	private void generateBaseImplClass(JDefinedClass base, JDefinedClass _interface, JDefinedClass helper, Set<MethodData> methods) {
-		// make generic with return type
-		JTypeVar tv = base.generify("_SelfType");
+	
+	//==o==o==o==o==o==o==| Iterative Level |==o==o==o==o==o==o==//    
+	
+	private JDefinedClass generateInterface(String name, JDefinedClass _interface, BlockData block, Set<MethodData> methods) {
+		// make the interface (the empty one should be the only already created one)
+		JDefinedClass iSubset = getOrCreateInterface(name);
 
-		// implement the interface
-		base._implements(_interface.narrow(tv));
-
-		// protected final *Helper _helper;
-		JFieldVar fHelper = base.field(JMod.PROTECTED + JMod.FINAL, helper, "_helper");
-		
-		// @SuppressWarnings("unchecked")
-		// protected final _SelfType _returnValue = (_SelfType) this;
-		JFieldVar fReturnValue
-			= base.field(JMod.PROTECTED + JMod.FINAL, tv, "_returnValue", JExpr.cast(tv, JExpr._this()));
-		fReturnValue.annotate(SuppressWarnings.class).param("value", "unchecked");
-
-		// constructor
-		JMethod constructor = base.constructor(JMod.PUBLIC);
-		JVar pHelper = constructor.param(helper, "helper");
-
-		// _helper = helper
-		constructor.body().assign(fHelper, pHelper);
-
-		// add inbuilt methods
-		base.method(JMod.PUBLIC, model.VOID, "build")
-			.body()._return(JExpr._new(model.ref(Descriptor.class)).arg(fHelper));
-
-		// add methods
-		for (MethodData method : methods) {
-			JMethod m = addMethod(base, model.VOID, JMod.PUBLIC, method);
-			addHelperCall(m, method);
+		// extend the base interface, return type of self (skip base)
+		if (!methods.isEmpty()) {
+			iSubset._implements(_interface.narrow(iSubset));
 		}
+
+		// add methods to interface
+		for (MethodData method : methods) {
+			JType returnType = getReturnType(block.blockName+"Builder", method, methods, true);
+			addMethod(iSubset, returnType, JMod.NONE, method);
+		}
+		
+		return iSubset;
 	}
 	
-	private void addHelperCall(JMethod _method, MethodData method) {
-		JFieldRef _helper = JExpr.ref("_helper");
-		JInvocation helperCall = _helper.invoke(_method.name());
-
-		// normal args
-		for (JVar param : _method.listParams()) {
-			helperCall.arg(param);
-		}
-
-		// vararg
-		if (_method.listVarParam() != null) {
-			helperCall.arg(_method.listVarParam());
-		}
-		
-		_method.body().add(helperCall);
-	}
-
 	private JDefinedClass generateImplClass(
-		JPackage thePackage, String name,
+		String name,
 		JDefinedClass base, JDefinedClass _interface, JDefinedClass helper,
 	    Set<MethodData> methods, BlockData block
 	){
@@ -343,14 +215,182 @@ public class CodeGenerator2 {
 			// first, a pass-through to the helper
 			addHelperCall(m, method);
 
-			// then, return the appropriate new instance (skip void)
-			if (returnType != model.VOID) {
-				m.body()._return(JExpr._new(returnType).arg(JExpr.ref("_helper")));
-			}
+			// then, return the appropriate new instance
+			m.body()._return(JExpr._new(returnType)
+				.arg(JExpr.ref("_helper"))
+				.arg(JExpr._null()) // TODO proper constructor params
+			);
 		}
 		
 		return _class;
 	}
+	
+	//==o==o==o==o==o==o==| Base Level |==o==o==o==o==o==o==//    
+
+	private JDefinedClass generateBaseImplClass(String name, JDefinedClass _interface, JDefinedClass helper) {
+		JDefinedClass base = getOrCreateClass("Impl"+name+"Builder");
+
+		// make generic with return type
+		JTypeVar tv = base.generify(NAME_RETURN_TYPE_PARAM);
+
+		// implement the interface
+		base._implements(_interface.narrow(tv));
+
+		// protected final *Helper _helper;
+		JFieldVar fHelper = base.field(JMod.PROTECTED + JMod.FINAL, helper, "_helper");
+
+		// @SuppressWarnings("unchecked")
+		// private final _ReturnType _self = (_ReturnType) this;
+		JFieldVar fSelf
+				= base.field(JMod.PRIVATE + JMod.FINAL, tv, "_self", JExpr.cast(tv, JExpr._this()));
+		fSelf.annotate(SuppressWarnings.class).param("value", "unchecked");
+
+		// protected final _ReturnType _returnValue;
+		JFieldVar fReturnValue
+				= base.field(JMod.PROTECTED + JMod.FINAL, tv, "_returnValue");
+		
+		// constructor
+		JMethod constructor = base.constructor(JMod.PUBLIC);
+		JVar pHelper = constructor.param(helper, "helper");
+		JVar pReturnValue = constructor.param(tv, "returnValue");
+
+		// _helper = helper
+		constructor.body().assign(fHelper, pHelper);
+
+		// if returnValue != null
+		//     _returnValue = returnValue;
+		// else
+		//     _returnValue = (_ReturnType) this;
+		JConditional cif = constructor.body()._if(pReturnValue.ne(JExpr._null()));
+		cif._then().assign(fReturnValue, pReturnValue);
+		cif._else().assign(fReturnValue, fSelf);
+		
+		
+		// TODO where is the missing addMethod and startBlock stuff?
+
+		return base;
+	}	
+	
+	//==o==o==o==o==o==o==| Top Level (decorative) |==o==o==o==o==o==o==// 
+
+	private JDefinedClass generateGeneratorClass(JPackage thePackage, DescriptorData descriptor) {
+		// figure out the top level interface name from the methods
+		Set<MethodData> dynamicMethods = new HashSet<MethodData>();
+		for (MethodData method : descriptor.methods) {
+			if (!method.isRequired()) {
+				dynamicMethods.add(method);
+			}
+		}
+		String topName = getGeneratedName(descriptor.descriptorName+"Builder", dynamicMethods);
+		JDefinedClass iTop = getOrCreateInterface(topName);
+		JDefinedClass generator = getOrCreateClass(descriptor.descriptorName + "Generator");
+		JDefinedClass descriptorHelper = getOrCreateInterface(descriptor.descriptorName + "Helper");
+		JDefinedClass rType = getOrCreateClass("Impl"+topName);
+
+		// -- add the constructor methods --
+
+		JMethod createWithString = generator.method(JMod.PUBLIC+JMod.STATIC, iTop, descriptor.descriptorMethod);
+		JVar pName = createWithString.param(model.ref(String.class), "name");
+		JVar pMethod = createWithString.param(model.ref(String.class), "method");
+		JVar pHelper = createWithString.param(descriptorHelper, "helper");
+
+		// check arguments
+
+		// if (method == null || method.trim().isEmpty())
+		//      throw new IllegalArgumentException("Name cannot be empty.");
+		// else
+		//      method = method.trim();
+		JConditional _if = createWithString.body()
+				._if(pMethod.eq(JExpr._null()).cor(pMethod.invoke("trim").invoke("isEmpty")));
+		_if._then()._throw(JExpr._new(model.ref(IllegalArgumentException.class)).arg("Name cannot be empty."));
+		_if._else().assign(pMethod, pMethod.invoke("trim"));
+		createWithString.body().directStatement(" ");
+
+		// if (helper == null)
+		//      throw new IllegalArgumentException("Helper cannot be null.");
+		_if = createWithString.body()
+				._if(pHelper.eq(JExpr._null()));
+		_if._then()._throw(JExpr._new(model.ref(IllegalArgumentException.class)).arg("Helper cannot be null."));
+		createWithString.body().directStatement(" ");
+
+		// set and return
+		createWithString.body().invoke(pHelper, "_setDescriptorName").arg(pName);
+		createWithString.body().invoke(pHelper, "_setDescriptorMethod").arg(pMethod);
+		createWithString.body()._return(JExpr._new(rType).arg(pHelper));
+
+		// create the second constructor, which uses the default string
+		JMethod create = generator.method(JMod.PUBLIC+JMod.STATIC, iTop, descriptor.descriptorMethod);
+		pName = create.param(model.ref(String.class), "name");
+		pHelper = create.param(descriptorHelper, "helper");
+
+		create.body()._return(JExpr.invoke(createWithString).arg(pName).arg("create").arg(pHelper));
+
+		return generator;
+	}	
+	
+	private JDefinedClass generateTopLevelInterface(DescriptorData descriptor) {
+		JDefinedClass builder = getOrCreateInterface(descriptor.descriptorName+"Builder");
+
+		// add build method
+		builder.method(JMod.NONE, model.ref(Descriptor.class), "build");
+
+		return builder;
+	}	
+	
+	private JDefinedClass generateTopLevelImplClass(DescriptorData descriptor) {
+		JDefinedClass base = getOrCreateClass("Impl"+descriptor.descriptorName+"Builder");
+
+		// add inbuilt methods
+		base.method(JMod.PUBLIC, model.VOID, "build")
+				.body()._return(JExpr._new(model.ref(Descriptor.class)).arg(JExpr.ref("_helper")));
+
+		return base;
+	}	
+	
+	//==o==o==o==o==o==o==| Helpers |==o==o==o==o==o==o==//    
+
+	private void checkForCollisions(DescriptorData descriptor) {
+		// TODO a proper check
+		//_checkForCollisions(blocks, new HashSet<String>());
+	}
+
+	private void _checkForCollisions(Collection<BlockData> blocks, Set<String> blockNames) {
+		for (BlockData block : blocks) {
+			if (blockNames.contains(block.blockName)) {
+				throw new RuntimeException("Duplicate blocks named '"+block.blockName+"'.");
+			} else {
+				blockNames.add(block.blockName);
+			}
+
+			Set<String> methodSignatures = new HashSet<String>();
+			for (MethodData method : block.methods) {
+				if (methodSignatures.contains(method.methodSignature)) {
+					throw new RuntimeException("Duplicate methods '"+method.methodSignature+"'.");
+				} else {
+					methodSignatures.add(method.methodSignature);
+				}
+			}
+
+			_checkForCollisions(block.blocks, blockNames);
+		}
+	}
+
+	private void addHelperCall(JMethod _method, MethodData method) {
+		JFieldRef _helper = JExpr.ref("_helper");
+		JInvocation helperCall = _helper.invoke(_method.name());
+
+		// normal args
+		for (JVar param : _method.listParams()) {
+			helperCall.arg(param);
+		}
+
+		// vararg
+		if (_method.listVarParam() != null) {
+			helperCall.arg(_method.listVarParam());
+		}
+
+		_method.body().add(helperCall);
+	}	
 	
 	private JClass getReturnType(String name, MethodData method, Set<MethodData> allMethods, boolean interfaceDesired) {
 		Set<MethodData> minusMethod = new HashSet<MethodData>(allMethods);
@@ -401,34 +441,24 @@ public class CodeGenerator2 {
 	}
 
 	private JDefinedClass getOrCreateInterface(String name) {
-		return getOrCreateInterface(thePackage, name);
-	}
-	
-	@Deprecated
-	private JDefinedClass getOrCreateInterface(JPackage _package, String iName) {
-		JDefinedClass _interface = interfaces.get(iName);
+		JDefinedClass _interface = interfaces.get(name);
 		if (_interface == null) {
 			try {
-				_interface = _package._interface(iName);
-				interfaces.put(iName, _interface);
+				_interface = thePackage._interface(name);
+				interfaces.put(name, _interface);
 			} catch (JClassAlreadyExistsException ex) {
 				throw new RuntimeException(ex);
 			}
 		}
-		
+
 		return _interface;
 	}
 
 	private JDefinedClass getOrCreateClass(String name) {
-		return getOrCreateClass(thePackage, name);
-	}
-	
-	@Deprecated
-	private JDefinedClass getOrCreateClass(JPackage _package, String name) {
 		JDefinedClass _class = classes.get(name);
 		if (_class == null) {
 			try {
-				_class = _package._class(JMod.PUBLIC, name);
+				_class = thePackage._class(JMod.PUBLIC, name);
 				classes.put(name, _class);
 			} catch (JClassAlreadyExistsException ex) {
 				throw new RuntimeException(ex);
@@ -493,7 +523,7 @@ public class CodeGenerator2 {
 		return name.toString();
 	}
 
-	static Set<Set<MethodData>> next(Set<MethodData> methods) {
+	static Set<Set<MethodData>> makeCombinations(Set<MethodData> methods) {
 		Set<Set<MethodData>> combinations = new HashSet<Set<MethodData>>();
 		Stack<Set<MethodData>> stack = new Stack<Set<MethodData>>();
 		stack.push(methods);
@@ -529,13 +559,5 @@ public class CodeGenerator2 {
 		}
 
 		return combinations;
-	}
-
-
-
-	// 1-based!
-	private static List<Integer[]> getCombintionSequences(int items) {
-		// TODO generate all of the sequences in nCr
-		return null;
 	}
 }
