@@ -20,24 +20,45 @@ public class ModifiedDescriptorTest {
 				.addMethod("doSomething()").any()
 
 				.startBlock("Method", "addMethod(String methodSignature)").any()
-					.addMethod("once()").only()
-					.addMethod("any()").only()
-					.addMethod("first()").only()
-					.addMethod("last()").only()
-					.addMethod("atLeast(int num)").only()
-					.addMethod("atMost(int num)").only()
-					.addMethod("between(int atLeast, int atMost)").only()
+					.addMethod("once()").last()
+					.addMethod("any()").last()
+					.addMethod("last()").last()
+					.addMethod("atLeast(int num)").last()
+					.addMethod("atMost(int num)").last()
+					.addMethod("between(int atLeast, int atMost)").last()
 				.endBlock()
 
 				.startBlock("Block", "startBlock(String blockName, String methodSignature)").any()
-					.addMethod("addBlockReference(String blockName, String methodSignature)").any()
+					.addBlockChain()
+						.addBlockReference("Method")
 
-					.addBlockReference("Block", "startBlock(String blockName, String methodSignature)").any()
+					.addMethod("addBlockReference(String blockName, String methodSignature)").any()
 					.addBlockReference("Method", "addMethod(String methodSignature)").any()
-				.endBlock("endBlock()")
+					.addBlockReference("Block", "startBlock(String blockName, String methodSignature)").any()
+					.addMethod("endBlock()").last()
+
+					.startBlock("BlockChain", "addBlockChain()").once()
+						.addMethod("addBlockReference(String blockName)").last()
+						.addBlockReference("Block", "startBlock(String blockName, String methodSignature()").last()
+						.addBlockReference("BlockChain", "addBlockChain()").once()
+					.endBlock()
+				.endBlock()
 
 			.build()
 		;
+
+		/*
+				block_$first
+
+				if block has a first, then the constructor will return it
+				and it will return the block without that method
+
+				so here, that means startBlock returns a MethodBuilder (the first blockRef)
+				and the return type of the method builder is what we were going to return in
+				the first place, which is a new block
+
+
+		 */
 
 		builder.writeCodeModel();
 	}

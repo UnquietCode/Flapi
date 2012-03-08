@@ -1,5 +1,6 @@
 package unquietcode.tools.flapi.builder;
 
+import unquietcode.Pair;
 import unquietcode.tools.flapi.Descriptor;
 
 /**
@@ -29,10 +30,16 @@ public class ImplDescriptorBuilder<_SelfType> implements DescriptorBuilder<_Self
 
 	@Override
 	public MethodBuilder<BlockBuilder<_SelfType>> startBlock(String blockName, String methodSignature) {
-		BlockHelper bHelper = _helper.startBlock(blockName, methodSignature);
-		BlockBuilder<_SelfType> returnBlock = new ImplBlockBuilder<_SelfType>(bHelper, _returnValue);
-		MethodHelper mHelper = bHelper._getConstructor();
-
-		return new ImplMethodBuilder<BlockBuilder<_SelfType>>(mHelper, returnBlock);
+		Pair<MethodHelper, BlockHelper> helpers = _helper.startBlock(blockName, methodSignature);
+		BlockBuilder<_SelfType> innerBlock = new ImplBlockBuilder<_SelfType>(helpers.second, _returnValue);
+		return new ImplMethodBuilder<BlockBuilder<_SelfType>>(helpers.first, innerBlock);
 	}
+	
+	/* 
+		what this is saying is:
+			
+			start block (return BlockBuilder)
+			but first you have to go through a MethodBuilder
+			and then when its done you can continue
+	*/
 }

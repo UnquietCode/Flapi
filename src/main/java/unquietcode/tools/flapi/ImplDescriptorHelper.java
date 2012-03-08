@@ -1,5 +1,6 @@
 package unquietcode.tools.flapi;
 
+import unquietcode.Pair;
 import unquietcode.tools.flapi.builder.BlockHelper;
 import unquietcode.tools.flapi.builder.DescriptorHelper;
 import unquietcode.tools.flapi.builder.MethodHelper;
@@ -15,7 +16,7 @@ public class ImplDescriptorHelper implements DescriptorHelper {
 
 	@Override
 	public void _setDescriptorName(String name) {
-		descriptor.descriptorName = name;
+		descriptor.block.blockName = name;
 	}
 
 	@Override
@@ -37,21 +38,22 @@ public class ImplDescriptorHelper implements DescriptorHelper {
 	public MethodHelper addMethod(String methodSignature) {
 		ImplMethodHelper helper = new ImplMethodHelper();
 		MethodData newMethod = helper.method;
-		descriptor.methods.add(newMethod);
+		descriptor.block.methods.add(newMethod);
 		newMethod.methodSignature = methodSignature;
 		
 		return helper;
 	}
 
 	@Override
-	public BlockHelper startBlock(String blockName, String methodSignature) {
-		ImplBlockHelper helper = new ImplBlockHelper();
-		BlockData newBlock = helper.block;
-		descriptor.blocks.add(newBlock);
+	public Pair<MethodHelper,BlockHelper> startBlock(String blockName, String methodSignature) {
+		ImplBlockHelper bHelper = new ImplBlockHelper();
+		BlockData newBlock = bHelper.block;
+		descriptor.block.blocks.add(newBlock);
 		newBlock.blockName = blockName;
 		newBlock.constructor = new MethodData();
 		newBlock.constructor.methodSignature = methodSignature;
 
-		return helper;
+		ImplMethodHelper mHelper = new ImplMethodHelper(newBlock.constructor);
+		return new Pair<MethodHelper, BlockHelper>(mHelper, bHelper);
 	}
 }

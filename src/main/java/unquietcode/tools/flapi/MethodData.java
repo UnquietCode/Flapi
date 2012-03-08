@@ -8,6 +8,8 @@ public class MethodData implements Comparable<MethodData> {
 	Integer minOccurrances;
 	Integer maxOccurrances;
 	String methodSignature;
+
+	boolean isPrelimiary = false;
 	boolean isTerminal = false;
 	
 	boolean isRequired() {

@@ -1,5 +1,6 @@
 package unquietcode.tools.flapi;
 
+import unquietcode.Pair;
 import unquietcode.tools.flapi.builder.BlockHelper;
 import unquietcode.tools.flapi.builder.MethodHelper;
 
@@ -12,15 +13,6 @@ public class ImplBlockHelper implements BlockHelper {
 	final BlockData block = new BlockData();
 
 	@Override
-	public MethodHelper _getConstructor() {
-		if (block.constructor == null) {
-			block.constructor = new MethodData();
-		}
-
-		return new ImplMethodHelper(block.constructor);
-	}
-
-	@Override
 	public MethodHelper addMethod(String methodSignature) {
 		ImplMethodHelper helper = new ImplMethodHelper();
 		MethodData newMethod = helper.method;
@@ -31,15 +23,16 @@ public class ImplBlockHelper implements BlockHelper {
 	}
 
 	@Override
-	public BlockHelper startBlock(String blockName, String methodSignature) {
-		ImplBlockHelper helper = new ImplBlockHelper();
-		BlockData newBlock = helper.block;
+	public Pair<MethodHelper,BlockHelper> startBlock(String blockName, String methodSignature) {
+		ImplBlockHelper bHelper = new ImplBlockHelper();
+		BlockData newBlock = bHelper.block;
 		block.blocks.add(newBlock);
 		newBlock.blockName = blockName;
 		newBlock.constructor = new MethodData();
 		newBlock.constructor.methodSignature = methodSignature;
-				
-		return helper;
+
+		ImplMethodHelper mHelper = new ImplMethodHelper(newBlock.constructor);
+		return new Pair<MethodHelper, BlockHelper>(mHelper, bHelper);
 	}
 
 	@Override

@@ -26,8 +26,8 @@ public class ImplMethodBuilder<_ReturnType> implements MethodBuilder<_ReturnType
 	}
 
 	@Override
-	public _ReturnType only() {
-		_helper.only();
+	public _ReturnType last() {
+		_helper.last();
 		return _returnValue;
 	}
 

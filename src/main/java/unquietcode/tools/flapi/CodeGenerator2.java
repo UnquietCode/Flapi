@@ -45,17 +45,8 @@ public class CodeGenerator2 {
 		// generate the *Generator class
 		generateGeneratorClass(thePackage, descriptor);
 
-		// create a dummy block for the descriptor and process it
-		BlockData dummyBlock = new BlockData();
-		dummyBlock.blockName = descriptor.descriptorName;
-		dummyBlock.methods.addAll(descriptor.methods);
-		processBlock(dummyBlock);
-
-		// process all blocks		
-		for (BlockData block : descriptor.blocks) {
-			processBlock(block);
-			break;
-		}
+		// process the top level block
+		processBlock(descriptor.block);
 		
 		ByteArrayOutputStream stream = new ByteArrayOutputStream();
 		SingleStreamCodeWriter writer = new SingleStreamCodeWriter(stream);
@@ -118,7 +109,7 @@ public class CodeGenerator2 {
 		
 				// add the method to the base class (returning interface self type)
 				JMethod m = addMethod(cBuilder, iBuilder.typeParams()[0], JMod.PUBLIC, method);
-				addHelperCall(m, method);
+				m.body().add(makeHelperCall(m, method));
 			
 			// otherwise, it's dynamic, so remember this
 			} else {
@@ -147,15 +138,46 @@ public class CodeGenerator2 {
 			);	
 		}
 		
-		// process nested blocks
+		// -- nested level --
+
 		for (BlockData child : block.blocks) {
-			// add the constructor for this block
-			// return type is current block with param
-			//addMethod(iBuilder, iBuilder.typeParams()[0], JMod.NONE, child.constructor);
-			
-			//processBlock(thePackage, child);
+			// if child already exists, then this is an error!
+			// TODO throw exception
+
+			// resolve block references (error if not found)
+			// if there is a 'first' block or 'first' block reference (error if more than one)
+				// add the method in such a way that it returns the nested element
+				// remove it from the blocks pile
+			// for all other blocks, process as nested
+
+
+			addNestedBlock(block, child, iBuilder, cBuilder);
 		}
 	}
+	
+	private void addNestedBlock(BlockData parent, BlockData child, JDefinedClass iParent, JDefinedClass cParent) {
+		// add the constructor for the block to the interface
+
+		// TODO
+		// if the child constructor
+
+		JDefinedClass iChild = getOrCreateInterface(child.blockName+"Builder");
+		addMethod(iParent, iChild.narrow(iParent.typeParams()[0]), JMod.NONE, child.constructor);
+
+		// add the constructor to the implementation
+		JDefinedClass cChild = getOrCreateClass("Impl"+child.blockName+"Builder");
+		JDefinedClass hChild = getOrCreateInterface(child.blockName+"Helper");
+
+		JMethod m = addMethod(cParent, iChild.narrow(iParent.typeParams()[0]), JMod.NONE, child.constructor);
+		JVar helper = m.body().decl(hChild, "helper", makeHelperCall(m, child.constructor));
+		m.body()._return(JExpr._new(cChild.narrow(iParent.typeParams()[0]))
+				.arg(helper)
+				.arg(JExpr.ref("_returnValue"))
+		);		
+	}
+	
+	
+	
 	
 	
 	//==o==o==o==o==o==o==| Iterative Level |==o==o==o==o==o==o==//    
@@ -213,12 +235,12 @@ public class CodeGenerator2 {
 			// -- set the method body --
 			
 			// first, a pass-through to the helper
-			addHelperCall(m, method);
+			m.body().add(makeHelperCall(m, method));
 
 			// then, return the appropriate new instance
 			m.body()._return(JExpr._new(returnType)
-				.arg(JExpr.ref("_helper"))
-				.arg(JExpr._null()) // TODO proper constructor params
+					.arg(JExpr.ref("_helper"))
+					.arg(JExpr._null()) // TODO proper constructor params
 			);
 		}
 		
@@ -276,15 +298,15 @@ public class CodeGenerator2 {
 	private JDefinedClass generateGeneratorClass(JPackage thePackage, DescriptorData descriptor) {
 		// figure out the top level interface name from the methods
 		Set<MethodData> dynamicMethods = new HashSet<MethodData>();
-		for (MethodData method : descriptor.methods) {
+		for (MethodData method : descriptor.block.methods) {
 			if (!method.isRequired()) {
 				dynamicMethods.add(method);
 			}
 		}
-		String topName = getGeneratedName(descriptor.descriptorName+"Builder", dynamicMethods);
+		String topName = getGeneratedName(descriptor.block.blockName+"Builder", dynamicMethods);
 		JDefinedClass iTop = getOrCreateInterface(topName);
-		JDefinedClass generator = getOrCreateClass(descriptor.descriptorName + "Generator");
-		JDefinedClass descriptorHelper = getOrCreateInterface(descriptor.descriptorName + "Helper");
+		JDefinedClass generator = getOrCreateClass(descriptor.block.blockName + "Generator");
+		JDefinedClass descriptorHelper = getOrCreateInterface(descriptor.block.blockName + "Helper");
 		JDefinedClass rType = getOrCreateClass("Impl"+topName);
 
 		// -- add the constructor methods --
@@ -329,7 +351,7 @@ public class CodeGenerator2 {
 	}	
 	
 	private JDefinedClass generateTopLevelInterface(DescriptorData descriptor) {
-		JDefinedClass builder = getOrCreateInterface(descriptor.descriptorName+"Builder");
+		JDefinedClass builder = getOrCreateInterface(descriptor.block.blockName+"Builder");
 
 		// add build method
 		builder.method(JMod.NONE, model.ref(Descriptor.class), "build");
@@ -338,7 +360,7 @@ public class CodeGenerator2 {
 	}	
 	
 	private JDefinedClass generateTopLevelImplClass(DescriptorData descriptor) {
-		JDefinedClass base = getOrCreateClass("Impl"+descriptor.descriptorName+"Builder");
+		JDefinedClass base = getOrCreateClass("Impl"+descriptor.block.blockName+"Builder");
 
 		// add inbuilt methods
 		base.method(JMod.PUBLIC, model.VOID, "build")
@@ -375,7 +397,7 @@ public class CodeGenerator2 {
 		}
 	}
 
-	private void addHelperCall(JMethod _method, MethodData method) {
+	private JInvocation makeHelperCall(JMethod _method, MethodData method) {
 		JFieldRef _helper = JExpr.ref("_helper");
 		JInvocation helperCall = _helper.invoke(_method.name());
 
@@ -389,7 +411,7 @@ public class CodeGenerator2 {
 			helperCall.arg(_method.listVarParam());
 		}
 
-		_method.body().add(helperCall);
+		return helperCall;
 	}	
 	
 	private JClass getReturnType(String name, MethodData method, Set<MethodData> allMethods, boolean interfaceDesired) {

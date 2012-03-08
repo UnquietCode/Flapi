@@ -30,7 +30,7 @@ public class ImplMethodHelper implements MethodHelper {
 	}
 
 	@Override
-	public void only() {
+	public void last() {
 		method.minOccurrances = 0;
 		method.maxOccurrances = 1;
 		method.isTerminal = true;
@@ -58,5 +58,12 @@ public class ImplMethodHelper implements MethodHelper {
 	public void between(int atLeast, int atMost) {
 		atMost(atMost);
 		atLeast(atLeast);
+	}
+
+	@Override
+	public void first() {
+		method.minOccurrances = 1;
+		method.maxOccurrances = 1;
+		method.isPrelimiary = true;
 	}
 }
