@@ -12,7 +12,7 @@ public class ModifiedDescriptorTest {
 	@Test
 	public void descriptorGenerator() {
 		Descriptor builder =
-			DescriptorGenerator.create("Descriptor", "create", new ImplDescriptorHelper())
+			DescriptorGenerator.create("Descriptor", "create", new DescriptorHelperImpl())
 				.setPackage("unquietcode.tools.flapi.builder")
 				
 				.addMethod("showLog(boolean value)").once()

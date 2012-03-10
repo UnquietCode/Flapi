@@ -8,13 +8,13 @@ import java.util.Map;
  * @version 03-03-2012
  */
 public class MethodParser {
-	String methodName;
-	String returnType;
-	Map<String, String> params = new HashMap<String, String>();
-	String varargName;
-	String varargType;
+	public String methodName;
+	public String returnType;
+	public Map<String, String> params = new HashMap<String, String>();
+	public String varargName;
+	public String varargType;
 
-	MethodParser(String methodSignature) {
+	public MethodParser(String methodSignature) {
 		parse(methodSignature);
 	}
 	
