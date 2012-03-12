@@ -2,6 +2,7 @@ package unquietcode.tools.flapi;
 
 
 import org.junit.Test;
+import unquietcode.tools.flapi.builder.DescriptorGenerator;
 
 /**
  * @author Benjamin Fagin
@@ -11,9 +12,9 @@ public class LogMachineTest {
 
 	@Test
 	public void LogMachineTest() {
-		DescriptorBuilder builder =
+/*		Descriptor builder =
 
-		DescriptorHelper.create()
+		DescriptorGenerator.create("LogMachine", "create", new DescriptorHelperImpl())
 			.setPackage("unquietcode.tools.logmachine.builder")
 
 			.startBlock("LogMachine").any()
@@ -32,6 +33,6 @@ public class LogMachineTest {
 			.endBlock()
 		;
 		
-		builder.build();
+		builder.build();*/
 	}
 }

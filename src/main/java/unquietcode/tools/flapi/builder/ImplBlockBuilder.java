@@ -1,5 +1,7 @@
 package unquietcode.tools.flapi.builder;
 
+import unquietcode.Pair;
+
 /**
  * @author Ben Fagin (Nokia)
  * @version 03-04-2012
@@ -21,12 +23,9 @@ public class ImplBlockBuilder<_ReturnType> implements BlockBuilder<_ReturnType> 
 
 	@Override
 	public MethodBuilder<BlockBuilder<BlockBuilder<_ReturnType>>> startBlock(String blockName, String methodSignature) {
-//		BlockHelper bHelper = _helper.startBlock(blockName, methodSignature);
-//		BlockBuilder<BlockBuilder<_ReturnType>> returnBlock = new ImplBlockBuilder<BlockBuilder<_ReturnType>>(bHelper, this);
-//		MethodHelper mHelper = bHelper._getConstructor();
-//		
-//		return new ImplMethodBuilder<BlockBuilder<BlockBuilder<_ReturnType>>>(mHelper, returnBlock);
-		return null;
+		Pair<MethodHelper, BlockHelper> helpers = _helper.startBlock(blockName, methodSignature);
+		BlockBuilder<BlockBuilder<_ReturnType>> returnBlock = new ImplBlockBuilder<BlockBuilder<_ReturnType>>(helpers.second, this);
+		return new ImplMethodBuilder<BlockBuilder<BlockBuilder<_ReturnType>>>(helpers.first, returnBlock);
 	}
 
 	@Override

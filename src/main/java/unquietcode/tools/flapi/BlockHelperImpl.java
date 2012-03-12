@@ -3,19 +3,25 @@ package unquietcode.tools.flapi;
 import unquietcode.Pair;
 import unquietcode.tools.flapi.builder.BlockHelper;
 import unquietcode.tools.flapi.builder.MethodHelper;
+import unquietcode.tools.flapi.outline.BlockOutline;
+import unquietcode.tools.flapi.outline.MethodOutline;
 
 
 /**
  * @author Ben Fagin (Nokia)
  * @version 03-04-2012
  */
-public class ImplBlockHelper implements BlockHelper {
-	final BlockData block = new BlockData();
+public class BlockHelperImpl implements BlockHelper {
+	final BlockOutline block;
 
+	public BlockHelperImpl(BlockOutline block) {
+		this.block = block;
+	}
+	
 	@Override
 	public MethodHelper addMethod(String methodSignature) {
-		ImplMethodHelper helper = new ImplMethodHelper();
-		MethodData newMethod = helper.method;
+		MethodHelperImpl helper = new MethodHelperImpl();
+		MethodOutline newMethod = helper.method;
 		block.methods.add(newMethod);
 		newMethod.methodSignature = methodSignature;
 		
@@ -24,21 +30,20 @@ public class ImplBlockHelper implements BlockHelper {
 
 	@Override
 	public Pair<MethodHelper,BlockHelper> startBlock(String blockName, String methodSignature) {
-		ImplBlockHelper bHelper = new ImplBlockHelper();
-		BlockData newBlock = bHelper.block;
+		BlockOutline newBlock = new BlockOutline();
 		block.blocks.add(newBlock);
-		newBlock.blockName = blockName;
-		newBlock.constructor = new MethodData();
+		newBlock.name = blockName;
+		newBlock.constructor = new MethodOutline();
 		newBlock.constructor.methodSignature = methodSignature;
 
-		ImplMethodHelper mHelper = new ImplMethodHelper(newBlock.constructor);
-		return new Pair<MethodHelper, BlockHelper>(mHelper, bHelper);
+		MethodHelperImpl mHelper = new MethodHelperImpl(newBlock.constructor);
+		return new Pair<MethodHelper, BlockHelper>(mHelper, new BlockHelperImpl(newBlock));
 	}
 
 	@Override
 	public MethodHelper addBlockReference(String blockName, String methodSignature) {
-		ImplMethodHelper helper = new ImplMethodHelper();
-		BlockData.BlockReference blockReference = new BlockData.BlockReference();
+		MethodHelperImpl helper = new MethodHelperImpl();
+		BlockReference blockReference = new BlockReference();
 		block.blockReferences.add(blockReference);
 		blockReference.blockName = blockName;
 		blockReference.constructorMethod = methodSignature;
@@ -48,11 +53,6 @@ public class ImplBlockHelper implements BlockHelper {
 
 	@Override
 	public void endBlock() {
-		// TODO
-	}
-
-	@Override
-	public void endBlock(String methodSignature) {
 		// TODO
 	}
 }

@@ -1,19 +1,20 @@
 package unquietcode.tools.flapi;
 
 import unquietcode.tools.flapi.builder.MethodHelper;
+import unquietcode.tools.flapi.outline.MethodOutline;
 
 /**
  * @author Ben Fagin (Nokia)
  * @version 03-04-2012
  */
-public class ImplMethodHelper implements MethodHelper {
-	final MethodData method;
+public class MethodHelperImpl implements MethodHelper {
+	final MethodOutline method;
 
-	ImplMethodHelper() {
-		this(new MethodData());
+	MethodHelperImpl() {
+		this(new MethodOutline());
 	}
 
-	ImplMethodHelper(MethodData method) {
+	MethodHelperImpl(MethodOutline method) {
 		this.method = method;
 	}
 	
@@ -58,12 +59,5 @@ public class ImplMethodHelper implements MethodHelper {
 	public void between(int atLeast, int atMost) {
 		atMost(atMost);
 		atLeast(atLeast);
-	}
-
-	@Override
-	public void first() {
-		method.minOccurrances = 1;
-		method.maxOccurrances = 1;
-		method.isPrelimiary = true;
 	}
 }

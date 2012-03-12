@@ -4,7 +4,9 @@ import unquietcode.Pair;
 import unquietcode.tools.flapi.builder.BlockHelper;
 import unquietcode.tools.flapi.builder.DescriptorHelper;
 import unquietcode.tools.flapi.builder.MethodHelper;
+import unquietcode.tools.flapi.outline.BlockOutline;
 import unquietcode.tools.flapi.outline.DescriptorOutline;
+import unquietcode.tools.flapi.outline.MethodOutline;
 
 /**
  * @author Ben Fagin (Nokia)
@@ -42,13 +44,17 @@ public class DescriptorHelperImpl implements DescriptorHelper {
 
 	@Override
 	public MethodHelper addMethod(String methodSignature) {
-		outline.addMethod(methodSignature);
-		return null;
-		// TODO
+		MethodOutline m = outline.addMethod(methodSignature);
+		MethodHelper helper = new MethodHelperImpl(m);
+		return helper;
 	}
 
 	@Override
 	public Pair<MethodHelper, BlockHelper> startBlock(String blockName, String methodSignature) {
-		return null;
+		BlockOutline block = new BlockOutline();
+		block.name = blockName;
+		block.constructor = new MethodOutline();
+		block.constructor.methodSignature = methodSignature;
+		return new Pair<MethodHelper, BlockHelper>(new MethodHelperImpl(block.constructor), new BlockHelperImpl(block));
 	}
 }

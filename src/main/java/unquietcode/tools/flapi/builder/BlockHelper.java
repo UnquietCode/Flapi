@@ -12,5 +12,4 @@ public interface BlockHelper {
 	MethodHelper addBlockReference(String blockName, String methodSignature);
 
 	void endBlock();
-	void endBlock(String methodSignature);
 }

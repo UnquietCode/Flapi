@@ -8,15 +8,23 @@ import java.util.Set;
  * @author Ben Fagin (Nokia)
  * @version 03-07-2012
  */
-public class DescriptorOutline {
+public class DescriptorOutline implements Outline {
 	final Set<BlockOutline> blocks = new HashSet<BlockOutline>();
 	String name;
 	String packageName;
-	final GeneratorOutline generator = new GeneratorOutline();
-	final BlockOutline selfBlock = new BlockOutline();
+	public String createMethod;
+	public final BlockOutline selfBlock = new BlockOutline();
+	private final GeneratorOutline generator = new GeneratorOutline(selfBlock);
 	
 	
+	public GeneratorOutline getGenerator() {
+		return generator;
+	}
 	
+	public String getPackageName() {
+		return packageName;
+	}
+
 	public void setDescriptorName(String name) {
 		selfBlock.name = name;
 	}
@@ -25,10 +33,11 @@ public class DescriptorOutline {
 		generator.methodName = methodName;
 	}
 	
-	public void addMethod(String methodSignature) {
+	public MethodOutline addMethod(String methodSignature) {
 		MethodOutline outline = new MethodOutline();
 		outline.methodSignature = methodSignature;
 		selfBlock.methods.add(outline);
+		return outline;
 	}
 	
 	public void setPackageName(String packageName) {

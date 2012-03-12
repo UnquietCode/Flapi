@@ -1,6 +1,8 @@
 package unquietcode.tools.flapi.outline;
 
 
+import unquietcode.tools.flapi.MethodParser;
+
 /**
  * @author Ben Fagin (Nokia)
  * @version 03-07-2012
@@ -8,11 +10,21 @@ package unquietcode.tools.flapi.outline;
 public class MethodOutline implements Comparable<MethodOutline> {
 	public Integer minOccurrances;
 	public Integer maxOccurrances;
+
 	public String methodSignature;
 
-	boolean isTerminal = false;
+	public boolean isTerminal = false;
 
-	boolean isRequired() {
+
+	
+	
+	public String returnType() {
+		MethodParser parsed = new MethodParser(methodSignature);
+		return parsed.returnType;
+	}
+	
+	
+	public boolean isRequired() {
 		return maxOccurrances == -1 || isTerminal;
 	}
 

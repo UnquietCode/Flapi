@@ -7,7 +7,6 @@ package unquietcode.tools.flapi.builder;
 public interface MethodHelper {
 	void once();
 	void any();
-	void first();
 	void last();
 	void atLeast(int num);
 	void atMost(int num);
