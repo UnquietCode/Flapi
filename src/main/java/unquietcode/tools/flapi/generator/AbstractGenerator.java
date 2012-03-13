@@ -71,6 +71,35 @@ public abstract class AbstractGenerator<_InType extends Outline, _OutType> imple
 
 		return helperCall;
 	}
+
+	private JClass getReturnType(String name, MethodOutline method, Set<MethodOutline> allMethods, boolean interfaceDesired) {
+		Set<MethodOutline> minusMethod = new HashSet<MethodOutline>(allMethods);
+		minusMethod.remove(method);
+
+		// only add back if it's not the last instance
+		if (method.maxOccurrances > 1) {
+			MethodOutline m = method.copy();
+			m.maxOccurrances = m.maxOccurrances - 1;
+			minusMethod.add(m);
+		}
+
+		JClass iType = getInterface(getGeneratedName(name, minusMethod));
+		if (interfaceDesired) {
+			// if it's the base class, we need the self-type
+			if (minusMethod.isEmpty()) {
+				return iType.narrow(iType);
+			} else {
+				return iType;
+			}
+		}
+
+		JClass cType = getClass(getGeneratedName("Impl"+name, minusMethod));
+		if (minusMethod.isEmpty()) {
+			return cType.narrow(iType);
+		} else {
+			return cType;
+		}
+	}	
 	
 	private JType getType(String name) {
 		JType clazz;

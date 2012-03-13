@@ -8,6 +8,9 @@ import unquietcode.tools.flapi.outline.BlockOutline;
 import unquietcode.tools.flapi.outline.DescriptorOutline;
 import unquietcode.tools.flapi.outline.MethodOutline;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author Ben Fagin (Nokia)
  * @version 03-10-2012
@@ -50,11 +53,15 @@ public class DescriptorHelperImpl implements DescriptorHelper {
 	}
 
 	@Override
-	public Pair<MethodHelper, BlockHelper> startBlock(String blockName, String methodSignature) {
+	public List<Object> startBlock(String blockName, String methodSignature) {
 		BlockOutline block = new BlockOutline();
 		block.name = blockName;
 		block.constructor = new MethodOutline();
 		block.constructor.methodSignature = methodSignature;
-		return new Pair<MethodHelper, BlockHelper>(new MethodHelperImpl(block.constructor), new BlockHelperImpl(block));
+		
+		List<Object> helpers = new ArrayList<Object>();
+		helpers.add(new MethodHelperImpl(block.constructor));
+		helpers.add(new BlockHelperImpl(block));
+		return helpers;
 	}
 }

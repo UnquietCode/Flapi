@@ -30,7 +30,6 @@ public class BlockOutline implements Outline {
 
 
 
-
 	public Set<PathSegment> getInterfacePaths() {
 		/**
 		 * What we want:

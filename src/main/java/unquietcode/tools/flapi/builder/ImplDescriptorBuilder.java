@@ -3,6 +3,8 @@ package unquietcode.tools.flapi.builder;
 import unquietcode.Pair;
 import unquietcode.tools.flapi.Descriptor;
 
+import java.util.List;
+
 /**
  * @author Ben Fagin (Nokia)
  * @version 03-04-2012
@@ -30,9 +32,9 @@ public class ImplDescriptorBuilder<_SelfType> implements DescriptorBuilder<_Self
 
 	@Override
 	public MethodBuilder<BlockBuilder<_SelfType>> startBlock(String blockName, String methodSignature) {
-		Pair<MethodHelper, BlockHelper> helpers = _helper.startBlock(blockName, methodSignature);
-		BlockBuilder<_SelfType> innerBlock = new ImplBlockBuilder<_SelfType>(helpers.second, _returnValue);
-		return new ImplMethodBuilder<BlockBuilder<_SelfType>>(helpers.first, innerBlock);
+		List<Object> helpers = _helper.startBlock(blockName, methodSignature);
+		BlockBuilder<_SelfType> innerBlock = new ImplBlockBuilder<_SelfType>((BlockHelper) helpers.get(1), _returnValue);
+		return new ImplMethodBuilder<BlockBuilder<_SelfType>>((MethodHelper) helpers.get(0), innerBlock);
 	}
 	
 	/* 
