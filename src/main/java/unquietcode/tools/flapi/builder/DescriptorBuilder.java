@@ -1,13 +1,11 @@
 package unquietcode.tools.flapi.builder;
 
-import unquietcode.tools.flapi.Descriptor;
-
 /**
- * @author Ben Fagin (Nokia)
+ * @author Ben Fagin
  * @version 03-04-2012
  */
-public interface DescriptorBuilder<_SelfType> {
-	Descriptor build();
-	MethodBuilder<_SelfType> addMethod(String methodSignature);
-	MethodBuilder<BlockBuilder_addBlockChain<_SelfType>> startBlock(String blockName, String methodSignature);
+public interface DescriptorBuilder<_ReturnType> {
+	_ReturnType build();
+	MethodBuilder<DescriptorBuilder<_ReturnType>> addMethod(String methodSignature);
+	MethodBuilder<BlockBuilder_addBlockChain<DescriptorBuilder<_ReturnType>>> startBlock(String blockName, String methodSignature);
 }

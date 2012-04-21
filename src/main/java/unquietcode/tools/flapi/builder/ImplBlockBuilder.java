@@ -2,13 +2,15 @@ package unquietcode.tools.flapi.builder;
 
 import unquietcode.Pair;
 
+import java.util.List;
+
 /**
- * @author Ben Fagin (Nokia)
+ * @author Ben Fagin
  * @version 03-04-2012
  */
 public class ImplBlockBuilder<_ReturnType> implements BlockBuilder<_ReturnType> {
-	protected final BlockHelper _helper;
-	protected final _ReturnType _returnValue;
+	private final BlockHelper _helper;
+	private final _ReturnType _returnValue;
 	
 	ImplBlockBuilder(BlockHelper helper, _ReturnType returnValue) {
 		_helper = helper;
@@ -22,10 +24,10 @@ public class ImplBlockBuilder<_ReturnType> implements BlockBuilder<_ReturnType> 
 	}
 
 	@Override
-	public MethodBuilder<BlockBuilder<BlockBuilder<_ReturnType>>> startBlock(String blockName, String methodSignature) {
-		Pair<MethodHelper, BlockHelper> helpers = _helper.startBlock(blockName, methodSignature);
-		BlockBuilder<BlockBuilder<_ReturnType>> returnBlock = new ImplBlockBuilder<BlockBuilder<_ReturnType>>(helpers.second, this);
-		return new ImplMethodBuilder<BlockBuilder<BlockBuilder<_ReturnType>>>(helpers.first, returnBlock);
+	public MethodBuilder<BlockBuilder_addBlockChain<BlockBuilder<_ReturnType>>> startBlock(String blockName, String methodSignature) {
+		List<Object> helpers = _helper.startBlock(blockName, methodSignature);
+		BlockBuilder_addBlockChain<BlockBuilder<_ReturnType>> returnBlock = new ImplBlockBuilder_addBlockChain<BlockBuilder<_ReturnType>>((BlockHelper) helpers.get(1), this);
+		return new ImplMethodBuilder<BlockBuilder_addBlockChain<BlockBuilder<_ReturnType>>>((MethodHelper) helpers.get(0), returnBlock);
 	}
 
 	@Override
@@ -38,10 +40,5 @@ public class ImplBlockBuilder<_ReturnType> implements BlockBuilder<_ReturnType> 
 	public _ReturnType endBlock() {
 		_helper.endBlock();
 		return _returnValue;
-	}
-
-	@Override
-	public BlockChainBuilder_addBlockChain<BlockBuilder<_ReturnType>> addBlockChain() {
-		return null;
 	}
 }

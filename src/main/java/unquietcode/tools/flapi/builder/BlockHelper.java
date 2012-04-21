@@ -1,6 +1,6 @@
 package unquietcode.tools.flapi.builder;
 
-import unquietcode.Pair;
+import java.util.List;
 
 /**
  * @author Ben Fagin (Nokia)
@@ -8,7 +8,7 @@ import unquietcode.Pair;
  */
 public interface BlockHelper {
 	MethodHelper addMethod(String methodSignature);
-	Pair<MethodHelper,BlockHelper> startBlock(String blockName, String methodSignature);
+	List<Object> startBlock(String blockName, String methodSignature);
 	MethodHelper addBlockReference(String blockName, String methodSignature);
 
 	void endBlock();

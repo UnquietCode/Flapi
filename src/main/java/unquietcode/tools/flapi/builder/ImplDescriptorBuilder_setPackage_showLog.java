@@ -1,14 +1,14 @@
 package unquietcode.tools.flapi.builder;
 
 /**
- * @author Ben Fagin (Nokia)
+ * @author Ben Fagin
  * @version 03-04-2012
  */
-public class ImplDescriptorBuilder_setPackage_showLog extends ImplDescriptorBuilder<DescriptorBuilder_setPackage_showLog> implements DescriptorBuilder_setPackage_showLog {
+public class ImplDescriptorBuilder_setPackage_showLog extends ImplDescriptorBuilder implements DescriptorBuilder_setPackage_showLog {
 	ImplDescriptorBuilder_setPackage_showLog(DescriptorHelper helper) {
 		super(helper);
 	}
-	
+
 	@Override
 	public DescriptorBuilder_setPackage showLog(boolean value) {
 		_helper.showLog(value);

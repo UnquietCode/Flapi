@@ -6,6 +6,9 @@ import unquietcode.tools.flapi.builder.MethodHelper;
 import unquietcode.tools.flapi.outline.BlockOutline;
 import unquietcode.tools.flapi.outline.MethodOutline;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 /**
  * @author Ben Fagin (Nokia)
@@ -29,7 +32,7 @@ public class BlockHelperImpl implements BlockHelper {
 	}
 
 	@Override
-	public Pair<MethodHelper,BlockHelper> startBlock(String blockName, String methodSignature) {
+	public List<Object> startBlock(String blockName, String methodSignature) {
 		BlockOutline newBlock = new BlockOutline();
 		block.blocks.add(newBlock);
 		newBlock.name = blockName;
@@ -37,7 +40,12 @@ public class BlockHelperImpl implements BlockHelper {
 		newBlock.constructor.methodSignature = methodSignature;
 
 		MethodHelperImpl mHelper = new MethodHelperImpl(newBlock.constructor);
-		return new Pair<MethodHelper, BlockHelper>(mHelper, new BlockHelperImpl(newBlock));
+
+		List<Object> helpers = new ArrayList<Object>();
+		helpers.add(mHelper);
+		helpers.add(new BlockHelperImpl(newBlock));
+
+		return helpers;
 	}
 
 	@Override
