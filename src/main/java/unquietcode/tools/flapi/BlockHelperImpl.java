@@ -1,6 +1,7 @@
 package unquietcode.tools.flapi;
 
 import unquietcode.Pair;
+import unquietcode.tools.flapi.builder.BlockChainHelper;
 import unquietcode.tools.flapi.builder.BlockHelper;
 import unquietcode.tools.flapi.builder.MethodHelper;
 import unquietcode.tools.flapi.outline.BlockOutline;
@@ -62,5 +63,11 @@ public class BlockHelperImpl implements BlockHelper {
 	@Override
 	public void endBlock() {
 		// TODO
+	}
+
+	@Override
+	public BlockChainHelper addBlockChain() {
+		// TODO
+		return null;
 	}
 }

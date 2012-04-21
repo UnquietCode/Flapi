@@ -1,6 +1,5 @@
 package unquietcode.tools.flapi.builder;
 
-import unquietcode.Pair;
 
 import java.util.List;
 
@@ -8,36 +7,36 @@ import java.util.List;
  * @author Ben Fagin
  * @version 03-04-2012
  */
-public class ImplBlockBuilder<_ReturnType> implements BlockBuilder<_ReturnType> {
-	private final BlockHelper _helper;
-	private final _ReturnType _returnValue;
+public class ImplBlockBuilder implements BlockBuilder {
+	protected final BlockHelper _helper;
+	protected final Object _returnValue;
 	
-	ImplBlockBuilder(BlockHelper helper, _ReturnType returnValue) {
+	ImplBlockBuilder(BlockHelper helper, Object returnValue) {
 		_helper = helper;
 		_returnValue = returnValue;
 	}
 	
 	@Override
-	public MethodBuilder<BlockBuilder<_ReturnType>> addMethod(String methodSignature) {
+	public MethodBuilder addMethod(String methodSignature) {
 		MethodHelper helper = _helper.addMethod(methodSignature);
-		return new ImplMethodBuilder<BlockBuilder<_ReturnType>>(helper, this);
+		return new ImplMethodBuilder(helper, this);
 	}
 
 	@Override
-	public MethodBuilder<BlockBuilder_addBlockChain<BlockBuilder<_ReturnType>>> startBlock(String blockName, String methodSignature) {
+	public MethodBuilder startBlock(String blockName, String methodSignature) {
 		List<Object> helpers = _helper.startBlock(blockName, methodSignature);
-		BlockBuilder_addBlockChain<BlockBuilder<_ReturnType>> returnBlock = new ImplBlockBuilder_addBlockChain<BlockBuilder<_ReturnType>>((BlockHelper) helpers.get(1), this);
-		return new ImplMethodBuilder<BlockBuilder_addBlockChain<BlockBuilder<_ReturnType>>>((MethodHelper) helpers.get(0), returnBlock);
+		BlockBuilder_addBlockChain returnBlock = new ImplBlockBuilder_addBlockChain((BlockHelper) helpers.get(1), this);
+		return new ImplMethodBuilder((MethodHelper) helpers.get(0), returnBlock);
 	}
 
 	@Override
-	public MethodBuilder<BlockBuilder<_ReturnType>> addBlockReference(String blockName, String methodSignature) {
+	public MethodBuilder addBlockReference(String blockName, String methodSignature) {
 		MethodHelper mHelper = _helper.addBlockReference(blockName, methodSignature);
-		return new ImplMethodBuilder<BlockBuilder<_ReturnType>>(mHelper, this);
+		return new ImplMethodBuilder(mHelper, this);
 	}
 
 	@Override
-	public _ReturnType endBlock() {
+	public Object endBlock() {
 		_helper.endBlock();
 		return _returnValue;
 	}

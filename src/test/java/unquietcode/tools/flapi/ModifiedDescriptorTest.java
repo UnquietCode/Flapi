@@ -14,7 +14,7 @@ public class ModifiedDescriptorTest {
 		Descriptor builder =
 			DescriptorGenerator.create("Descriptor", "create", new DescriptorHelperImpl())
 				.setPackage("unquietcode.tools.flapi.builder")
-				
+
 				.addMethod("showLog(boolean value)").once()
 				.addMethod("setPackage(String packageName)").between(1, 1)
 				.addMethod("doSomething()").any()
@@ -29,8 +29,8 @@ public class ModifiedDescriptorTest {
 				.endBlock()
 
 				.startBlock("Block", "startBlock(String blockName, String methodSignature)").any()
-					.addBlockChain()
-						.addBlockReference("Method")
+//					.addBlockChain()
+//						.addBlockReference("Method")
 
 					.addMethod("addBlockReference(String blockName, String methodSignature)").any()
 					.addBlockReference("Method", "addMethod(String methodSignature)").any()

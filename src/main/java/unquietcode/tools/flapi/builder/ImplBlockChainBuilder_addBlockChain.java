@@ -4,27 +4,14 @@ package unquietcode.tools.flapi.builder;
  * @author Ben Fagin
  * @version 04-21-2012
  */
-public class ImplBlockChainBuilder_addBlockChain<_ReturnType> implements BlockChainBuilder_addBlockChain<_ReturnType> {
-	private final BlockChainHelper _helper;
-	private final _ReturnType _returnValue;
-
-	ImplBlockChainBuilder_addBlockChain(BlockChainHelper helper, _ReturnType returnValue) {
-		_helper = helper;
-		_returnValue = returnValue;
+public class ImplBlockChainBuilder_addBlockChain extends ImplBlockChainBuilder implements BlockChainBuilder_addBlockChain {
+	ImplBlockChainBuilder_addBlockChain(BlockChainHelper helper, Object returnValue) {
+		super(helper, returnValue);
 	}
 
 	@Override
-	public _ReturnType addBlockReference(String blockName) {
-		return null;
-	}
-
-	@Override
-	public BlockBuilder_addBlockChain<_ReturnType> startBlock(String blockName) {
-		return null;
-	}
-
-	@Override
-	public BlockChainBuilder<_ReturnType> addBlockChain(String blockName) {
-		return null;
+	public BlockChainBuilder addBlockChain(String blockName) {
+		BlockChainHelper helper = _helper.addBlockChain();
+		return new ImplBlockChainBuilder_addBlockChain(helper, this);
 	}
 }
