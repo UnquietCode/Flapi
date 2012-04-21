@@ -43,8 +43,7 @@ public class GeneratorGenerator extends AbstractGenerator<GeneratorOutline, JDef
 
 		// if (helper == null)
 		//      throw new IllegalArgumentException("Helper cannot be null.");
-		_if = createWithString.body()
-				._if(pHelper.eq(JExpr._null()));
+		_if = createWithString.body()._if(pHelper.eq(JExpr._null()));
 		_if._then()._throw(JExpr._new(ref(IllegalArgumentException.class)).arg("Helper cannot be null."));
 		createWithString.body().directStatement(" ");
 

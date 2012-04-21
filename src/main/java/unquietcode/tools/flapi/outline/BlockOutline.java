@@ -9,7 +9,7 @@ import unquietcode.tools.flapi.generator.AbstractGenerator;
 import java.util.*;
 
 /**
- * @author Ben Fagin (Nokia)
+ * @author Ben Fagin
  * @version 03-09-2012
  */
 public class BlockOutline implements Outline {
@@ -19,7 +19,7 @@ public class BlockOutline implements Outline {
 	// nested blocks
 	public List<BlockOutline> blocks = new ArrayList<BlockOutline>();
 	
-	// constructor used by parent to create this block
+	// constructor, used by parent to create this block
 	public MethodOutline constructor;
 	
 	// block references
@@ -27,24 +27,6 @@ public class BlockOutline implements Outline {
 
 	// methods
 	public final Set<MethodOutline> methods = new HashSet<MethodOutline>();
-
-
-
-	public Set<PathSegment> getInterfacePaths() {
-		/**
-		 * What we want:
-		 *      a chain of methods
-		 *      each method returns the next
-		 *
-		 *
-		 */
-
-		Set<PathSegment> paths = new HashSet<PathSegment>();
-
-		// required methods direct back to self
-		return null;
-	}
-	
 
 	public String getTopLevelImplementation() {
 		return "Impl"+ AbstractGenerator.getGeneratedName(name + "Builder", getDynamicMethods());
@@ -70,17 +52,6 @@ public class BlockOutline implements Outline {
 		return name+"Generator";
 	}
 	
-
-	
-
-	Set<MethodOutline> _dynamicMethods = new TreeSet<MethodOutline>();
-	Set<MethodOutline> _requiredMethods = new TreeSet<MethodOutline>();
-	
-	// {ReturnType} {MethodSignature}
-	class PathSegment {
-
-	}
-
 
 	public Set<MethodOutline> getRequiredMethods() {
 		Set<MethodOutline> required = new TreeSet<MethodOutline>();
@@ -151,7 +122,7 @@ public class BlockOutline implements Outline {
 
 
 
-
+/*
 	private Set<PathSegment> generatePaths() {
 		Set<PathSegment> paths = new HashSet<PathSegment>();
 
@@ -180,7 +151,7 @@ public class BlockOutline implements Outline {
 		
 		return null;
 
-	}
+	}*/
 
 
 	/*

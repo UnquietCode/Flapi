@@ -9,5 +9,5 @@ import unquietcode.tools.flapi.Descriptor;
 public interface DescriptorBuilder<_SelfType> {
 	Descriptor build();
 	MethodBuilder<_SelfType> addMethod(String methodSignature);
-	MethodBuilder<BlockBuilder<_SelfType>> startBlock(String blockName, String methodSignature);
+	MethodBuilder<BlockBuilder_addBlockChain<_SelfType>> startBlock(String blockName, String methodSignature);
 }

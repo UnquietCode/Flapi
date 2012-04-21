@@ -1,7 +1,9 @@
 package unquietcode.tools.flapi.generator;
 
 import com.sun.codemodel.*;
+import unquietcode.Pair;
 import unquietcode.tools.flapi.MethodParser;
+import unquietcode.tools.flapi.outline.BlockOutline;
 import unquietcode.tools.flapi.outline.MethodOutline;
 import unquietcode.tools.flapi.outline.Outline;
 
@@ -72,7 +74,9 @@ public abstract class AbstractGenerator<_InType extends Outline, _OutType> imple
 		return helperCall;
 	}
 
-	private JClass getReturnType(String name, MethodOutline method, Set<MethodOutline> allMethods, boolean interfaceDesired) {
+//	public JClass getMinusMethodInterface
+
+	private JClass getMinusMethodType(String name, MethodOutline method, Set<MethodOutline> allMethods, boolean interfaceDesired) {
 		Set<MethodOutline> minusMethod = new HashSet<MethodOutline>(allMethods);
 		minusMethod.remove(method);
 
@@ -99,7 +103,23 @@ public abstract class AbstractGenerator<_InType extends Outline, _OutType> imple
 		} else {
 			return cType;
 		}
-	}	
+	}
+	
+	protected Pair<JClass, JClass> getReturnType(MethodOutline method, BlockOutline block, JDefinedClass iBuilder) {
+		// if the block chain is not empty, the return type is the the last block's created type
+		if (!method.blockChain.isEmpty()) {
+			
+		}
+
+		// if method is terminal, return type is _ReturnType and value is _ReturnValue		
+		if (method.isTerminal()) {
+			
+		}
+
+		// if method
+		
+		return null;
+	}
 	
 	private JType getType(String name) {
 		JType clazz;
@@ -165,7 +185,10 @@ public abstract class AbstractGenerator<_InType extends Outline, _OutType> imple
 
 				// only push if we've made useful changes
 				if (changed) {
-					stack.push(next);
+					// don't include empty sets  (this practice is debatable)
+					if (!next.isEmpty()) {
+						stack.push(next);
+					}
 				}
 			}
 		}

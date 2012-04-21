@@ -14,12 +14,20 @@ public class MethodOutline implements Comparable<MethodOutline> {
 	public Integer minOccurrances;
 	public Integer maxOccurrances;
 	public String methodSignature;
+	public boolean isTerminal = false;
 
 	public final List<BlockOutline> blockChain = new ArrayList<BlockOutline>();
 	
 	
-	public boolean isTerminal = false;
 
+	
+	public boolean isTerminal() {
+		return isTerminal;
+	}
+	
+	public void isTerminal(boolean value) {
+		isTerminal = value;
+	}
 
 	
 	

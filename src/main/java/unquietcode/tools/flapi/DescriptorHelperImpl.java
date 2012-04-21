@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @author Ben Fagin (Nokia)
+ * @author Ben Fagin
  * @version 03-10-2012
  */
 public class DescriptorHelperImpl implements DescriptorHelper {
@@ -48,19 +48,19 @@ public class DescriptorHelperImpl implements DescriptorHelper {
 	@Override
 	public MethodHelper addMethod(String methodSignature) {
 		MethodOutline m = outline.addMethod(methodSignature);
-		MethodHelper helper = new MethodHelperImpl(m);
-		return helper;
+		return new MethodHelperImpl(m);
 	}
 
 	@Override
 	public List<Object> startBlock(String blockName, String methodSignature) {
 		BlockOutline block = new BlockOutline();
 		block.name = blockName;
-		block.constructor = new MethodOutline();
-		block.constructor.methodSignature = methodSignature;
-		
+
+		MethodOutline blockMethod = outline.addMethod(methodSignature);
+		blockMethod.blockChain.add(block);
+
 		List<Object> helpers = new ArrayList<Object>();
-		helpers.add(new MethodHelperImpl(block.constructor));
+		helpers.add(new MethodHelperImpl(blockMethod));
 		helpers.add(new BlockHelperImpl(block));
 		return helpers;
 	}

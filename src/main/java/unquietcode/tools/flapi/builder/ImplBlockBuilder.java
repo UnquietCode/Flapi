@@ -41,7 +41,7 @@ public class ImplBlockBuilder<_ReturnType> implements BlockBuilder<_ReturnType> 
 	}
 
 	@Override
-	public BlockChainBuilder<BlockChainBuilder_addBlockChain, BlockBuilder<_ReturnType>> addBlockChain() {
+	public BlockChainBuilder_addBlockChain<BlockBuilder<_ReturnType>> addBlockChain() {
 		return null;
 	}
 }

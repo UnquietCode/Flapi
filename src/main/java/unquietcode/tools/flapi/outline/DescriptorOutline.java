@@ -5,18 +5,16 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * @author Ben Fagin (Nokia)
+ * @author Ben Fagin
  * @version 03-07-2012
  */
 public class DescriptorOutline implements Outline {
-	final Set<BlockOutline> blocks = new HashSet<BlockOutline>();
-	String name;
-	String packageName;
-	public String createMethod;
+	private final Set<BlockOutline> blocks = new HashSet<BlockOutline>();
+	private String packageName;
+
 	public final BlockOutline selfBlock = new BlockOutline();
 	private final GeneratorOutline generator = new GeneratorOutline(selfBlock);
-	
-	
+
 	public GeneratorOutline getGenerator() {
 		return generator;
 	}
