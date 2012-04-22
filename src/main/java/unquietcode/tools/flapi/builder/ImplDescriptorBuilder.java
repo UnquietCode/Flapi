@@ -31,7 +31,7 @@ public class ImplDescriptorBuilder implements DescriptorBuilder {
 	@Override
 	public MethodBuilder startBlock(String blockName, String methodSignature) {
 		List<Object> helpers = _helper.startBlock(blockName, methodSignature);
-		BlockBuilder_addBlockChain<DescriptorBuilder<Descriptor>> innerBlock = new ImplBlockBuilder_addBlockChain((BlockHelper) helpers.get(1), this);
+		BlockBuilder_addBlockChain innerBlock = new ImplBlockBuilder_addBlockChain((BlockHelper) helpers.get(1), this);
 		return new ImplMethodBuilder((MethodHelper) helpers.get(0), innerBlock);
 	}
 }

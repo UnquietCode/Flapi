@@ -18,9 +18,7 @@ import java.util.List;
 public class DescriptorHelperImpl implements DescriptorHelper {
 	final DescriptorOutline outline = new DescriptorOutline();
 	
-	
-	
-	
+
 	@Override
 	public void _setDescriptorName(String name) {
 		if (name == null || name.trim().isEmpty()) {
@@ -53,15 +51,15 @@ public class DescriptorHelperImpl implements DescriptorHelper {
 
 	@Override
 	public List<Object> startBlock(String blockName, String methodSignature) {
-		BlockOutline block = new BlockOutline();
-		block.name = blockName;
-
+		BlockOutline block = outline.addBlock(blockName);
 		MethodOutline blockMethod = outline.addMethod(methodSignature);
-		blockMethod.blockChain.add(block);
+		blockMethod.blockChain.add(0, block);
+		block.constructor = blockMethod;
 
 		List<Object> helpers = new ArrayList<Object>();
 		helpers.add(new MethodHelperImpl(blockMethod));
 		helpers.add(new BlockHelperImpl(block));
+
 		return helpers;
 	}
 }

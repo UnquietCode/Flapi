@@ -37,13 +37,14 @@ public class BlockHelperImpl implements BlockHelper {
 		BlockOutline newBlock = new BlockOutline();
 		block.blocks.add(newBlock);
 		newBlock.name = blockName;
-		newBlock.constructor = new MethodOutline();
-		newBlock.constructor.methodSignature = methodSignature;
 
-		MethodHelperImpl mHelper = new MethodHelperImpl(newBlock.constructor);
+		MethodOutline blockMethod = new MethodOutline();
+		blockMethod.methodSignature = methodSignature;
+		newBlock.constructor = blockMethod;
+		block.methods.add(blockMethod);
 
 		List<Object> helpers = new ArrayList<Object>();
-		helpers.add(mHelper);
+		helpers.add(new MethodHelperImpl(blockMethod));
 		helpers.add(new BlockHelperImpl(newBlock));
 
 		return helpers;
@@ -54,8 +55,9 @@ public class BlockHelperImpl implements BlockHelper {
 		MethodHelperImpl helper = new MethodHelperImpl();
 		BlockReference blockReference = new BlockReference();
 		block.blockReferences.add(blockReference);
-		blockReference.blockName = blockName;
-		blockReference.constructorMethod = methodSignature;
+		blockReference.name = blockName;
+		blockReference.constructor = new MethodOutline();
+		blockReference.constructor.methodSignature = methodSignature;
 
 		return helper;
 	}
@@ -67,7 +69,6 @@ public class BlockHelperImpl implements BlockHelper {
 
 	@Override
 	public BlockChainHelper addBlockChain() {
-		// TODO
-		return null;
+		return new BlockChainHelperImpl(block.constructor);
 	}
 }

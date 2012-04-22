@@ -146,7 +146,7 @@ public class BlockGenerator extends AbstractGenerator<BlockOutline, Void> {
 				addMethod(iBuilder, iBuilder.narrow(iBuilder.typeParams()[0]), JMod.NONE, method);
 			}
 		} else {
-			JType previousType = iBuilder.typeParams()[0];
+			JType previousType = iBuilder.narrow(iBuilder.typeParams()[0]);
 
 			for (int i = method.blockChain.size()-1; i >=0; --i) {
 				BlockOutline targetBlock = method.blockChain.get(i);
