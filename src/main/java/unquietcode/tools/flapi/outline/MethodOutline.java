@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @author Ben Fagin (Nokia)
+ * @author Ben Fagin
  * @version 03-07-2012
  */
 public class MethodOutline implements Comparable<MethodOutline> {
@@ -44,12 +44,6 @@ public class MethodOutline implements Comparable<MethodOutline> {
 
 
 
-
-
-
-
-
-
 	public MethodOutline copy()  {
 		MethodOutline clone = new MethodOutline();
 		clone.minOccurrances = minOccurrances;
@@ -61,11 +55,5 @@ public class MethodOutline implements Comparable<MethodOutline> {
 
 	public @Override int compareTo(MethodOutline other) {
 		return methodSignature.compareTo(other.methodSignature);
-	}
-	
-	
-	public static class PathSegment {
-		public BlockOutline first;
-		public BlockOutline second;
 	}
 }

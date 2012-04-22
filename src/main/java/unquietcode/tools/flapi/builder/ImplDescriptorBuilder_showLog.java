@@ -5,8 +5,8 @@ package unquietcode.tools.flapi.builder;
  * @version 03-04-2012
  */
 public class ImplDescriptorBuilder_showLog extends ImplDescriptorBuilder implements DescriptorBuilder_showLog {
-	ImplDescriptorBuilder_showLog(DescriptorHelper helper) {
-		super(helper);
+	ImplDescriptorBuilder_showLog(DescriptorHelper helper, Object returnValue) {
+		super(helper, returnValue);
 	}
 
 	@Override

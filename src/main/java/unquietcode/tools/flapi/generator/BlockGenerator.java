@@ -2,12 +2,12 @@ package unquietcode.tools.flapi.generator;
 
 import com.sun.codemodel.*;
 import unquietcode.Pair;
+import unquietcode.tools.flapi.Descriptor;
 import unquietcode.tools.flapi.MethodParser;
 import unquietcode.tools.flapi.outline.BlockOutline;
 import unquietcode.tools.flapi.outline.MethodOutline;
 
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @author Ben Fagin
@@ -31,7 +31,7 @@ public class BlockGenerator extends AbstractGenerator<BlockOutline, Void> {
 			iBuilder.generify("_ReturnType");
 
 			// get the base 'Builder' implementation
-			JDefinedClass cBuilder = getClass(block.getBaseImplementation());
+			JDefinedClass cBuilder = createBaseImpl();
 
 			// get the 'Helper' interface (user will implement this for behavior)
 			JDefinedClass iHelper = getInterface(block.getHelperInterface());
@@ -43,36 +43,35 @@ public class BlockGenerator extends AbstractGenerator<BlockOutline, Void> {
 
 		// -------------- //
 
-
 		// -- iterative level --
 
 			// create every builder interface and associated implementation
 
 			for (Set<MethodOutline> combination : makeCombinations(block.getDynamicMethods())) {
-				String generatedName = getGeneratedName(block.getBaseInterface(), combination);
 
 				// make the interface (the empty one should be the only already created one)
-				JDefinedClass iSubset = getInterface(generatedName);
-				//iSubset._implements(iBuilder.narrow(iSubset));
+				JDefinedClass iSubset = getInterface(getGeneratedName(block.getBaseInterface(), combination));
+				iSubset.generify("_ReturnType");
 
-				// TODO a clean way of getting the correct return types
-				// add methods to interface
-	//			for (MethodOutline method : combination) {
-	//				JType returnType = getReturnType(block.blockName+"Builder", method, methods, true);
-	//
-	//				if (method.blockChain.isEmpty()) {
-	//					addMethod(iSubset, returnType, JMod.NONE, method);
-	//				} else {
-	//					addMethod(iSubset, )
-	//				}
-	//			}
+				// make the class
+				JDefinedClass cSubset = createSubsetImpl(combination);
 
-				// make the Impl* class
-	//			JDefinedClass cSubset = generateImplClass(
-	//				generatedName,
-	//				isBase ? null : cBuilder, iSubset, iHelper,
-	//				combination, block
-	//			);
+				// add the required methods from before to interface
+				for (MethodOutline method : block.getRequiredMethods()) {
+					addMethod(iSubset, getDynamicReturnType(block, combination, method, true), JMod.NONE, method);
+				}
+
+				// add the current working methods
+				for (MethodOutline method : combination) {
+
+					// add to interface
+					JClass returnType = getDynamicReturnType(block, combination, method, true);
+					addMethod(iSubset, returnType, JMod.NONE, method);
+
+					// add to base
+					JMethod m = addMethod(cSubset, getDynamicReturnType(block, combination, method, false), JMod.NONE, method);
+					// TODO method body
+				}
 			}
 
 		// -- nested level --
@@ -95,9 +94,44 @@ public class BlockGenerator extends AbstractGenerator<BlockOutline, Void> {
 
 	}
 
+	private JDefinedClass createSubsetImpl(Set<MethodOutline> methodCombination) {
+		JDefinedClass cSubset = getClass(getGeneratedName(outline.getBaseImplementation(), methodCombination));
+		JDefinedClass iSubset = getInterface(getGeneratedName(outline.getBaseInterface(), methodCombination));
+
+		// if not the base then extend from it and create the constructor
+		if (!methodCombination.isEmpty()) {
+			JDefinedClass baseImpl = getClass(outline.getBaseImplementation());
+			cSubset._extends(baseImpl);
+		}
+
+		// always implement the interface
+		cSubset._implements(iSubset);
+
+		JMethod constructor = cSubset.constructor(JMod.NONE);
+		JVar helper = constructor.param(getInterface(outline.getHelperInterface()), "helper");
+		JVar returnValue = constructor.param(ctx.model.ref(Object.class), "returnValue");
+		constructor.body().invoke("super").arg(helper).arg(returnValue);
+
+		return cSubset;
+	}
+
+	private JDefinedClass createBaseImpl() {
+		JDefinedClass builder = getClass(outline.getBaseImplementation());
+		JFieldVar _helper = builder.field(JMod.PROTECTED+JMod.FINAL, getInterface(outline.getHelperInterface()), "_helper");
+		JFieldVar _returnValue = builder.field(JMod.PROTECTED+JMod.FINAL, ctx.model.ref(Object.class), "_returnValue");
+
+		JMethod constructor = builder.constructor(JMod.NONE);
+		JVar helper = constructor.param(getInterface(outline.getHelperInterface()), "helper");
+		JVar returnValue = constructor.param(ctx.model.ref(Object.class), "returnValue");
+
+		constructor.body().assign(_helper, helper);
+		constructor.body().assign(_returnValue, returnValue);
+
+		return builder;
+	}
+
 	private void addMethods(MethodOutline method, JDefinedClass iBuilder, JDefinedClass cBuilder, JDefinedClass iHelper) {
 		if (method.blockChain.isEmpty()) {
-
 			// add the method to the interface
 			if (method.isTerminal()) {
 				addMethod(iBuilder, iBuilder.typeParams()[0], JMod.NONE, method);
@@ -115,7 +149,9 @@ public class BlockGenerator extends AbstractGenerator<BlockOutline, Void> {
 			m.body()._return(JExpr._this());
 
 		} else {
-			JType previousType = iBuilder.narrow(iBuilder.typeParams()[0]);
+			JType previousType = method.isTerminal()
+							   ? iBuilder.typeParams()[0]
+							   : iBuilder.narrow(iBuilder.typeParams()[0]);
 			JExpression previousValue = JExpr._this();
 
 			// add to the base class
@@ -129,14 +165,12 @@ public class BlockGenerator extends AbstractGenerator<BlockOutline, Void> {
 				JDefinedClass iTargetBuilder = getInterface(targetBlock.getTopLevelInterface());
 				JDefinedClass cTargetBuilder = getClass(targetBlock.getTopLevelImplementation());
 				JDefinedClass iTargetHelper = getInterface(targetBlock.getHelperInterface());
-				JClass targetType = iTargetBuilder;
-				JClass targetValue = cTargetBuilder;
 
-				previousType = targetType;
+				previousType = iTargetBuilder.narrow(previousType);
 
 				// SomeBuilder<PreviousType> = new ImplSomeTime<PreviousType>((HelperType) helpers.get(#), previousValue);
-				JVar invocation = m.body().decl(targetType, "step"+i,
-					JExpr._new(targetValue)
+				JVar invocation = m.body().decl(iTargetBuilder, "step"+i,
+					JExpr._new(cTargetBuilder)
 						.arg(JExpr.cast(iTargetHelper, _helpers.invoke("get").arg(JExpr.lit(i))))
 						.arg(previousValue)
 				);
@@ -153,48 +187,4 @@ public class BlockGenerator extends AbstractGenerator<BlockOutline, Void> {
 			addMethod(iHelper, ref(List.class).narrow(Object.class), JMod.NONE, method);
 		}
 	}
-
-
-	private JDefinedClass generateImplClass(
-			JDefinedClass _class,
-			JDefinedClass base, JDefinedClass _interface, JDefinedClass helper,
-			Set<MethodOutline> methods, BlockOutline block
-	){
-
-		// extend the base implementation if not already the base, and implement type
-		if (base != null) {
-			_class._extends(base.narrow(_interface));
-			_class._implements(_interface);
-		}
-
-		// add constructor (only handle the child constructors here)
-		if (base != null) {
-			//JMethod superConstructor = base.getConstructor(new JType[]{helper});
-			//constructor.body().add(JExpr.invoke(JExpr._super(), "").arg(pHelper));
-
-			// TODO figure out the proper way to call a superclass constructor
-
-			JMethod constructor = _class.constructor(JMod.PUBLIC);
-			JVar pHelper = constructor.param(helper, "helper");
-			constructor.body().directStatement("super(helper);");
-		}
-
-		// add all methods
-		for (MethodOutline method : methods) { // methods will be empty when base is null
-			JType returnType = null;//getReturnType(block.g, method, methods, false);
-
-			// add the method
-			JMethod m = addMethod(_class, returnType, JMod.PUBLIC, method);
-
-			// -- set the method body --
-
-			// first, a pass-through to the helper
-			m.body().add(makeHelperCall(m, method));
-
-
-		}
-
-		return _class;
-	}
-
 }

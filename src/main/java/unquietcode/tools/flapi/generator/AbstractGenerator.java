@@ -10,7 +10,7 @@ import unquietcode.tools.flapi.outline.Outline;
 import java.util.*;
 
 /**
- * @author Ben Fagin (Nokia)
+ * @author Ben Fagin
  * @version 03-11-2012
  */
 public abstract class AbstractGenerator<_InType extends Outline, _OutType> implements Generator<_InType, _OutType> {
@@ -105,22 +105,79 @@ public abstract class AbstractGenerator<_InType extends Outline, _OutType> imple
 		}
 	}
 	
-	protected Pair<JClass, JClass> getReturnType(MethodOutline method, BlockOutline block, JDefinedClass iBuilder) {
-		// if the block chain is not empty, the return type is the the last block's created type
-		if (!method.blockChain.isEmpty()) {
-			
-		}
+	protected JClass getDynamicReturnType(BlockOutline block, Set<MethodOutline> allMethods, MethodOutline method, boolean interfaceDesired) {
+		JDefinedClass builder = interfaceDesired
+							  ? getInterface(getGeneratedName(block.getBaseInterface(), allMethods))
+							  : getClass(getGeneratedName(block.getBaseImplementation(), allMethods));
+		JClass returnType;
 
-		// if method is terminal, return type is _ReturnType and value is _ReturnValue		
+		// get base type without block chain
 		if (method.isTerminal()) {
-			
+			returnType = builder.typeParams()[0];
+		} else if (method.isRequired()) {
+			returnType = builder.narrow(builder.typeParams()[0]);
+		} else {
+			// compute minus method
+			Set<MethodOutline> minusMethod = new HashSet<MethodOutline>(allMethods);
+			minusMethod.remove(method);
+
+			// only add back if it's not the last instance
+			if (method.maxOccurrances > 1) {
+				MethodOutline m = method.copy();
+				m.maxOccurrances = m.maxOccurrances - 1;
+				minusMethod.add(m);
+			}
+
+			if (interfaceDesired) {
+				returnType = getInterface(getGeneratedName(block.getBaseInterface(), minusMethod));
+				returnType = returnType.narrow(builder.typeParams()[0]);
+			} else {
+				returnType = getClass(getGeneratedName(block.getBaseImplementation(), minusMethod));
+			}
 		}
 
-		// if method
-		
-		return null;
+		// add in the block chain
+		for (int i = method.blockChain.size()-1; i >=0; --i) {
+			BlockOutline targetBlock = method.blockChain.get(i);
+			JDefinedClass targetBuilder = getInterface(targetBlock.getTopLevelInterface());
+
+			returnType = targetBuilder.narrow(returnType);
+		}
+
+		return returnType;
 	}
-	
+
+
+	private JClass getReturnType(String name, MethodOutline method, Set<MethodOutline> allMethods, boolean interfaceDesired) {
+		Set<MethodOutline> minusMethod = new HashSet<MethodOutline>(allMethods);
+		minusMethod.remove(method);
+
+		// only add back if it's not the last instance
+		if (method.maxOccurrances > 1) {
+			MethodOutline m = method.copy();
+			m.maxOccurrances = m.maxOccurrances - 1;
+			minusMethod.add(m);
+		}
+
+		JClass iType = getInterface(getGeneratedName(name, minusMethod));
+		if (interfaceDesired) {
+			// if it's the base class, we need the self-type
+			if (minusMethod.isEmpty()) {
+				return iType.narrow(iType);
+			} else {
+				return iType;
+			}
+		}
+
+		JClass cType = getClass(getGeneratedName("Impl"+name, minusMethod));
+		if (minusMethod.isEmpty()) {
+			return cType.narrow(iType);
+		} else {
+			return cType;
+		}
+	}
+
+
 	private JType getType(String name) {
 		JType clazz;
 		JCodeModel model = ctx.model;

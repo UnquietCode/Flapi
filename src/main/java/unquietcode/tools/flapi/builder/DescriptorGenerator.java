@@ -4,7 +4,7 @@ package unquietcode.tools.flapi.builder;
 import unquietcode.tools.flapi.Descriptor;
 
 /**
- * @author Ben Fagin (Nokia)
+ * @author Ben Fagin
  * @version 03-04-2012
  */
 public class DescriptorGenerator {
@@ -20,7 +20,9 @@ public class DescriptorGenerator {
 		helper._setDescriptorName(name);
 		helper._setDescriptorMethod(method);
 
-		return new ImplDescriptorBuilder_setPackage_showLog(helper);
+// TODO how to create the initial descriptor? constructor is kind of weird too
+
+		return new ImplDescriptorBuilder_setPackage_showLog(helper, new Descriptor(helper));
 	}
 
 	public static DescriptorBuilder_setPackage_showLog<Descriptor> create(String name, DescriptorHelper helper) {

@@ -11,14 +11,14 @@ import java.util.List;
 @SuppressWarnings("unchecked")
 public class ImplDescriptorBuilder implements DescriptorBuilder {
 	protected final DescriptorHelper _helper;
-	protected final Descriptor _returnValue;
+	protected final Object _returnValue;
 
-	ImplDescriptorBuilder(DescriptorHelper helper) {
+	ImplDescriptorBuilder(DescriptorHelper helper, Object returnValue) {
 		_helper = helper;
-		_returnValue = new Descriptor(_helper);
+		_returnValue = returnValue;
 	}
 
-	public Descriptor build() {
+	public Object build() {
 		return _returnValue;
 	}
 
