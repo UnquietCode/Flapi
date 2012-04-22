@@ -5,7 +5,7 @@ import unquietcode.tools.flapi.Descriptor;
 import java.util.List;
 
 /**
- * @author Ben Fagin (Nokia)
+ * @author Ben Fagin
  * @version 03-04-2012
  */
 @SuppressWarnings("unchecked")
@@ -24,7 +24,7 @@ public class ImplDescriptorBuilder implements DescriptorBuilder {
 
 	@Override
 	public MethodBuilder addMethod(String methodSignature) {
-		MethodHelper helper = _helper.addMethod(methodSignature);
+		MethodHelper helper = (MethodHelper) _helper.addMethod(methodSignature).get(0);
 		return new ImplMethodBuilder(helper, this);
 	}
 

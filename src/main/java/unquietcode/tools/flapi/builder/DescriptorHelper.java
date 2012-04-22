@@ -9,11 +9,11 @@ import java.util.List;
  */
 public interface DescriptorHelper {
 	void _setDescriptorName(String name);
-	void _setDescriptorMethod(String method);
+	void _setDescriptorMethod(String methodName);
 
 	void setPackage(String packageName);
 	void showLog(boolean value);
 
-	MethodHelper addMethod(String methodSignature);
+	List<Object> addMethod(String methodSignature);
 	List<Object> startBlock(String blockName, String methodSignature);
 }

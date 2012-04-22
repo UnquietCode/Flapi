@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * @author Ben Fagin (Nokia)
+ * @author Ben Fagin
  * @version 03-11-2012
  */
 public class BlockGenerator extends AbstractGenerator<BlockOutline, Void> {
@@ -53,7 +53,7 @@ public class BlockGenerator extends AbstractGenerator<BlockOutline, Void> {
 
 				// make the interface (the empty one should be the only already created one)
 				JDefinedClass iSubset = getInterface(generatedName);
-				iSubset._implements(iBuilder.narrow(iSubset));
+				//iSubset._implements(iBuilder.narrow(iSubset));
 
 				// TODO a clean way of getting the correct return types
 				// add methods to interface
@@ -95,6 +95,66 @@ public class BlockGenerator extends AbstractGenerator<BlockOutline, Void> {
 
 	}
 
+	private void addMethods(MethodOutline method, JDefinedClass iBuilder, JDefinedClass cBuilder, JDefinedClass iHelper) {
+		if (method.blockChain.isEmpty()) {
+
+			// add the method to the interface
+			if (method.isTerminal()) {
+				addMethod(iBuilder, iBuilder.typeParams()[0], JMod.NONE, method);
+			} else {
+				addMethod(iBuilder, iBuilder.narrow(iBuilder.typeParams()[0]), JMod.NONE, method);
+			}
+
+			// add to the helper
+			addMethod(iHelper, ctx.model.VOID, JMod.NONE, method);
+
+			// add to the base class
+			JMethod m = addMethod(cBuilder, iBuilder, JMod.PUBLIC, method);
+			JInvocation helperInvocation = makeHelperCall(m, method);
+			m.body().add(helperInvocation);
+			m.body()._return(JExpr._this());
+
+		} else {
+			JType previousType = iBuilder.narrow(iBuilder.typeParams()[0]);
+			JExpression previousValue = JExpr._this();
+
+			// add to the base class
+			JDefinedClass baseReturnType = getInterface(method.blockChain.get(0).getTopLevelInterface());
+			JMethod m = addMethod(cBuilder, baseReturnType, JMod.PUBLIC, method);
+			JInvocation helperInvocation = makeHelperCall(m, method);
+			JVar _helpers = m.body().decl(ref(List.class).narrow(Object.class), "helpers", helperInvocation);
+
+			for (int i = method.blockChain.size()-1; i >=0; --i) {
+				BlockOutline targetBlock = method.blockChain.get(i);
+				JDefinedClass iTargetBuilder = getInterface(targetBlock.getTopLevelInterface());
+				JDefinedClass cTargetBuilder = getClass(targetBlock.getTopLevelImplementation());
+				JDefinedClass iTargetHelper = getInterface(targetBlock.getHelperInterface());
+				JClass targetType = iTargetBuilder;
+				JClass targetValue = cTargetBuilder;
+
+				previousType = targetType;
+
+				// SomeBuilder<PreviousType> = new ImplSomeTime<PreviousType>((HelperType) helpers.get(#), previousValue);
+				JVar invocation = m.body().decl(targetType, "step"+i,
+					JExpr._new(targetValue)
+						.arg(JExpr.cast(iTargetHelper, _helpers.invoke("get").arg(JExpr.lit(i))))
+						.arg(previousValue)
+				);
+			}
+
+			// final return for base
+			m.body()._return(JExpr.ref("step0"));
+
+			// add to the interface
+			addMethod(iBuilder, previousType, JMod.NONE, method);
+
+			// add to the helper
+			//   List<Object> helpers = _helper.doMethod(..);
+			addMethod(iHelper, ref(List.class).narrow(Object.class), JMod.NONE, method);
+		}
+	}
+
+
 	private JDefinedClass generateImplClass(
 			JDefinedClass _class,
 			JDefinedClass base, JDefinedClass _interface, JDefinedClass helper,
@@ -135,106 +195,6 @@ public class BlockGenerator extends AbstractGenerator<BlockOutline, Void> {
 		}
 
 		return _class;
-	}	
-
-	private void addMethods(MethodOutline method, JDefinedClass iBuilder, JDefinedClass cBuilder, JDefinedClass iHelper) {
-		// add the method to the interface
-		if (method.blockChain.isEmpty()) {
-			if (method.isTerminal()) {
-				addMethod(iBuilder, iBuilder.typeParams()[0], JMod.NONE, method);
-			} else {
-				addMethod(iBuilder, iBuilder.narrow(iBuilder.typeParams()[0]), JMod.NONE, method);
-			}
-		} else {
-			JType previousType = iBuilder.narrow(iBuilder.typeParams()[0]);
-
-			for (int i = method.blockChain.size()-1; i >=0; --i) {
-				BlockOutline targetBlock = method.blockChain.get(i);
-				JDefinedClass iTargetBuilder = getInterface(targetBlock.getTopLevelInterface());
-				JClass targetType = iTargetBuilder.narrow(previousType);
-				previousType = targetType;
-			}
-
-			addMethod(iBuilder, previousType, JMod.NONE, method);
-		}
-
-		/*
-
-		// populate the helper with all of the methods in the block
-		// return null when there is no block chain, but a list otherwise
-		//
-		//      List<Object> helpers = _helper.doMethod(..);
-		//
-		if (method.blockChain.isEmpty()) {
-			addMethod(iHelper, ctx.model.VOID, JMod.NONE, method);
-		} else {
-			addMethod(iHelper, ref(List.class).narrow(Object.class), JMod.NONE, method);
-		}
-
-		// --implementation--
-
-		// add the method to the base class (returning interface self type)
-		JMethod m = addMethod(cBuilder, iBuilder.typeParams()[0], JMod.PUBLIC, method);
-		JInvocation helperInvocation = makeHelperCall(m, method);
-*/
-		/*
-			method is required: add to base class
-			method is not required: add to subset class
-
-
-			case 1: no block chains
-				return type is 'next'
-					next is either the base class
-					or if it is last then is _ReturnType _returnValue
-
-		*/
-
-/*
-
-
-
-
-		// set the initial return type and return value
-		JClass previousType = iBuilder;
-		JExpression previousValue = JExpr._this();
-
-		// if no chain, helper method is void
-		if (method.blockChain.isEmpty()) {
-			m.body().add(helperInvocation);
-
-		// if chained, expect at least one helper back per chain
-		} else {
-			// List<Object> helpers = _helper.doMethod(..);
-			JVar _helpers = m.body().decl(ref(List.class).narrow(Object.class), "helpers", helperInvocation);
-
-			// recreate the sequential ('nested') invocations
-
-			for (int i=method.blockChain.size()-1; i >=0; --i) {
-				BlockOutline targetBlock = method.blockChain.get(i);
-				JDefinedClass iTargetBuilder = getInterface(targetBlock.getTopLevelInterface());
-				JDefinedClass cTargetBuilder = getClass(targetBlock.getTopLevelImplementation());
-				JDefinedClass iTargetHelper = getInterface(targetBlock.getHelperInterface());
-				JClass targetType = iTargetBuilder.narrow(previousType);
-				JClass targetValue = cTargetBuilder.narrow(previousType);
-
-				// SomeBuilder<PreviousType> = new ImplSomeTime<PreviousType>((HelperType) helpers.get(#), previousValue);
-				JVar invocation = m.body().decl(targetType, "helper"+i,
-					JExpr._new(targetValue)
-						.arg(JExpr.cast(iTargetHelper, _helpers.invoke("get").arg(JExpr.lit(i))))
-						.arg(previousValue))
-				;
-
-				previousType = targetType;
-				previousValue = invocation;
-			}
-		}
-
-		// return the appropriate new instance
-//		m.body()._return(JExpr._new(returnType)
-//				.arg(JExpr.ref("_helper"))
-//				.arg(JExpr._null()) // TODO proper constructor params
-//		);
-
-		*/
 	}
+
 }

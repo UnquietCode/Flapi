@@ -44,9 +44,11 @@ public class DescriptorHelperImpl implements DescriptorHelper {
 	}
 
 	@Override
-	public MethodHelper addMethod(String methodSignature) {
+	public List<Object> addMethod(String methodSignature) {
 		MethodOutline m = outline.addMethod(methodSignature);
-		return new MethodHelperImpl(m);
+		ArrayList<Object> helpers = new ArrayList<Object>();
+		helpers.add(new MethodHelperImpl(m));
+		return helpers;
 	}
 
 	@Override
