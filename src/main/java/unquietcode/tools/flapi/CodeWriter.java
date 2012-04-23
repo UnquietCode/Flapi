@@ -9,7 +9,7 @@ import java.io.File;
 import java.io.IOException;
 
 /**
- * @author Ben Fagin (Nokia)
+ * @author Ben Fagin
  * @version 03-10-2012
  */
 public class CodeWriter {

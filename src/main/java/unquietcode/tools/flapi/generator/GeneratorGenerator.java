@@ -5,7 +5,7 @@ import unquietcode.tools.flapi.outline.GeneratorOutline;
 
 
 /**
- * @author Ben Fagin (Nokia)
+ * @author Ben Fagin
  * @version 03-07-2012
  */
 public class GeneratorGenerator extends AbstractGenerator<GeneratorOutline, JDefinedClass> {

@@ -7,7 +7,7 @@ import unquietcode.tools.flapi.generator.GeneratorContext;
 import unquietcode.tools.flapi.outline.DescriptorOutline;
 
 /**
- * @author Ben Fagin (Nokia)
+ * @author Ben Fagin
  * @version 03-04-2012
  */
 public class Descriptor {

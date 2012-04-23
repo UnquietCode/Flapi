@@ -1,7 +1,7 @@
 package unquietcode.tools.flapi.outline;
 
 /**
- * @author Ben Fagin (Nokia)
+ * @author Ben Fagin
  * @version 03-07-2012
  */
 public interface Outline {

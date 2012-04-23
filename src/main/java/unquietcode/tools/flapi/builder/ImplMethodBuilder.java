@@ -1,7 +1,7 @@
 package unquietcode.tools.flapi.builder;
 
 /**
- * @author Ben Fagin (Nokia)
+ * @author Ben Fagin
  * @version 03-04-2012
  */
 public class ImplMethodBuilder<_ReturnType> implements MethodBuilder<_ReturnType> {

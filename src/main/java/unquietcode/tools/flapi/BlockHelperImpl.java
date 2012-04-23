@@ -12,7 +12,7 @@ import java.util.List;
 
 
 /**
- * @author Ben Fagin (Nokia)
+ * @author Ben Fagin
  * @version 03-04-2012
  */
 public class BlockHelperImpl implements BlockHelper {

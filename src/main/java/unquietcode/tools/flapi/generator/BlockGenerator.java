@@ -69,14 +69,19 @@ public class BlockGenerator extends AbstractGenerator<BlockOutline, Void> {
 					addMethod(iSubset, returnType, JMod.NONE, method);
 
 					// add to base
-					JMethod m = addMethod(cSubset, getDynamicReturnType(block, combination, method, false), JMod.NONE, method);
+					//JMethod m = addMethod(cSubset, getDynamicReturnType(block, combination, method, false), JMod.NONE, method);
 					// TODO method body
+					createMethodBody(iSubset, cSubset, combination, method);
+					//addMethods(method, iSubset, cSubset, iHelper);
 				}
 			}
 
 		// -- nested level --
 
 		for (BlockOutline child : block.blocks) {
+			BlockGenerator childGenerator = new BlockGenerator(child, ctx);
+			childGenerator.generate();
+
 			// if child already exists, then this is an error!
 			// TODO throw exception
 
@@ -128,6 +133,51 @@ public class BlockGenerator extends AbstractGenerator<BlockOutline, Void> {
 		constructor.body().assign(_returnValue, returnValue);
 
 		return builder;
+	}
+
+	private void createMethodBody(JDefinedClass iBuilder, JDefinedClass cBuilder, Set<MethodOutline> methodCombination, MethodOutline method) {
+		if (method.blockChain.isEmpty()) {
+			JType returnType = getDynamicReturnType(outline, methodCombination, method, true).erasure();
+			JType returnValue = getDynamicReturnType(outline, methodCombination, method, false).erasure();
+
+			JMethod m = addMethod(cBuilder, returnType, JMod.PUBLIC, method);
+			JInvocation helperInvocation = makeHelperCall(m, method);
+			m.body().add(helperInvocation);
+			m.body()._return(
+				JExpr._new(returnValue)
+					.arg(JExpr.ref("_helper"))
+					.arg(JExpr.ref("_returnValue"))
+			);
+		} else {
+			throw new RuntimeException("Unfinished business....");
+
+/*			JType previousType = getDynamicReturnType(outline, methodCombination, method, false);
+			JExpression previousValue = JExpr._this();
+
+			JType baseReturnType = getDynamicReturnType(outline, methodCombination, method, true);
+			JMethod m = addMethod(cBuilder, baseReturnType, JMod.PUBLIC, method);
+			JInvocation helperInvocation = makeHelperCall(m, method);
+			JVar _helpers = m.body().decl(ref(List.class).narrow(Object.class), "helpers", helperInvocation);
+
+			for (int i = method.blockChain.size()-1; i >=0; --i) {
+				BlockOutline targetBlock = method.blockChain.get(i);
+				JDefinedClass iTargetBuilder = getInterface(targetBlock.getTopLevelInterface());
+				JDefinedClass cTargetBuilder = getClass(targetBlock.getTopLevelImplementation());
+				JDefinedClass iTargetHelper = getInterface(targetBlock.getHelperInterface());
+
+				previousType = iTargetBuilder.narrow(previousType);
+
+				// SomeBuilder<PreviousType> = new ImplSomeTime<PreviousType>((HelperType) helpers.get(#), previousValue);
+				JVar invocation = m.body().decl(iTargetBuilder, "step"+i,
+					JExpr._new(cTargetBuilder)
+						.arg(JExpr.cast(iTargetHelper, _helpers.invoke("get").arg(JExpr.lit(i))))
+						.arg(previousValue)
+				);
+			}
+
+			// return call
+			m.body()._return(JExpr.ref("step0"));*/
+		}
 	}
 
 	private void addMethods(MethodOutline method, JDefinedClass iBuilder, JDefinedClass cBuilder, JDefinedClass iHelper) {

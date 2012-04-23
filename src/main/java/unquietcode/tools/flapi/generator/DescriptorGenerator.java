@@ -8,7 +8,7 @@ import unquietcode.tools.flapi.outline.DescriptorOutline;
 import unquietcode.tools.flapi.outline.MethodOutline;
 
 /**
- * @author Ben Fagin (Nokia)
+ * @author Ben Fagin
  * @version 03-07-2012
  */
 public class DescriptorGenerator extends AbstractGenerator<DescriptorOutline, JCodeModel> {

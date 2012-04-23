@@ -4,7 +4,7 @@ import unquietcode.tools.flapi.builder.MethodHelper;
 import unquietcode.tools.flapi.outline.MethodOutline;
 
 /**
- * @author Ben Fagin (Nokia)
+ * @author Ben Fagin
  * @version 03-04-2012
  */
 public class MethodHelperImpl implements MethodHelper {
