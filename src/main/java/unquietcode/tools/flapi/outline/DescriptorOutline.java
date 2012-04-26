@@ -32,25 +32,14 @@ public class DescriptorOutline implements Outline {
 	}
 	
 	public MethodOutline addMethod(String methodSignature) {
-		MethodOutline outline = new MethodOutline();
-		outline.methodSignature = methodSignature;
-		selfBlock.methods.add(outline);
-
-		return outline;
+		return selfBlock.addMethod(methodSignature);
 	}
 
 	public BlockOutline addBlock(String blockName) {
-		BlockOutline block = new BlockOutline();
-		block.name = blockName;
-		selfBlock.blocks.add(block);
-
-		return block;
+		return selfBlock.addBlock(blockName);
 	}
 	
 	public void setPackageName(String packageName) {
 		this.packageName = packageName;
 	}
-	
-	
-	
 }

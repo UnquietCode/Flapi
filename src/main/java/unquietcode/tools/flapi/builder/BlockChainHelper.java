@@ -8,6 +8,6 @@ import java.util.List;
  */
 public interface BlockChainHelper {
 	void addBlockReference(String blockName);
-	BlockHelper startBlock(String blockName);
-	BlockChainHelper addBlockChain();
+	List<Object> startBlock(String blockName);
+	List<Object> addBlockChain();
 }

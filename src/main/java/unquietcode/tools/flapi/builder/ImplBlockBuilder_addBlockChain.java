@@ -13,7 +13,7 @@ public class ImplBlockBuilder_addBlockChain extends ImplBlockBuilder implements 
 
 	@Override
 	public BlockChainBuilder_addBlockChain addBlockChain() {
-		BlockChainHelper helper = _helper.addBlockChain();
+		BlockChainHelper helper = (BlockChainHelper) _helper.addBlockChain().get(0);
 		return new ImplBlockChainBuilder_addBlockChain(helper, this);
 	}
 }

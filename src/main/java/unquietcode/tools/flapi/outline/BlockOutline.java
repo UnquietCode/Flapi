@@ -45,10 +45,25 @@ public class BlockOutline implements Outline {
 		return name+"Helper";
 	}
 	
-	public String getGeneratorImplmentation() {
+	public String getGeneratorImplementation() {
 		return name+"Generator";
 	}
-	
+
+	public BlockOutline addBlock(String blockName) {
+		BlockOutline block = new BlockOutline();
+		block.name = blockName;
+		blocks.add(block);
+
+		return block;
+	}
+
+	public MethodOutline addMethod(String methodSignature) {
+		MethodOutline method = new MethodOutline();
+		method.methodSignature = methodSignature;
+		methods.add(method);
+
+		return method;
+	}
 
 	public Set<MethodOutline> getRequiredMethods() {
 		Set<MethodOutline> required = new TreeSet<MethodOutline>();

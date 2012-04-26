@@ -1,7 +1,12 @@
 package unquietcode.tools.flapi;
 
+import unquietcode.tools.flapi.builder.BlockChainHelper;
 import unquietcode.tools.flapi.builder.MethodHelper;
+import unquietcode.tools.flapi.outline.BlockOutline;
 import unquietcode.tools.flapi.outline.MethodOutline;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Ben Fagin
@@ -20,20 +25,20 @@ public class MethodHelperImpl implements MethodHelper {
 	
 	@Override
 	public void once() {
-		method.minOccurrances = 0;
-		method.maxOccurrances = 1;
+		method.minOccurrences = 0;
+		method.maxOccurrences = 1;
 	}
 
 	@Override
 	public void any() {
-		method.minOccurrances = 0;
-		method.maxOccurrances = -1;
+		method.minOccurrences = 0;
+		method.maxOccurrences = -1;
 	}
 
 	@Override
 	public void last() {
-		method.minOccurrances = 0;
-		method.maxOccurrances = 1;
+		method.minOccurrences = 0;
+		method.maxOccurrences = 1;
 		method.isTerminal = true;
 	}
 
@@ -43,7 +48,7 @@ public class MethodHelperImpl implements MethodHelper {
 			throw new RuntimeException("must have at least >= 0");
 		}
 
-		method.minOccurrances = num;
+		method.minOccurrences = num;
 	}
 
 	@Override
@@ -52,12 +57,24 @@ public class MethodHelperImpl implements MethodHelper {
 			throw new RuntimeException("must have at least > 0");
 		}
 
-		method.maxOccurrances = num;
+		method.maxOccurrences = num;
 	}
 
 	@Override
 	public void between(int atLeast, int atMost) {
 		atMost(atMost);
 		atLeast(atLeast);
+	}
+
+	@Override
+	public List<Object> addBlockChain() {
+		// TODO haven't thought this through yet
+		// Ideally a helper should not have to implement anything to handle a block reference
+
+		BlockChainHelper helper = new BlockChainHelperImpl(method);
+		List<Object> helpers = new ArrayList<Object>();
+		helpers.add(helper);
+
+		return helpers;
 	}
 }

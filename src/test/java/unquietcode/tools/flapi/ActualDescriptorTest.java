@@ -1,13 +1,16 @@
 package unquietcode.tools.flapi;
 
-import unquietcode.tools.flapi.builder.*;
 import org.junit.Test;
+import unquietcode.tools.flapi.builder.DescriptorGenerator;
 
 /**
  * @author Benjamin Fagin
- * @version 12-30-2011
+ * @version 04-25-2012
+ *
+ * Test which should produce the actual descriptor used by the tool.
+ * Very exciting!
  */
-public class ModifiedDescriptorTest {
+public class ActualDescriptorTest {
 
 	@Test
 	public void descriptorGenerator() {
@@ -16,10 +19,8 @@ public class ModifiedDescriptorTest {
 				.setPackage("unquietcode.tools.flapi.builder")
 
 				.addMethod("showLog(boolean value)").once()
-				.addMethod("setPackage(String packageName)").between(1, 1)
-				.addMethod("doSomething()").any()
-				.addMethod("doNothing()").last()
-				//.addMethod("build()").last()
+				.addMethod("setPackage(String packageName)").once()
+				.addMethod("build()").last()
 
 				.startBlock("Method", "addMethod(String methodSignature)").any()
 					.addMethod("once()").last()
@@ -37,12 +38,7 @@ public class ModifiedDescriptorTest {
 
 					.addMethod("addBlockReference(String blockName, String methodSignature)")
 						.addBlockChain().addBlockReference("Method")
-						.any()
-
-//					.startBlock("BlockReference", "addBlockReference(String blockName, String methodSignature)").any()
-//						.addBlockChain()
-//							.addBlockReference("Method")
-//					.endBlock()
+					.any()
 
 					.addBlockReference("Method", "addMethod(String methodSignature)").any()
 					.addBlockReference("Block", "startBlock(String blockName, String methodSignature)").any()
@@ -57,19 +53,6 @@ public class ModifiedDescriptorTest {
 
 			.build()
 		;
-
-		/*
-				block_$first
-
-				if block has a first, then the constructor will return it
-				and it will return the block without that method
-
-				so here, that means startBlock returns a MethodBuilder (the first blockRef)
-				and the return type of the method builder is what we were going to return in
-				the first place, which is a new block
-
-
-		 */
 
 		builder.writeCodeModel();
 	}

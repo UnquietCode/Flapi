@@ -45,23 +45,11 @@ public class DescriptorHelperImpl implements DescriptorHelper {
 
 	@Override
 	public List<Object> addMethod(String methodSignature) {
-		MethodOutline m = outline.addMethod(methodSignature);
-		ArrayList<Object> helpers = new ArrayList<Object>();
-		helpers.add(new MethodHelperImpl(m));
-		return helpers;
+		return BlockHelperImpl._addMethod(outline.selfBlock, methodSignature);
 	}
 
 	@Override
 	public List<Object> startBlock(String blockName, String methodSignature) {
-		BlockOutline block = outline.addBlock(blockName);
-		MethodOutline blockMethod = outline.addMethod(methodSignature);
-		blockMethod.blockChain.add(0, block);
-		block.constructor = blockMethod;
-
-		List<Object> helpers = new ArrayList<Object>();
-		helpers.add(new MethodHelperImpl(blockMethod));
-		helpers.add(new BlockHelperImpl(block));
-
-		return helpers;
+		return BlockHelperImpl._startBlock(outline.selfBlock, blockName, methodSignature);
 	}
 }

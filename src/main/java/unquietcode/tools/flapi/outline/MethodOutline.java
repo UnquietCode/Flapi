@@ -11,8 +11,8 @@ import java.util.List;
  * @version 03-07-2012
  */
 public class MethodOutline implements Comparable<MethodOutline> {
-	public Integer minOccurrances;
-	public Integer maxOccurrances;
+	public Integer minOccurrences;
+	public Integer maxOccurrences;
 	public String methodSignature;
 	public boolean isTerminal = false;
 
@@ -38,17 +38,17 @@ public class MethodOutline implements Comparable<MethodOutline> {
 	
 	
 	public boolean isRequired() {
-		return maxOccurrances == -1 || isTerminal;
+		return maxOccurrences == -1 || isTerminal;
 	}
-
-
 
 
 	public MethodOutline copy()  {
 		MethodOutline clone = new MethodOutline();
-		clone.minOccurrances = minOccurrances;
-		clone.maxOccurrances = maxOccurrances;
+		clone.minOccurrences = minOccurrences;
+		clone.maxOccurrences = maxOccurrences;
 		clone.methodSignature = methodSignature;
+		clone.isTerminal = isTerminal;
+		clone.blockChain.addAll(blockChain);
 
 		return clone;
 	}

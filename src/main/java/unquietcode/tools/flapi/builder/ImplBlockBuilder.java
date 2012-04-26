@@ -17,22 +17,22 @@ public class ImplBlockBuilder implements BlockBuilder {
 	}
 	
 	@Override
-	public MethodBuilder addMethod(String methodSignature) {
-		MethodHelper helper = _helper.addMethod(methodSignature);
-		return new ImplMethodBuilder(helper, this);
+	public MethodBuilder_addBlockChain addMethod(String methodSignature) {
+		MethodHelper helper = (MethodHelper) _helper.addMethod(methodSignature).get(0);
+		return new ImplMethodBuilder_addBlockChain(helper, this);
 	}
 
 	@Override
-	public MethodBuilder startBlock(String blockName, String methodSignature) {
+	public MethodBuilder_addBlockChain startBlock(String blockName, String methodSignature) {
 		List<Object> helpers = _helper.startBlock(blockName, methodSignature);
 		BlockBuilder_addBlockChain returnBlock = new ImplBlockBuilder_addBlockChain((BlockHelper) helpers.get(1), this);
-		return new ImplMethodBuilder((MethodHelper) helpers.get(0), returnBlock);
+		return new ImplMethodBuilder_addBlockChain((MethodHelper) helpers.get(0), returnBlock);
 	}
 
 	@Override
-	public MethodBuilder addBlockReference(String blockName, String methodSignature) {
-		MethodHelper mHelper = _helper.addBlockReference(blockName, methodSignature);
-		return new ImplMethodBuilder(mHelper, this);
+	public MethodBuilder_addBlockChain addBlockReference(String blockName, String methodSignature) {
+		MethodHelper mHelper = (MethodHelper) _helper.addBlockReference(blockName, methodSignature).get(0);
+		return new ImplMethodBuilder_addBlockChain(mHelper, this);
 	}
 
 	@Override

@@ -7,11 +7,10 @@ import java.util.List;
  * @version 03-04-2012
  */
 public interface BlockHelper {
-	MethodHelper addMethod(String methodSignature);
+	List<Object> addMethod(String methodSignature);
 	List<Object> startBlock(String blockName, String methodSignature);
-	MethodHelper addBlockReference(String blockName, String methodSignature);
-
-	BlockChainHelper addBlockChain();
+	List<Object> addBlockReference(String blockName, String methodSignature);
+	List<Object> addBlockChain();
 
 	void endBlock();
 }

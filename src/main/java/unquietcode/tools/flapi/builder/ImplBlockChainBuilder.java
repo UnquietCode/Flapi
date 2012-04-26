@@ -22,8 +22,8 @@ public class ImplBlockChainBuilder implements BlockChainBuilder {
 
 	@Override
 	public BlockBuilder_addBlockChain startBlock(String blockName) {
-		BlockHelper helper = _helper.startBlock(blockName);
-		BlockBuilder_addBlockChain returnBlock = new ImplBlockBuilder_addBlockChain((BlockHelper) helper, this);
+		BlockHelper helper = (BlockHelper) _helper.startBlock(blockName);
+		BlockBuilder_addBlockChain returnBlock = new ImplBlockBuilder_addBlockChain(helper, this);
 		return new ImplBlockBuilder_addBlockChain(helper, returnBlock);
 	}
 }

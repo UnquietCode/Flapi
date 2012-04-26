@@ -1,7 +1,6 @@
 package unquietcode.tools.flapi.generator;
 
 import com.sun.codemodel.*;
-import unquietcode.Pair;
 import unquietcode.tools.flapi.MethodParser;
 import unquietcode.tools.flapi.outline.BlockOutline;
 import unquietcode.tools.flapi.outline.MethodOutline;
@@ -73,43 +72,17 @@ public abstract class AbstractGenerator<_InType extends Outline, _OutType> imple
 
 		return helperCall;
 	}
-
-//	public JClass getMinusMethodInterface
-
-	private JClass getMinusMethodType(String name, MethodOutline method, Set<MethodOutline> allMethods, boolean interfaceDesired) {
-		Set<MethodOutline> minusMethod = new HashSet<MethodOutline>(allMethods);
-		minusMethod.remove(method);
-
-		// only add back if it's not the last instance
-		if (method.maxOccurrances > 1) {
-			MethodOutline m = method.copy();
-			m.maxOccurrances = m.maxOccurrances - 1;
-			minusMethod.add(m);
-		}
-
-		JClass iType = getInterface(getGeneratedName(name, minusMethod));
-		if (interfaceDesired) {
-			// if it's the base class, we need the self-type
-			if (minusMethod.isEmpty()) {
-				return iType.narrow(iType);
-			} else {
-				return iType;
-			}
-		}
-
-		JClass cType = getClass(getGeneratedName("Impl"+name, minusMethod));
-		if (minusMethod.isEmpty()) {
-			return cType.narrow(iType);
-		} else {
-			return cType;
-		}
-	}
 	
 	protected JClass getDynamicReturnType(BlockOutline block, Set<MethodOutline> allMethods, MethodOutline method, boolean interfaceDesired) {
 		JDefinedClass builder = interfaceDesired
 							  ? getInterface(getGeneratedName(block.getBaseInterface(), allMethods))
 							  : getClass(getGeneratedName(block.getBaseImplementation(), allMethods));
 		JClass returnType;
+//
+//		//TODO this is bad, because it adds type params to the base builder unexpectedly
+//		if (builder.typeParams().length == 0) {
+//			builder.generify("_ReturnType");
+//		}
 
 		// get base type without block chain
 		if (method.isTerminal()) {
@@ -122,9 +95,9 @@ public abstract class AbstractGenerator<_InType extends Outline, _OutType> imple
 			minusMethod.remove(method);
 
 			// only add back if it's not the last instance
-			if (method.maxOccurrances > 1) {
+			if (method.maxOccurrences > 1) {
 				MethodOutline m = method.copy();
-				m.maxOccurrances = m.maxOccurrances - 1;
+				m.maxOccurrences = m.maxOccurrences - 1;
 				minusMethod.add(m);
 			}
 
@@ -146,37 +119,6 @@ public abstract class AbstractGenerator<_InType extends Outline, _OutType> imple
 
 		return returnType;
 	}
-
-
-	private JClass getReturnType(String name, MethodOutline method, Set<MethodOutline> allMethods, boolean interfaceDesired) {
-		Set<MethodOutline> minusMethod = new HashSet<MethodOutline>(allMethods);
-		minusMethod.remove(method);
-
-		// only add back if it's not the last instance
-		if (method.maxOccurrances > 1) {
-			MethodOutline m = method.copy();
-			m.maxOccurrances = m.maxOccurrances - 1;
-			minusMethod.add(m);
-		}
-
-		JClass iType = getInterface(getGeneratedName(name, minusMethod));
-		if (interfaceDesired) {
-			// if it's the base class, we need the self-type
-			if (minusMethod.isEmpty()) {
-				return iType.narrow(iType);
-			} else {
-				return iType;
-			}
-		}
-
-		JClass cType = getClass(getGeneratedName("Impl"+name, minusMethod));
-		if (minusMethod.isEmpty()) {
-			return cType.narrow(iType);
-		} else {
-			return cType;
-		}
-	}
-
 
 	private JType getType(String name) {
 		JType clazz;
@@ -232,10 +174,10 @@ public abstract class AbstractGenerator<_InType extends Outline, _OutType> imple
 				}
 
 				// if we can afford to lose one occurrence then do it
-				if (method.maxOccurrances > 1) {
+				if (method.maxOccurrences > 1) {
 					MethodOutline m = method.copy();
 
-					m.maxOccurrances = m.maxOccurrances - 1;
+					m.maxOccurrences = m.maxOccurrences - 1;
 					next.add(m);
 					changed = true;
 				}
@@ -265,8 +207,8 @@ public abstract class AbstractGenerator<_InType extends Outline, _OutType> imple
 			name.append("_").append(parsed.methodName);
 			//.append(nameMap.get(getMethodName(method.methodSignature)))
 
-			if (method.maxOccurrances > 1) {
-				name.append("x").append(method.maxOccurrances);
+			if (method.maxOccurrences > 1) {
+				name.append("x").append(method.maxOccurrences);
 			}
 		}
 

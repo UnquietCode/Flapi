@@ -4,8 +4,13 @@ import com.sun.codemodel.JCodeModel;
 import com.sun.codemodel.JDefinedClass;
 import com.sun.codemodel.JExpr;
 import com.sun.codemodel.JMod;
+import unquietcode.tools.flapi.BlockReference;
+import unquietcode.tools.flapi.outline.BlockOutline;
 import unquietcode.tools.flapi.outline.DescriptorOutline;
 import unquietcode.tools.flapi.outline.MethodOutline;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author Ben Fagin
@@ -28,13 +33,48 @@ public class DescriptorGenerator extends AbstractGenerator<DescriptorOutline, JC
 		helper.method(JMod.NONE, ctx.model.VOID, "_setDescriptorMethod").param(ctx.model._ref(String.class), "methodName");
 
 		// now process all blocks
+		resolveBlockReferences();
 		BlockGenerator blockGen = new BlockGenerator(outline.selfBlock, ctx);
 		blockGen.generate();
 
 		return ctx.model;
 	}
 
-	private void addRequiredMethod(String methodName) {
+	private void resolveBlockReferences() {
+		Map<String, BlockOutline> blocks = new HashMap<String, BlockOutline>();
+		_getBlockNames(outline.selfBlock, blocks);
+		_resolveBlockReferences(outline.selfBlock, blocks);
+	}
 
+	private void _getBlockNames(BlockOutline block, Map<String, BlockOutline> blocks) {
+		blocks.put(block.name, block);
+
+		for (BlockOutline child : block.blocks) {
+			_getBlockNames(child, blocks);
+		}
+	}
+
+	private void _resolveBlockReferences(BlockOutline block, Map<String, BlockOutline> blocks) {
+		for (MethodOutline method : block.methods) {
+			for (BlockOutline aBlock : method.blockChain) {
+				if (aBlock instanceof BlockReference) {
+					BlockOutline actual = blocks.get(aBlock.name);
+
+					// TODO better error and exception and more details
+					if (actual == null) {
+						throw new RuntimeException("Invalid block reference '"+aBlock.name+"'.");
+					}
+
+					// at least set the methods
+					aBlock.methods.addAll(actual.methods);
+				}
+			}
+		}
+
+		// TODO probably phase out explicit references list
+
+		for (BlockOutline child : block.blocks) {
+			_resolveBlockReferences(child, blocks);
+		}
 	}
 }

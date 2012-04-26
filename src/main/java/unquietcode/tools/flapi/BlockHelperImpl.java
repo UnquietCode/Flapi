@@ -1,9 +1,6 @@
 package unquietcode.tools.flapi;
 
-import unquietcode.Pair;
-import unquietcode.tools.flapi.builder.BlockChainHelper;
 import unquietcode.tools.flapi.builder.BlockHelper;
-import unquietcode.tools.flapi.builder.MethodHelper;
 import unquietcode.tools.flapi.outline.BlockOutline;
 import unquietcode.tools.flapi.outline.MethodOutline;
 
@@ -23,25 +20,27 @@ public class BlockHelperImpl implements BlockHelper {
 	}
 	
 	@Override
-	public MethodHelper addMethod(String methodSignature) {
-		MethodHelperImpl helper = new MethodHelperImpl();
-		MethodOutline newMethod = helper.method;
-		block.methods.add(newMethod);
-		newMethod.methodSignature = methodSignature;
-		
-		return helper;
+	public List<Object> addMethod(String methodSignature) {
+		return _addMethod(block, methodSignature);
+	}
+
+	static List<Object> _addMethod(BlockOutline block, String methodSignature) {
+		MethodOutline m = block.addMethod(methodSignature);
+		ArrayList<Object> helpers = new ArrayList<Object>();
+		helpers.add(new MethodHelperImpl(m));
+		return helpers;
 	}
 
 	@Override
 	public List<Object> startBlock(String blockName, String methodSignature) {
-		BlockOutline newBlock = new BlockOutline();
-		block.blocks.add(newBlock);
-		newBlock.name = blockName;
+		return _startBlock(block, blockName, methodSignature);
+	}
 
-		MethodOutline blockMethod = new MethodOutline();
-		blockMethod.methodSignature = methodSignature;
+	static List<Object> _startBlock(BlockOutline block, String blockName, String methodSignature) {
+		BlockOutline newBlock = block.addBlock(blockName);
+		MethodOutline blockMethod = block.addMethod(methodSignature);
+		blockMethod.blockChain.add(0, newBlock);
 		newBlock.constructor = blockMethod;
-		block.methods.add(blockMethod);
 
 		List<Object> helpers = new ArrayList<Object>();
 		helpers.add(new MethodHelperImpl(blockMethod));
@@ -51,24 +50,32 @@ public class BlockHelperImpl implements BlockHelper {
 	}
 
 	@Override
-	public MethodHelper addBlockReference(String blockName, String methodSignature) {
-		MethodHelperImpl helper = new MethodHelperImpl();
+	public List<Object> addBlockReference(String blockName, String methodSignature) {
 		BlockReference blockReference = new BlockReference();
-		block.blockReferences.add(blockReference);
 		blockReference.name = blockName;
-		blockReference.constructor = new MethodOutline();
-		blockReference.constructor.methodSignature = methodSignature;
+		block.blockReferences.add(blockReference);
 
-		return helper;
+		MethodOutline blockMethod = new MethodOutline();
+		blockMethod.methodSignature = methodSignature;
+		blockMethod.blockChain.add(blockReference);
+		block.methods.add(blockMethod);
+		blockReference.constructor = blockMethod;
+
+		MethodHelperImpl helper = new MethodHelperImpl(blockMethod);
+		List<Object> helpers = new ArrayList<Object>();
+		helpers.add(helper);
+		return helpers;
 	}
 
 	@Override
 	public void endBlock() {
-		// TODO
+		// nothing
 	}
 
 	@Override
-	public BlockChainHelper addBlockChain() {
-		return new BlockChainHelperImpl(block.constructor);
+	public List<Object> addBlockChain() {
+		List<Object> helpers = new ArrayList<Object>();
+		helpers.add(new BlockChainHelperImpl(block.constructor));
+		return helpers;
 	}
 }

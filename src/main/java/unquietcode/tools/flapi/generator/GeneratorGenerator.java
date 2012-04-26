@@ -18,7 +18,7 @@ public class GeneratorGenerator extends AbstractGenerator<GeneratorOutline, JDef
 	public JDefinedClass generate() {
 
 		JDefinedClass iTop = getInterface(outline.descriptorBlock.getTopLevelInterface());
-		JDefinedClass generator = getClass(outline.descriptorBlock.getGeneratorImplmentation());
+		JDefinedClass generator = getClass(outline.descriptorBlock.getGeneratorImplementation());
 		JDefinedClass helper = getInterface(outline.descriptorBlock.getHelperInterface());
 		JDefinedClass rType = getClass(outline.descriptorBlock.getTopLevelImplementation());
 		

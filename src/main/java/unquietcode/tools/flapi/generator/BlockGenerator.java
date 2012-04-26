@@ -1,9 +1,6 @@
 package unquietcode.tools.flapi.generator;
 
 import com.sun.codemodel.*;
-import unquietcode.Pair;
-import unquietcode.tools.flapi.Descriptor;
-import unquietcode.tools.flapi.MethodParser;
 import unquietcode.tools.flapi.outline.BlockOutline;
 import unquietcode.tools.flapi.outline.MethodOutline;
 
@@ -19,64 +16,21 @@ public class BlockGenerator extends AbstractGenerator<BlockOutline, Void> {
 		super(outline, context);
 	}
 
-
 	@Override
 	public Void generate() {
 		final BlockOutline block = outline;
-		
-		// -- base level --
 
-			// get the base 'Builder' interface
-			JDefinedClass iBuilder = getInterface(block.getBaseInterface());
-			iBuilder.generify("_ReturnType");
+		BlockGenerator_Helper helperGen = new BlockGenerator_Helper(outline, ctx);
+		JDefinedClass iHelper = helperGen.generate();
 
-			// get the base 'Builder' implementation
-			JDefinedClass cBuilder = createBaseImpl();
+		BlockGenerator_BaseInterface baseInterfaceGen = new BlockGenerator_BaseInterface(outline, ctx);
+		JDefinedClass iBuilder = baseInterfaceGen.generate();
 
-			// get the 'Helper' interface (user will implement this for behavior)
-			JDefinedClass iHelper = getInterface(block.getHelperInterface());
+		BlockGenerator_BaseImplementation baseImplementationGen = new BlockGenerator_BaseImplementation(outline, ctx);
+		JDefinedClass cBuilder = baseImplementationGen.generate();
 
-			// for every required method, add the invocations to the base classes
-			for (MethodOutline method : block.getRequiredMethods()) {
-				addMethods(method, iBuilder, cBuilder, iHelper);
-			}
-
-		// -------------- //
-
-		// -- iterative level --
-
-			// create every builder interface and associated implementation
-
-			for (Set<MethodOutline> combination : makeCombinations(block.getDynamicMethods())) {
-
-				// make the interface (the empty one should be the only already created one)
-				JDefinedClass iSubset = getInterface(getGeneratedName(block.getBaseInterface(), combination));
-				iSubset.generify("_ReturnType");
-
-				// make the class
-				JDefinedClass cSubset = createSubsetImpl(combination);
-
-				// add the required methods from before to interface
-				for (MethodOutline method : block.getRequiredMethods()) {
-					addMethod(iSubset, getDynamicReturnType(block, combination, method, true), JMod.NONE, method);
-				}
-
-				// add the current working methods
-				for (MethodOutline method : combination) {
-
-					// add to interface
-					JClass returnType = getDynamicReturnType(block, combination, method, true);
-					addMethod(iSubset, returnType, JMod.NONE, method);
-
-					// add to base
-					//JMethod m = addMethod(cSubset, getDynamicReturnType(block, combination, method, false), JMod.NONE, method);
-					// TODO method body
-					createMethodBody(iSubset, cSubset, combination, method);
-					//addMethods(method, iSubset, cSubset, iHelper);
-				}
-			}
-
-		// -- nested level --
+		BlockGenerator_Subsets subsetsGen = new BlockGenerator_Subsets(outline, ctx);
+		subsetsGen.generate();
 
 		for (BlockOutline child : block.blocks) {
 			BlockGenerator childGenerator = new BlockGenerator(child, ctx);
@@ -84,157 +38,10 @@ public class BlockGenerator extends AbstractGenerator<BlockOutline, Void> {
 
 			// if child already exists, then this is an error!
 			// TODO throw exception
-
-			// resolve block references (error if not found)
-			// if there is a 'first' block or 'first' block reference (error if more than one)
-				// add the method in such a way that it returns the nested element
-				// remove it from the blocks pile
-			// for all other blocks, process as nested
-
-
-			//addNestedBlock(block, child, iBuilder, cBuilder);
+			// can't we just assume that the collision check would have caught this?
 		}
 
 		return null;
 
-	}
-
-	private JDefinedClass createSubsetImpl(Set<MethodOutline> methodCombination) {
-		JDefinedClass cSubset = getClass(getGeneratedName(outline.getBaseImplementation(), methodCombination));
-		JDefinedClass iSubset = getInterface(getGeneratedName(outline.getBaseInterface(), methodCombination));
-
-		// if not the base then extend from it and create the constructor
-		if (!methodCombination.isEmpty()) {
-			JDefinedClass baseImpl = getClass(outline.getBaseImplementation());
-			cSubset._extends(baseImpl);
-		}
-
-		// always implement the interface
-		cSubset._implements(iSubset);
-
-		JMethod constructor = cSubset.constructor(JMod.NONE);
-		JVar helper = constructor.param(getInterface(outline.getHelperInterface()), "helper");
-		JVar returnValue = constructor.param(ctx.model.ref(Object.class), "returnValue");
-		constructor.body().invoke("super").arg(helper).arg(returnValue);
-
-		return cSubset;
-	}
-
-	private JDefinedClass createBaseImpl() {
-		JDefinedClass builder = getClass(outline.getBaseImplementation());
-		JFieldVar _helper = builder.field(JMod.PROTECTED+JMod.FINAL, getInterface(outline.getHelperInterface()), "_helper");
-		JFieldVar _returnValue = builder.field(JMod.PROTECTED+JMod.FINAL, ctx.model.ref(Object.class), "_returnValue");
-
-		JMethod constructor = builder.constructor(JMod.NONE);
-		JVar helper = constructor.param(getInterface(outline.getHelperInterface()), "helper");
-		JVar returnValue = constructor.param(ctx.model.ref(Object.class), "returnValue");
-
-		constructor.body().assign(_helper, helper);
-		constructor.body().assign(_returnValue, returnValue);
-
-		return builder;
-	}
-
-	private void createMethodBody(JDefinedClass iBuilder, JDefinedClass cBuilder, Set<MethodOutline> methodCombination, MethodOutline method) {
-		if (method.blockChain.isEmpty()) {
-			JType returnType = getDynamicReturnType(outline, methodCombination, method, true).erasure();
-			JType returnValue = getDynamicReturnType(outline, methodCombination, method, false).erasure();
-
-			JMethod m = addMethod(cBuilder, returnType, JMod.PUBLIC, method);
-			JInvocation helperInvocation = makeHelperCall(m, method);
-			m.body().add(helperInvocation);
-			m.body()._return(
-				JExpr._new(returnValue)
-					.arg(JExpr.ref("_helper"))
-					.arg(JExpr.ref("_returnValue"))
-			);
-		} else {
-			throw new RuntimeException("Unfinished business....");
-
-/*			JType previousType = getDynamicReturnType(outline, methodCombination, method, false);
-			JExpression previousValue = JExpr._this();
-
-			JType baseReturnType = getDynamicReturnType(outline, methodCombination, method, true);
-			JMethod m = addMethod(cBuilder, baseReturnType, JMod.PUBLIC, method);
-			JInvocation helperInvocation = makeHelperCall(m, method);
-			JVar _helpers = m.body().decl(ref(List.class).narrow(Object.class), "helpers", helperInvocation);
-
-			for (int i = method.blockChain.size()-1; i >=0; --i) {
-				BlockOutline targetBlock = method.blockChain.get(i);
-				JDefinedClass iTargetBuilder = getInterface(targetBlock.getTopLevelInterface());
-				JDefinedClass cTargetBuilder = getClass(targetBlock.getTopLevelImplementation());
-				JDefinedClass iTargetHelper = getInterface(targetBlock.getHelperInterface());
-
-				previousType = iTargetBuilder.narrow(previousType);
-
-				// SomeBuilder<PreviousType> = new ImplSomeTime<PreviousType>((HelperType) helpers.get(#), previousValue);
-				JVar invocation = m.body().decl(iTargetBuilder, "step"+i,
-					JExpr._new(cTargetBuilder)
-						.arg(JExpr.cast(iTargetHelper, _helpers.invoke("get").arg(JExpr.lit(i))))
-						.arg(previousValue)
-				);
-			}
-
-			// return call
-			m.body()._return(JExpr.ref("step0"));*/
-		}
-	}
-
-	private void addMethods(MethodOutline method, JDefinedClass iBuilder, JDefinedClass cBuilder, JDefinedClass iHelper) {
-		if (method.blockChain.isEmpty()) {
-			// add the method to the interface
-			if (method.isTerminal()) {
-				addMethod(iBuilder, iBuilder.typeParams()[0], JMod.NONE, method);
-			} else {
-				addMethod(iBuilder, iBuilder.narrow(iBuilder.typeParams()[0]), JMod.NONE, method);
-			}
-
-			// add to the helper
-			addMethod(iHelper, ctx.model.VOID, JMod.NONE, method);
-
-			// add to the base class
-			JMethod m = addMethod(cBuilder, iBuilder, JMod.PUBLIC, method);
-			JInvocation helperInvocation = makeHelperCall(m, method);
-			m.body().add(helperInvocation);
-			m.body()._return(JExpr._this());
-
-		} else {
-			JType previousType = method.isTerminal()
-							   ? iBuilder.typeParams()[0]
-							   : iBuilder.narrow(iBuilder.typeParams()[0]);
-			JExpression previousValue = JExpr._this();
-
-			// add to the base class
-			JDefinedClass baseReturnType = getInterface(method.blockChain.get(0).getTopLevelInterface());
-			JMethod m = addMethod(cBuilder, baseReturnType, JMod.PUBLIC, method);
-			JInvocation helperInvocation = makeHelperCall(m, method);
-			JVar _helpers = m.body().decl(ref(List.class).narrow(Object.class), "helpers", helperInvocation);
-
-			for (int i = method.blockChain.size()-1; i >=0; --i) {
-				BlockOutline targetBlock = method.blockChain.get(i);
-				JDefinedClass iTargetBuilder = getInterface(targetBlock.getTopLevelInterface());
-				JDefinedClass cTargetBuilder = getClass(targetBlock.getTopLevelImplementation());
-				JDefinedClass iTargetHelper = getInterface(targetBlock.getHelperInterface());
-
-				previousType = iTargetBuilder.narrow(previousType);
-
-				// SomeBuilder<PreviousType> = new ImplSomeTime<PreviousType>((HelperType) helpers.get(#), previousValue);
-				JVar invocation = m.body().decl(iTargetBuilder, "step"+i,
-					JExpr._new(cTargetBuilder)
-						.arg(JExpr.cast(iTargetHelper, _helpers.invoke("get").arg(JExpr.lit(i))))
-						.arg(previousValue)
-				);
-			}
-
-			// final return for base
-			m.body()._return(JExpr.ref("step0"));
-
-			// add to the interface
-			addMethod(iBuilder, previousType, JMod.NONE, method);
-
-			// add to the helper
-			//   List<Object> helpers = _helper.doMethod(..);
-			addMethod(iHelper, ref(List.class).narrow(Object.class), JMod.NONE, method);
-		}
 	}
 }

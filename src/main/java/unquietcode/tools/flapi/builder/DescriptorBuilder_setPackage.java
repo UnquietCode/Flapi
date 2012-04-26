@@ -6,8 +6,8 @@ package unquietcode.tools.flapi.builder;
  */
 public interface DescriptorBuilder_setPackage<_ReturnType> {
 	_ReturnType build();
-	MethodBuilder<DescriptorBuilder_setPackage<_ReturnType>> addMethod(String methodSignature);
-	MethodBuilder<BlockBuilder_addBlockChain<DescriptorBuilder_setPackage<_ReturnType>>> startBlock(String blockName, String methodSignature);
+	MethodBuilder_addBlockChain<DescriptorBuilder_setPackage<_ReturnType>> addMethod(String methodSignature);
+	MethodBuilder_addBlockChain<BlockBuilder_addBlockChain<DescriptorBuilder_setPackage<_ReturnType>>> startBlock(String blockName, String methodSignature);
 
 	DescriptorBuilder<_ReturnType> setPackage(String packageName);
 }
