@@ -53,7 +53,6 @@ public class BlockHelperImpl implements BlockHelper {
 	public List<Object> addBlockReference(String blockName, String methodSignature) {
 		BlockReference blockReference = new BlockReference();
 		blockReference.name = blockName;
-		block.blockReferences.add(blockReference);
 
 		MethodOutline blockMethod = new MethodOutline();
 		blockMethod.methodSignature = methodSignature;

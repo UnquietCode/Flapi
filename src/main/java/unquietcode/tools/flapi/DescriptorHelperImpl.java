@@ -1,14 +1,8 @@
 package unquietcode.tools.flapi;
 
-import unquietcode.Pair;
-import unquietcode.tools.flapi.builder.BlockHelper;
 import unquietcode.tools.flapi.builder.DescriptorHelper;
-import unquietcode.tools.flapi.builder.MethodHelper;
-import unquietcode.tools.flapi.outline.BlockOutline;
 import unquietcode.tools.flapi.outline.DescriptorOutline;
-import unquietcode.tools.flapi.outline.MethodOutline;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -17,9 +11,12 @@ import java.util.List;
  */
 public class DescriptorHelperImpl implements DescriptorHelper {
 	final DescriptorOutline outline = new DescriptorOutline();
-	
 
 	@Override
+	public Descriptor _getReturnValue() {
+		return new Descriptor(this);
+	}
+
 	public void _setDescriptorName(String name) {
 		if (name == null || name.trim().isEmpty()) {
 			throw new IllegalArgumentException("Name cannot be empty.");
@@ -28,7 +25,6 @@ public class DescriptorHelperImpl implements DescriptorHelper {
 		outline.setDescriptorName(name);
 	}
 
-	@Override
 	public void _setDescriptorMethod(String method) {
 		outline.setCreateMethod(method);
 	}

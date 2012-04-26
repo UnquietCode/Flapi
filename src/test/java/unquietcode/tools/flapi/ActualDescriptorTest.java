@@ -15,11 +15,17 @@ public class ActualDescriptorTest {
 	@Test
 	public void descriptorGenerator() {
 		Descriptor builder =
-			DescriptorGenerator.create("Descriptor", "create", new DescriptorHelperImpl())
+			DescriptorGenerator.create(new DescriptorHelperImpl())
 				.setPackage("unquietcode.tools.flapi.builder")
+				//.setStartingMethodName("create")
+				//.setDescriptorName("Descriptor")
+				//.setReturnType(Descriptor.class)
 
 				.addMethod("showLog(boolean value)").once()
-				.addMethod("setPackage(String packageName)").once()
+				.addMethod("setPackage(String packageName)").between(1,1)
+				.addMethod("setDescriptorName(String descriptorName)").between(1,1)
+				.addMethod("setCreateMethodName()").once() //default to "create" if not called
+				.addMethod("setReturnType()").between(1,1)
 				.addMethod("build()").last()
 
 				.startBlock("Method", "addMethod(String methodSignature)").any()

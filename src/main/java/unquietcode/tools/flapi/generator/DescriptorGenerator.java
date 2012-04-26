@@ -5,6 +5,7 @@ import com.sun.codemodel.JDefinedClass;
 import com.sun.codemodel.JExpr;
 import com.sun.codemodel.JMod;
 import unquietcode.tools.flapi.BlockReference;
+import unquietcode.tools.flapi.DescriptorBuilderException;
 import unquietcode.tools.flapi.outline.BlockOutline;
 import unquietcode.tools.flapi.outline.DescriptorOutline;
 import unquietcode.tools.flapi.outline.MethodOutline;
@@ -60,9 +61,13 @@ public class DescriptorGenerator extends AbstractGenerator<DescriptorOutline, JC
 				if (aBlock instanceof BlockReference) {
 					BlockOutline actual = blocks.get(aBlock.name);
 
-					// TODO better error and exception and more details
 					if (actual == null) {
-						throw new RuntimeException("Invalid block reference '"+aBlock.name+"'.");
+						StringBuilder sb = new StringBuilder();
+						sb.append("Invalid block reference '").append(aBlock.name).append("'.\n")
+						  .append("Referenced in method ").append(method.methodSignature)
+						  .append(" of block '").append(block.name).append("'.");
+
+						throw new DescriptorBuilderException(sb.toString());
 					}
 
 					// at least set the methods
@@ -70,8 +75,6 @@ public class DescriptorGenerator extends AbstractGenerator<DescriptorOutline, JC
 				}
 			}
 		}
-
-		// TODO probably phase out explicit references list
 
 		for (BlockOutline child : block.blocks) {
 			_resolveBlockReferences(child, blocks);

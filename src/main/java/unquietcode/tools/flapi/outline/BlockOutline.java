@@ -18,9 +18,6 @@ public class BlockOutline implements Outline {
 	
 	// constructor, used by parent to create this block
 	public MethodOutline constructor;
-	
-	// block references
-	public final List<BlockReference> blockReferences = new ArrayList<BlockReference>();
 
 	// methods
 	public final Set<MethodOutline> methods = new HashSet<MethodOutline>();

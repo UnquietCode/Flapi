@@ -29,12 +29,12 @@ public class MethodParser {
 
 		// LPAREN
 		if ((lParen = methodSignature.indexOf("(")) == -1) {
-			throw new RuntimeException("expected a left paren");
+			throw new RuntimeException("expected a left paren (method signature is [ "+methodSignature+" ]).");
 		}
 
 		// RPAREN
 		if ((rParen = methodSignature.indexOf(")")) == -1) {
-			throw new RuntimeException("expected a right paren");
+			throw new RuntimeException("expected a right paren (method signature is [ "+methodSignature+" ]).");
 		}
 
 		// RETURN_TYPE

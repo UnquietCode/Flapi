@@ -9,6 +9,9 @@ package unquietcode.tools.flapi;
 public class ObjectWrapper<_Type> {
 	private _Type value;
 
+
+	public ObjectWrapper() { }
+
 	public ObjectWrapper(_Type value) {
 		this.value = value;
 	}

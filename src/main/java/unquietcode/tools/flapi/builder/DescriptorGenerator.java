@@ -2,30 +2,20 @@ package unquietcode.tools.flapi.builder;
 
 
 import unquietcode.tools.flapi.Descriptor;
+import unquietcode.tools.flapi.DescriptorBuilderException;
 
 /**
  * @author Ben Fagin
  * @version 03-04-2012
+ * @version 04-25-2012
  */
 public class DescriptorGenerator {
-	public static DescriptorBuilder_setPackage_showLog<Descriptor> create(String name, String method, DescriptorHelper helper) {
-		if (method == null || (method = method.trim()).isEmpty()) {
-			throw new IllegalArgumentException("Name cannot be empty.");
-		}
-		
+	@SuppressWarnings("unchecked")
+	public static DescriptorBuilder_setPackage_showLog<Descriptor> create(DescriptorHelper helper) {
 		if (helper == null) {
-			throw new IllegalArgumentException("Helper cannot be null.");
+			throw new DescriptorBuilderException("Helper cannot be null.");
 		}
-		
-		helper._setDescriptorName(name);
-		helper._setDescriptorMethod(method);
 
-// TODO how to create the initial descriptor? constructor is kind of weird too
-
-		return new ImplDescriptorBuilder_setPackage_showLog(helper, new Descriptor(helper));
+		return new ImplDescriptorBuilder_setPackage_showLog(helper, helper._getReturnValue());
 	}
-
-	public static DescriptorBuilder_setPackage_showLog<Descriptor> create(String name, DescriptorHelper helper) {
-		return create(name, "create", helper);
-	}	
 }

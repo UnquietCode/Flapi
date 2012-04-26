@@ -1,15 +1,12 @@
 package unquietcode.tools.flapi.outline;
 
 
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * @author Ben Fagin
  * @version 03-07-2012
  */
 public class DescriptorOutline implements Outline {
-	private final Set<BlockOutline> blocks = new HashSet<BlockOutline>();
 	private String packageName;
 
 	public final BlockOutline selfBlock = new BlockOutline();
@@ -23,10 +20,18 @@ public class DescriptorOutline implements Outline {
 		return packageName;
 	}
 
+	public String getDescriptorName() {
+		return selfBlock.name;
+	}
+
 	public void setDescriptorName(String name) {
 		selfBlock.name = name;
 	}
-	
+
+	public void setReturnType(Class returnType) {
+		generator.returnType = returnType;
+	}
+
 	public void setCreateMethod(String methodName) {
 		generator.methodName = methodName;
 	}
