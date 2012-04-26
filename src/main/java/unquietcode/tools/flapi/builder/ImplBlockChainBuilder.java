@@ -1,29 +1,32 @@
+
 package unquietcode.tools.flapi.builder;
 
+import unquietcode.tools.flapi.ObjectWrapper;
 
-/**
- * @author Ben Fagin
- * @version 04-21-2012
- */
-public class ImplBlockChainBuilder implements BlockChainBuilder {
-	protected final BlockChainHelper _helper;
-	protected final Object _returnValue;
+public class ImplBlockChainBuilder
+    implements BlockChainBuilder
+{
 
-	ImplBlockChainBuilder(BlockChainHelper helper, Object returnValue) {
-		_helper = helper;
-		_returnValue = returnValue;
-	}
+    protected final BlockChainHelper _helper;
+    protected final Object _returnValue;
 
-	@Override
-	public Object addBlockReference(String blockName) {
-		_helper.addBlockReference(blockName);
-		return _returnValue;
-	}
+    ImplBlockChainBuilder(BlockChainHelper helper, Object returnValue) {
+        _helper = helper;
+        _returnValue = returnValue;
+    }
 
-	@Override
-	public BlockBuilder_addBlockChain startBlock(String blockName) {
-		BlockHelper helper = (BlockHelper) _helper.startBlock(blockName);
-		BlockBuilder_addBlockChain returnBlock = new ImplBlockBuilder_addBlockChain(helper, this);
-		return new ImplBlockBuilder_addBlockChain(helper, returnBlock);
-	}
+    public Object addBlockReference(String blockName) {
+        _helper.addBlockReference(blockName);
+         
+        return _returnValue;
+    }
+
+    public BlockBuilder_addBlockChain startBlock(String methodSignature, String blockName) {
+        ObjectWrapper<BlockHelper> helper1 = new ObjectWrapper<BlockHelper>();
+        _helper.startBlock(methodSignature, blockName, helper1);
+         
+        BlockBuilder_addBlockChain step1 = new ImplBlockBuilder_addBlockChain(helper1 .get(), _returnValue);
+        return step1;
+    }
+
 }

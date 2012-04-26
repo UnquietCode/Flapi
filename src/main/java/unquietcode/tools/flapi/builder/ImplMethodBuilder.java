@@ -1,51 +1,53 @@
+
 package unquietcode.tools.flapi.builder;
 
-/**
- * @author Ben Fagin
- * @version 03-04-2012
- */
-public class ImplMethodBuilder<_ReturnType> implements MethodBuilder<_ReturnType> {
-	protected final MethodHelper _helper;
-	protected final _ReturnType _returnValue;
-	
-	public ImplMethodBuilder(MethodHelper helper, _ReturnType returnValue) {
-		_helper = helper;
-		_returnValue = returnValue;
-	}
-	
-	@Override
-	public _ReturnType once() {
-		_helper.once();
-		return _returnValue;
-	}
 
-	@Override
-	public _ReturnType any() {
-		_helper.any();
-		return _returnValue;
-	}
+public class ImplMethodBuilder
+    implements MethodBuilder
+{
 
-	@Override
-	public _ReturnType last() {
-		_helper.last();
-		return _returnValue;
-	}
+    protected final MethodHelper _helper;
+    protected final Object _returnValue;
 
-	@Override
-	public _ReturnType atLeast(int num) {
-		_helper.atLeast(num);
-		return _returnValue;
-	}
+    ImplMethodBuilder(MethodHelper helper, Object returnValue) {
+        _helper = helper;
+        _returnValue = returnValue;
+    }
 
-	@Override
-	public _ReturnType atMost(int num) {
-		_helper.atMost(num);
-		return _returnValue;
-	}
+    public Object any() {
+        _helper.any();
+         
+        return _returnValue;
+    }
 
-	@Override
-	public _ReturnType between(int atLeast, int atMost) {
-		_helper.between(atLeast, atMost);
-		return _returnValue;
-	}
+    public Object atLeast(int num) {
+        _helper.atLeast(num);
+         
+        return _returnValue;
+    }
+
+    public Object atMost(int num) {
+        _helper.atMost(num);
+         
+        return _returnValue;
+    }
+
+    public Object between(int atMost, int atLeast) {
+        _helper.between(atMost, atLeast);
+         
+        return _returnValue;
+    }
+
+    public Object last() {
+        _helper.last();
+         
+        return _returnValue;
+    }
+
+    public Object once() {
+        _helper.once();
+         
+        return _returnValue;
+    }
+
 }

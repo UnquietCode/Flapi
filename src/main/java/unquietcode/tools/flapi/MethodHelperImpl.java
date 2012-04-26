@@ -67,14 +67,7 @@ public class MethodHelperImpl implements MethodHelper {
 	}
 
 	@Override
-	public List<Object> addBlockChain() {
-		// TODO haven't thought this through yet
-		// Ideally a helper should not have to implement anything to handle a block reference
-
-		BlockChainHelper helper = new BlockChainHelperImpl(method);
-		List<Object> helpers = new ArrayList<Object>();
-		helpers.add(helper);
-
-		return helpers;
+	public void addBlockChain(ObjectWrapper<BlockChainHelper> _helper1) {
+		_helper1.set(new BlockChainHelperImpl(method));
 	}
 }

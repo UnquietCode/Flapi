@@ -1,16 +1,19 @@
+
 package unquietcode.tools.flapi.builder;
 
-import java.util.List;
+import unquietcode.tools.flapi.ObjectWrapper;
 
-/**
- * @author Ben Fagin
- * @version 03-04-2012
- */
 public interface BlockHelper {
-	List<Object> addMethod(String methodSignature);
-	List<Object> startBlock(String blockName, String methodSignature);
-	List<Object> addBlockReference(String blockName, String methodSignature);
-	List<Object> addBlockChain();
 
-	void endBlock();
+
+    void addMethod(String methodSignature, ObjectWrapper<MethodHelper> _helper1);
+
+    void addBlockReference(String blockName, String methodSignature, ObjectWrapper<MethodHelper> _helper1);
+
+    void endBlock();
+
+    void addBlockChain(ObjectWrapper<BlockChainHelper> _helper1);
+
+    void startBlock(String blockName, String methodSignature, ObjectWrapper<MethodHelper> _helper1, ObjectWrapper<BlockHelper> _helper2);
+
 }

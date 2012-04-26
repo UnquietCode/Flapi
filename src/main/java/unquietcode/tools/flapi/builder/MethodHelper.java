@@ -1,18 +1,23 @@
+
 package unquietcode.tools.flapi.builder;
 
-import java.util.List;
+import unquietcode.tools.flapi.ObjectWrapper;
 
-/**
- * @author Ben Fagin
- * @version 03-04-2012
- */
 public interface MethodHelper {
-	void once();
-	void any();
-	void last();
-	void atLeast(int num);
-	void atMost(int num);
-	void between(int atLeast, int atMost);
 
-	List<Object> addBlockChain();
+
+    void once();
+
+    void last();
+
+    void addBlockChain(ObjectWrapper<BlockChainHelper> _helper1);
+
+    void atMost(int num);
+
+    void atLeast(int num);
+
+    void any();
+
+    void between(int atMost, int atLeast);
+
 }

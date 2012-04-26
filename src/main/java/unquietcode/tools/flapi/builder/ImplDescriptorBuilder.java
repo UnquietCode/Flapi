@@ -1,37 +1,42 @@
+
 package unquietcode.tools.flapi.builder;
 
-import unquietcode.tools.flapi.Descriptor;
+import unquietcode.tools.flapi.ObjectWrapper;
 
-import java.util.List;
+public class ImplDescriptorBuilder
+    implements DescriptorBuilder
+{
 
-/**
- * @author Ben Fagin
- * @version 03-04-2012
- */
-@SuppressWarnings("unchecked")
-public class ImplDescriptorBuilder implements DescriptorBuilder {
-	protected final DescriptorHelper _helper;
-	protected final Object _returnValue;
+    protected final DescriptorHelper _helper;
+    protected final Object _returnValue;
 
-	ImplDescriptorBuilder(DescriptorHelper helper, Object returnValue) {
-		_helper = helper;
-		_returnValue = returnValue;
-	}
+    ImplDescriptorBuilder(DescriptorHelper helper, Object returnValue) {
+        _helper = helper;
+        _returnValue = returnValue;
+    }
 
-	public Object build() {
-		return _returnValue;
-	}
+    public MethodBuilder_addBlockChain addMethod(String methodSignature) {
+        ObjectWrapper<MethodHelper> helper1 = new ObjectWrapper<MethodHelper>();
+        _helper.addMethod(methodSignature, helper1);
+         
+        MethodBuilder_addBlockChain step1 = new ImplMethodBuilder_addBlockChain(helper1 .get(), this);
+        return step1;
+    }
 
-	@Override
-	public MethodBuilder_addBlockChain addMethod(String methodSignature) {
-		MethodHelper helper = (MethodHelper) _helper.addMethod(methodSignature).get(0);
-		return new ImplMethodBuilder_addBlockChain(helper, this);
-	}
+    public Object build() {
+        _helper.build();
+         
+        return _returnValue;
+    }
 
-	@Override
-	public MethodBuilder_addBlockChain startBlock(String blockName, String methodSignature) {
-		List<Object> helpers = _helper.startBlock(blockName, methodSignature);
-		BlockBuilder_addBlockChain innerBlock = new ImplBlockBuilder_addBlockChain((BlockHelper) helpers.get(1), this);
-		return new ImplMethodBuilder_addBlockChain((MethodHelper) helpers.get(0), innerBlock);
-	}
+    public MethodBuilder_addBlockChain startBlock(String blockName, String methodSignature) {
+        ObjectWrapper<MethodHelper> helper1 = new ObjectWrapper<MethodHelper>();
+        ObjectWrapper<BlockHelper> helper2 = new ObjectWrapper<BlockHelper>();
+        _helper.startBlock(blockName, methodSignature, helper1, helper2);
+         
+        BlockBuilder_addBlockChain step2 = new ImplBlockBuilder_addBlockChain(helper2 .get(), this);
+        MethodBuilder_addBlockChain step1 = new ImplMethodBuilder_addBlockChain(helper1 .get(), step2);
+        return step1;
+    }
+
 }

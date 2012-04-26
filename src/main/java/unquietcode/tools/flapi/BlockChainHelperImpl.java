@@ -5,10 +5,6 @@ import unquietcode.tools.flapi.builder.BlockHelper;
 import unquietcode.tools.flapi.outline.BlockOutline;
 import unquietcode.tools.flapi.outline.MethodOutline;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 /**
  * @author Ben Fagin
  * @version 04-21-2012
@@ -31,20 +27,16 @@ public class BlockChainHelperImpl implements BlockChainHelper {
 	}
 
 	@Override
-	public List<Object> startBlock(String blockName) {
+	public void startBlock(String methodSignature, String blockName, ObjectWrapper<BlockHelper> _helper1) {
 		BlockOutline anonymousBlock = new BlockOutline();
 		anonymousBlock.name = blockName;
 		blockMethod.blockChain.add(0, anonymousBlock);
 
-		List<Object> helpers = new ArrayList<Object>();
-		helpers.add(new BlockHelperImpl(anonymousBlock));
-		return helpers;
+		_helper1.set(new BlockHelperImpl(anonymousBlock));
 	}
 
 	@Override
-	public List<Object> addBlockChain() {
-		List<Object> helpers = new ArrayList<Object>();
-		helpers.add(new BlockChainHelperImpl(blockMethod));
-		return helpers;
+	public void addBlockChain(ObjectWrapper<BlockChainHelper> _helper1) {
+		_helper1.set(new BlockChainHelperImpl(blockMethod));
 	}
 }

@@ -17,15 +17,15 @@ public class ActualDescriptorTest {
 		Descriptor builder =
 			DescriptorGenerator.create(new DescriptorHelperImpl())
 				.setPackage("unquietcode.tools.flapi.builder")
-				//.setStartingMethodName("create")
-				//.setDescriptorName("Descriptor")
-				//.setReturnType(Descriptor.class)
+				.setStartingMethodName("create")
+				.setDescriptorName("Descriptor")
+				.setReturnType(Descriptor.class)
 
 				.addMethod("showLog(boolean value)").once()
 				.addMethod("setPackage(String packageName)").between(1,1)
 				.addMethod("setDescriptorName(String descriptorName)").between(1,1)
-				.addMethod("setCreateMethodName()").once() //default to "create" if not called
-				.addMethod("setReturnType()").between(1,1)
+				.addMethod("setStartingMethodName(String methodName)").once() //default to "create" if not called
+				.addMethod("setReturnType(Class returnType)").between(1,1)
 				.addMethod("build()").last()
 
 				.startBlock("Method", "addMethod(String methodSignature)").any()
@@ -52,7 +52,7 @@ public class ActualDescriptorTest {
 
 					.startBlock("BlockChain", "addBlockChain()").once()
 						.addMethod("addBlockReference(String blockName)").last()
-						.addBlockReference("Block", "startBlock(String blockName, String methodSignature()").last()
+						.addBlockReference("Block", "startBlock(String blockName, String methodSignature)").last()
 						.addBlockReference("BlockChain", "addBlockChain()").once()
 					.endBlock()
 				.endBlock()

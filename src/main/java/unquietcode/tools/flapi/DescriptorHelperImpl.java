@@ -1,6 +1,8 @@
 package unquietcode.tools.flapi;
 
+import unquietcode.tools.flapi.builder.BlockHelper;
 import unquietcode.tools.flapi.builder.DescriptorHelper;
+import unquietcode.tools.flapi.builder.MethodHelper;
 import unquietcode.tools.flapi.outline.DescriptorOutline;
 
 import java.util.List;
@@ -15,6 +17,26 @@ public class DescriptorHelperImpl implements DescriptorHelper {
 	@Override
 	public Descriptor _getReturnValue() {
 		return new Descriptor(this);
+	}
+
+	@Override
+	public void setDescriptorName(String descriptorName) {
+		// nothing
+	}
+
+	@Override
+	public void setReturnType(Class returnType) {
+		// nothing
+	}
+
+	@Override
+	public void setStartingMethodName(String methodName) {
+		// nothing
+	}
+
+	@Override
+	public void build() {
+		// nothing
 	}
 
 	public void _setDescriptorName(String name) {
@@ -40,12 +62,12 @@ public class DescriptorHelperImpl implements DescriptorHelper {
 	}
 
 	@Override
-	public List<Object> addMethod(String methodSignature) {
-		return BlockHelperImpl._addMethod(outline.selfBlock, methodSignature);
+	public void addMethod(String methodSignature, ObjectWrapper<MethodHelper> _helper1) {
+		BlockHelperImpl._addMethod(outline.selfBlock, methodSignature, _helper1);
 	}
 
 	@Override
-	public List<Object> startBlock(String blockName, String methodSignature) {
-		return BlockHelperImpl._startBlock(outline.selfBlock, blockName, methodSignature);
+	public void startBlock(String blockName, String methodSignature, ObjectWrapper<MethodHelper> _helper1, ObjectWrapper<BlockHelper> _helper2) {
+		BlockHelperImpl._startBlock(outline.selfBlock, blockName, methodSignature, _helper1, _helper2);
 	}
 }
