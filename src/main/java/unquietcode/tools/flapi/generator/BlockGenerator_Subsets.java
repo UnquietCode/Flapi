@@ -25,6 +25,11 @@ public class BlockGenerator_Subsets extends AbstractBlockGenerator<BlockOutline,
 	public Void generate() {
 		for (Set<MethodOutline> combination : makeCombinations(outline.getDynamicMethods())) {
 
+			// skip the base, since it's created elsewhere
+			if (combination.isEmpty()) {
+				continue;
+			}
+
 			// make the interface (the empty one should be the only already created one)
 			JDefinedClass iSubset = getInterface(getGeneratedName(outline.getBaseInterface(), combination));
 			iSubset.generify("_ReturnType");

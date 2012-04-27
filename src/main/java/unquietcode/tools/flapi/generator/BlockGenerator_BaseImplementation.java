@@ -37,14 +37,14 @@ public class BlockGenerator_BaseImplementation extends AbstractBlockGenerator<Bl
 		// add required methods to base
 		for (MethodOutline method : outline.getRequiredMethods()) {
 			JType returnType;
-			if (method.blockChain.isEmpty()) {
+			if (method.getBlockChain().isEmpty()) {
 				if (method.isTerminal()) {
-					returnType = iBuilder.typeParams()[0];
+					returnType = ref(Object.class);
 				} else {
 					returnType = iBuilder.erasure();
 				}
 			} else {
-				returnType = getInterface(method.blockChain.get(0).getTopLevelInterface());
+				returnType = getInterface(method.getBlockChain().get(0).getTopLevelInterface());
 			}
 
 			JExpression initialReturnValue = method.isTerminal() ? JExpr.ref("_returnValue") : JExpr._this();

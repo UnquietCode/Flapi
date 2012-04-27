@@ -39,7 +39,7 @@ public class MethodHelperImpl implements MethodHelper {
 	public void last() {
 		method.minOccurrences = 0;
 		method.maxOccurrences = 1;
-		method.isTerminal = true;
+		method.isTerminal(true);
 	}
 
 	@Override

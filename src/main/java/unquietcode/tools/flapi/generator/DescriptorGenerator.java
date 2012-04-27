@@ -2,7 +2,6 @@ package unquietcode.tools.flapi.generator;
 
 import com.sun.codemodel.JCodeModel;
 import com.sun.codemodel.JDefinedClass;
-import com.sun.codemodel.JExpr;
 import com.sun.codemodel.JMod;
 import unquietcode.tools.flapi.BlockReference;
 import unquietcode.tools.flapi.DescriptorBuilderException;
@@ -30,8 +29,7 @@ public class DescriptorGenerator extends AbstractGenerator<DescriptorOutline, JC
 
 		// add the custom methods to the helper interface
 		JDefinedClass helper = ctx.getOrCreateInterface(outline.selfBlock.getHelperInterface());
-		helper.method(JMod.NONE, ctx.model.VOID, "_setDescriptorName").param(ctx.model._ref(String.class), "name");
-		helper.method(JMod.NONE, ctx.model.VOID, "_setDescriptorMethod").param(ctx.model._ref(String.class), "methodName");
+		helper.method(JMod.NONE, ref(outline.getReturnType()), "_getReturnValue");
 
 		// now process all blocks
 		resolveBlockReferences();
@@ -48,7 +46,7 @@ public class DescriptorGenerator extends AbstractGenerator<DescriptorOutline, JC
 	}
 
 	private void _getBlockNames(BlockOutline block, Map<String, BlockOutline> blocks) {
-		blocks.put(block.name, block);
+		blocks.put(block.getName(), block);
 
 		for (BlockOutline child : block.blocks) {
 			_getBlockNames(child, blocks);
@@ -57,20 +55,20 @@ public class DescriptorGenerator extends AbstractGenerator<DescriptorOutline, JC
 
 	private void _resolveBlockReferences(BlockOutline block, Map<String, BlockOutline> blocks) {
 		for (MethodOutline method : block.methods) {
-			for (BlockOutline aBlock : method.blockChain) {
+			for (final BlockOutline aBlock : method.getBlockChain()) {
 				if (aBlock instanceof BlockReference) {
-					BlockOutline actual = blocks.get(aBlock.name);
+					final BlockOutline actual = blocks.get(aBlock.getName());
 
 					if (actual == null) {
 						StringBuilder sb = new StringBuilder();
-						sb.append("Invalid block reference '").append(aBlock.name).append("'.\n")
+						sb.append("Invalid block reference '").append(aBlock.getName()).append("'.\n")
 						  .append("Referenced in method ").append(method.methodSignature)
-						  .append(" of block '").append(block.name).append("'.");
+						  .append(" of block '").append(block.getName()).append("'.");
 
 						throw new DescriptorBuilderException(sb.toString());
 					}
 
-					// at least set the methods
+					// set the methods
 					aBlock.methods.addAll(actual.methods);
 				}
 			}

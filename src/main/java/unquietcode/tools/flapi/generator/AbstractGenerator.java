@@ -110,8 +110,8 @@ public abstract class AbstractGenerator<_InType extends Outline, _OutType> imple
 		}
 
 		// add in the block chain
-		for (int i = method.blockChain.size()-1; i >=0; --i) {
-			BlockOutline targetBlock = method.blockChain.get(i);
+		for (int i = method.getBlockChain().size()-1; i >=0; --i) {
+			BlockOutline targetBlock = method.getBlockChain().get(i);
 			JDefinedClass targetBuilder = getInterface(targetBlock.getTopLevelInterface());
 
 			returnType = targetBuilder.narrow(returnType);

@@ -39,8 +39,8 @@ public class BlockHelperImpl implements BlockHelper {
 	static void _startBlock(BlockOutline block, String blockName, String methodSignature, ObjectWrapper<MethodHelper> _helper1, ObjectWrapper<BlockHelper> _helper2) {
 		BlockOutline newBlock = block.addBlock(blockName);
 		MethodOutline blockMethod = block.addMethod(methodSignature);
-		blockMethod.blockChain.add(0, newBlock);
-		newBlock.constructor = blockMethod;
+		blockMethod.getBlockChain().add(0, newBlock);
+		newBlock.setConstructor(blockMethod);
 
 		_helper1.set(new MethodHelperImpl(blockMethod));
 		_helper2.set(new BlockHelperImpl(newBlock));
@@ -49,13 +49,11 @@ public class BlockHelperImpl implements BlockHelper {
 	@Override
 	public void addBlockReference(String blockName, String methodSignature, ObjectWrapper<MethodHelper> _helper1) {
 		BlockReference blockReference = new BlockReference();
-		blockReference.name = blockName;
+		blockReference.setName(blockName);
 
-		MethodOutline blockMethod = new MethodOutline();
-		blockMethod.methodSignature = methodSignature;
-		blockMethod.blockChain.add(blockReference);
-		block.methods.add(blockMethod);
-		blockReference.constructor = blockMethod;
+		MethodOutline blockMethod = block.addMethod(methodSignature);
+		blockMethod.getBlockChain().add(blockReference);
+		blockReference.setConstructor(blockMethod);
 
 		_helper1.set(new MethodHelperImpl(blockMethod));
 	}
@@ -67,6 +65,6 @@ public class BlockHelperImpl implements BlockHelper {
 
 	@Override
 	public void addBlockChain(ObjectWrapper<BlockChainHelper> _helper1) {
-		_helper1.set(new BlockChainHelperImpl(block.constructor));
+		_helper1.set(new BlockChainHelperImpl(block.getConstructor()));
 	}
 }

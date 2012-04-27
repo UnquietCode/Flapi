@@ -18,7 +18,7 @@ public class GeneratorGenerator extends AbstractGenerator<GeneratorOutline, JDef
 		// TODO temporary hack!
 		outline.returnType = Descriptor.class;
 		outline.methodName = "create";
-		outline.descriptorBlock.name = "Descriptor";
+		outline.descriptorBlock.setName("Descriptor");
 	}
 
 	@Override

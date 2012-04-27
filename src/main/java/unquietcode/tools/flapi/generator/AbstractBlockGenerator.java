@@ -25,7 +25,7 @@ public abstract class AbstractBlockGenerator<_From extends BlockOutline, _To> ex
 
 		// for every block chain, add a new object wrapper declaration
 		List<JVar> helpers = new ArrayList<JVar>();
-		for (BlockOutline blockChain : method.blockChain) {
+		for (BlockOutline blockChain : method.getBlockChain()) {
 			helpers.add(addHelper(getInterface(blockChain.getHelperInterface()), helpers.size() + 1, _method));
 		}
 
@@ -44,8 +44,8 @@ public abstract class AbstractBlockGenerator<_From extends BlockOutline, _To> ex
 		// build the return type, using the values of the helpers populated
 		JExpression returnValue = initialReturnValue;
 
-		for (int i = method.blockChain.size()-1; i >=0; --i) {
-			BlockOutline targetBlock = method.blockChain.get(i);
+		for (int i = method.getBlockChain().size()-1; i >=0; --i) {
+			BlockOutline targetBlock = method.getBlockChain().get(i);
 			JDefinedClass iTargetBuilder = getInterface(targetBlock.getTopLevelInterface());
 			JDefinedClass cTargetBuilder = getClass(targetBlock.getTopLevelImplementation());
 

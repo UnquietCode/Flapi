@@ -14,12 +14,21 @@ public class MethodOutline implements Comparable<MethodOutline> {
 	public Integer minOccurrences;
 	public Integer maxOccurrences;
 	public String methodSignature;
-	public boolean isTerminal = false;
+	private boolean isTerminal = false;
 
-	public final List<BlockOutline> blockChain = new ArrayList<BlockOutline>();
+	private final List<BlockOutline> blockChain = new ArrayList<BlockOutline>();
 	
 	
+	public List<BlockOutline> getBlockChain() {
+//		List<BlockOutline> chain = new ArrayList<BlockOutline>();
+//		for (BlockOutline block : blockChain) {
+//			chain.addAll(block.getConstructor().getBlockChain());
+//		}
+//
+//		return chain;
 
+		return blockChain;
+	}
 	
 	public boolean isTerminal() {
 		return isTerminal;
@@ -29,8 +38,6 @@ public class MethodOutline implements Comparable<MethodOutline> {
 		isTerminal = value;
 	}
 
-	
-	
 	public String returnType() {
 		MethodParser parsed = new MethodParser(methodSignature);
 		return parsed.returnType;
@@ -53,6 +60,9 @@ public class MethodOutline implements Comparable<MethodOutline> {
 		return clone;
 	}
 
+	/*
+		Used by sorted collections to provide consistent ordering.
+	 */
 	public @Override int compareTo(MethodOutline other) {
 		return methodSignature.compareTo(other.methodSignature);
 	}

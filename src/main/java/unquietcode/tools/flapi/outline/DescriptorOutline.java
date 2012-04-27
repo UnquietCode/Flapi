@@ -21,15 +21,19 @@ public class DescriptorOutline implements Outline {
 	}
 
 	public String getDescriptorName() {
-		return selfBlock.name;
+		return selfBlock.getName();
 	}
 
 	public void setDescriptorName(String name) {
-		selfBlock.name = name;
+		selfBlock.setName(name);
 	}
 
 	public void setReturnType(Class returnType) {
 		generator.returnType = returnType;
+	}
+
+	public Class getReturnType() {
+		return generator.returnType;
 	}
 
 	public void setCreateMethod(String methodName) {

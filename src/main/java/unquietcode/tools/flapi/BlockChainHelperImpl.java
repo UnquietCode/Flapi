@@ -22,15 +22,17 @@ public class BlockChainHelperImpl implements BlockChainHelper {
 	@Override
 	public void addBlockReference(String blockName) {
 		BlockReference ref = new BlockReference();
-		ref.name = blockName;
-		blockMethod.blockChain.add(0, ref);
+		ref.setName(blockName);
+		ref.setConstructor(blockMethod);
+		blockMethod.getBlockChain().add(0, ref);
+
 	}
 
 	@Override
 	public void startBlock(String methodSignature, String blockName, ObjectWrapper<BlockHelper> _helper1) {
 		BlockOutline anonymousBlock = new BlockOutline();
-		anonymousBlock.name = blockName;
-		blockMethod.blockChain.add(0, anonymousBlock);
+		anonymousBlock.setName(blockName);
+		blockMethod.getBlockChain().add(0, anonymousBlock);
 
 		_helper1.set(new BlockHelperImpl(anonymousBlock));
 	}

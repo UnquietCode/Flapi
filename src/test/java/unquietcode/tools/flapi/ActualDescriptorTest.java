@@ -35,26 +35,30 @@ public class ActualDescriptorTest {
 					.addMethod("atLeast(int num)").last()
 					.addMethod("atMost(int num)").last()
 					.addMethod("between(int atLeast, int atMost)").last()
-					.addBlockReference("BlockChain", "addBlockChain()").once()
-				.endBlock()
-
-				.startBlock("Block", "startBlock(String blockName, String methodSignature)").any()
-					.addBlockChain()
-						.addBlockReference("Method")
-
-					.addMethod("addBlockReference(String blockName, String methodSignature)")
-						.addBlockChain().addBlockReference("Method")
-					.any()
-
-					.addBlockReference("Method", "addMethod(String methodSignature)").any()
-					.addBlockReference("Block", "startBlock(String blockName, String methodSignature)").any()
-					.addMethod("endBlock()").last()
 
 					.startBlock("BlockChain", "addBlockChain()").once()
 						.addMethod("addBlockReference(String blockName)").last()
 						.addBlockReference("Block", "startBlock(String blockName, String methodSignature)").last()
 						.addBlockReference("BlockChain", "addBlockChain()").once()
 					.endBlock()
+				.endBlock()
+
+				.startBlock("Block", "startBlock(String blockName, String methodSignature)")
+					.addBlockChain()
+						.addBlockReference("Method")
+					.any()
+
+					.addMethod("addBlockReference(String blockName, String methodSignature)")
+						.addBlockChain().addBlockReference("Method")
+					.any()
+
+					.addBlockReference("Method", "addMethod(String methodSignature)").any()
+
+					.addBlockReference("Block", "startBlock(String blockName, String methodSignature)")
+						.addBlockChain().addBlockReference("Method")
+					.any()
+
+					.addMethod("endBlock()").last()
 				.endBlock()
 
 			.build()

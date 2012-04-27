@@ -11,15 +11,14 @@ import java.util.*;
  */
 public class BlockOutline implements Outline {
 	// name of the block
-	public String name;
+	private String name;
 
 	// nested blocks
-	public List<BlockOutline> blocks = new ArrayList<BlockOutline>();
+	public final List<BlockOutline> blocks = new ArrayList<BlockOutline>();
 	
 	// constructor, used by parent to create this block
-	public MethodOutline constructor;
+	private MethodOutline constructor;
 
-	// methods
 	public final Set<MethodOutline> methods = new HashSet<MethodOutline>();
 
 	public String getTopLevelImplementation() {
@@ -44,6 +43,22 @@ public class BlockOutline implements Outline {
 	
 	public String getGeneratorImplementation() {
 		return name+"Generator";
+	}
+
+	public MethodOutline getConstructor() {
+		return constructor;
+	}
+
+	public void setConstructor(MethodOutline constructor) {
+		this.constructor = constructor;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public BlockOutline addBlock(String blockName) {
