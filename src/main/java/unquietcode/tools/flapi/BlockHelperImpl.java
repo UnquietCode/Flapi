@@ -62,9 +62,4 @@ public class BlockHelperImpl implements BlockHelper {
 	public void endBlock() {
 		// nothing
 	}
-
-	@Override
-	public void addBlockChain(ObjectWrapper<BlockChainHelper> _helper1) {
-		_helper1.set(new BlockChainHelperImpl(block.getConstructor()));
-	}
 }

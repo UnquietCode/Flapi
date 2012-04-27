@@ -6,21 +6,22 @@ import unquietcode.tools.flapi.ObjectWrapper;
 
 public interface DescriptorHelper {
 
-	Descriptor _getReturnValue();
 
-    void addMethod(String methodSignature, ObjectWrapper<MethodHelper> _helper1);
-
-    void setDescriptorName(String descriptorName);
+    Descriptor _getReturnValue();
 
     void showLog(boolean value);
 
+    void startBlock(String blockName, String methodSignature, ObjectWrapper<MethodHelper> _helper1, ObjectWrapper<BlockHelper> _helper2);
+
+    void addMethod(String methodSignature, ObjectWrapper<MethodHelper> _helper1);
+
     void setReturnType(Class returnType);
 
-    void setStartingMethodName(String methodName);
+    void setDescriptorName(String descriptorName);
 
     void setPackage(String packageName);
 
-    void startBlock(String blockName, String methodSignature, ObjectWrapper<MethodHelper> _helper1, ObjectWrapper<BlockHelper> _helper2);
+    void setStartingMethodName(String methodName);
 
     void build();
 

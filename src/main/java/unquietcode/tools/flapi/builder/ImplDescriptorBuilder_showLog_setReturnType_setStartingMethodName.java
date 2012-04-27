@@ -12,10 +12,10 @@ public class ImplDescriptorBuilder_showLog_setReturnType_setStartingMethodName
         super(helper, returnValue);
     }
 
-    public DescriptorBuilder_setStartingMethodName_setReturnType showLog(boolean value) {
+    public DescriptorBuilder_setReturnType_setStartingMethodName showLog(boolean value) {
         _helper.showLog(value);
          
-        return new ImplDescriptorBuilder_setStartingMethodName_setReturnType(_helper, _returnValue);
+        return new ImplDescriptorBuilder_setReturnType_setStartingMethodName(_helper, _returnValue);
     }
 
     public DescriptorBuilder_showLog_setStartingMethodName setReturnType(Class returnType) {

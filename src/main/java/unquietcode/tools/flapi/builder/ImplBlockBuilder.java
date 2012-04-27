@@ -38,13 +38,12 @@ public class ImplBlockBuilder
     }
 
     public MethodBuilder_addBlockChain startBlock(String blockName, String methodSignature) {
-	    ObjectWrapper<MethodHelper> helper1 = new ObjectWrapper<MethodHelper>();
-	    ObjectWrapper<BlockHelper> helper2 = new ObjectWrapper<BlockHelper>();
+        ObjectWrapper<MethodHelper> helper1 = new ObjectWrapper<MethodHelper>();
+        ObjectWrapper<BlockHelper> helper2 = new ObjectWrapper<BlockHelper>();
         _helper.startBlock(blockName, methodSignature, helper1, helper2);
-
-
-        BlockBuilder_addBlockChain step2 = new ImplBlockBuilder_addBlockChain(helper2 .get(), this);
-	    MethodBuilder_addBlockChain step1 = new ImplMethodBuilder_addBlockChain(helper1.get(), step2);
+         
+        BlockBuilder step2 = new ImplBlockBuilder(helper2 .get(), this);
+        MethodBuilder_addBlockChain step1 = new ImplMethodBuilder_addBlockChain(helper1 .get(), step2);
         return step1;
     }
 

@@ -9,9 +9,9 @@ public interface DescriptorBuilder_showLog_setReturnType_setStartingMethodName<_
 
     _ReturnType build();
 
-    MethodBuilder_addBlockChain<BlockBuilder_addBlockChain<DescriptorBuilder_showLog_setReturnType_setStartingMethodName<_ReturnType>>> startBlock(String blockName, String methodSignature);
+    MethodBuilder_addBlockChain<BlockBuilder<DescriptorBuilder_showLog_setReturnType_setStartingMethodName<_ReturnType>>> startBlock(String blockName, String methodSignature);
 
-    DescriptorBuilder_setStartingMethodName_setReturnType<_ReturnType> showLog(boolean value);
+    DescriptorBuilder_setReturnType_setStartingMethodName<_ReturnType> showLog(boolean value);
 
     DescriptorBuilder_showLog_setStartingMethodName<_ReturnType> setReturnType(Class returnType);
 

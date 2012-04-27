@@ -9,7 +9,7 @@ public interface DescriptorBuilder_setDescriptorName_setStartingMethodName<_Retu
 
     _ReturnType build();
 
-    MethodBuilder_addBlockChain<BlockBuilder_addBlockChain<DescriptorBuilder_setDescriptorName_setStartingMethodName<_ReturnType>>> startBlock(String blockName, String methodSignature);
+    MethodBuilder_addBlockChain<BlockBuilder<DescriptorBuilder_setDescriptorName_setStartingMethodName<_ReturnType>>> startBlock(String blockName, String methodSignature);
 
     DescriptorBuilder_setStartingMethodName<_ReturnType> setDescriptorName(String descriptorName);
 

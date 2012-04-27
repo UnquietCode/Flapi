@@ -21,34 +21,34 @@ public class DescriptorHelperImpl implements DescriptorHelper {
 
 	@Override
 	public void setDescriptorName(String descriptorName) {
-		// nothing
+		if (descriptorName == null || descriptorName.trim().isEmpty()) {
+			throw new IllegalArgumentException("Name cannot be empty.");
+		}
+
+		outline.setDescriptorName(descriptorName);
 	}
 
 	@Override
 	public void setReturnType(Class returnType) {
-		// nothing
+		if (returnType == null) {
+			throw new IllegalArgumentException("Return type cannot be null.");
+		}
+
+		outline.setReturnType(returnType);
 	}
 
 	@Override
 	public void setStartingMethodName(String methodName) {
-		// nothing
+		if (methodName == null || methodName.trim().isEmpty()) {
+			throw new IllegalArgumentException("Name cannot be empty.");
+		}
+
+		outline.setCreateMethod(methodName);
 	}
 
 	@Override
 	public void build() {
 		// nothing
-	}
-
-	public void _setDescriptorName(String name) {
-		if (name == null || name.trim().isEmpty()) {
-			throw new IllegalArgumentException("Name cannot be empty.");
-		}
-		
-		outline.setDescriptorName(name);
-	}
-
-	public void _setDescriptorMethod(String method) {
-		outline.setCreateMethod(method);
 	}
 
 	@Override

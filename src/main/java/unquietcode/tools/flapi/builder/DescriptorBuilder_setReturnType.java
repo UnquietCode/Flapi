@@ -9,7 +9,7 @@ public interface DescriptorBuilder_setReturnType<_ReturnType >{
 
     _ReturnType build();
 
-    MethodBuilder_addBlockChain<BlockBuilder_addBlockChain<DescriptorBuilder_setReturnType<_ReturnType>>> startBlock(String blockName, String methodSignature);
+    MethodBuilder_addBlockChain<BlockBuilder<DescriptorBuilder_setReturnType<_ReturnType>>> startBlock(String blockName, String methodSignature);
 
     DescriptorBuilder<_ReturnType> setReturnType(Class returnType);
 

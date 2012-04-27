@@ -24,7 +24,7 @@ public class ActualDescriptorTest {
 				.addMethod("showLog(boolean value)").once()
 				.addMethod("setPackage(String packageName)").between(1,1)
 				.addMethod("setDescriptorName(String descriptorName)").between(1,1)
-				.addMethod("setStartingMethodName(String methodName)").once() //default to "create" if not called
+				.addMethod("setStartingMethodName(String methodName)").once()
 				.addMethod("setReturnType(Class returnType)").between(1,1)
 				.addMethod("build()").last()
 

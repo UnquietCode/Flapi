@@ -6,18 +6,18 @@ import unquietcode.tools.flapi.ObjectWrapper;
 public interface MethodHelper {
 
 
-    void once();
-
-    void last();
-
-    void addBlockChain(ObjectWrapper<BlockChainHelper> _helper1);
+    void between(int atMost, int atLeast);
 
     void atMost(int num);
+
+    void addBlockChain(ObjectWrapper<BlockChainHelper> _helper1);
 
     void atLeast(int num);
 
     void any();
 
-    void between(int atMost, int atLeast);
+    void last();
+
+    void once();
 
 }

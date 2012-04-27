@@ -9,7 +9,7 @@ public interface DescriptorBuilder_showLog<_ReturnType >{
 
     _ReturnType build();
 
-    MethodBuilder_addBlockChain<BlockBuilder_addBlockChain<DescriptorBuilder_showLog<_ReturnType>>> startBlock(String blockName, String methodSignature);
+    MethodBuilder_addBlockChain<BlockBuilder<DescriptorBuilder_showLog<_ReturnType>>> startBlock(String blockName, String methodSignature);
 
     DescriptorBuilder<_ReturnType> showLog(boolean value);
 

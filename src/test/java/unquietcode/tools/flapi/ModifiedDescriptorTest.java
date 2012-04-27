@@ -32,8 +32,8 @@ public class ModifiedDescriptorTest {
 				.endBlock()
 
 				.startBlock("Block", "startBlock(String blockName, String methodSignature)").any()
-					.addBlockChain()
-						.addBlockReference("Method")
+//					.addBlockChain()
+//						.addBlockReference("Method")
 
 					.addMethod("addBlockReference(String blockName, String methodSignature)")
 						.addBlockChain().addBlockReference("Method")

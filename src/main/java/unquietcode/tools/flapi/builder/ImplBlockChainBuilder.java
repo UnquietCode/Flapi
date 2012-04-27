@@ -21,11 +21,11 @@ public class ImplBlockChainBuilder
         return _returnValue;
     }
 
-    public BlockBuilder_addBlockChain startBlock(String methodSignature, String blockName) {
+    public BlockBuilder startBlock(String blockName, String methodSignature) {
         ObjectWrapper<BlockHelper> helper1 = new ObjectWrapper<BlockHelper>();
-        _helper.startBlock(methodSignature, blockName, helper1);
+        _helper.startBlock(blockName, methodSignature, helper1);
          
-        BlockBuilder_addBlockChain step1 = new ImplBlockBuilder_addBlockChain(helper1 .get(), _returnValue);
+        BlockBuilder step1 = new ImplBlockBuilder(helper1 .get(), _returnValue);
         return step1;
     }
 

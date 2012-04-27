@@ -9,6 +9,6 @@ public interface DescriptorBuilder<_ReturnType >{
 
     _ReturnType build();
 
-    MethodBuilder_addBlockChain<BlockBuilder_addBlockChain<DescriptorBuilder<_ReturnType>>> startBlock(String blockName, String methodSignature);
+    MethodBuilder_addBlockChain<BlockBuilder<DescriptorBuilder<_ReturnType>>> startBlock(String blockName, String methodSignature);
 
 }
