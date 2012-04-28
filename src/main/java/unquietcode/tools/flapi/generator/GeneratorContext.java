@@ -1,13 +1,13 @@
 package unquietcode.tools.flapi.generator;
 
 import com.sun.codemodel.*;
+import unquietcode.tools.flapi.Constants;
 import unquietcode.tools.flapi.MethodParser;
 import unquietcode.tools.flapi.outline.MethodOutline;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeSet;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * @author Ben Fagin
@@ -41,6 +41,7 @@ public class GeneratorContext {
 			try {
 				_interface = thePackage._interface(name);
 				interfaces.put(name, _interface);
+				addGeneratedHeader(_interface);
 			} catch (JClassAlreadyExistsException ex) {
 				throw new RuntimeException(ex);
 			}
@@ -55,6 +56,7 @@ public class GeneratorContext {
 			try {
 				_class = thePackage._class(JMod.PUBLIC, name);
 				classes.put(name, _class);
+				addGeneratedHeader(_class);
 			} catch (JClassAlreadyExistsException ex) {
 				throw new RuntimeException(ex);
 			}
@@ -63,9 +65,23 @@ public class GeneratorContext {
 		return _class;
 	}
 
+	private String header = null;
+	private void addGeneratedHeader(JDefinedClass clazz) {
+		if (header == null) {
+			SimpleDateFormat dateFormat = new SimpleDateFormat("MMMM dd, yyyy k:mm:ss z");
 
+			header = new StringBuilder()
+				.append("This class was generated using Flapi, the fluent API generator for Java.\n")
+				.append("Modifications to this file will be lost upon regeneration.\n")
+				.append("You have been warned!\n")
+				.append("\n")
+				.append("Visit ").append(Constants.PROJECT_URL).append(" for more information.\n")
+				.append("\n\n")
+				.append("Generated on ").append(dateFormat.format(new Date()))
+					.append(" using version ").append(Constants.PROJECT_VERSION).append("")
+			.toString();
+		}
 
-
-	//---o---o---o---o---o---o---o---o---o---o---o---o---o---o---o---o---o---o---o---o---o---o---//
-
+		clazz.javadoc().append(header);
+	}
 }
