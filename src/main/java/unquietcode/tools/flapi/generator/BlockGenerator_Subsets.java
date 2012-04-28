@@ -6,6 +6,7 @@ import unquietcode.tools.flapi.outline.BlockOutline;
 import unquietcode.tools.flapi.outline.MethodOutline;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -25,11 +26,6 @@ public class BlockGenerator_Subsets extends AbstractBlockGenerator<BlockOutline,
 	public Void generate() {
 		for (Set<MethodOutline> combination : makeCombinations(outline.getDynamicMethods())) {
 
-			// skip the base, since it's created elsewhere
-			if (combination.isEmpty()) {
-				continue;
-			}
-
 			// make the interface (the empty one should be the only already created one)
 			JDefinedClass iSubset = getInterface(getGeneratedName(outline.getBaseInterface(), combination));
 			iSubset.generify("_ReturnType");
@@ -37,9 +33,26 @@ public class BlockGenerator_Subsets extends AbstractBlockGenerator<BlockOutline,
 			// make the class
 			JDefinedClass cSubset = createSubsetImpl(combination);
 
-			// add the required methods (in the base) to interface
+			// add the required methods
 			for (MethodOutline method : outline.getRequiredMethods()) {
+
+				// add to interface
 				addMethod(iSubset, getDynamicReturnType(outline, combination, method, true), JMod.NONE, method);
+
+				// add to implementation
+				JType returnType;
+				if (method.getBlockChain().isEmpty()) {
+					if (method.isTerminal()) {
+						returnType = ref(Object.class);
+					} else {
+						returnType = iSubset.erasure();
+					}
+				} else {
+					returnType = getInterface(method.getBlockChain().get(0).getTopLevelInterface());
+				}
+
+				JExpression initialReturnValue = method.isTerminal() ? JExpr.ref("_returnValue") : JExpr._this();
+				addMethod(cSubset, returnType, initialReturnValue, method);
 			}
 
 			// add the dynamic methods
@@ -50,18 +63,12 @@ public class BlockGenerator_Subsets extends AbstractBlockGenerator<BlockOutline,
 				addMethod(iSubset, returnType, JMod.NONE, method);
 
 				// add to implementation
-
-				// this is the last method, and the last instance of it
-				JExpression initialReturnValue;
-				if (combination.size() == 1 && method.maxOccurrences == 1) {
-					initialReturnValue = JExpr._this();
-				} else {
-					JType initialReturnType = getDynamicReturnType(outline, combination, method, false).erasure();
-					initialReturnValue =
-						JExpr._new(initialReturnType)
-							.arg(JExpr.ref("_helper"))
-							.arg(JExpr.ref("_returnValue"));
-				}
+				JType initialReturnType = getDynamicReturnType(outline, combination, method, false).erasure();
+				JExpression initialReturnValue =
+					JExpr._new(initialReturnType)
+						.arg(JExpr.ref("_helper"))
+						.arg(JExpr.ref("_returnValue"))
+				;
 
 				addMethod(cSubset, returnType.erasure(), initialReturnValue, method);
 			}
@@ -73,20 +80,17 @@ public class BlockGenerator_Subsets extends AbstractBlockGenerator<BlockOutline,
 	private JDefinedClass createSubsetImpl(Set<MethodOutline> methodCombination) {
 		JDefinedClass cSubset = getClass(getGeneratedName(outline.getBaseImplementation(), methodCombination));
 		JDefinedClass iSubset = getInterface(getGeneratedName(outline.getBaseInterface(), methodCombination));
-
-		// if empty, then this is the base which we already made
-		if (methodCombination.isEmpty()) {
-			return cSubset;
-		}
-
-		JDefinedClass baseImpl = getClass(outline.getBaseImplementation());
-		cSubset._extends(baseImpl);
 		cSubset._implements(iSubset);
 
+		JFieldVar _helper = cSubset.field(JMod.PRIVATE+JMod.FINAL, getInterface(outline.getHelperInterface()), "_helper");
+		JFieldVar _returnValue = cSubset.field(JMod.PRIVATE+JMod.FINAL, ref(Object.class), "_returnValue");
+
 		JMethod constructor = cSubset.constructor(JMod.NONE);
-		JVar helper = constructor.param(getInterface(outline.getHelperInterface()), "helper");
-		JVar returnValue = constructor.param(ref(Object.class), "returnValue");
-		constructor.body().invoke("super").arg(helper).arg(returnValue);
+		JVar pHelper = constructor.param(getInterface(outline.getHelperInterface()), "helper");
+		JVar pReturnValue = constructor.param(ref(Object.class), "returnValue");
+
+		constructor.body().assign(_helper, pHelper);
+		constructor.body().assign(_returnValue, pReturnValue);
 
 		return cSubset;
 	}

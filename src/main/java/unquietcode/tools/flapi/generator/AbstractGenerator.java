@@ -78,11 +78,6 @@ public abstract class AbstractGenerator<_InType extends Outline, _OutType> imple
 							  ? getInterface(getGeneratedName(block.getBaseInterface(), allMethods))
 							  : getClass(getGeneratedName(block.getBaseImplementation(), allMethods));
 		JClass returnType;
-//
-//		//TODO this is bad, because it adds type params to the base builder unexpectedly
-//		if (builder.typeParams().length == 0) {
-//			builder.generify("_ReturnType");
-//		}
 
 		// get base type without block chain
 		if (method.isTerminal()) {
@@ -122,33 +117,27 @@ public abstract class AbstractGenerator<_InType extends Outline, _OutType> imple
 
 	private JType getType(String name) {
 		JType clazz;
-		JCodeModel model = ctx.model;
 
-		if ("boolean".equals(name)) {
-			clazz = model.BOOLEAN;
-		} else if ("int".equals(name)) {
-			clazz = model.INT;
-		} else if ("byte".equals(name)) {
-			clazz = model.BYTE;
-		} else if ("short".equals(name)) {
-			clazz = model.SHORT;
-		} else if ("float".equals(name)) {
-			clazz = model.FLOAT;
-		} else if ("double".equals(name)) {
-			clazz = model.DOUBLE;
-		} else {
-			// expect fully qualified class name
-			clazz = model._getClass(name);
+		dance: {
+			try {
+				Class c = Thread.currentThread().getContextClassLoader().loadClass(name);
+				clazz = ref(c);
+				break dance;
+			} catch (ClassNotFoundException ex) {
+				// nothing
+			}
 
 			// try java.lang package
-			if (clazz == null) {
-				clazz = model.ref("java.lang."+name);
+			try {
+				Class c = Thread.currentThread().getContextClassLoader().loadClass("java.lang."+name);
+				clazz = ref(c);
+				break dance;
+			} catch (ClassNotFoundException ex) {
+				// nothing
 			}
 
-			// fail
-			if (clazz == null) {
-				throw new RuntimeException("Could not find type reference for type name '"+ name +"'.");
-			}
+			// Maybe it's primitive, or just not visible. Let the code model decide.
+			clazz = ref(name);
 		}
 
 		return clazz;
@@ -171,20 +160,20 @@ public abstract class AbstractGenerator<_InType extends Outline, _OutType> imple
 				if (!method.isRequired()) {
 					next.remove(method);
 					changed = true;
-				}
 
-				// if we can afford to lose one occurrence then do it
-				if (method.maxOccurrences > 1) {
-					MethodOutline m = method.copy();
+					// if we can afford to lose one occurrence then do it and re-add
+					if (method.maxOccurrences > 1) {
+						MethodOutline m = method.copy();
 
-					m.maxOccurrences = m.maxOccurrences - 1;
-					next.add(m);
-					changed = true;
+						m.maxOccurrences = m.maxOccurrences - 1;
+						next.add(m);
+					}
 				}
 
 				// only push if we've made useful changes
 				if (changed) {
-					// don't include empty sets  (this practice is debatable)
+
+					// don't include empty sets here
 					if (!next.isEmpty()) {
 						stack.push(next);
 					}
@@ -192,23 +181,48 @@ public abstract class AbstractGenerator<_InType extends Outline, _OutType> imple
 			}
 		}
 
+		// always add the empty set
+		combinations.add(Collections.<MethodOutline>emptySet());
+		combinations = deduplicate(combinations);
 		return combinations;
+	}
+
+	private Set<Set<MethodOutline>> deduplicate(Set<Set<MethodOutline>> combinations) {
+		Set<Set<MethodOutline>> retval = new HashSet<Set<MethodOutline>>();
+		Set<String> seen = new HashSet<String>();
+
+		// compute the string key for the combination
+		// if already seen, don't include in the result set
+		for (Set<MethodOutline> combination : combinations) {
+			Set<MethodOutline> sorted = new TreeSet<MethodOutline>(combination);
+			StringBuilder keyBuilder = new StringBuilder();
+
+			for (MethodOutline method : sorted) {
+				keyBuilder.append(method).append("|");
+			}
+
+			String key = keyBuilder.toString();
+
+			if (!seen.contains(key)) {
+				retval.add(sorted);
+				seen.add(key);
+			}
+		}
+
+		return retval;
 	}
 
 	public static String getGeneratedName(String suffix, Set<MethodOutline> methods) {
 		StringBuilder name = new StringBuilder();
 		name.append(name).append(suffix);
 
-
-		// TODO change to mapped names after debugging (if condensed parameter)
-
-		for (MethodOutline method : methods) {
+		for (MethodOutline method : new TreeSet<MethodOutline>(methods)) {
 			MethodParser parsed = new MethodParser(method.methodSignature);
 			name.append("_").append(parsed.methodName);
 			//.append(nameMap.get(getMethodName(method.methodSignature)))
 
 			if (method.maxOccurrences > 1) {
-				name.append("x").append(method.maxOccurrences);
+				name.append("$").append(method.maxOccurrences);
 			}
 		}
 

@@ -20,13 +20,6 @@ public class MethodOutline implements Comparable<MethodOutline> {
 	
 	
 	public List<BlockOutline> getBlockChain() {
-//		List<BlockOutline> chain = new ArrayList<BlockOutline>();
-//		for (BlockOutline block : blockChain) {
-//			chain.addAll(block.getConstructor().getBlockChain());
-//		}
-//
-//		return chain;
-
 		return blockChain;
 	}
 	
@@ -58,6 +51,11 @@ public class MethodOutline implements Comparable<MethodOutline> {
 		clone.blockChain.addAll(blockChain);
 
 		return clone;
+	}
+
+	@Override
+	public String toString() {
+		return methodSignature + "-" + maxOccurrences;
 	}
 
 	/*

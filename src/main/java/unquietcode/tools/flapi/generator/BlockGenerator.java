@@ -23,11 +23,11 @@ public class BlockGenerator extends AbstractGenerator<BlockOutline, Void> {
 		BlockGenerator_Helper helperGen = new BlockGenerator_Helper(outline, ctx);
 		JDefinedClass iHelper = helperGen.generate();
 
-		BlockGenerator_BaseInterface baseInterfaceGen = new BlockGenerator_BaseInterface(outline, ctx);
-		JDefinedClass iBuilder = baseInterfaceGen.generate();
-
-		BlockGenerator_BaseImplementation baseImplementationGen = new BlockGenerator_BaseImplementation(outline, ctx);
-		JDefinedClass cBuilder = baseImplementationGen.generate();
+//		BlockGenerator_BaseInterface baseInterfaceGen = new BlockGenerator_BaseInterface(outline, ctx);
+//		JDefinedClass iBuilder = baseInterfaceGen.generate();
+//
+//		BlockGenerator_BaseImplementation baseImplementationGen = new BlockGenerator_BaseImplementation(outline, ctx);
+//		JDefinedClass cBuilder = baseImplementationGen.generate();
 
 		BlockGenerator_Subsets subsetsGen = new BlockGenerator_Subsets(outline, ctx);
 		subsetsGen.generate();

@@ -62,8 +62,8 @@ public class MethodHelperImpl implements MethodHelper {
 
 	@Override
 	public void between(int atLeast, int atMost) {
-		atMost(atMost);
 		atLeast(atLeast);
+		atMost(atMost);
 	}
 
 	@Override
