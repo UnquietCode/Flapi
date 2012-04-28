@@ -2,6 +2,7 @@ package unquietcode.tools.flapi.generator;
 
 import com.sun.codemodel.*;
 import unquietcode.tools.flapi.MethodParser;
+import unquietcode.tools.flapi.Pair;
 import unquietcode.tools.flapi.outline.BlockOutline;
 import unquietcode.tools.flapi.outline.MethodOutline;
 import unquietcode.tools.flapi.outline.Outline;
@@ -42,9 +43,9 @@ public abstract class AbstractGenerator<_InType extends Outline, _OutType> imple
 		JMethod m = _class.method(mods, returnType, parsed.methodName);
 
 		// regular params
-		for (Map.Entry<String, String> entry : parsed.params.entrySet()) {
-			JType clazz = getType(entry.getValue());
-			m.param(clazz, entry.getKey());
+		for (Pair<String, String> entry : parsed.params) {
+			JType clazz = getType(entry.first);
+			m.param(clazz, entry.second);
 		}
 
 		// varargs
