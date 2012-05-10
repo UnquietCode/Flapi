@@ -2,52 +2,84 @@
 package unquietcode.tools.flapi.builder;
 
 
+
+/**
+ * This class was generated using Flapi, the fluent API generator for Java.
+ * Modifications to this file will be lost upon regeneration.
+ * You have been warned!
+ * 
+ * Visit http://www.unquietcode.com/flapi for more information.
+ * 
+ * 
+ * Generated on May 09, 2012 23:25:34 CDT using version 0.1
+ * 
+ */
 public class ImplMethodBuilder
     implements MethodBuilder
 {
 
-    protected final MethodHelper _helper;
-    protected final Object _returnValue;
+    private final MethodHelper _helper;
+    private final Object _returnValue;
 
     ImplMethodBuilder(MethodHelper helper, Object returnValue) {
         _helper = helper;
         _returnValue = returnValue;
     }
 
+    private void _transferInvocations(Object next) {
+        // nothing
+    }
+
+    private void _checkInvocations() {
+        // nothing
+    }
+
     public Object any() {
+        _checkInvocations();
         _helper.any();
          
-        return _returnValue;
+        Object retval = _returnValue;
+        return retval;
     }
 
     public Object atLeast(int num) {
+        _checkInvocations();
         _helper.atLeast(num);
          
-        return _returnValue;
+        Object retval = _returnValue;
+        return retval;
     }
 
     public Object atMost(int num) {
+        _checkInvocations();
         _helper.atMost(num);
          
-        return _returnValue;
+        Object retval = _returnValue;
+        return retval;
     }
 
-    public Object between(int atMost, int atLeast) {
-        _helper.between(atMost, atLeast);
+    public Object between(int atLeast, int atMost) {
+        _checkInvocations();
+        _helper.between(atLeast, atMost);
          
-        return _returnValue;
+        Object retval = _returnValue;
+        return retval;
     }
 
     public Object last() {
+        _checkInvocations();
         _helper.last();
          
-        return _returnValue;
+        Object retval = _returnValue;
+        return retval;
     }
 
     public Object once() {
+        _checkInvocations();
         _helper.once();
          
-        return _returnValue;
+        Object retval = _returnValue;
+        return retval;
     }
 
 }

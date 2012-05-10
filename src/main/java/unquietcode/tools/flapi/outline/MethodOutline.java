@@ -2,6 +2,7 @@ package unquietcode.tools.flapi.outline;
 
 
 import unquietcode.tools.flapi.MethodParser;
+import unquietcode.tools.flapi.Pair;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,11 +23,15 @@ public class MethodOutline implements Comparable<MethodOutline> {
 	public List<BlockOutline> getBlockChain() {
 		return blockChain;
 	}
-	
+
+	/*
+		A terminal method will return out of the class, though
+		may go through a block chain first.
+	 */
 	public boolean isTerminal() {
 		return isTerminal;
 	}
-	
+
 	public void isTerminal(boolean value) {
 		isTerminal = value;
 	}
@@ -35,8 +40,10 @@ public class MethodOutline implements Comparable<MethodOutline> {
 		MethodParser parsed = new MethodParser(methodSignature);
 		return parsed.returnType;
 	}
-	
-	
+
+	/*
+		A required method must be present on all interfaces.
+	 */
 	public boolean isRequired() {
 		return maxOccurrences == -1 || isTerminal;
 	}
@@ -56,6 +63,22 @@ public class MethodOutline implements Comparable<MethodOutline> {
 	@Override
 	public String toString() {
 		return methodSignature + "-" + maxOccurrences;
+	}
+
+	public String getMethodKey() {
+		StringBuilder sb = new StringBuilder();
+		MethodParser parser = new MethodParser(methodSignature);
+		sb.append(parser.methodName).append("$");
+		boolean first = true;
+
+		for (Pair<String, String> param : parser.params) {
+			if (!first) { sb.append("$"); }
+			else { first = false; }
+
+			sb.append(param.first).append("_").append(param.second);
+		}
+
+		return sb.toString();
 	}
 
 	/*

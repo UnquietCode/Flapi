@@ -38,6 +38,10 @@ public abstract class AbstractGenerator<_InType extends Outline, _OutType> imple
 		return ctx.model.ref(FQCN);
 	}
 
+	protected String makeMethodKey(BlockOutline block, MethodOutline method) {
+		return block.getName()+"_"+method.getMethodKey();
+	}
+
 	protected JMethod addMethod(JDefinedClass _class, JType returnType, int mods, MethodOutline method) {
 		MethodParser parsed = new MethodParser(method.methodSignature);
 		JMethod m = _class.method(mods, returnType, parsed.methodName);
@@ -73,11 +77,33 @@ public abstract class AbstractGenerator<_InType extends Outline, _OutType> imple
 
 		return helperCall;
 	}
+
+	/*
+		For a single invocation, computes the 'next' method, which is the minus method.
+		This means that either the method is removed and then added back either with
+		a decremented value or not at all. Only works for dynamic methods.
+	 */
+	protected Set<MethodOutline> computeMinusMethod(Set<MethodOutline> allMethods, MethodOutline method) {
+		if (method.isRequired()) {
+			return new HashSet<MethodOutline>(allMethods);
+		}
+
+		// compute minus method
+		Set<MethodOutline> minusMethod = new HashSet<MethodOutline>(allMethods);
+		minusMethod.remove(method);
+
+		// only add back if it's not the last instance
+		if (method.maxOccurrences > 1) {
+			MethodOutline m = method.copy();
+			m.maxOccurrences = m.maxOccurrences - 1;
+			minusMethod.add(m);
+		}
+
+		return minusMethod;
+	}
 	
-	protected JClass getDynamicReturnType(BlockOutline block, Set<MethodOutline> allMethods, MethodOutline method, boolean interfaceDesired) {
-		JDefinedClass builder = interfaceDesired
-							  ? getInterface(getGeneratedName(block.getBaseInterface(), allMethods))
-							  : getClass(getGeneratedName(block.getBaseImplementation(), allMethods));
+	protected JClass getDynamicReturnType(BlockOutline block, Set<MethodOutline> allMethods, MethodOutline method) {
+		JDefinedClass builder = getInterface(getGeneratedName(block.getBaseInterface(), allMethods));
 		JClass returnType;
 
 		// get base type without block chain
@@ -86,23 +112,9 @@ public abstract class AbstractGenerator<_InType extends Outline, _OutType> imple
 		} else if (method.isRequired()) {
 			returnType = builder.narrow(builder.typeParams()[0]);
 		} else {
-			// compute minus method
-			Set<MethodOutline> minusMethod = new HashSet<MethodOutline>(allMethods);
-			minusMethod.remove(method);
-
-			// only add back if it's not the last instance
-			if (method.maxOccurrences > 1) {
-				MethodOutline m = method.copy();
-				m.maxOccurrences = m.maxOccurrences - 1;
-				minusMethod.add(m);
-			}
-
-			if (interfaceDesired) {
-				returnType = getInterface(getGeneratedName(block.getBaseInterface(), minusMethod));
-				returnType = returnType.narrow(builder.typeParams()[0]);
-			} else {
-				returnType = getClass(getGeneratedName(block.getBaseImplementation(), minusMethod));
-			}
+			Set<MethodOutline> minusMethod = computeMinusMethod(allMethods, method);
+			returnType = getInterface(getGeneratedName(block.getBaseInterface(), minusMethod));
+			returnType = returnType.narrow(builder.typeParams()[0]);
 		}
 
 		// add in the block chain

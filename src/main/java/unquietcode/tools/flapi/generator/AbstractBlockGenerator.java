@@ -20,6 +20,45 @@ public abstract class AbstractBlockGenerator<_From extends BlockOutline, _To> ex
 		super(outline, context);
 	}
 
+	protected JType computeImplementationReturnType(JDefinedClass iBuilder, Set<MethodOutline> allMethods, MethodOutline method) {
+		JType returnType;
+
+		if (method.getBlockChain().isEmpty() && method.isTerminal()) {
+			returnType = ref(Object.class);
+		} else {
+			returnType = getDynamicReturnType(outline, allMethods, method).erasure();
+		}
+
+		return returnType;
+	}
+
+	protected JExpression computeInitialReturnValue(Set<MethodOutline> allMethods, MethodOutline method) {
+		JExpression returnValue;
+
+		// required method will return self
+		if (method.isRequired()) {
+			returnValue = JExpr._this();
+
+		// terminal method exits the class (eventually)
+		} else if (method.isTerminal()) {
+			returnValue = JExpr.ref("_returnValue");
+
+		// dynamic method moves laterally to a sibling class
+		} else {
+			JType returnType = getClass(
+				getGeneratedName(outline.getBaseImplementation(), computeMinusMethod(allMethods, method))
+			);
+
+			returnValue =
+				JExpr._new(returnType)
+					.arg(JExpr.ref("_helper"))
+					.arg(JExpr.ref("_returnValue"))
+			;
+		}
+
+		return returnValue;
+	}
+
 	protected void addMethod(JDefinedClass cBuilder, JType returnType, JExpression initialReturnValue, MethodOutline method) {
 		JMethod _method = addMethod(cBuilder, returnType, JMod.PUBLIC, method);
 
@@ -27,6 +66,11 @@ public abstract class AbstractBlockGenerator<_From extends BlockOutline, _To> ex
 		List<JVar> helpers = new ArrayList<JVar>();
 		for (BlockOutline blockChain : method.getBlockChain()) {
 			helpers.add(addHelper(getInterface(blockChain.getHelperInterface()), helpers.size() + 1, _method));
+		}
+
+		// invocation check before helper call
+		if (method.isTerminal()) {
+			_method.body().invoke("_checkInvocations");
 		}
 
 		// invoke the main helper
@@ -41,15 +85,12 @@ public abstract class AbstractBlockGenerator<_From extends BlockOutline, _To> ex
 		_method.body().add(helperCall);
 		_method.body().directStatement(" ");
 
-		// build the return type, using the values of the helpers populated
 		JExpression returnValue = initialReturnValue;
 
 		for (int i = method.getBlockChain().size()-1; i >=0; --i) {
 			BlockOutline targetBlock = method.getBlockChain().get(i);
 			JDefinedClass iTargetBuilder = getInterface(targetBlock.getTopLevelInterface());
 			JDefinedClass cTargetBuilder = getClass(targetBlock.getTopLevelImplementation());
-
-			returnType = iTargetBuilder.narrow(returnType);
 
 			JVar invocation = _method.body().decl(
 				iTargetBuilder, "step" + (i + 1),
@@ -61,8 +102,25 @@ public abstract class AbstractBlockGenerator<_From extends BlockOutline, _To> ex
 			returnValue = invocation;
 		}
 
+		JExpression _retval = _method.body().decl(returnType, "retval", returnValue);
+
+		// TODO optimization to avoid unecessary variable declaration
+//		JExpression _retval = returnValue != JExpr._this()
+//				? _method.body().decl(returnType, "retval", returnValue)
+//				: returnValue;
+
+		// invocation tracking
+		if (method.minOccurrences > 0) {
+			_method.body().directStatement("--ic_"+makeMethodKey(outline, method)+";"); //TODO: Is there a proper way?
+		}
+
+		// No need to transfer if it is to ourself!
+		if (!method.isTerminal() && returnValue != JExpr._this()) {
+			_method.body().invoke("_transferInvocations").arg(_retval);
+		}
+
 		// return call
-		_method.body()._return(returnValue);
+		_method.body()._return(_retval);
 	}
 
 	private JVar addHelper(JDefinedClass iHelper, int id, JMethod _method) {

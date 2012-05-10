@@ -45,25 +45,39 @@ public class MethodHelperImpl implements MethodHelper {
 	@Override
 	public void atLeast(int num) {
 		if (num < 0) {
-			throw new RuntimeException("must have at least >= 0");
+			throw new DescriptorBuilderException("must have at least >= 0");
 		}
 
+		method.maxOccurrences = -1;
 		method.minOccurrences = num;
 	}
 
 	@Override
 	public void atMost(int num) {
 		if (num <= 0) {
-			throw new RuntimeException("must have at least > 0");
+			throw new DescriptorBuilderException("must have at least > 0");
 		}
 
+		method.minOccurrences = 0;
 		method.maxOccurrences = num;
 	}
 
 	@Override
 	public void between(int atLeast, int atMost) {
-		atLeast(atLeast);
-		atMost(atMost);
+		if (atLeast < 0) {
+			throw new DescriptorBuilderException("must have at least >= 0");
+		}
+
+		if (atMost <= 0) {
+			throw new DescriptorBuilderException("must have at most > 0");
+		}
+
+		if (atMost < atLeast) {
+			throw new DescriptorBuilderException("must have atLeast <= then atMost");
+		}
+
+		method.maxOccurrences = atLeast;
+		method.minOccurrences = atMost;
 	}
 
 	@Override

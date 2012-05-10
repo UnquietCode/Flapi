@@ -1,7 +1,7 @@
 package unquietcode.tools.flapi;
 
 import org.junit.Test;
-import unquietcode.tools.flapi.builder.DescriptorGenerator;
+import unquietcode.tools.flapi.builder.*;
 
 /**
  * @author Benjamin Fagin
@@ -26,6 +26,7 @@ public class ActualDescriptorTest {
 				.addMethod("setDescriptorName(String descriptorName)").between(1,1)
 				.addMethod("setStartingMethodName(String methodName)").once()
 				.addMethod("setReturnType(Class returnType)").between(1,1)
+				.addMethod("enableCondensedClassNames(boolean value)").once()
 				.addMethod("build()").last()
 
 				.startBlock("Method", "addMethod(String methodSignature)").any()

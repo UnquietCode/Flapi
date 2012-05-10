@@ -2,6 +2,18 @@
 package unquietcode.tools.flapi.builder;
 
 
+
+/**
+ * This class was generated using Flapi, the fluent API generator for Java.
+ * Modifications to this file will be lost upon regeneration.
+ * You have been warned!
+ * 
+ * Visit http://www.unquietcode.com/flapi for more information.
+ * 
+ * 
+ * Generated on May 09, 2012 23:25:34 CDT using version 0.1
+ * 
+ */
 public interface DescriptorBuilder_setDescriptorName_setPackage_setReturnType_setStartingMethodName_showLog<_ReturnType >{
 
 
@@ -11,14 +23,14 @@ public interface DescriptorBuilder_setDescriptorName_setPackage_setReturnType_se
 
     MethodBuilder_addBlockChain<BlockBuilder<DescriptorBuilder_setDescriptorName_setPackage_setReturnType_setStartingMethodName_showLog<_ReturnType>>> startBlock(String blockName, String methodSignature);
 
-    DescriptorBuilder_showLog_setReturnType_setPackage_setStartingMethodName<_ReturnType> setDescriptorName(String descriptorName);
+    DescriptorBuilder_setPackage_setReturnType_setStartingMethodName_showLog<_ReturnType> setDescriptorName(String descriptorName);
 
-    DescriptorBuilder_showLog_setReturnType_setDescriptorName_setStartingMethodName<_ReturnType> setPackage(String packageName);
+    DescriptorBuilder_setDescriptorName_setReturnType_setStartingMethodName_showLog<_ReturnType> setPackage(String packageName);
 
-    DescriptorBuilder_showLog_setDescriptorName_setPackage_setStartingMethodName<_ReturnType> setReturnType(Class returnType);
+    DescriptorBuilder_setDescriptorName_setPackage_setStartingMethodName_showLog<_ReturnType> setReturnType(Class returnType);
 
-    DescriptorBuilder_showLog_setReturnType_setDescriptorName_setPackage<_ReturnType> setStartingMethodName(String methodName);
+    DescriptorBuilder_setDescriptorName_setPackage_setReturnType_showLog<_ReturnType> setStartingMethodName(String methodName);
 
-    DescriptorBuilder_setReturnType_setDescriptorName_setPackage_setStartingMethodName<_ReturnType> showLog(boolean value);
+    DescriptorBuilder_setDescriptorName_setPackage_setReturnType_setStartingMethodName<_ReturnType> showLog(boolean value);
 
 }

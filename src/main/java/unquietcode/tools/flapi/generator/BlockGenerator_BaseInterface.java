@@ -30,7 +30,7 @@ public class BlockGenerator_BaseInterface extends AbstractGenerator<BlockOutline
 
 		// add required methods to base
 		for (MethodOutline method : outline.getRequiredMethods()) {
-			addMethod(iBuilder, getDynamicReturnType(outline, Collections.<MethodOutline>emptySet(), method, true), JMod.NONE, method);
+			addMethod(iBuilder, getDynamicReturnType(outline, Collections.<MethodOutline>emptySet(), method), JMod.NONE, method);
 		}
 
 		return iBuilder;

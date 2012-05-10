@@ -4,6 +4,8 @@ import com.sun.codemodel.*;
 import unquietcode.tools.flapi.outline.BlockOutline;
 import unquietcode.tools.flapi.outline.MethodOutline;
 
+import java.util.Collections;
+
 /**
  * @author Ben Fagin
  * @version 04-24-2012
@@ -36,19 +38,8 @@ public class BlockGenerator_BaseImplementation extends AbstractBlockGenerator<Bl
 
 		// add required methods to base
 		for (MethodOutline method : outline.getRequiredMethods()) {
-			JType returnType;
-			if (method.getBlockChain().isEmpty()) {
-				if (method.isTerminal()) {
-					returnType = ref(Object.class);
-				} else {
-					returnType = iBuilder.erasure();
-				}
-			} else {
-				returnType = getInterface(method.getBlockChain().get(0).getTopLevelInterface());
-			}
-
 			JExpression initialReturnValue = method.isTerminal() ? JExpr.ref("_returnValue") : JExpr._this();
-			addMethod(cBuilder, returnType, initialReturnValue, method);
+			addMethod(cBuilder, computeImplementationReturnType(iBuilder, Collections.<MethodOutline>emptySet(), method), initialReturnValue, method);
 		}
 
 		return cBuilder;
