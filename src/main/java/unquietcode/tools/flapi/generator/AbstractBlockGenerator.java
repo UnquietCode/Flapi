@@ -20,6 +20,7 @@
 package unquietcode.tools.flapi.generator;
 
 import com.sun.codemodel.*;
+import unquietcode.tools.flapi.Constants;
 import unquietcode.tools.flapi.ObjectWrapper;
 import unquietcode.tools.flapi.outline.BlockOutline;
 import unquietcode.tools.flapi.outline.MethodOutline;
@@ -60,7 +61,7 @@ public abstract class AbstractBlockGenerator<_From extends BlockOutline, _To> ex
 
 		// terminal method exits the class (eventually)
 		} else if (method.isTerminal()) {
-			returnValue = JExpr.ref("_returnValue");
+			returnValue = JExpr.ref(Constants.RETURN_VALUE_NAME);
 
 		// dynamic method moves laterally to a sibling class
 		} else {
@@ -68,8 +69,8 @@ public abstract class AbstractBlockGenerator<_From extends BlockOutline, _To> ex
 
 			returnValue =
 				JExpr._new(returnType)
-					.arg(JExpr.ref("_helper"))
-					.arg(JExpr.ref("_returnValue"))
+					.arg(JExpr.ref(Constants.HELPER_VALUE_NAME))
+					.arg(JExpr.ref(Constants.RETURN_VALUE_NAME))
 			;
 		}
 

@@ -20,6 +20,7 @@
 package unquietcode.tools.flapi.generator;
 
 import com.sun.codemodel.*;
+import unquietcode.tools.flapi.Constants;
 import unquietcode.tools.flapi.ObjectWrapper;
 import unquietcode.tools.flapi.outline.BlockOutline;
 import unquietcode.tools.flapi.outline.MethodOutline;
@@ -62,7 +63,7 @@ public class BlockGenerator extends AbstractGenerator<BlockOutline, Void> {
 			int i=1;
 			for (BlockOutline block : method.getBlockChain()) {
 				JDefinedClass blockHelper = getHelperInterface(block);
-				_method.param(ref(ObjectWrapper.class).narrow(blockHelper), "_helper"+(i++));
+				_method.param(ref(ObjectWrapper.class).narrow(blockHelper), Constants.HELPER_VALUE_NAME+(i++));
 			}
 		}
 

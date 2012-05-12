@@ -29,5 +29,9 @@ public final class Constants {
 	private Constants() { }
 
 	public static final String PROJECT_URL = "http://www.unquietcode.com/flapi";
-	public static final String PROJECT_VERSION = "0.1";
+	public static final String PROJECT_VERSION = "0.2";
+
+	public static final String RETURN_TYPE_NAME = "_ReturnType";
+	public static final String RETURN_VALUE_NAME = "_returnValue";
+	public static final String HELPER_VALUE_NAME = "_helper";
 }

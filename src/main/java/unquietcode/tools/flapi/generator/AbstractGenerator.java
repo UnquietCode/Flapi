@@ -20,6 +20,7 @@
 package unquietcode.tools.flapi.generator;
 
 import com.sun.codemodel.*;
+import unquietcode.tools.flapi.Constants;
 import unquietcode.tools.flapi.MethodParser;
 import unquietcode.tools.flapi.Pair;
 import unquietcode.tools.flapi.outline.BlockOutline;
@@ -81,7 +82,7 @@ public abstract class AbstractGenerator<_InType extends Outline, _OutType> imple
 	}
 
 	protected JInvocation makeHelperCall(JMethod _method, MethodOutline method) {
-		JFieldRef _helper = JExpr.ref("_helper");
+		JFieldRef _helper = JExpr.ref(Constants.HELPER_VALUE_NAME);
 		JInvocation helperCall = _helper.invoke(_method.name());
 
 		// normal args

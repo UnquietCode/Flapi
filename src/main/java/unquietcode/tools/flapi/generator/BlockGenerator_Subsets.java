@@ -20,6 +20,7 @@
 package unquietcode.tools.flapi.generator;
 
 import com.sun.codemodel.*;
+import unquietcode.tools.flapi.Constants;
 import unquietcode.tools.flapi.MinimumInvocationsException;
 import unquietcode.tools.flapi.outline.BlockOutline;
 import unquietcode.tools.flapi.outline.MethodOutline;
@@ -45,7 +46,7 @@ public class BlockGenerator_Subsets extends AbstractBlockGenerator<BlockOutline,
 
 			// make the interface (the empty one should be the only already created one)
 			JDefinedClass iSubset = getSubsetInterface(outline, combination);
-			iSubset.generify("_ReturnType");
+			iSubset.generify(Constants.RETURN_TYPE_NAME);
 
 			// make the class
 			JDefinedClass cSubset = createSubsetImpl(combination);
@@ -58,7 +59,7 @@ public class BlockGenerator_Subsets extends AbstractBlockGenerator<BlockOutline,
 				addMethod(iSubset, getDynamicReturnType(outline, combination, method), JMod.NONE, method);
 
 				// add to implementation
-				JExpression initialReturnValue = method.isTerminal() ? JExpr.ref("_returnValue") : JExpr._this();
+				JExpression initialReturnValue = method.isTerminal() ? JExpr.ref(Constants.RETURN_VALUE_NAME) : JExpr._this();
 				addMethod(cSubset, computeImplementationReturnType(iSubset, combination, method), initialReturnValue, method);
 			}
 
@@ -87,8 +88,8 @@ public class BlockGenerator_Subsets extends AbstractBlockGenerator<BlockOutline,
 		JDefinedClass iSubset = getSubsetInterface(outline, methodCombination);
 		cSubset._implements(iSubset);
 
-		JFieldVar _helper = cSubset.field(JMod.PRIVATE+JMod.FINAL, getHelperInterface(outline), "_helper");
-		JFieldVar _returnValue = cSubset.field(JMod.PRIVATE+JMod.FINAL, ref(Object.class), "_returnValue");
+		JFieldVar _helper = cSubset.field(JMod.PRIVATE+JMod.FINAL, getHelperInterface(outline), Constants.HELPER_VALUE_NAME);
+		JFieldVar _returnValue = cSubset.field(JMod.PRIVATE+JMod.FINAL, ref(Object.class), Constants.RETURN_VALUE_NAME);
 
 		// constructor
 		JMethod constructor = cSubset.constructor(JMod.NONE);
