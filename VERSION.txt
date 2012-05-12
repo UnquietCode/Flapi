@@ -1,0 +1,5 @@
+# Version 0.1
+Notes also available at: https://github.com/UnquietCode/Flapi/wiki/v0_1
+
+Initial beta release.
+------------------------------------------------
