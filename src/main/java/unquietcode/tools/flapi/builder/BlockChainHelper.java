@@ -12,16 +12,16 @@ import unquietcode.tools.flapi.ObjectWrapper;
  * Visit http://www.unquietcode.com/flapi for more information.
  * 
  * 
- * Generated on May 12, 2012 24:10:05 CDT using version 0.1
+ * Generated on May 12, 2012 24:38:04 CDT using version 0.1
  * 
  */
 public interface BlockChainHelper {
 
 
-    void startBlock(ObjectWrapper<BlockHelper> _helper1);
-
-    void addBlockReference(String blockName);
+    void startBlock(String blockName, ObjectWrapper<BlockHelper> _helper1);
 
     void addBlockChain(ObjectWrapper<BlockChainHelper> _helper1);
+
+    void addBlockReference(String blockName);
 
 }

@@ -39,7 +39,7 @@ public class ActualDescriptorTest {
 
 					.startBlock("BlockChain", "addBlockChain()").once()
 						.addMethod("addBlockReference(String blockName)").last()
-						.addBlockReference("Block", "startBlock()").last()
+						.addBlockReference("Block", "startBlock(String blockName)").last()
 						.addBlockReference("BlockChain", "addBlockChain()").once()
 					.endBlock()
 				.endBlock()

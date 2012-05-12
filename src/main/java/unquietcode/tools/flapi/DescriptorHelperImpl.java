@@ -62,11 +62,6 @@ public class DescriptorHelperImpl implements DescriptorHelper {
 	}
 
 	@Override
-	public void showLog(boolean value) {
-		// TODO
-	}
-
-	@Override
 	public void addMethod(String methodSignature, ObjectWrapper<MethodHelper> _helper1) {
 		BlockHelperImpl._addMethod(outline.selfBlock, methodSignature, _helper1);
 	}

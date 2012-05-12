@@ -12,7 +12,7 @@ import unquietcode.tools.flapi.ObjectWrapper;
  * Visit http://www.unquietcode.com/flapi for more information.
  * 
  * 
- * Generated on May 12, 2012 24:10:05 CDT using version 0.1
+ * Generated on May 12, 2012 24:38:04 CDT using version 0.1
  * 
  */
 public class ImplBlockChainBuilder_addBlockChain
@@ -43,10 +43,10 @@ public class ImplBlockChainBuilder_addBlockChain
         return retval;
     }
 
-    public BlockBuilder startBlock() {
+    public BlockBuilder startBlock(String blockName) {
         ObjectWrapper<BlockHelper> helper1 = new ObjectWrapper<BlockHelper>();
         _checkInvocations();
-        _helper.startBlock(helper1);
+        _helper.startBlock(blockName, helper1);
          
         BlockBuilder step1 = new ImplBlockBuilder(helper1 .get(), _returnValue);
         BlockBuilder retval = step1;

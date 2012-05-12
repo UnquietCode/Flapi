@@ -13,7 +13,7 @@ import unquietcode.tools.flapi.DescriptorBuilderException;
  * Visit http://www.unquietcode.com/flapi for more information.
  * 
  * 
- * Generated on May 12, 2012 24:10:05 CDT using version 0.1
+ * Generated on May 12, 2012 24:38:04 CDT using version 0.1
  * 
  */
 public class DescriptorGenerator {

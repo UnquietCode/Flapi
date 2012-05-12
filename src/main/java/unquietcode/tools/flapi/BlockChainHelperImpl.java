@@ -18,7 +18,7 @@ public class BlockChainHelperImpl implements BlockChainHelper {
 
 	/*
 		add the reference to the chain (to be resolved later)
-	 */
+	*/
 	@Override
 	public void addBlockReference(String blockName) {
 		BlockReference ref = new BlockReference();
@@ -29,7 +29,7 @@ public class BlockChainHelperImpl implements BlockChainHelper {
 	}
 
 	@Override
-	public void startBlock(String methodSignature, String blockName, ObjectWrapper<BlockHelper> _helper1) {
+	public void startBlock(String blockName, ObjectWrapper<BlockHelper> _helper1) {
 		BlockOutline anonymousBlock = new BlockOutline();
 		anonymousBlock.setName(blockName);
 		blockMethod.getBlockChain().add(0, anonymousBlock);
