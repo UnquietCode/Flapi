@@ -20,6 +20,7 @@ public class ActualDescriptorTest {
 				.setStartingMethodName("create")
 				.setDescriptorName("Descriptor")
 				.setReturnType(Descriptor.class)
+				.enableCondensedClassNames(false)
 
 				.addMethod("showLog(boolean value)").once()
 				.addMethod("setPackage(String packageName)").between(1,1)
@@ -39,7 +40,7 @@ public class ActualDescriptorTest {
 
 					.startBlock("BlockChain", "addBlockChain()").once()
 						.addMethod("addBlockReference(String blockName)").last()
-						.addBlockReference("Block", "startBlock(String blockName, String methodSignature)").last()
+						.addBlockReference("Block", "startBlock()").last()
 						.addBlockReference("BlockChain", "addBlockChain()").once()
 					.endBlock()
 				.endBlock()

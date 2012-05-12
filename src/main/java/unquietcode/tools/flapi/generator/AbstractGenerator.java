@@ -29,7 +29,7 @@ public abstract class AbstractGenerator<_InType extends Outline, _OutType> imple
 	public JDefinedClass getClass(String name) {
 		return ctx.getOrCreateClass(name);
 	}
-	
+
 	protected JClass ref(Class clazz) {
 		return ctx.model.ref(clazz);
 	}
@@ -103,7 +103,7 @@ public abstract class AbstractGenerator<_InType extends Outline, _OutType> imple
 	}
 	
 	protected JClass getDynamicReturnType(BlockOutline block, Set<MethodOutline> allMethods, MethodOutline method) {
-		JDefinedClass builder = getInterface(getGeneratedName(block.getBaseInterface(), allMethods));
+		JDefinedClass builder = getSubsetInterface(block, allMethods);
 		JClass returnType;
 
 		// get base type without block chain
@@ -113,14 +113,14 @@ public abstract class AbstractGenerator<_InType extends Outline, _OutType> imple
 			returnType = builder.narrow(builder.typeParams()[0]);
 		} else {
 			Set<MethodOutline> minusMethod = computeMinusMethod(allMethods, method);
-			returnType = getInterface(getGeneratedName(block.getBaseInterface(), minusMethod));
+			returnType = getSubsetImplementation(block, minusMethod);
 			returnType = returnType.narrow(builder.typeParams()[0]);
 		}
 
 		// add in the block chain
 		for (int i = method.getBlockChain().size()-1; i >=0; --i) {
 			BlockOutline targetBlock = method.getBlockChain().get(i);
-			JDefinedClass targetBuilder = getInterface(targetBlock.getTopLevelInterface());
+			JDefinedClass targetBuilder = getTopLevelInterface(targetBlock);
 
 			returnType = targetBuilder.narrow(returnType);
 		}
@@ -225,22 +225,37 @@ public abstract class AbstractGenerator<_InType extends Outline, _OutType> imple
 		return retval;
 	}
 
-	public static String getGeneratedName(String suffix, Set<MethodOutline> methods) {
-		StringBuilder name = new StringBuilder();
-		name.append(name).append(suffix);
+	//---o---o---o---o---o---o---o---o---o---o---o---o---o---o---o---o---o---o---o---o---o---o---//
 
-		for (MethodOutline method : new TreeSet<MethodOutline>(methods)) {
-			MethodParser parsed = new MethodParser(method.methodSignature);
-			name.append("_").append(parsed.methodName);
-			//.append(nameMap.get(getMethodName(method.methodSignature)))
-
-			if (method.maxOccurrences > 1) {
-				name.append("$").append(method.maxOccurrences);
-			}
-		}
-
-		return name.toString();
+	public JDefinedClass getTopLevelImplementation(BlockOutline block) {
+		return getClass("Impl"+ ctx.getGeneratedName(block.getName() + "Builder", block.getDynamicMethods()));
 	}
-	
 
+	public JDefinedClass getTopLevelInterface(BlockOutline block) {
+		return getInterface(ctx.getGeneratedName(block.getName() + "Builder", block.getDynamicMethods()));
+	}
+
+	public JDefinedClass getSubsetInterface(BlockOutline block, Set<MethodOutline> methods) {
+		return getInterface(ctx.getGeneratedName(block.getName()+"Builder", methods));
+	}
+
+	public JDefinedClass getSubsetImplementation(BlockOutline block, Set<MethodOutline> methods) {
+		return getClass(ctx.getGeneratedName("Impl"+block.getName()+"Builder", methods));
+	}
+
+	public JDefinedClass getBaseImplementation(BlockOutline block) {
+		return getClass("Impl"+block.getName()+"Builder");
+	}
+
+	public JDefinedClass getBaseInterface(BlockOutline block) {
+		return getInterface(block.getName()+"Builder");
+	}
+
+	public JDefinedClass getHelperInterface(BlockOutline block) {
+		return getInterface(block.getName()+"Helper");
+	}
+
+	public JDefinedClass getGeneratorImplementation(BlockOutline block) {
+		return getClass(block.getName()+"Generator");
+	}	
 }

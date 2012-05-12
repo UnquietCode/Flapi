@@ -21,30 +21,6 @@ public class BlockOutline implements Outline {
 
 	public final Set<MethodOutline> methods = new HashSet<MethodOutline>();
 
-	public String getTopLevelImplementation() {
-		return "Impl"+ AbstractGenerator.getGeneratedName(name + "Builder", getDynamicMethods());
-	}
-
-	public String getTopLevelInterface() {
-		return AbstractGenerator.getGeneratedName(name + "Builder", getDynamicMethods());
-	}
-	
-	public String getBaseImplementation() {
-		return "Impl"+name+"Builder";
-	}
-	
-	public String getBaseInterface() {
-		return name+"Builder";
-	}
-	
-	public String getHelperInterface() {
-		return name+"Helper";
-	}
-	
-	public String getGeneratorImplementation() {
-		return name+"Generator";
-	}
-
 	public MethodOutline getConstructor() {
 		return constructor;
 	}

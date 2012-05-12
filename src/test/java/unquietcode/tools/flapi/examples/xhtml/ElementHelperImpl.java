@@ -41,7 +41,6 @@ public class ElementHelperImpl implements ElementHelper {
 
 	@Override
 	public void setValue(String value) {
-		//element.setNodeValue(value);
 		element.setTextContent(value);
 	}
 }

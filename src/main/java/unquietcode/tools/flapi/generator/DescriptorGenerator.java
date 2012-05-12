@@ -19,6 +19,7 @@ import java.util.Map;
 public class DescriptorGenerator extends AbstractGenerator<DescriptorOutline, JCodeModel> {
 	public DescriptorGenerator(DescriptorOutline outline) {
 		super(outline, new GeneratorContext(outline.getPackageName()));
+		ctx.condenseNames(outline.shouldEnableCondensedNames());
 	}
 	
 	@Override
@@ -28,7 +29,7 @@ public class DescriptorGenerator extends AbstractGenerator<DescriptorOutline, JC
 		generatorGen.generate();
 
 		// add the custom methods to the helper interface
-		JDefinedClass helper = ctx.getOrCreateInterface(outline.selfBlock.getHelperInterface());
+		JDefinedClass helper = getHelperInterface(outline.selfBlock);
 		helper.method(JMod.NONE, ref(outline.getReturnType()), "_getReturnValue");
 
 		// now process all blocks

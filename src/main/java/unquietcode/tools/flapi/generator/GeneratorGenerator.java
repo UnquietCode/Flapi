@@ -18,10 +18,10 @@ public class GeneratorGenerator extends AbstractGenerator<GeneratorOutline, JDef
 
 	@Override
 	public JDefinedClass generate() {
-		JType returnType = getInterface(outline.descriptorBlock.getTopLevelInterface()).narrow(outline.returnType);
-		JDefinedClass returnValue = getClass(outline.descriptorBlock.getTopLevelImplementation());
-		JDefinedClass generator = getClass(outline.descriptorBlock.getGeneratorImplementation());
-		JDefinedClass helper = getInterface(outline.descriptorBlock.getHelperInterface());
+		JType returnType = getTopLevelInterface(outline.descriptorBlock).narrow(outline.returnType);
+		JDefinedClass returnValue = getTopLevelImplementation(outline.descriptorBlock);
+		JDefinedClass generator = getGeneratorImplementation(outline.descriptorBlock);
+		JDefinedClass helper = getHelperInterface(outline.descriptorBlock);
 
 		// -- add the constructor methods --
 

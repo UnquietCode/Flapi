@@ -45,9 +45,7 @@ public abstract class AbstractBlockGenerator<_From extends BlockOutline, _To> ex
 
 		// dynamic method moves laterally to a sibling class
 		} else {
-			JType returnType = getClass(
-				getGeneratedName(outline.getBaseImplementation(), computeMinusMethod(allMethods, method))
-			);
+			JType returnType = getSubsetImplementation(outline, computeMinusMethod(allMethods, method));
 
 			returnValue =
 				JExpr._new(returnType)
@@ -65,7 +63,7 @@ public abstract class AbstractBlockGenerator<_From extends BlockOutline, _To> ex
 		// for every block chain, add a new object wrapper declaration
 		List<JVar> helpers = new ArrayList<JVar>();
 		for (BlockOutline blockChain : method.getBlockChain()) {
-			helpers.add(addHelper(getInterface(blockChain.getHelperInterface()), helpers.size() + 1, _method));
+			helpers.add(addHelper(getHelperInterface(blockChain), helpers.size() + 1, _method));
 		}
 
 		// invocation check before helper call
@@ -89,8 +87,8 @@ public abstract class AbstractBlockGenerator<_From extends BlockOutline, _To> ex
 
 		for (int i = method.getBlockChain().size()-1; i >=0; --i) {
 			BlockOutline targetBlock = method.getBlockChain().get(i);
-			JDefinedClass iTargetBuilder = getInterface(targetBlock.getTopLevelInterface());
-			JDefinedClass cTargetBuilder = getClass(targetBlock.getTopLevelImplementation());
+			JDefinedClass iTargetBuilder = getTopLevelInterface(targetBlock);
+			JDefinedClass cTargetBuilder = getTopLevelImplementation(targetBlock);
 
 			JVar invocation = _method.body().decl(
 				iTargetBuilder, "step" + (i + 1),

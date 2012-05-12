@@ -20,15 +20,15 @@ public class BlockGenerator_BaseImplementation extends AbstractBlockGenerator<Bl
 
 	@Override
 	public JDefinedClass generate() {
-		JDefinedClass iBuilder = getInterface(outline.getBaseInterface());
-		JDefinedClass cBuilder = getClass(outline.getBaseImplementation());
+		JDefinedClass iBuilder = getBaseInterface(outline);
+		JDefinedClass cBuilder = getBaseImplementation(outline);
 		cBuilder._implements(iBuilder);
 
-		JFieldVar _helper = cBuilder.field(JMod.PROTECTED+JMod.FINAL, getInterface(outline.getHelperInterface()), "_helper");
+		JFieldVar _helper = cBuilder.field(JMod.PROTECTED+JMod.FINAL, getHelperInterface(outline), "_helper");
 		JFieldVar _returnValue = cBuilder.field(JMod.PROTECTED+JMod.FINAL, ref(Object.class), "_returnValue");
 
 		JMethod constructor = cBuilder.constructor(JMod.NONE);
-		JVar pHelper = constructor.param(getInterface(outline.getHelperInterface()), "helper");
+		JVar pHelper = constructor.param(getHelperInterface(outline), "helper");
 		JVar pReturnValue = constructor.param(ref(Object.class), "returnValue");
 
 		constructor.body().assign(_helper, pHelper);

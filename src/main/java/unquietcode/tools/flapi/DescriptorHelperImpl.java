@@ -47,6 +47,11 @@ public class DescriptorHelperImpl implements DescriptorHelper {
 	}
 
 	@Override
+	public void enableCondensedClassNames(boolean value) {
+		outline.enableCondensedNames(value);
+	}
+
+	@Override
 	public void build() {
 		// nothing
 	}

@@ -25,7 +25,7 @@ public class BlockGenerator_BaseInterface extends AbstractGenerator<BlockOutline
 
 	@Override
 	public JDefinedClass generate() {
-		JDefinedClass iBuilder = getInterface(outline.getBaseInterface());
+		JDefinedClass iBuilder = getBaseInterface(outline);
 		iBuilder.generify("_ReturnType");
 
 		// add required methods to base

@@ -8,6 +8,7 @@ package unquietcode.tools.flapi.outline;
  */
 public class DescriptorOutline implements Outline {
 	private String packageName;
+	private boolean enableCondensedNames = false;
 
 	public final BlockOutline selfBlock = new BlockOutline();
 	private final GeneratorOutline generator = new GeneratorOutline(selfBlock);
@@ -22,6 +23,14 @@ public class DescriptorOutline implements Outline {
 
 	public String getDescriptorName() {
 		return selfBlock.getName();
+	}
+
+	public void enableCondensedNames(boolean value) {
+		enableCondensedNames = value;
+	}
+
+	public boolean shouldEnableCondensedNames() {
+		return enableCondensedNames;
 	}
 
 	public void setDescriptorName(String name) {

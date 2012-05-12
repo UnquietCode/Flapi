@@ -20,7 +20,7 @@ public class BlockGenerator_Helper extends AbstractGenerator<BlockOutline, JDefi
 
 	@Override
 	public JDefinedClass generate() {
-		JDefinedClass iHelper = getInterface(outline.getHelperInterface());
+		JDefinedClass iHelper = getHelperInterface(outline);
 
 		for (MethodOutline method : outline.methods) {
 			JMethod _method = addMethod(iHelper, ctx.model.VOID, JMod.NONE, method);
@@ -28,7 +28,7 @@ public class BlockGenerator_Helper extends AbstractGenerator<BlockOutline, JDefi
 			// for every block in the chain, add a wrapped helper parameter
 			int i=1;
 			for (BlockOutline block : method.getBlockChain()) {
-				JDefinedClass blockHelper = getInterface(block.getHelperInterface());
+				JDefinedClass blockHelper = getHelperInterface(block);
 				_method.param(ref(ObjectWrapper.class).narrow(blockHelper), "_helper"+(i++));
 			}
 		}

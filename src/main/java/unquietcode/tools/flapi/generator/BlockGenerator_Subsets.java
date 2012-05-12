@@ -25,7 +25,7 @@ public class BlockGenerator_Subsets extends AbstractBlockGenerator<BlockOutline,
 		for (Set<MethodOutline> combination : makeCombinations(outline.getDynamicMethods())) {
 
 			// make the interface (the empty one should be the only already created one)
-			JDefinedClass iSubset = getInterface(getGeneratedName(outline.getBaseInterface(), combination));
+			JDefinedClass iSubset = getSubsetInterface(outline, combination);
 			iSubset.generify("_ReturnType");
 
 			// make the class
@@ -64,16 +64,16 @@ public class BlockGenerator_Subsets extends AbstractBlockGenerator<BlockOutline,
 	}
 
 	private JDefinedClass createSubsetImpl(Set<MethodOutline> methodCombination) {
-		JDefinedClass cSubset = getClass(getGeneratedName(outline.getBaseImplementation(), methodCombination));
-		JDefinedClass iSubset = getInterface(getGeneratedName(outline.getBaseInterface(), methodCombination));
+		JDefinedClass cSubset = getSubsetImplementation(outline, methodCombination);
+		JDefinedClass iSubset = getSubsetInterface(outline, methodCombination);
 		cSubset._implements(iSubset);
 
-		JFieldVar _helper = cSubset.field(JMod.PRIVATE+JMod.FINAL, getInterface(outline.getHelperInterface()), "_helper");
+		JFieldVar _helper = cSubset.field(JMod.PRIVATE+JMod.FINAL, getHelperInterface(outline), "_helper");
 		JFieldVar _returnValue = cSubset.field(JMod.PRIVATE+JMod.FINAL, ref(Object.class), "_returnValue");
 
 		// constructor
 		JMethod constructor = cSubset.constructor(JMod.NONE);
-		JVar pHelper = constructor.param(getInterface(outline.getHelperInterface()), "helper");
+		JVar pHelper = constructor.param(getHelperInterface(outline), "helper");
 		JVar pReturnValue = constructor.param(ref(Object.class), "returnValue");
 
 		constructor.body().assign(_helper, pHelper);
