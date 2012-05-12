@@ -1,6 +1,7 @@
 package unquietcode.tools.flapi.generator;
 
 import com.sun.codemodel.*;
+import unquietcode.tools.flapi.ObjectWrapper;
 import unquietcode.tools.flapi.outline.BlockOutline;
 import unquietcode.tools.flapi.outline.MethodOutline;
 
@@ -18,21 +19,12 @@ public class BlockGenerator extends AbstractGenerator<BlockOutline, Void> {
 
 	@Override
 	public Void generate() {
-		final BlockOutline block = outline;
-
-		BlockGenerator_Helper helperGen = new BlockGenerator_Helper(outline, ctx);
-		JDefinedClass iHelper = helperGen.generate();
-
-//		BlockGenerator_BaseInterface baseInterfaceGen = new BlockGenerator_BaseInterface(outline, ctx);
-//		JDefinedClass iBuilder = baseInterfaceGen.generate();
-//
-//		BlockGenerator_BaseImplementation baseImplementationGen = new BlockGenerator_BaseImplementation(outline, ctx);
-//		JDefinedClass cBuilder = baseImplementationGen.generate();
+		JDefinedClass iHelper = generateHelper();
 
 		BlockGenerator_Subsets subsetsGen = new BlockGenerator_Subsets(outline, ctx);
 		subsetsGen.generate();
 
-		for (BlockOutline child : block.blocks) {
+		for (BlockOutline child : outline.blocks) {
 			BlockGenerator childGenerator = new BlockGenerator(child, ctx);
 			childGenerator.generate();
 
@@ -43,5 +35,22 @@ public class BlockGenerator extends AbstractGenerator<BlockOutline, Void> {
 
 		return null;
 
+	}
+
+	public JDefinedClass generateHelper() {
+		JDefinedClass iHelper = getHelperInterface(outline);
+
+		for (MethodOutline method : outline.methods) {
+			JMethod _method = addMethod(iHelper, ctx.model.VOID, JMod.NONE, method);
+
+			// for every block in the chain, add a wrapped helper parameter
+			int i=1;
+			for (BlockOutline block : method.getBlockChain()) {
+				JDefinedClass blockHelper = getHelperInterface(block);
+				_method.param(ref(ObjectWrapper.class).narrow(blockHelper), "_helper"+(i++));
+			}
+		}
+
+		return iHelper;
 	}
 }
