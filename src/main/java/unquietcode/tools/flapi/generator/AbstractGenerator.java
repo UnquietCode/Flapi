@@ -113,7 +113,7 @@ public abstract class AbstractGenerator<_InType extends Outline, _OutType> imple
 			returnType = builder.narrow(builder.typeParams()[0]);
 		} else {
 			Set<MethodOutline> minusMethod = computeMinusMethod(allMethods, method);
-			returnType = getSubsetImplementation(block, minusMethod);
+			returnType = getSubsetInterface(block, minusMethod);
 			returnType = returnType.narrow(builder.typeParams()[0]);
 		}
 

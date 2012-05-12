@@ -12,7 +12,7 @@ import unquietcode.tools.flapi.ObjectWrapper;
  * Visit http://www.unquietcode.com/flapi for more information.
  * 
  * 
- * Generated on May 09, 2012 23:25:34 CDT using version 0.1
+ * Generated on May 12, 2012 24:10:05 CDT using version 0.1
  * 
  */
 public interface BlockHelper {
@@ -20,9 +20,9 @@ public interface BlockHelper {
 
     void addBlockReference(String blockName, String methodSignature, ObjectWrapper<MethodHelper> _helper1);
 
-    void startBlock(String blockName, String methodSignature, ObjectWrapper<MethodHelper> _helper1, ObjectWrapper<BlockHelper> _helper2);
-
     void addMethod(String methodSignature, ObjectWrapper<MethodHelper> _helper1);
+
+    void startBlock(String blockName, String methodSignature, ObjectWrapper<MethodHelper> _helper1, ObjectWrapper<BlockHelper> _helper2);
 
     void endBlock();
 

@@ -13,19 +13,19 @@ import unquietcode.tools.flapi.DescriptorBuilderException;
  * Visit http://www.unquietcode.com/flapi for more information.
  * 
  * 
- * Generated on May 09, 2012 23:25:34 CDT using version 0.1
+ * Generated on May 12, 2012 24:10:05 CDT using version 0.1
  * 
  */
 public class DescriptorGenerator {
 
 
     @SuppressWarnings("unchecked")
-    public static DescriptorBuilder_enableCondensedClassNames_setDescriptorName_setPackage_setReturnType_setStartingMethodName_showLog<Descriptor> create(DescriptorHelper helper) {
+    public static DescriptorBuilder_enableCondensedClassNames_setDescriptorName_setPackage_setReturnType_setStartingMethodName<Descriptor> create(DescriptorHelper helper) {
         if (helper == null) {
             throw new DescriptorBuilderException("Helper cannot be null.");
         }
          
-        return new ImplDescriptorBuilder_enableCondensedClassNames_setDescriptorName_setPackage_setReturnType_setStartingMethodName_showLog(helper, helper._getReturnValue());
+        return new ImplDescriptorBuilder_enableCondensedClassNames_setDescriptorName_setPackage_setReturnType_setStartingMethodName(helper, helper._getReturnValue());
     }
 
 }
