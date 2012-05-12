@@ -122,13 +122,14 @@ public abstract class AbstractBlockGenerator<_From extends BlockOutline, _To> ex
 		JExpression _retval = _method.body().decl(returnType, "retval", returnValue);
 
 		// TODO optimization to avoid unecessary variable declaration
+		// FLAPI-45
 //		JExpression _retval = returnValue != JExpr._this()
 //				? _method.body().decl(returnType, "retval", returnValue)
 //				: returnValue;
 
 		// invocation tracking
 		if (method.minOccurrences > 0) {
-			_method.body().directStatement("--ic_"+makeMethodKey(outline, method)+";"); //TODO: Is there a proper way?
+			_method.body().directStatement("--ic_"+makeMethodKey(outline, method)+";");
 		}
 
 		// No need to transfer if it is to ourself!

@@ -46,10 +46,6 @@ public class BlockGenerator extends AbstractGenerator<BlockOutline, Void> {
 		for (BlockOutline child : outline.getBlocks()) {
 			BlockGenerator childGenerator = new BlockGenerator(child, ctx);
 			childGenerator.generate();
-
-			// if child already exists, then this is an error!
-			// TODO throw exception
-			// can't we just assume that the collision check would have caught this?
 		}
 
 		return null;
