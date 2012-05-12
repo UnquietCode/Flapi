@@ -70,14 +70,14 @@ public class DescriptorValidator {
 
 		// check method name collisions
 		for (MethodOutline method : block.getAllMethods()) {
-			MethodParser curParsed = new MethodParser(method.methodSignature);
+			MethodParser curParsed = new MethodParser(method.getMethodSignature());
 
 			for (MethodOutline otherMethod : block.getAllMethods()) {
 				if (method == otherMethod) { continue; }
-				MethodParser otherParsed = new MethodParser(otherMethod.methodSignature);
+				MethodParser otherParsed = new MethodParser(otherMethod.getMethodSignature());
 
 				if (curParsed.compilerEquivalent(otherParsed)) {
-					throw new DescriptorBuilderException("Two methods with the same signature: " + method.methodSignature);
+					throw new DescriptorBuilderException("Two methods with the same signature: " + method.getMethodSignature());
 				}
 			}
 		}

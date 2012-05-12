@@ -24,7 +24,7 @@ public class BlockGenerator extends AbstractGenerator<BlockOutline, Void> {
 		BlockGenerator_Subsets subsetsGen = new BlockGenerator_Subsets(outline, ctx);
 		subsetsGen.generate();
 
-		for (BlockOutline child : outline.blocks) {
+		for (BlockOutline child : outline.getBlocks()) {
 			BlockGenerator childGenerator = new BlockGenerator(child, ctx);
 			childGenerator.generate();
 
@@ -40,7 +40,7 @@ public class BlockGenerator extends AbstractGenerator<BlockOutline, Void> {
 	public JDefinedClass generateHelper() {
 		JDefinedClass iHelper = getHelperInterface(outline);
 
-		for (MethodOutline method : outline.methods) {
+		for (MethodOutline method : outline.getAllMethods()) {
 			JMethod _method = addMethod(iHelper, ctx.model.VOID, JMod.NONE, method);
 
 			// for every block in the chain, add a wrapped helper parameter

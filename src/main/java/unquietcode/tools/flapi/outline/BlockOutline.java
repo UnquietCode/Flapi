@@ -1,8 +1,5 @@
 package unquietcode.tools.flapi.outline;
 
-import unquietcode.tools.flapi.BlockReference;
-import unquietcode.tools.flapi.generator.AbstractGenerator;
-
 import java.util.*;
 
 /**
@@ -14,12 +11,19 @@ public class BlockOutline implements Outline {
 	private String name;
 
 	// nested blocks
-	public final List<BlockOutline> blocks = new ArrayList<BlockOutline>();
-	
+	private final List<BlockOutline> blocks = new ArrayList<BlockOutline>();
+
 	// constructor, used by parent to create this block
 	private MethodOutline constructor;
 
-	public final Set<MethodOutline> methods = new HashSet<MethodOutline>();
+	// block methods
+	private final Set<MethodOutline> methods = new HashSet<MethodOutline>();
+
+	// ------------------------------ //
+
+	public List<BlockOutline> getBlocks() {
+		return Collections.unmodifiableList(blocks);
+	}
 
 	public MethodOutline getConstructor() {
 		return constructor;
@@ -47,7 +51,7 @@ public class BlockOutline implements Outline {
 
 	public MethodOutline addMethod(String methodSignature) {
 		MethodOutline method = new MethodOutline();
-		method.methodSignature = methodSignature;
+		method.setMethodSignature(methodSignature);
 		methods.add(method);
 
 		return method;

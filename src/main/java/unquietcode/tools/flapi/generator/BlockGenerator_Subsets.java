@@ -30,7 +30,7 @@ public class BlockGenerator_Subsets extends AbstractBlockGenerator<BlockOutline,
 
 			// make the class
 			JDefinedClass cSubset = createSubsetImpl(combination);
-			addInvocationTracking(cSubset, outline.methods);
+			addInvocationTracking(cSubset, outline.getAllMethods());
 
 			// add the required methods
 			for (MethodOutline method : outline.getRequiredMethods()) {
@@ -127,7 +127,7 @@ public class BlockGenerator_Subsets extends AbstractBlockGenerator<BlockOutline,
 		} else {
 			for (MethodOutline method : methods) {
 				String key = "ic_"+makeMethodKey(outline, method);
-				String message = "Expected at least "+method.minOccurrences+" invocations of method '"+method.methodSignature+"'.";
+				String message = "Expected at least "+method.minOccurrences+" invocations of method '"+method.getMethodSignature()+"'.";
 
 				_method.body()._if(JExpr.ref(key).gt(JExpr.lit(0)))._then()
 					._throw(JExpr._new(ref(MinimumInvocationsException.class)).arg(message));

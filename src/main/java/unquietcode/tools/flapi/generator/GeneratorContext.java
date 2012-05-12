@@ -74,7 +74,7 @@ public class GeneratorContext {
 		name.append(name).append(suffix);
 
 		for (MethodOutline method : new TreeSet<MethodOutline>(methods)) {
-			MethodParser parsed = new MethodParser(method.methodSignature);
+			MethodParser parsed = new MethodParser(method.getMethodSignature());
 			name.append("_");
 
 			if (condenseNames) {

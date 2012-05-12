@@ -11,14 +11,21 @@ import java.util.List;
  * @author Ben Fagin
  * @version 03-07-2012
  */
-public class MethodOutline implements Comparable<MethodOutline> {
+public class MethodOutline implements Outline, Comparable<MethodOutline> {
 	public Integer minOccurrences;
 	public Integer maxOccurrences;
-	public String methodSignature;
+	private String methodSignature;
 	private boolean isTerminal = false;
 
 	private final List<BlockOutline> blockChain = new ArrayList<BlockOutline>();
-	
+
+	public String getMethodSignature() {
+		return methodSignature;
+	}
+
+	public void setMethodSignature(String methodSignature) {
+		this.methodSignature = methodSignature.trim();
+	}
 	
 	public List<BlockOutline> getBlockChain() {
 		return blockChain;

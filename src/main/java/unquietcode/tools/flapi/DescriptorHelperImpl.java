@@ -95,7 +95,7 @@ public class DescriptorHelperImpl implements DescriptorHelper {
 
 		blocks.put(block.getName(), block);
 
-		for (BlockOutline child : block.blocks) {
+		for (BlockOutline child : block.getBlocks()) {
 			_getBlockNames(child, blocks);
 		}
 
@@ -121,14 +121,14 @@ public class DescriptorHelperImpl implements DescriptorHelper {
 					if (actual == null) {
 						StringBuilder sb = new StringBuilder();
 						sb.append("Invalid block reference '").append(aBlock.getName()).append("'.\n")
-						  .append("Referenced in method ").append(method.methodSignature)
+						  .append("Referenced in method ").append(method.getMethodSignature())
 						  .append(" of block '").append(block.getName()).append("'.");
 
 						throw new DescriptorBuilderException(sb.toString());
 					}
 
 					// set the methods
-					aBlock.methods.addAll(actual.methods);
+					aBlock.getAllMethods().addAll(actual.getAllMethods());
 				}
 			}
 		}

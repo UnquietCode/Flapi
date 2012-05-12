@@ -43,7 +43,7 @@ public abstract class AbstractGenerator<_InType extends Outline, _OutType> imple
 	}
 
 	protected JMethod addMethod(JDefinedClass _class, JType returnType, int mods, MethodOutline method) {
-		MethodParser parsed = new MethodParser(method.methodSignature);
+		MethodParser parsed = new MethodParser(method.getMethodSignature());
 		JMethod m = _class.method(mods, returnType, parsed.methodName);
 
 		// regular params
