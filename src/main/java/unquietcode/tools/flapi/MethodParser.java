@@ -82,11 +82,12 @@ public class MethodParser {
 			}
 
 			// COMMA
-			try {
+			if (peek(COMMA, 1)) {
 				match(COMMA, 1);
 				match(WS, -1);
-			} catch (ParseException ex) {
-				break; // nothing left to do
+			} else {
+				match(WS, -1);
+				break;
 			}
 		}
 

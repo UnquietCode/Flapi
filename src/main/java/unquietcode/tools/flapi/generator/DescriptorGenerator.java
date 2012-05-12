@@ -52,6 +52,12 @@ public class DescriptorGenerator extends AbstractGenerator<DescriptorOutline, JC
 		for (BlockOutline child : block.blocks) {
 			_getBlockNames(child, blocks);
 		}
+
+		for (MethodOutline method : block.getAllMethods()) {
+			for (BlockOutline chain : method.getBlockChain()) {
+				_getBlockNames(chain, blocks);
+			}
+		}
 	}
 
 	private void _resolveBlockReferences(BlockOutline block, Map<String, BlockOutline> blocks) {

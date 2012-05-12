@@ -1,9 +1,6 @@
 package unquietcode.tools.flapi;
 
-import org.junit.Ignore;
 import org.junit.Test;
-
-import java.util.Map;
 
 import static org.junit.Assert.*;
 

@@ -76,4 +76,8 @@ public class BlockOutline implements Outline {
 
 		return dynamic;
 	}
+
+	public Set<MethodOutline> getAllMethods() {
+		return new HashSet<MethodOutline>(methods);
+	}
 }
