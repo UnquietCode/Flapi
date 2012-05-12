@@ -33,8 +33,6 @@ public class EmailBuilderExample {
 				.addMethod("send()").last()
 			.build()
 		;
-
-		builder.writeCodeModel();
 	}
 
 	@Test

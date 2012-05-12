@@ -29,9 +29,17 @@ import unquietcode.tools.flapi.outline.MethodOutline;
  * A block which serves as a reference to an already created block.
  * Instances should therefore not be treated as 'definitions' of
  * blocks but rather containers of information related to an existing
- * block. Certain properties however, such as the {@link #constructor},
+ * block. Certain properties however, such as the {@link #getConstructor()},
  * are unique to each {@link BlockOutline}, including references.
  */
 public class BlockReference extends BlockOutline {
+	private boolean resolved = false;
 
+	public boolean isResolved() {
+		return resolved;
+	}
+
+	public void setResolved(boolean resolved) {
+		this.resolved = resolved;
+	}
 }

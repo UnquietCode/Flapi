@@ -26,6 +26,7 @@ import com.sun.codemodel.writer.SingleStreamCodeWriter;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.OutputStream;
 
 /**
  * @author Ben Fagin
@@ -33,8 +34,7 @@ import java.io.IOException;
  */
 public class CodeWriter {
 
-	public static void writeToConsole(JCodeModel model) {
-		ByteArrayOutputStream stream = new ByteArrayOutputStream();
+	public static void writeToStream(JCodeModel model, OutputStream stream) {
 		SingleStreamCodeWriter writer = new SingleStreamCodeWriter(stream);
 
 		try {
@@ -42,13 +42,13 @@ public class CodeWriter {
 		} catch (IOException ex) {
 			throw new RuntimeException(ex);
 		}
-		
+
 		System.out.println(stream.toString());
 	}
-	
-	public static void writeToDirectory(JCodeModel model, String directory) {
+
+	public static void writeToDirectory(JCodeModel model, File directory) {
 		try {
-			FileCodeWriter fileWriter = new FileCodeWriter(new File(directory), false);
+			FileCodeWriter fileWriter = new FileCodeWriter(directory, false);
 			model.build(fileWriter);
 		} catch (Exception ex) {
 			throw new RuntimeException(ex);

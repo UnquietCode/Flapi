@@ -64,7 +64,5 @@ public class ActualDescriptorTest {
 
 			.build()
 		;
-
-		builder.writeCodeModel();
 	}
 }

@@ -37,8 +37,6 @@ public class CalculatorBuilderExample {
 				.addMethod("equals()").last()
 			.endBlock()
 		.build();
-
-		descriptor.writeCodeModel();
 	}
 
 	@Test

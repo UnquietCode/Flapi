@@ -135,8 +135,17 @@ public class DescriptorHelperImpl implements DescriptorHelper {
 		for (MethodOutline method : block.getAllMethods()) {
 			for (BlockOutline aBlock : method.getBlockChain()) {
 				if (aBlock instanceof BlockReference) {
+					BlockReference _aBlock = (BlockReference) aBlock;
+
+					// skip if already resolved
+					// we need this in case the descriptor is generated twice
+					if (_aBlock.isResolved()) {
+						continue;
+					}
+
 					BlockOutline actual = blocks.get(aBlock.getName());
 
+					// couldn't find a block under that name
 					if (actual == null) {
 						StringBuilder sb = new StringBuilder();
 						sb.append("Invalid block reference '").append(aBlock.getName()).append("'.\n")
@@ -148,6 +157,9 @@ public class DescriptorHelperImpl implements DescriptorHelper {
 
 					// set the methods
 					aBlock.getAllMethods().addAll(actual.getAllMethods());
+
+					// mark resolved
+					_aBlock.setResolved(true);
 				}
 			}
 		}

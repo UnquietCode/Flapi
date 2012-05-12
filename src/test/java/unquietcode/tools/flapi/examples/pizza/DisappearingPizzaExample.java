@@ -36,8 +36,6 @@ public class DisappearingPizzaExample {
 
 			.build()
 		;
-
-		builder.writeCodeModel();
 	}
 
 	@Test

@@ -50,8 +50,6 @@ public class XHTMLBuilderExample {
 				.endBlock()
 			.build()
 		;
-
-		builder.writeCodeModel();
 	}
 
 	@Test

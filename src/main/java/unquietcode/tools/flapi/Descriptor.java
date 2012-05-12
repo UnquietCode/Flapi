@@ -20,10 +20,11 @@
 package unquietcode.tools.flapi;
 
 import com.sun.codemodel.JCodeModel;
-import unquietcode.tools.flapi.builder.DescriptorHelper;
 import unquietcode.tools.flapi.generator.DescriptorGenerator;
-import unquietcode.tools.flapi.generator.GeneratorContext;
 import unquietcode.tools.flapi.outline.DescriptorOutline;
+
+import java.io.File;
+import java.io.OutputStream;
 
 /**
  * @author Ben Fagin
@@ -32,26 +33,35 @@ import unquietcode.tools.flapi.outline.DescriptorOutline;
 public class Descriptor {
 	final DescriptorOutline _descriptor;
 	
-	public Descriptor(DescriptorHelper helper) {
-		if (!(helper instanceof DescriptorHelperImpl)) {
-			throw new RuntimeException("Wrong helper instance! (this is an internal error)");
-		}
-		
-		_descriptor = ((DescriptorHelperImpl) helper).outline;
-		checkDescriptor();
+	public Descriptor(DescriptorHelperImpl helper) {
+		_descriptor = helper.outline;
 	}
 
-	// TODO methods for file writing, stream writing
+	public void writeToStream(OutputStream stream) {
+		CodeWriter.writeToStream(generate(), stream);
+	}
 
-	public void writeCodeModel() {
+	public void writeToFolder(String folder) {
+		File f = new File(folder);
+		if (!f.exists()) {
+			throw new DescriptorBuilderException("Folder does not exist.");
+		}
+
+		if (!f.isDirectory()) {
+			throw new DescriptorBuilderException("Not a folder!");
+		}
+
+		if (!f.canWrite()) {
+			throw new DescriptorBuilderException("Cannot write to folder.");
+		}
+
+		CodeWriter.writeToDirectory(generate(), f);
+	}
+
+	private JCodeModel generate() {
 		DescriptorGenerator generator = new DescriptorGenerator(_descriptor);
 		JCodeModel model = generator.generate();
-		
-		CodeWriter.writeToConsole(model);
-		CodeWriter.writeToDirectory(model, "/Users/bfagin/Desktop/lmbuilder");
-	}
-	
-	private void checkDescriptor() {
-		// TODO
+
+		return model;
 	}
 }
