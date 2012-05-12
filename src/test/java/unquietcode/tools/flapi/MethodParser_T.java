@@ -175,4 +175,63 @@ public class MethodParser_T {
 		assertEquals("parameter type", "Map<String,Set<String>>", parsed.params.get(0).first);
 		assertEquals("parameter type", "param", parsed.params.get(0).second);
 	}
+
+	@Test
+	public void methodEqualityTests() {
+		// different parameter types
+		assertFalse(
+			"expected unequal",
+			new MethodParser("void method(String p1)")
+				.compilerEquivalent(new MethodParser("void method(int p1)")
+			)
+		);
+
+		// same parameter types
+		assertTrue(
+			"expected equal",
+			new MethodParser("void method(int p1)")
+				.compilerEquivalent(new MethodParser("void method(int p1)")
+			)
+		);
+
+		// same params, different return type
+		assertFalse(
+			"expected unequal",
+			new MethodParser("void method(String p1)")
+				.compilerEquivalent(new MethodParser("String method(String p1)")
+			)
+		);
+
+		// one with vararg
+		assertFalse(
+			"expected unequal",
+			new MethodParser("void method(String p1, int p2)")
+				.compilerEquivalent(new MethodParser("void method(String p1, int p2, int...p3)")
+			)
+		);
+
+		// vararg only, same return type
+		assertTrue(
+			"expected equal",
+			new MethodParser("void method(String...p1)")
+				.compilerEquivalent(new MethodParser("void method(String...p1)")
+			)
+		);
+
+		// vararg only, different return type
+		assertFalse(
+			"expected unequal",
+			new MethodParser("void method(String...p1)")
+				.compilerEquivalent(new MethodParser("int method(String... p1)")
+			)
+		);
+
+		// same everything but method name
+		assertFalse(
+			"expected unequal",
+			new MethodParser("void methodA(int p1)")
+				.compilerEquivalent(new MethodParser("void methodB(int p1)")
+			)
+		);
+	}
 }

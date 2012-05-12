@@ -294,4 +294,30 @@ public class MethodParser {
 		ID.addAll(ID_START);
 		ID.addAll(Arrays.asList('0','1','2','3','4','5','6','7','8','9'));
 	}
+
+	//-------------------------------------------------------------------------------------------//
+
+	public boolean compilerEquivalent(MethodParser other) {
+		// same name
+		if (!methodName.equals(other.methodName)) { return false; }
+
+		// same types, in order
+		if (params.size() != other.params.size()) { return false; }
+		if (varargType == null && other.varargType != null) { return false; }
+		if (varargType != null && !varargType.equals(other.varargType)) { return false; }
+
+		for (int i=0; i < params.size(); ++i) {
+			Pair<String,String> p1 = params.get(i);
+			Pair<String,String> p2 = other.params.get(i);
+
+			if (!p1.first.equals(p2.first)) { return false; }
+		}
+
+		// and same return type
+		if (returnType == null && other.returnType != null) { return false; }
+		if (returnType != null && !returnType.equals(other.returnType)) { return false; }
+
+		// otherwise, equal (probably)
+		return true;
+	}
 }

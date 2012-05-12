@@ -3,9 +3,14 @@ package unquietcode.tools.flapi;
 import unquietcode.tools.flapi.builder.BlockHelper;
 import unquietcode.tools.flapi.builder.DescriptorHelper;
 import unquietcode.tools.flapi.builder.MethodHelper;
+import unquietcode.tools.flapi.outline.BlockOutline;
 import unquietcode.tools.flapi.outline.DescriptorOutline;
+import unquietcode.tools.flapi.outline.MethodOutline;
 
+import java.util.HashMap;
+import java.util.IdentityHashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Ben Fagin
@@ -53,7 +58,10 @@ public class DescriptorHelperImpl implements DescriptorHelper {
 
 	@Override
 	public void build() {
-		// nothing
+		DescriptorValidator validator = new DescriptorValidator(outline);
+		validator.validate();
+
+		resolveBlockReferences();
 	}
 
 	@Override
@@ -69,5 +77,66 @@ public class DescriptorHelperImpl implements DescriptorHelper {
 	@Override
 	public void startBlock(String blockName, String methodSignature, ObjectWrapper<MethodHelper> _helper1, ObjectWrapper<BlockHelper> _helper2) {
 		BlockHelperImpl._startBlock(outline.selfBlock, blockName, methodSignature, _helper1, _helper2);
+	}
+
+	//---o---o---o---o---o---o---o---o---o---o---o---o---o---o---o---o---o---o---o---o---o---o---//
+
+	private void resolveBlockReferences() {
+		Map<String, BlockOutline> blocks = new HashMap<String, BlockOutline>();
+		_getBlockNames(outline.selfBlock, blocks);
+		_resolveBlockReferences(outline.selfBlock, blocks, new IdentityHashMap<BlockOutline, Object>());
+	}
+
+	private void _getBlockNames(BlockOutline block, Map<String, BlockOutline> blocks) {
+		// references aren't valid names
+		if (block instanceof BlockReference) {
+			return;
+		}
+
+		blocks.put(block.getName(), block);
+
+		for (BlockOutline child : block.blocks) {
+			_getBlockNames(child, blocks);
+		}
+
+		for (MethodOutline method : block.getAllMethods()) {
+			for (BlockOutline chain : method.getBlockChain()) {
+				_getBlockNames(chain, blocks);
+			}
+		}
+	}
+
+	private void _resolveBlockReferences(BlockOutline block, Map<String, BlockOutline> blocks, IdentityHashMap<BlockOutline, Object> seen) {
+		if (seen.containsKey(block)) {
+			return;
+		} else {
+			seen.put(block, null);
+		}
+
+		for (MethodOutline method : block.getAllMethods()) {
+			for (BlockOutline aBlock : method.getBlockChain()) {
+				if (aBlock instanceof BlockReference) {
+					BlockOutline actual = blocks.get(aBlock.getName());
+
+					if (actual == null) {
+						StringBuilder sb = new StringBuilder();
+						sb.append("Invalid block reference '").append(aBlock.getName()).append("'.\n")
+						  .append("Referenced in method ").append(method.methodSignature)
+						  .append(" of block '").append(block.getName()).append("'.");
+
+						throw new DescriptorBuilderException(sb.toString());
+					}
+
+					// set the methods
+					aBlock.methods.addAll(actual.methods);
+				}
+			}
+		}
+
+		for (MethodOutline method : block.getAllMethods()) {
+			for (BlockOutline chain : method.getBlockChain()) {
+				_resolveBlockReferences(chain, blocks, seen);
+			}
+		}
 	}
 }

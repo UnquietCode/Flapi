@@ -34,7 +34,7 @@ public class BlockOutline implements Outline {
 	}
 
 	public void setName(String name) {
-		this.name = name;
+		this.name = name.trim();
 	}
 
 	public BlockOutline addBlock(String blockName) {
