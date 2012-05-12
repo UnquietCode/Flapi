@@ -23,4 +23,9 @@ public class ObjectWrapper<_Type> {
 	public _Type get() {
 		return value;
 	}
+
+	public @Override String toString() {
+		if (value == null) { return null; }
+		else { return value.toString(); }
+	}
 }
