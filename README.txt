@@ -1,5 +1,5 @@
 Flapi - the fluent API generator for Java
-For more information, visit http://www.unquietcode.com/flapi
+For more information, visit https://github.com/UnquietCode/Flapi/wiki
 
 Copyright 2011-2012 Benjamin Fagin
 Licensed under the Apache License 2.0.
@@ -17,7 +17,8 @@ Finally, pull those files into your project. Implement the various *Helper
 classes and their methods. Once everything is wired together you can make
 use of your new API!
 
-See the wiki for more information on how to get started. You might also
+See [Home](the wiki) for more information on how to get started. You might also
 find some useful examples in the src/test directory.
+
 
 Enjoy!
