@@ -15,17 +15,19 @@ import java.io.File;
  * Generated on May 13, 2012 24:29:29 CDT using version 0.2
  * 
  */
-public interface EmailBuilder<_ReturnType >{
+public interface EmailBuilder_setSender<_ReturnType >{
 
 
-    EmailBuilder<_ReturnType> addAttachment(File file);
+    EmailBuilder_setSender<_ReturnType> addAttachment(File file);
 
-    EmailBuilder<_ReturnType> addBCC(String emailAddress);
+    EmailBuilder_setSender<_ReturnType> addBCC(String emailAddress);
 
-    EmailBuilder<_ReturnType> addCC(String emailAddress);
+    EmailBuilder_setSender<_ReturnType> addCC(String emailAddress);
 
-    EmailBuilder<_ReturnType> addRecipient(String emailAddress);
+    EmailBuilder_setSender<_ReturnType> addRecipient(String emailAddress);
 
     _ReturnType send();
+
+    EmailBuilder<_ReturnType> setSender(String emailAddress);
 
 }

@@ -63,7 +63,7 @@ public class XHTMLBuilderExample {
 				.endElement()
 				.startElement("book")
 					.addAttribute("ISBN", "978-0399533457")
-					.setValue("The Cloudspotter's Guide:")
+					.setValue("The Cloudspotter's Guide")
 				.endElement()
 			.endElement()
 		.done();

@@ -25,7 +25,7 @@ public class EmailBuilderExample {
 
 				.addMethod("setSubject(String subject)").once()
 				.addMethod("addRecipient(String emailAddress)").atLeast(1)
-				.addMethod("setSender(String emailAddress)").atLeast(1)
+				.addMethod("setSender(String emailAddress)").between(1,1)
 				.addMethod("addCC(String emailAddress)").any()
 				.addMethod("addBCC(String emailAddress)").any()
 				.addMethod("setBody(String text)").once()

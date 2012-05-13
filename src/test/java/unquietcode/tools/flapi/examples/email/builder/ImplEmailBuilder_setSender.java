@@ -17,8 +17,8 @@ import unquietcode.tools.flapi.MinimumInvocationsException;
  * Generated on May 13, 2012 24:29:29 CDT using version 0.2
  * 
  */
-public class ImplEmailBuilder_setBody_setSubject
-    implements EmailBuilder_setBody_setSubject
+public class ImplEmailBuilder_setSender
+    implements EmailBuilder_setSender
 {
 
     private final EmailHelper _helper;
@@ -26,7 +26,7 @@ public class ImplEmailBuilder_setBody_setSubject
     int ic_Email_addRecipient$String_emailAddress = 1;
     int ic_Email_setSender$String_emailAddress = 1;
 
-    ImplEmailBuilder_setBody_setSubject(EmailHelper helper, Object returnValue) {
+    ImplEmailBuilder_setSender(EmailHelper helper, Object returnValue) {
         _helper = helper;
         _returnValue = returnValue;
     }
@@ -58,31 +58,31 @@ public class ImplEmailBuilder_setBody_setSubject
         }
     }
 
-    public EmailBuilder_setBody_setSubject addAttachment(File file) {
+    public EmailBuilder_setSender addAttachment(File file) {
         _helper.addAttachment(file);
          
-        EmailBuilder_setBody_setSubject retval = this;
+        EmailBuilder_setSender retval = this;
         return retval;
     }
 
-    public EmailBuilder_setBody_setSubject addBCC(String emailAddress) {
+    public EmailBuilder_setSender addBCC(String emailAddress) {
         _helper.addBCC(emailAddress);
          
-        EmailBuilder_setBody_setSubject retval = this;
+        EmailBuilder_setSender retval = this;
         return retval;
     }
 
-    public EmailBuilder_setBody_setSubject addCC(String emailAddress) {
+    public EmailBuilder_setSender addCC(String emailAddress) {
         _helper.addCC(emailAddress);
          
-        EmailBuilder_setBody_setSubject retval = this;
+        EmailBuilder_setSender retval = this;
         return retval;
     }
 
-    public EmailBuilder_setBody_setSubject addRecipient(String emailAddress) {
+    public EmailBuilder_setSender addRecipient(String emailAddress) {
         _helper.addRecipient(emailAddress);
          
-        EmailBuilder_setBody_setSubject retval = this;
+        EmailBuilder_setSender retval = this;
         --ic_Email_addRecipient$String_emailAddress;
         return retval;
     }
@@ -95,18 +95,11 @@ public class ImplEmailBuilder_setBody_setSubject
         return retval;
     }
 
-    public EmailBuilder_setSubject setBody(String text) {
-        _helper.setBody(text);
+    public EmailBuilder setSender(String emailAddress) {
+        _helper.setSender(emailAddress);
          
-        EmailBuilder_setSubject retval = new ImplEmailBuilder_setSubject(_helper, _returnValue);
-        _transferInvocations(retval);
-        return retval;
-    }
-
-    public EmailBuilder_setBody setSubject(String subject) {
-        _helper.setSubject(subject);
-         
-        EmailBuilder_setBody retval = new ImplEmailBuilder_setBody(_helper, _returnValue);
+        EmailBuilder retval = new ImplEmailBuilder(_helper, _returnValue);
+        --ic_Email_setSender$String_emailAddress;
         _transferInvocations(retval);
         return retval;
     }

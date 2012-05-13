@@ -14,7 +14,7 @@ import unquietcode.tools.flapi.MinimumInvocationsException;
  * Visit http://www.unquietcode.com/flapi for more information.
  * 
  * 
- * Generated on May 09, 2012 23:29:25 CDT using version 0.1
+ * Generated on May 13, 2012 24:29:29 CDT using version 0.2
  * 
  */
 public class ImplEmailBuilder
@@ -92,14 +92,6 @@ public class ImplEmailBuilder
         _helper.send();
          
         Object retval = _returnValue;
-        return retval;
-    }
-
-    public EmailBuilder setSender(String emailAddress) {
-        _helper.setSender(emailAddress);
-         
-        EmailBuilder retval = this;
-        --ic_Email_setSender$String_emailAddress;
         return retval;
     }
 

@@ -12,7 +12,7 @@ import java.io.File;
  * Visit http://www.unquietcode.com/flapi for more information.
  * 
  * 
- * Generated on May 09, 2012 23:29:25 CDT using version 0.1
+ * Generated on May 13, 2012 24:29:29 CDT using version 0.2
  * 
  */
 public interface EmailBuilder_setBody<_ReturnType >{
@@ -27,8 +27,6 @@ public interface EmailBuilder_setBody<_ReturnType >{
     EmailBuilder_setBody<_ReturnType> addRecipient(String emailAddress);
 
     _ReturnType send();
-
-    EmailBuilder_setBody<_ReturnType> setSender(String emailAddress);
 
     EmailBuilder<_ReturnType> setBody(String text);
 
