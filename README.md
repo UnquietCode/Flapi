@@ -17,7 +17,7 @@ Finally, pull those files into your project. Implement the various *Helper
 classes and their methods. Once everything is wired together you can make
 use of your new API!
 
-See [Home](the wiki) for more information on how to get started. You might also
+See [the wiki](Home) for more information on how to get started. You might also
 find some useful examples in the src/test directory.
 
 
