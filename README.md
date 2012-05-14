@@ -6,6 +6,8 @@ for more information.
 **Remember:** Flapi is still a beta! Be gentle, and please help the project by testing and reporting bugs.
 
 ## [Getting Started](https://github.com/UnquietCode/Flapi/wiki/Getting-Started)
+You can grab the latest jar from [the repository](https://github.com/UnquietCode/Flapi/tree/master/lib).
+Requires com.sun.codemodel version 2.2 as a runtime dependency. I'll be setting up a maven repository soon.
 
 ## [Examples](https://github.com/UnquietCode/Flapi/wiki/Examples)
 
