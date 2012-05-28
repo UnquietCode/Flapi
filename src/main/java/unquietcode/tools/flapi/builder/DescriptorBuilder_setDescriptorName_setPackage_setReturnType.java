@@ -1,6 +1,7 @@
 
 package unquietcode.tools.flapi.builder;
 
+import javax.annotation.Generated;
 
 
 /**
@@ -11,9 +12,10 @@ package unquietcode.tools.flapi.builder;
  * Visit http://www.unquietcode.com/flapi for more information.
  * 
  * 
- * Generated on May 28, 2012 12:09:05 CDT using version 0.2
+ * Generated on May 28, 2012 16:00:17 CDT using version 0.2
  * 
  */
+@Generated(value = "unquietcode.tools.flapi", date = "May 28, 2012 16:00:17 CDT", comments = "generated using Flapi, the fluent API generator for Java")
 public interface DescriptorBuilder_setDescriptorName_setPackage_setReturnType<_ReturnType >{
 
 

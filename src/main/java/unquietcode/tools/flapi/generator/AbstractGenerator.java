@@ -175,7 +175,11 @@ public abstract class AbstractGenerator<_InType extends Outline, _OutType> imple
 
 		// get base type without block chain
 		if (method.isTerminal()) {
-			returnType = builder.typeParams()[0];
+			if (method.getIntermediateResult() != null) {
+				returnType = ref(method.getIntermediateResult());
+			} else {
+				returnType = builder.typeParams()[0];
+			}
 		} else if (method.isRequired()) {
 			returnType = builder.narrow(builder.typeParams()[0]);
 		} else {

@@ -29,6 +29,8 @@ import unquietcode.tools.flapi.builder.DescriptorGenerator;
  * From here you can reach the world.
  */
 public class Flapi {
+	private static int JDKVersion = 6;
+
 
 	/**
 	 * Shortcut to build a new descriptor.
@@ -37,6 +39,17 @@ public class Flapi {
 	 */
 	public static DescriptorBuilder_enableCondensedClassNames_setDescriptorName_setPackage_setReturnType_setStartingMethodName<Descriptor> builder() {
 		return DescriptorGenerator.create(new DescriptorHelperImpl());
+	}
 
+	public static void setJDKVersion(int major) {
+		if (major >= 5 && major <= 7) {
+			JDKVersion = major;
+		} else {
+			throw new DescriptorBuilderException("Only JDK versions 5-7 are supported.");
+		}
+	}
+
+	public static int getJDKVersion() {
+		return JDKVersion;
 	}
 }

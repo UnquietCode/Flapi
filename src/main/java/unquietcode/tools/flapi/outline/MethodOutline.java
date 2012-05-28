@@ -35,8 +35,17 @@ public class MethodOutline implements Outline, Comparable<MethodOutline> {
 	public Integer maxOccurrences;
 	private String methodSignature;
 	private boolean isTerminal = false;
-
+	private Class intermediateResult;
 	private final List<BlockOutline> blockChain = new ArrayList<BlockOutline>();
+
+
+	public Class getIntermediateResult() {
+		return intermediateResult;
+	}
+
+	public void setIntermediateResult(Class intermediateResult) {
+		this.intermediateResult = intermediateResult;
+	}
 
 	public String getMethodSignature() {
 		return methodSignature;

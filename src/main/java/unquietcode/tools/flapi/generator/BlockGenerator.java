@@ -21,6 +21,7 @@ package unquietcode.tools.flapi.generator;
 
 import com.sun.codemodel.*;
 import unquietcode.tools.flapi.Constants;
+import unquietcode.tools.flapi.DescriptorBuilderException;
 import unquietcode.tools.flapi.outline.BlockOutline;
 import unquietcode.tools.flapi.outline.MethodOutline;
 
@@ -59,7 +60,11 @@ public class BlockGenerator extends AbstractGenerator<BlockOutline, Void> {
 		JDefinedClass iHelper = getHelperInterface(outline);
 
 		for (MethodOutline method : outline.getAllMethods()) {
-			JMethod _method = addMethod(iHelper, ctx.model.VOID, JMod.NONE, method);
+			JType returnType = method.getIntermediateResult() != null
+							 ? ref(method.getIntermediateResult())
+							 : ctx.model.VOID
+			;
+			JMethod _method = addMethod(iHelper, returnType, JMod.NONE, method);
 
 			// for every block in the chain, add a wrapped helper parameter
 			int i=1;
@@ -93,7 +98,7 @@ public class BlockGenerator extends AbstractGenerator<BlockOutline, Void> {
 				addMethod(iSubset, getDynamicReturnType(outline, combination, method), JMod.NONE, method);
 
 				// add to implementation
-				JExpression initialReturnValue = method.isTerminal() ? JExpr.ref(Constants.RETURN_VALUE_NAME) : JExpr._this();
+				JExpression initialReturnValue = computeInitialReturnValue(combination, method);
 				addMethod(cSubset, computeImplementationReturnType(iSubset, combination, method), initialReturnValue, method);
 			}
 
@@ -193,7 +198,11 @@ public class BlockGenerator extends AbstractGenerator<BlockOutline, Void> {
 		JType returnType;
 
 		if (method.getBlockChain().isEmpty() && method.isTerminal()) {
-			returnType = ref(Object.class);
+			if (method.getIntermediateResult() == null) {
+				returnType = ref(Object.class);
+			} else {
+				returnType = ref(method.getIntermediateResult());
+			}
 		} else {
 			returnType = getDynamicReturnType(outline, allMethods, method).erasure();
 		}
@@ -204,13 +213,17 @@ public class BlockGenerator extends AbstractGenerator<BlockOutline, Void> {
 	protected JExpression computeInitialReturnValue(Set<MethodOutline> allMethods, MethodOutline method) {
 		JExpression returnValue;
 
-		// required method will return self
-		if (method.isRequired()) {
-			returnValue = JExpr._this();
-
 		// terminal method exits the class (eventually)
-		} else if (method.isTerminal()) {
-			returnValue = JExpr.ref(Constants.RETURN_VALUE_NAME);
+		if (method.isTerminal()) {
+			if (method.getIntermediateResult() == null) {
+				returnValue = JExpr.ref(Constants.RETURN_VALUE_NAME);
+			} else {
+				returnValue = null;
+			}
+
+		// required method will return self
+		} else if (method.isRequired()) {
+			returnValue = JExpr._this();
 
 		// dynamic method moves laterally to a sibling class
 		} else {
@@ -248,10 +261,19 @@ public class BlockGenerator extends AbstractGenerator<BlockOutline, Void> {
 			helperCall.arg(helper);
 		}
 
-		// add to method body
-		_method.body().add(helperCall);
-		_method.body().directStatement(" ");
+		// add to method body, capture result if needed
+		if (method.getIntermediateResult() != null) {
+			if (initialReturnValue != null) {
+				throw new DescriptorBuilderException("Expected a null return value here! (this is an internal error)");
+			} else {
+				initialReturnValue =
+					_method.body().decl(ref(method.getIntermediateResult()), "intermediateResult", helperCall);
+			}
+		} else {
+			_method.body().add(helperCall);
+		}
 
+		_method.body().directStatement(" ");
 		JExpression returnValue = initialReturnValue;
 
 		for (int i = method.getBlockChain().size()-1; i >=0; --i) {

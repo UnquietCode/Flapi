@@ -22,9 +22,11 @@ package unquietcode.tools.flapi.generator;
 import com.sun.codemodel.*;
 import unquietcode.tools.flapi.Constants;
 import unquietcode.tools.flapi.DescriptorBuilderException;
+import unquietcode.tools.flapi.Flapi;
 import unquietcode.tools.flapi.MethodParser;
 import unquietcode.tools.flapi.outline.MethodOutline;
 
+import javax.annotation.Generated;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -127,10 +129,13 @@ public class GeneratorContext {
 	//---o---o---o---o---o---o---o---o---o---o---o---o---o---o---o---o---o---o---o---o---o---o---//
 
 	private String header = null;
+	private Date generationDate = null;
 
 	private void addGeneratedHeader(JDefinedClass clazz) {
+		final SimpleDateFormat dateFormat = new SimpleDateFormat("MMMM dd, yyyy k:mm:ss z");
+
 		if (header == null) {
-			SimpleDateFormat dateFormat = new SimpleDateFormat("MMMM dd, yyyy k:mm:ss z");
+			generationDate = new Date();
 
 			header = new StringBuilder()
 				.append("This class was generated using Flapi, the fluent API generator for Java.\n")
@@ -139,11 +144,21 @@ public class GeneratorContext {
 				.append("\n")
 				.append("Visit ").append(Constants.PROJECT_URL).append(" for more information.\n")
 				.append("\n\n")
-				.append("Generated on ").append(dateFormat.format(new Date()))
+				.append("Generated on ").append(dateFormat.format(generationDate))
 				.append(" using version ").append(Constants.PROJECT_VERSION).append("")
 			.toString();
 		}
 
+		// javadoc header
 		clazz.javadoc().append(header);
+
+		// @Generated, when JDK version is >= 6
+		if (Flapi.getJDKVersion() >= 6) {
+			clazz.annotate(Generated.class)
+				.param("value", "unquietcode.tools.flapi")
+				.param("date", dateFormat.format(generationDate))
+				.param("comments", "generated using Flapi, the fluent API generator for Java")
+			;
+		}
 	}
 }

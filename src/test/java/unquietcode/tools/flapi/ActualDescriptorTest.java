@@ -5,6 +5,8 @@ import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 import unquietcode.tools.flapi.builder.*;
 
+import javax.annotation.Generated;
+
 /**
  * @author Benjamin Fagin
  * @version 04-25-2012
@@ -42,6 +44,7 @@ public class ActualDescriptorTest {
 					.addMethod("exactly(int num)").last()
 					.addMethod("any()").last()
 					.addMethod("last()").last()
+					.addMethod("last(Class returnType)").last()
 					.addMethod("atLeast(int num)").last()
 					.addMethod("atMost(int num)").last()
 					.addMethod("between(int atLeast, int atMost)").last()
