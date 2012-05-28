@@ -21,8 +21,6 @@ package unquietcode.tools.flapi.generator;
 
 import com.sun.codemodel.*;
 import unquietcode.tools.flapi.Constants;
-import unquietcode.tools.flapi.MinimumInvocationsException;
-import unquietcode.tools.flapi.ObjectWrapper;
 import unquietcode.tools.flapi.outline.BlockOutline;
 import unquietcode.tools.flapi.outline.MethodOutline;
 
@@ -32,6 +30,7 @@ import java.util.*;
 /**
  * @author Ben Fagin
  * @version 03-11-2012
+ * @version 05-27-2012  merged all block generation code together
  */
 public class BlockGenerator extends AbstractGenerator<BlockOutline, Void> {
 
@@ -53,6 +52,7 @@ public class BlockGenerator extends AbstractGenerator<BlockOutline, Void> {
 
 	}
 
+
 	//==o==o==o==o==o==o==| helper |==o==o==o==o==o==o==//
 
 	public JDefinedClass generateHelper() {
@@ -65,13 +65,12 @@ public class BlockGenerator extends AbstractGenerator<BlockOutline, Void> {
 			int i=1;
 			for (BlockOutline block : method.getBlockChain()) {
 				JDefinedClass blockHelper = getHelperInterface(block);
-				_method.param(ref(ObjectWrapper.class).narrow(blockHelper), Constants.HELPER_VALUE_NAME+(i++));
+				_method.param(getObjectWrapper().narrow(blockHelper), Constants.HELPER_VALUE_NAME+(i++));
 			}
 		}
 
 		return iHelper;
 	}
-
 
 
 	//==o==o==o==o==o==o==| subsets |==o==o==o==o==o==o==//
@@ -183,7 +182,7 @@ public class BlockGenerator extends AbstractGenerator<BlockOutline, Void> {
 				String message = "Expected at least "+method.minOccurrences+" invocations of method '"+method.getMethodSignature()+"'.";
 
 				_method.body()._if(JExpr.ref(key).gt(JExpr.lit(0)))._then()
-					._throw(JExpr._new(ref(MinimumInvocationsException.class)).arg(message));
+					._throw(JExpr._new(getMinimumInvocationException()).arg(message));
 			}
 		}
 	}
@@ -283,7 +282,7 @@ public class BlockGenerator extends AbstractGenerator<BlockOutline, Void> {
 			_method.body().directStatement("--ic_"+makeMethodKey(outline, method)+";");
 		}
 
-		// No need to transfer if it is to ourself!
+		// No need to transfer if it is to ourselves!
 		if (!method.isTerminal() && returnValue != JExpr._this()) {
 			_method.body().invoke("_transferInvocations").arg(_retval);
 		}
@@ -293,7 +292,7 @@ public class BlockGenerator extends AbstractGenerator<BlockOutline, Void> {
 	}
 
 	private JVar addHelper(JDefinedClass iHelper, int id, JMethod _method) {
-		JType wrappedType = ref(ObjectWrapper.class).narrow(iHelper);
+		JType wrappedType = getObjectWrapper().narrow(iHelper);
 		JVar _helper = _method.body().decl(wrappedType, "helper"+id,JExpr._new(wrappedType));
 		return _helper;
 	}

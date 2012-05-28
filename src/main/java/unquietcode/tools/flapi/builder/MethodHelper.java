@@ -1,7 +1,6 @@
 
 package unquietcode.tools.flapi.builder;
 
-import unquietcode.tools.flapi.ObjectWrapper;
 
 
 /**
@@ -12,24 +11,24 @@ import unquietcode.tools.flapi.ObjectWrapper;
  * Visit http://www.unquietcode.com/flapi for more information.
  * 
  * 
- * Generated on May 12, 2012 24:38:04 CDT using version 0.1
+ * Generated on May 28, 2012 24:33:22 CDT using version 0.2
  * 
  */
 public interface MethodHelper {
 
 
-    void atMost(int num);
-
-    void once();
-
-    void addBlockChain(ObjectWrapper<BlockChainHelper> _helper1);
-
-    void any();
-
-    void between(int atLeast, int atMost);
+    void atLeast(int num);
 
     void last();
 
-    void atLeast(int num);
+    void atMost(int num);
+
+    void any();
+
+    void addBlockChain(ObjectWrapper<BlockChainHelper> _helper1);
+
+    void once();
+
+    void between(int atLeast, int atMost);
 
 }

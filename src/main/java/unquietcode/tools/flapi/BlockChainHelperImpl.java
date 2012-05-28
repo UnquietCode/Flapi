@@ -23,6 +23,7 @@ import unquietcode.tools.flapi.builder.BlockChainHelper;
 import unquietcode.tools.flapi.builder.BlockHelper;
 import unquietcode.tools.flapi.outline.BlockOutline;
 import unquietcode.tools.flapi.outline.MethodOutline;
+import unquietcode.tools.flapi.builder.ObjectWrapper;
 
 /**
  * @author Ben Fagin

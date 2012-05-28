@@ -21,6 +21,7 @@ package unquietcode.tools.flapi.generator;
 
 import com.sun.codemodel.*;
 import unquietcode.tools.flapi.Constants;
+import unquietcode.tools.flapi.DescriptorBuilderException;
 import unquietcode.tools.flapi.MethodParser;
 import unquietcode.tools.flapi.Pair;
 import unquietcode.tools.flapi.outline.BlockOutline;
@@ -48,6 +49,52 @@ public abstract class AbstractGenerator<_InType extends Outline, _OutType> imple
 
 	public JDefinedClass getClass(String name) {
 		return ctx.getOrCreateClass(name);
+	}
+
+	public void decorateExceptionClass(JDefinedClass exception) {
+		exception._extends(RuntimeException.class);
+
+		JMethod constructor;
+		constructor = exception.constructor(JMod.PUBLIC);
+		constructor.body().invoke("super")
+			.arg(constructor.param(String.class, "message"))
+		;
+
+		constructor = exception.constructor(JMod.PUBLIC);
+		constructor.body().invoke("super")
+			.arg(constructor.param(Throwable.class, "cause"))
+		;
+
+		constructor = exception.constructor(JMod.PUBLIC);
+		constructor.body().invoke("super")
+			.arg(constructor.param(String.class, "message"))
+			.arg(constructor.param(Throwable.class, "cause"))
+		;
+	}
+
+	public void decorateObjectWrapperClass(JDefinedClass clazz) {
+		JTypeVar tv = clazz.generify("_Type");
+		JFieldVar _value = clazz.field(JMod.PRIVATE, tv, "_value");
+		JMethod method;
+
+		clazz.constructor(JMod.PUBLIC);
+
+		method = clazz.constructor(JMod.PUBLIC);
+		JVar value = method.param(tv, "value");
+		method.body().assign(_value, value);
+
+		method = clazz.method(JMod.PUBLIC, ctx.model.VOID, "set");
+		value = method.param(tv, "value");
+		method.body().assign(_value, value);
+
+		method = clazz.method(JMod.PUBLIC, tv, "get");
+		method.body()._return(_value);
+
+		method = clazz.method(JMod.PUBLIC, String.class, "toString");
+		method.annotate(Override.class);
+		JConditional _if = method.body()._if(_value.eq(JExpr._null()));
+		_if._then()._return(JExpr._null());
+		_if._else()._return(_value.invoke("toString"));
 	}
 
 	protected JClass ref(Class clazz) {
@@ -277,5 +324,29 @@ public abstract class AbstractGenerator<_InType extends Outline, _OutType> imple
 
 	public JDefinedClass getGeneratorImplementation(BlockOutline block) {
 		return getClass(block.getName()+"Generator");
-	}	
+	}
+
+	public JDefinedClass getMinimumInvocationException() {
+		final String name = "MinimumInvocationsException";
+
+		if (ctx.doesClassExist(name)) {
+			return getClass(name);
+		} else {
+			JDefinedClass ex = getClass(name);
+			decorateExceptionClass(ex);
+			return ex;
+		}
+	}
+
+	public JDefinedClass getObjectWrapper() {
+		final String name = "ObjectWrapper";
+
+		if (ctx.doesClassExist(name)) {
+			return getClass(name);
+		} else {
+			JDefinedClass ow = getClass(name);
+			decorateObjectWrapperClass(ow);
+			return ow;
+		}
+	}
 }

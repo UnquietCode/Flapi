@@ -14,13 +14,21 @@ package unquietcode.tools.flapi.builder;
  * Generated on May 28, 2012 24:33:22 CDT using version 0.2
  * 
  */
-public interface BlockChainHelper {
+public class MinimumInvocationsException
+    extends RuntimeException
+{
 
 
-    void startBlock(String blockName, ObjectWrapper<BlockHelper> _helper1);
+    public MinimumInvocationsException(String message) {
+        super(message);
+    }
 
-    void addBlockChain(ObjectWrapper<BlockChainHelper> _helper1);
+    public MinimumInvocationsException(Throwable cause) {
+        super(cause);
+    }
 
-    void addBlockReference(String blockName);
+    public MinimumInvocationsException(String message, Throwable cause) {
+        super(message, cause);
+    }
 
 }

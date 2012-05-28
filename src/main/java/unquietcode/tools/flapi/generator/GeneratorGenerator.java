@@ -54,7 +54,7 @@ public class GeneratorGenerator extends AbstractGenerator<GeneratorOutline, JDef
 		//      throw new IllegalArgumentException("Helper cannot be null.");
 		//
 		JConditional _if = createMethod.body()._if(pHelper.eq(JExpr._null()));
-		_if._then()._throw(JExpr._new(ref(DescriptorBuilderException.class)).arg("Helper cannot be null."));
+		_if._then()._throw(JExpr._new(ref(IllegalArgumentException.class)).arg("Helper cannot be null."));
 		createMethod.body().directStatement(" ");
 
 		// get base return value and return

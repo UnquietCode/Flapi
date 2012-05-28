@@ -36,8 +36,8 @@ import java.util.*;
 public class GeneratorContext {
 	public final JCodeModel model = new JCodeModel();
 	final JPackage thePackage;
-	final Map<String, JDefinedClass> interfaces = new HashMap<String, JDefinedClass>();
-	final Map<String, JDefinedClass> classes = new HashMap<String, JDefinedClass>();
+	private final Map<String, JDefinedClass> interfaces = new HashMap<String, JDefinedClass>();
+	private final Map<String, JDefinedClass> classes = new HashMap<String, JDefinedClass>();
 	private boolean condenseNames = false;
 
 	public GeneratorContext(String rootPackage) {
@@ -81,6 +81,14 @@ public class GeneratorContext {
 		}
 
 		return _class;
+	}
+
+	public boolean doesClassExist(String name) {
+		return classes.containsKey(name);
+	}
+
+	public boolean doesInterfaceExist(String name) {
+		return interfaces.containsKey(name);
 	}
 
 	//---o---o---o---o---o---o---o---o---o---o---o---o---o---o---o---o---o---o---o---o---o---o---//

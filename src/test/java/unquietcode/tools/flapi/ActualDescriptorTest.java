@@ -64,5 +64,7 @@ public class ActualDescriptorTest {
 
 			.build()
 		;
+
+		builder.writeToFolder("/Users/bfagin/Documents/Code Projects/Flapi/temp");
 	}
 }
