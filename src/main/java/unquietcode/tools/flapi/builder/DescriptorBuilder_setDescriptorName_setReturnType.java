@@ -11,7 +11,7 @@ package unquietcode.tools.flapi.builder;
  * Visit http://www.unquietcode.com/flapi for more information.
  * 
  * 
- * Generated on May 28, 2012 24:33:22 CDT using version 0.2
+ * Generated on May 28, 2012 12:09:05 CDT using version 0.2
  * 
  */
 public interface DescriptorBuilder_setDescriptorName_setReturnType<_ReturnType >{

@@ -51,7 +51,7 @@ public class XHTMLBuilderExample {
 				.addMethod("done()").last()
 
 				.startBlock("Element", "startElement(String tagName)").any()
-					.addMethod("setValue(String value)").once()
+					.addMethod("setValue(String value)").atMost(1)
 					.addMethod("addAttribute(String key, String value)").any()
 					.addMethod("addComment(String comment)").any()
 					.addMethod("endElement()").last()

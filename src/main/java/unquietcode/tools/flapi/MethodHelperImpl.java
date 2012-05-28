@@ -40,9 +40,8 @@ public class MethodHelperImpl implements MethodHelper {
 	}
 	
 	@Override
-	public void once() {
-		method.minOccurrences = 0;
-		method.maxOccurrences = 1;
+	public void exactly(int num) {
+		between(num, num);
 	}
 
 	@Override

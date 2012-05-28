@@ -11,7 +11,7 @@ package unquietcode.tools.flapi.builder;
  * Visit http://www.unquietcode.com/flapi for more information.
  * 
  * 
- * Generated on May 28, 2012 24:33:22 CDT using version 0.2
+ * Generated on May 28, 2012 12:09:05 CDT using version 0.2
  * 
  */
 public class ImplMethodBuilder
@@ -66,17 +66,17 @@ public class ImplMethodBuilder
         return retval;
     }
 
-    public Object last() {
+    public Object exactly(int num) {
         _checkInvocations();
-        _helper.last();
+        _helper.exactly(num);
          
         Object retval = _returnValue;
         return retval;
     }
 
-    public Object once() {
+    public Object last() {
         _checkInvocations();
-        _helper.once();
+        _helper.last();
          
         Object retval = _returnValue;
         return retval;

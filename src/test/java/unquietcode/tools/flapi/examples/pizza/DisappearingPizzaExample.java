@@ -35,8 +35,8 @@ public class DisappearingPizzaExample {
 				.setDescriptorName("Pizza")
 				.setReturnType(Pizza.class)
 
-				.addMethod("addSauce(unquietcode.tools.flapi.examples.pizza.DisappearingPizzaExample.SauceType sauceType)").once()
-				.addMethod("addCheese()").once()
+				.addMethod("addSauce(unquietcode.tools.flapi.examples.pizza.DisappearingPizzaExample.SauceType sauceType)").atMost(1)
+				.addMethod("addCheese()").atMost(1)
 				.addMethod("addTopping(unquietcode.tools.flapi.examples.pizza.DisappearingPizzaExample.Topping topping)").atMost(3)
 				.addMethod("bake()").last()
 			.build()

@@ -12,7 +12,7 @@ import unquietcode.tools.flapi.Descriptor;
  * Visit http://www.unquietcode.com/flapi for more information.
  * 
  * 
- * Generated on May 28, 2012 24:33:22 CDT using version 0.2
+ * Generated on May 28, 2012 12:09:05 CDT using version 0.2
  * 
  */
 public interface DescriptorHelper {
@@ -20,20 +20,20 @@ public interface DescriptorHelper {
 
     Descriptor _getReturnValue();
 
-    void addMethod(String methodSignature, ObjectWrapper<MethodHelper> _helper1);
-
-    void build();
-
     void enableCondensedClassNames(boolean value);
+
+    void setDescriptorName(String descriptorName);
 
     void setStartingMethodName(String methodName);
 
     void startBlock(String blockName, String methodSignature, ObjectWrapper<MethodHelper> _helper1, ObjectWrapper<BlockHelper> _helper2);
 
+    void addMethod(String methodSignature, ObjectWrapper<MethodHelper> _helper1);
+
+    void build();
+
     void setReturnType(Class returnType);
 
     void setPackage(String packageName);
-
-    void setDescriptorName(String descriptorName);
 
 }
