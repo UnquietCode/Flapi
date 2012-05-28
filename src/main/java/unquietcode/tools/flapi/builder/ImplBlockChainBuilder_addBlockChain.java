@@ -12,10 +12,10 @@ import javax.annotation.Generated;
  * Visit http://www.unquietcode.com/flapi for more information.
  * 
  * 
- * Generated on May 28, 2012 16:00:17 CDT using version 0.2
+ * Generated on May 28, 2012 17:01:37 CDT using version 0.2
  * 
  */
-@Generated(value = "unquietcode.tools.flapi", date = "May 28, 2012 16:00:17 CDT", comments = "generated using Flapi, the fluent API generator for Java")
+@Generated(value = "unquietcode.tools.flapi", date = "May 28, 2012 17:01:37 CDT", comments = "generated using Flapi, the fluent API generator for Java")
 public class ImplBlockChainBuilder_addBlockChain
     implements BlockChainBuilder_addBlockChain
 {
@@ -44,13 +44,13 @@ public class ImplBlockChainBuilder_addBlockChain
         return retval;
     }
 
-    public BlockBuilder startBlock(String blockName) {
+    public BlockBuilder_exitWhenEmpty startBlock(String blockName) {
         ObjectWrapper<BlockHelper> helper1 = new ObjectWrapper<BlockHelper>();
         _checkInvocations();
         _helper.startBlock(blockName, helper1);
          
-        BlockBuilder step1 = new ImplBlockBuilder(helper1 .get(), _returnValue);
-        BlockBuilder retval = step1;
+        BlockBuilder_exitWhenEmpty step1 = new ImplBlockBuilder_exitWhenEmpty(helper1 .get(), _returnValue);
+        BlockBuilder_exitWhenEmpty retval = step1;
         return retval;
     }
 

@@ -104,6 +104,12 @@ public class BlockGenerator extends AbstractGenerator<BlockOutline, Void> {
 
 			// add the dynamic methods
 			for (MethodOutline method : combination) {
+
+				// if we should exit when empty, and this is the last one
+				if (isCandidateForDynamicTerminal(method, combination)) {
+					method.isTerminal(true);
+				}
+
 				JType returnType = getDynamicReturnType(outline, combination, method);
 
 				// add to interface
@@ -118,6 +124,14 @@ public class BlockGenerator extends AbstractGenerator<BlockOutline, Void> {
 				);
 			}
 		}
+	}
+
+	private boolean isCandidateForDynamicTerminal(MethodOutline method, Set<MethodOutline> combination) {
+		return  outline.shouldExitWhenEmpty()               // option is enabled
+			&&  outline.getRequiredMethods().isEmpty()      // no required methods
+			&&  combination.size() == 1                     // this is the only method in the subset
+			&&  method.maxOccurrences == 1                  // this is the last occurrence of the method
+		;
 	}
 
 	private JDefinedClass createSubsetImpl(Set<MethodOutline> methodCombination) {

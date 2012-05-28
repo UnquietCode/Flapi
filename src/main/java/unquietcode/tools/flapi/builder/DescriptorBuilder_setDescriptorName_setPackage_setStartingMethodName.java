@@ -12,10 +12,10 @@ import javax.annotation.Generated;
  * Visit http://www.unquietcode.com/flapi for more information.
  * 
  * 
- * Generated on May 28, 2012 16:00:17 CDT using version 0.2
+ * Generated on May 28, 2012 17:01:37 CDT using version 0.2
  * 
  */
-@Generated(value = "unquietcode.tools.flapi", date = "May 28, 2012 16:00:17 CDT", comments = "generated using Flapi, the fluent API generator for Java")
+@Generated(value = "unquietcode.tools.flapi", date = "May 28, 2012 17:01:37 CDT", comments = "generated using Flapi, the fluent API generator for Java")
 public interface DescriptorBuilder_setDescriptorName_setPackage_setStartingMethodName<_ReturnType >{
 
 
@@ -23,7 +23,7 @@ public interface DescriptorBuilder_setDescriptorName_setPackage_setStartingMetho
 
     _ReturnType build();
 
-    MethodBuilder_addBlockChain<BlockBuilder<DescriptorBuilder_setDescriptorName_setPackage_setStartingMethodName<_ReturnType>>> startBlock(String blockName, String methodSignature);
+    MethodBuilder_addBlockChain<BlockBuilder_exitWhenEmpty<DescriptorBuilder_setDescriptorName_setPackage_setStartingMethodName<_ReturnType>>> startBlock(String blockName, String methodSignature);
 
     DescriptorBuilder_setPackage_setStartingMethodName<_ReturnType> setDescriptorName(String descriptorName);
 

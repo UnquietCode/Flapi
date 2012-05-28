@@ -91,6 +91,7 @@ public class MethodOutline implements Outline, Comparable<MethodOutline> {
 		clone.methodSignature = methodSignature;
 		clone.isTerminal = isTerminal;
 		clone.blockChain.addAll(blockChain);
+		clone.intermediateResult = intermediateResult;
 
 		return clone;
 	}

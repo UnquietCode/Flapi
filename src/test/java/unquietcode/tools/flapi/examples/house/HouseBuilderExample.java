@@ -50,9 +50,9 @@ public class HouseBuilderExample {
 			.setPackage("unquietcode.tools.flapi.examples.house.builder")
 
 			.startBlock("Wall", "addWall()").last(Wall.class)
+				.exitWhenEmpty(true)
 				.addMethod("setColor(java.awt.Color color)").atMost(1)
 				.addMethod("setWidth(double inches)").atMost(1)
-				.addMethod("construct()").last()
 			.endBlock()
 
 			.addMethod("constructExpensiveHouse()").last(ExpensiveHouse.class)
@@ -70,19 +70,17 @@ public class HouseBuilderExample {
 		Wall wall1 = houseBuilder.addWall()
 			.setColor(Color.RED)
 			.setWidth(120.35)
-			.construct()
 		;
 
-		// using the object
-		Wall wall2 = houseBuilder.addWall().construct();
-		wall2.setColor(Color.BLACK);
-		wall2.setWidth(87.45);
+		Wall wall2 = houseBuilder.addWall()
+			.setColor(Color.BLACK)
+			.setWidth(87.45)
+		;
 
-		// using both
+		// using both the builder and the object
 		Wall wall3 = houseBuilder.addWall()
 			.setColor(Color.BLACK)
 			.setWidth(80.25)
-			.construct()
 		;
 		wall3.isWeightBearing(true);    // this method isn't on the builder
 

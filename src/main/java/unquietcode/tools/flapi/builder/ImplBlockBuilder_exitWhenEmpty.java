@@ -1,7 +1,6 @@
 
 package unquietcode.tools.flapi.builder;
 
-import java.lang.reflect.Field;
 import javax.annotation.Generated;
 
 
@@ -17,56 +16,34 @@ import javax.annotation.Generated;
  * 
  */
 @Generated(value = "unquietcode.tools.flapi", date = "May 28, 2012 17:01:37 CDT", comments = "generated using Flapi, the fluent API generator for Java")
-public class ImplDescriptorBuilder
-    implements DescriptorBuilder
+public class ImplBlockBuilder_exitWhenEmpty
+    implements BlockBuilder_exitWhenEmpty
 {
 
-    private final DescriptorHelper _helper;
+    private final BlockHelper _helper;
     private final Object _returnValue;
-    int ic_Descriptor_setDescriptorName$String_descriptorName = 1;
-    int ic_Descriptor_setPackage$String_packageName = 1;
-    int ic_Descriptor_setReturnType$Class_returnType = 1;
 
-    ImplDescriptorBuilder(DescriptorHelper helper, Object returnValue) {
+    ImplBlockBuilder_exitWhenEmpty(BlockHelper helper, Object returnValue) {
         _helper = helper;
         _returnValue = returnValue;
     }
 
     private void _transferInvocations(Object next) {
-        Class clazz = next.getClass();
-         
-        try {
-            Field field = clazz.getDeclaredField("ic_Descriptor_setDescriptorName$String_descriptorName");
-            field.setInt(next, ic_Descriptor_setDescriptorName$String_descriptorName);
-        } catch (Exception _x) {
-            // nothing
-        }
-         
-        try {
-            Field field = clazz.getDeclaredField("ic_Descriptor_setPackage$String_packageName");
-            field.setInt(next, ic_Descriptor_setPackage$String_packageName);
-        } catch (Exception _x) {
-            // nothing
-        }
-         
-        try {
-            Field field = clazz.getDeclaredField("ic_Descriptor_setReturnType$Class_returnType");
-            field.setInt(next, ic_Descriptor_setReturnType$Class_returnType);
-        } catch (Exception _x) {
-            // nothing
-        }
+        // nothing
     }
 
     private void _checkInvocations() {
-        if (ic_Descriptor_setDescriptorName$String_descriptorName > 0) {
-            throw new MinimumInvocationsException("Expected at least 1 invocations of method 'setDescriptorName(String descriptorName)'.");
-        }
-        if (ic_Descriptor_setPackage$String_packageName > 0) {
-            throw new MinimumInvocationsException("Expected at least 1 invocations of method 'setPackage(String packageName)'.");
-        }
-        if (ic_Descriptor_setReturnType$Class_returnType > 0) {
-            throw new MinimumInvocationsException("Expected at least 1 invocations of method 'setReturnType(Class returnType)'.");
-        }
+        // nothing
+    }
+
+    public MethodBuilder_addBlockChain addBlockReference(String blockName, String methodSignature) {
+        ObjectWrapper<MethodHelper> helper1 = new ObjectWrapper<MethodHelper>();
+        _helper.addBlockReference(blockName, methodSignature, helper1);
+         
+        MethodBuilder_addBlockChain step1 = new ImplMethodBuilder_addBlockChain(helper1 .get(), this);
+        MethodBuilder_addBlockChain retval = step1;
+        _transferInvocations(retval);
+        return retval;
     }
 
     public MethodBuilder_addBlockChain addMethod(String methodSignature) {
@@ -79,9 +56,9 @@ public class ImplDescriptorBuilder
         return retval;
     }
 
-    public Object build() {
+    public Object endBlock() {
         _checkInvocations();
-        _helper.build();
+        _helper.endBlock();
          
         Object retval = _returnValue;
         return retval;
@@ -95,6 +72,14 @@ public class ImplDescriptorBuilder
         BlockBuilder_exitWhenEmpty step2 = new ImplBlockBuilder_exitWhenEmpty(helper2 .get(), this);
         MethodBuilder_addBlockChain step1 = new ImplMethodBuilder_addBlockChain(helper1 .get(), step2);
         MethodBuilder_addBlockChain retval = step1;
+        _transferInvocations(retval);
+        return retval;
+    }
+
+    public BlockBuilder exitWhenEmpty(boolean value) {
+        _helper.exitWhenEmpty(value);
+         
+        BlockBuilder retval = new ImplBlockBuilder(_helper, _returnValue);
         _transferInvocations(retval);
         return retval;
     }

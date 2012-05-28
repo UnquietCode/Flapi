@@ -87,6 +87,20 @@
 								</configuration>
 							</execution>
 							<execution>
+								<id>houseBuilder</id>
+								<phase>generate-sources</phase>
+								<goals>
+									<goal>java</goal>
+								</goals>
+								<configuration>
+									<classpathScope>test</classpathScope>
+									<mainClass>unquietcode.tools.flapi.examples.house.HouseBuilderExample</mainClass>
+									<arguments>
+										<arg>${project.basedir}/src/test/java</arg>
+									</arguments>
+								</configuration>
+							</execution>
+							<execution>
 								<id>pizzaBuilder</id>
 								<phase>generate-sources</phase>
 								<goals>

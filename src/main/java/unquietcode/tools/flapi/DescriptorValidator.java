@@ -58,7 +58,7 @@ public class DescriptorValidator {
 			}
 		}
 
-		if (!seenLast) {
+		if (!seenLast && !block.shouldExitWhenEmpty()) {
 			throw new DescriptorBuilderException("Encountered a block with no terminal method: " + block.getName());
 		}
 

@@ -13,10 +13,10 @@ import javax.annotation.Generated;
  * Visit http://www.unquietcode.com/flapi for more information.
  * 
  * 
- * Generated on May 28, 2012 16:00:17 CDT using version 0.2
+ * Generated on May 28, 2012 17:01:37 CDT using version 0.2
  * 
  */
-@Generated(value = "unquietcode.tools.flapi", date = "May 28, 2012 16:00:17 CDT", comments = "generated using Flapi, the fluent API generator for Java")
+@Generated(value = "unquietcode.tools.flapi", date = "May 28, 2012 17:01:37 CDT", comments = "generated using Flapi, the fluent API generator for Java")
 public class ImplDescriptorBuilder_enableCondensedClassNames
     implements DescriptorBuilder_enableCondensedClassNames
 {
@@ -92,7 +92,7 @@ public class ImplDescriptorBuilder_enableCondensedClassNames
         ObjectWrapper<BlockHelper> helper2 = new ObjectWrapper<BlockHelper>();
         _helper.startBlock(blockName, methodSignature, helper1, helper2);
          
-        BlockBuilder step2 = new ImplBlockBuilder(helper2 .get(), this);
+        BlockBuilder_exitWhenEmpty step2 = new ImplBlockBuilder_exitWhenEmpty(helper2 .get(), this);
         MethodBuilder_addBlockChain step1 = new ImplMethodBuilder_addBlockChain(helper1 .get(), step2);
         MethodBuilder_addBlockChain retval = step1;
         _transferInvocations(retval);

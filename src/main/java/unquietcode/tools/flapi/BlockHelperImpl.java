@@ -75,6 +75,11 @@ public class BlockHelperImpl implements BlockHelper {
 	}
 
 	@Override
+	public void exitWhenEmpty(boolean value) {
+		block.exitWhenEmpty(value);
+	}
+
+	@Override
 	public void endBlock() {
 		// nothing
 	}

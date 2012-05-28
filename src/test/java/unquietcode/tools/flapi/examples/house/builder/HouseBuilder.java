@@ -15,10 +15,10 @@ import unquietcode.tools.flapi.examples.house.Wall;
  * Visit http://www.unquietcode.com/flapi for more information.
  * 
  * 
- * Generated on May 28, 2012 15:38:23 CDT using version 0.2
+ * Generated on May 28, 2012 17:35:16 CDT using version 0.2
  * 
  */
-@Generated(value = "unquietcode.tools.flapi", date = "May 28, 2012 15:38:23 CDT", comments = "generated using Flapi, the fluent API generator for Java")
+@Generated(value = "unquietcode.tools.flapi", date = "May 28, 2012 17:35:16 CDT", comments = "generated using Flapi, the fluent API generator for Java")
 public interface HouseBuilder<_ReturnType >{
 
 

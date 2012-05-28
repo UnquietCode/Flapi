@@ -31,11 +31,6 @@ public class WallHelperImpl implements WallHelper {
 	final Wall wall = new Wall();
 
 	@Override
-	public void construct() {
-		// nothing
-	}
-
-	@Override
 	public void setColor(Color color) {
 		wall.setColor(color);
 	}

@@ -26,8 +26,8 @@ import java.util.*;
  * @version 03-09-2012
  */
 public class BlockOutline implements Outline {
-	// name of the block
 	private String name;
+	private boolean exitWhenEmpty = false;
 
 	// nested blocks
 	private final List<BlockOutline> blocks = new ArrayList<BlockOutline>();
@@ -58,6 +58,14 @@ public class BlockOutline implements Outline {
 
 	public void setName(String name) {
 		this.name = name.trim();
+	}
+
+	public boolean shouldExitWhenEmpty() {
+		return exitWhenEmpty;
+	}
+
+	public void exitWhenEmpty(boolean exitWhenEmpty) {
+		this.exitWhenEmpty = exitWhenEmpty;
 	}
 
 	public BlockOutline addBlock(String blockName) {

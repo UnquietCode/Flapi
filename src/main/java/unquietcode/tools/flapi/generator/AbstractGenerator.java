@@ -227,10 +227,19 @@ public abstract class AbstractGenerator<_InType extends Outline, _OutType> imple
 		return clazz;
 	}
 
+	/*
+	 * All methods returned from makeCombinations are clones of the originals.
+	 */
 	protected Set<Set<MethodOutline>> makeCombinations(Set<MethodOutline> methods) {
 		Set<Set<MethodOutline>> combinations = new HashSet<Set<MethodOutline>>();
 		Stack<Set<MethodOutline>> stack = new Stack<Set<MethodOutline>>();
-		stack.push(methods);
+
+		// clone and push
+		Set<MethodOutline> cloned = new HashSet<MethodOutline>();
+		for (MethodOutline method : methods) {
+			cloned.add(method.copy());
+		}
+		stack.push(cloned);
 
 		while (!stack.isEmpty()) {
 			Set<MethodOutline> set = stack.pop();

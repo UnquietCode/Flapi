@@ -16,13 +16,17 @@ import javax.annotation.Generated;
  * 
  */
 @Generated(value = "unquietcode.tools.flapi", date = "May 28, 2012 17:01:37 CDT", comments = "generated using Flapi, the fluent API generator for Java")
-public interface BlockChainHelper {
+public interface BlockBuilder_exitWhenEmpty<_ReturnType >{
 
 
-    void addBlockChain(ObjectWrapper<BlockChainHelper> _helper1);
+    MethodBuilder_addBlockChain<BlockBuilder_exitWhenEmpty<_ReturnType>> addBlockReference(String blockName, String methodSignature);
 
-    void startBlock(String blockName, ObjectWrapper<BlockHelper> _helper1);
+    MethodBuilder_addBlockChain<BlockBuilder_exitWhenEmpty<_ReturnType>> addMethod(String methodSignature);
 
-    void addBlockReference(String blockName);
+    _ReturnType endBlock();
+
+    MethodBuilder_addBlockChain<BlockBuilder_exitWhenEmpty<BlockBuilder_exitWhenEmpty<_ReturnType>>> startBlock(String blockName, String methodSignature);
+
+    BlockBuilder<_ReturnType> exitWhenEmpty(boolean value);
 
 }

@@ -71,6 +71,7 @@ public class ActualDescriptorTest {
 						.addBlockChain().addBlockReference("Method")
 					.any()
 
+					.addMethod("exitWhenEmpty(boolean value)").atMost(1)
 					.addMethod("endBlock()").last()
 				.endBlock()
 
