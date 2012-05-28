@@ -101,6 +101,6 @@ public class BlockOutline implements Outline {
 	}
 
 	public Set<MethodOutline> getAllMethods() {
-		return new HashSet<MethodOutline>(methods);
+		return methods;
 	}
 }
