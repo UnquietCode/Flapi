@@ -3,10 +3,10 @@ package unquietcode.tools.flapi.examples.calculator;
 import org.junit.Test;
 import unquietcode.tools.flapi.Descriptor;
 import unquietcode.tools.flapi.Flapi;
-import unquietcode.tools.flapi.ObjectWrapper;
 import unquietcode.tools.flapi.examples.calculator.builder.CalculationBuilder;
 import unquietcode.tools.flapi.examples.calculator.builder.CalculatorBuilder;
 import unquietcode.tools.flapi.examples.calculator.builder.CalculatorGenerator;
+import unquietcode.tools.flapi.examples.calculator.builder.ObjectWrapper;
 
 import java.math.BigInteger;
 

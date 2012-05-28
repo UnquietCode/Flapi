@@ -13,7 +13,7 @@ import unquietcode.tools.flapi.examples.email.EmailMessage;
  * Visit http://www.unquietcode.com/flapi for more information.
  * 
  * 
- * Generated on May 13, 2012 24:29:29 CDT using version 0.2
+ * Generated on May 28, 2012 10:14:26 CDT using version 0.2
  * 
  */
 public interface EmailHelper {
@@ -23,18 +23,18 @@ public interface EmailHelper {
 
     void addCC(String emailAddress);
 
-    void setSender(String emailAddress);
+    void sender(String emailAddress);
 
     void addRecipient(String emailAddress);
 
     void send();
 
-    void setBody(String text);
+    void body(String text);
 
-    void setSubject(String subject);
-
-    void addBCC(String emailAddress);
+    void subject(String subject);
 
     void addAttachment(File file);
+
+    void addBCC(String emailAddress);
 
 }

@@ -21,7 +21,7 @@ public class EmailHelperImpl implements EmailHelper {
 	}
 
 	@Override
-	public void setSubject(String subject) {
+	public void subject(String subject) {
 		email.setSubject(subject);
 	}
 
@@ -32,12 +32,12 @@ public class EmailHelperImpl implements EmailHelper {
 	}
 
 	@Override
-	public void setSender(String emailAddress) {
+	public void sender(String emailAddress) {
 		email.setSender(emailAddress);
 	}
 
 	@Override
-	public void setBody(String text) {
+	public void body(String text) {
 		email.setBody(text);
 	}
 

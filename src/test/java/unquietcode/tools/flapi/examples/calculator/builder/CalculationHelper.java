@@ -11,26 +11,26 @@ package unquietcode.tools.flapi.examples.calculator.builder;
  * Visit http://www.unquietcode.com/flapi for more information.
  * 
  * 
- * Generated on May 12, 2012 24:56:40 CDT using version 0.1
+ * Generated on May 28, 2012 10:12:35 CDT using version 0.2
  * 
  */
 public interface CalculationHelper {
 
 
-    void mod(int value);
+    void divide(int value);
+
+    void times(int value);
 
     void power(int value);
 
-    void abs();
-
-    void divide(int value);
-
     void minus(int value);
 
-    void times(int value);
+    void abs();
 
     void plus(int value);
 
     void equals();
+
+    void mod(int value);
 
 }

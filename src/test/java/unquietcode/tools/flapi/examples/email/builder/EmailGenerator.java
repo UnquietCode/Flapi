@@ -1,7 +1,6 @@
 
 package unquietcode.tools.flapi.examples.email.builder;
 
-import unquietcode.tools.flapi.DescriptorBuilderException;
 import unquietcode.tools.flapi.examples.email.EmailMessage;
 
 
@@ -13,19 +12,19 @@ import unquietcode.tools.flapi.examples.email.EmailMessage;
  * Visit http://www.unquietcode.com/flapi for more information.
  * 
  * 
- * Generated on May 13, 2012 24:29:29 CDT using version 0.2
+ * Generated on May 28, 2012 10:14:26 CDT using version 0.2
  * 
  */
 public class EmailGenerator {
 
 
     @SuppressWarnings("unchecked")
-    public static EmailBuilder_setBody_setSender_setSubject<EmailMessage> compose(EmailHelper helper) {
+    public static EmailBuilder_body_sender_subject<EmailMessage> compose(EmailHelper helper) {
         if (helper == null) {
-            throw new DescriptorBuilderException("Helper cannot be null.");
+            throw new IllegalArgumentException("Helper cannot be null.");
         }
          
-        return new ImplEmailBuilder_setBody_setSender_setSubject(helper, helper._getReturnValue());
+        return new ImplEmailBuilder_body_sender_subject(helper, helper._getReturnValue());
     }
 
 }

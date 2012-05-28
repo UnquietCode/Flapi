@@ -2,7 +2,6 @@
 package unquietcode.tools.flapi.examples.xhtml.builder;
 
 import org.w3c.dom.Document;
-import unquietcode.tools.flapi.DescriptorBuilderException;
 
 
 /**
@@ -13,7 +12,7 @@ import unquietcode.tools.flapi.DescriptorBuilderException;
  * Visit http://www.unquietcode.com/flapi for more information.
  * 
  * 
- * Generated on May 09, 2012 23:44:26 CDT using version 0.1
+ * Generated on May 28, 2012 10:15:58 CDT using version 0.2
  * 
  */
 public class XHTMLGenerator {
@@ -22,7 +21,7 @@ public class XHTMLGenerator {
     @SuppressWarnings("unchecked")
     public static XHTMLBuilder<Document> createDocument(XHTMLHelper helper) {
         if (helper == null) {
-            throw new DescriptorBuilderException("Helper cannot be null.");
+            throw new IllegalArgumentException("Helper cannot be null.");
         }
          
         return new ImplXHTMLBuilder(helper, helper._getReturnValue());

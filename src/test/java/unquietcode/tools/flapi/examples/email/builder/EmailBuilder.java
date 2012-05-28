@@ -12,7 +12,7 @@ import java.io.File;
  * Visit http://www.unquietcode.com/flapi for more information.
  * 
  * 
- * Generated on May 13, 2012 24:29:29 CDT using version 0.2
+ * Generated on May 28, 2012 10:14:26 CDT using version 0.2
  * 
  */
 public interface EmailBuilder<_ReturnType >{

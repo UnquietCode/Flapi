@@ -1,7 +1,6 @@
 
 package unquietcode.tools.flapi.examples.xhtml.builder;
 
-import unquietcode.tools.flapi.ObjectWrapper;
 
 
 /**
@@ -12,7 +11,7 @@ import unquietcode.tools.flapi.ObjectWrapper;
  * Visit http://www.unquietcode.com/flapi for more information.
  * 
  * 
- * Generated on May 09, 2012 23:44:26 CDT using version 0.1
+ * Generated on May 28, 2012 10:15:58 CDT using version 0.2
  * 
  */
 public interface ElementHelper {
@@ -20,12 +19,12 @@ public interface ElementHelper {
 
     void addComment(String comment);
 
-    void endElement();
-
-    void startElement(String tagName, ObjectWrapper<ElementHelper> _helper1);
-
     void addAttribute(String key, String value);
 
+    void endElement();
+
     void setValue(String value);
+
+    void startElement(String tagName, ObjectWrapper<ElementHelper> _helper1);
 
 }

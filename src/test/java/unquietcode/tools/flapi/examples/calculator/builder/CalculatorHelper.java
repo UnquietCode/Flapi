@@ -1,7 +1,6 @@
 
 package unquietcode.tools.flapi.examples.calculator.builder;
 
-import unquietcode.tools.flapi.ObjectWrapper;
 
 
 /**
@@ -12,11 +11,10 @@ import unquietcode.tools.flapi.ObjectWrapper;
  * Visit http://www.unquietcode.com/flapi for more information.
  * 
  * 
- * Generated on May 12, 2012 24:56:40 CDT using version 0.1
+ * Generated on May 28, 2012 10:12:35 CDT using version 0.2
  * 
  */
 public interface CalculatorHelper {
-
 
     ObjectWrapper _getReturnValue();
 

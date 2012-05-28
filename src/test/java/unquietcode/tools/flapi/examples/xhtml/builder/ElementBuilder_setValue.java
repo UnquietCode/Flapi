@@ -11,7 +11,7 @@ package unquietcode.tools.flapi.examples.xhtml.builder;
  * Visit http://www.unquietcode.com/flapi for more information.
  * 
  * 
- * Generated on May 09, 2012 23:44:26 CDT using version 0.1
+ * Generated on May 28, 2012 10:15:58 CDT using version 0.2
  * 
  */
 public interface ElementBuilder_setValue<_ReturnType >{

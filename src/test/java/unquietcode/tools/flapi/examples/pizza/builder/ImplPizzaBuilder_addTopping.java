@@ -12,7 +12,7 @@ import unquietcode.tools.flapi.examples.pizza.DisappearingPizzaExample.Topping;
  * Visit http://www.unquietcode.com/flapi for more information.
  * 
  * 
- * Generated on May 09, 2012 23:31:29 CDT using version 0.1
+ * Generated on May 28, 2012 10:15:25 CDT using version 0.2
  * 
  */
 public class ImplPizzaBuilder_addTopping

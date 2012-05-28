@@ -2,7 +2,6 @@
 package unquietcode.tools.flapi.examples.xhtml.builder;
 
 import org.w3c.dom.Document;
-import unquietcode.tools.flapi.ObjectWrapper;
 
 
 /**
@@ -13,7 +12,7 @@ import unquietcode.tools.flapi.ObjectWrapper;
  * Visit http://www.unquietcode.com/flapi for more information.
  * 
  * 
- * Generated on May 09, 2012 23:44:26 CDT using version 0.1
+ * Generated on May 28, 2012 10:15:58 CDT using version 0.2
  * 
  */
 public interface XHTMLHelper {
@@ -23,8 +22,8 @@ public interface XHTMLHelper {
 
     void done();
 
-    void addComment(String comment);
-
     void startElement(String tagName, ObjectWrapper<ElementHelper> _helper1);
+
+    void addComment(String comment);
 
 }

@@ -3,7 +3,6 @@ package unquietcode.tools.flapi.examples.email.builder;
 
 import java.io.File;
 import java.lang.reflect.Field;
-import unquietcode.tools.flapi.MinimumInvocationsException;
 
 
 /**
@@ -14,7 +13,7 @@ import unquietcode.tools.flapi.MinimumInvocationsException;
  * Visit http://www.unquietcode.com/flapi for more information.
  * 
  * 
- * Generated on May 13, 2012 24:29:29 CDT using version 0.2
+ * Generated on May 28, 2012 10:14:26 CDT using version 0.2
  * 
  */
 public class ImplEmailBuilder
@@ -24,7 +23,7 @@ public class ImplEmailBuilder
     private final EmailHelper _helper;
     private final Object _returnValue;
     int ic_Email_addRecipient$String_emailAddress = 1;
-    int ic_Email_setSender$String_emailAddress = 1;
+    int ic_Email_sender$String_emailAddress = 1;
 
     ImplEmailBuilder(EmailHelper helper, Object returnValue) {
         _helper = helper;
@@ -42,8 +41,8 @@ public class ImplEmailBuilder
         }
          
         try {
-            Field field = clazz.getDeclaredField("ic_Email_setSender$String_emailAddress");
-            field.setInt(next, ic_Email_setSender$String_emailAddress);
+            Field field = clazz.getDeclaredField("ic_Email_sender$String_emailAddress");
+            field.setInt(next, ic_Email_sender$String_emailAddress);
         } catch (Exception _x) {
             // nothing
         }
@@ -53,8 +52,8 @@ public class ImplEmailBuilder
         if (ic_Email_addRecipient$String_emailAddress > 0) {
             throw new MinimumInvocationsException("Expected at least 1 invocations of method 'addRecipient(String emailAddress)'.");
         }
-        if (ic_Email_setSender$String_emailAddress > 0) {
-            throw new MinimumInvocationsException("Expected at least 1 invocations of method 'setSender(String emailAddress)'.");
+        if (ic_Email_sender$String_emailAddress > 0) {
+            throw new MinimumInvocationsException("Expected at least 1 invocations of method 'sender(String emailAddress)'.");
         }
     }
 

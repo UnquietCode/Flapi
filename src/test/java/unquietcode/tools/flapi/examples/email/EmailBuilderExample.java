@@ -23,12 +23,12 @@ public class EmailBuilderExample {
 				.setDescriptorName("Email")
 				.setReturnType(EmailMessage.class)
 
-				.addMethod("setSubject(String subject)").once()
+				.addMethod("subject(String subject)").once()
 				.addMethod("addRecipient(String emailAddress)").atLeast(1)
-				.addMethod("setSender(String emailAddress)").between(1,1)
+				.addMethod("sender(String emailAddress)").between(1,1)
 				.addMethod("addCC(String emailAddress)").any()
 				.addMethod("addBCC(String emailAddress)").any()
-				.addMethod("setBody(String text)").once()
+				.addMethod("body(String text)").once()
 				.addMethod("addAttachment(java.io.File file)").any()
 				.addMethod("send()").last()
 			.build()
@@ -38,11 +38,11 @@ public class EmailBuilderExample {
 	@Test
 	public void usage() {
 		EmailMessage message = EmailGenerator.compose(new EmailHelperImpl())
-			.setSender("iamthewalrus@hotmail.com")
+			.sender("iamthewalrus@hotmail.com")
 			.addRecipient("unclebob@unquietcode.com")
-			.setSubject("Has you seen my bucket?")
-			.setBody("Dear sir,\nI was wondering, have you seen my bucket? It is small, metallic, somewhat used, " +
-					 "and slightly smells of fish. Please let me know if you have or do ever see it.\n\nThanks!")
+			.subject("Has you seen my bucket?")
+			.body("Dear sir,\nI was wondering, have you seen my bucket? It is small, metallic, somewhat used, " +
+				  "and slightly smells of fish. Please let me know if you have or do ever see it.\n\nThanks!")
 		.send();
 	}
 
