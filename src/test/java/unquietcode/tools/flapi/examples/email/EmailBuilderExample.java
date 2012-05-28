@@ -1,6 +1,8 @@
 package unquietcode.tools.flapi.examples.email;
 
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
 import unquietcode.tools.flapi.Descriptor;
 import unquietcode.tools.flapi.DescriptorHelperImpl;
 import unquietcode.tools.flapi.builder.DescriptorGenerator;
@@ -14,8 +16,15 @@ import unquietcode.tools.flapi.examples.email.builder.EmailGenerator;
  */
 public class EmailBuilderExample {
 
+	@Rule
+	public TemporaryFolder temp = new TemporaryFolder();
+
 	@Test
 	public void descriptorGenerator() {
+		main(new String[]{temp.getRoot().getAbsolutePath()});
+	}
+
+	public static void main(String[] args) {
 		Descriptor builder =
 			DescriptorGenerator.create(new DescriptorHelperImpl())
 				.setPackage("unquietcode.tools.flapi.examples.email.builder")
@@ -33,6 +42,8 @@ public class EmailBuilderExample {
 				.addMethod("send()").last()
 			.build()
 		;
+
+		builder.writeToFolder(args[0]);
 	}
 
 	@Test

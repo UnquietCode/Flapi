@@ -11,17 +11,30 @@
 	<url>http://www.unquietcode.com/flapi</url>
 
 	<properties>
-	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
 	<build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-surefire-plugin</artifactId>
+					<version>2.7.2</version>
+				</plugin>
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>exec-maven-plugin</artifactId>
+					<version>1.2.1</version>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
-				<version>2.7.2</version>
 				<configuration>
-
 					<includes>
 						<include>**/*_T.java</include>
 						<include>**/*Test.java</include>
@@ -32,19 +45,128 @@
 		</plugins>
 	</build>
 
-	<dependencies>
-	<dependency>
-		<groupId>com.sun.codemodel</groupId>
-		<artifactId>codemodel</artifactId>
-		<version>2.2</version>
-	</dependency>
+	<profiles>
+		<!-- regenerate the descriptors for examples -->
+		<profile>
+			<id>generateExamples</id>
+			<activation>
+				<property><name>generateExamples</name></property>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>exec-maven-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>calculatorBuilder</id>
+								<phase>generate-sources</phase>
+								<goals>
+									<goal>java</goal>
+								</goals>
+								<configuration>
+									<classpathScope>test</classpathScope>
+									<mainClass>unquietcode.tools.flapi.examples.calculator.CalculatorBuilderExample</mainClass>
+									<arguments>
+										<arg>${project.basedir}/src/test/java</arg>
+									</arguments>
+								</configuration>
+							</execution>
+							<execution>
+								<id>emailBuilder</id>
+								<phase>generate-sources</phase>
+								<goals>
+									<goal>java</goal>
+								</goals>
+								<configuration>
+									<classpathScope>test</classpathScope>
+									<mainClass>unquietcode.tools.flapi.examples.email.EmailBuilderExample</mainClass>
+									<arguments>
+										<arg>${project.basedir}/src/test/java</arg>
+									</arguments>
+								</configuration>
+							</execution>
+							<execution>
+								<id>pizzaBuilder</id>
+								<phase>generate-sources</phase>
+								<goals>
+									<goal>java</goal>
+								</goals>
+								<configuration>
+									<classpathScope>test</classpathScope>
+									<mainClass>unquietcode.tools.flapi.examples.pizza.DisappearingPizzaExample</mainClass>
+									<arguments>
+										<arg>${project.basedir}/src/test/java</arg>
+									</arguments>
+								</configuration>
+							</execution>
+							<execution>
+								<id>xhtmlBuilder</id>
+								<phase>generate-sources</phase>
+								<goals>
+									<goal>java</goal>
+								</goals>
+								<configuration>
+									<classpathScope>test</classpathScope>
+									<mainClass>unquietcode.tools.flapi.examples.xhtml.XHTMLBuilderExample</mainClass>
+									<arguments>
+										<arg>${project.basedir}/src/test/java</arg>
+									</arguments>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
 
-	<!-- test dependencies -->
-	<dependency>
-		<groupId>junit</groupId>
-		<artifactId>junit</artifactId>
-		<version>4.10</version>
-		<scope>test</scope>
-	</dependency>
+		<!-- regenerate the main Flapi descriptor -->
+		<profile>
+			<id>generateDescriptor</id>
+			<activation>
+				<property><name>generateDescriptor</name></property>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>exec-maven-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>descriptorBuilder</id>
+								<phase>generate-sources</phase>
+								<goals>
+									<goal>java</goal>
+								</goals>
+								<configuration>
+									<classpathScope>test</classpathScope>
+									<mainClass>unquietcode.tools.flapi.ActualDescriptorTest</mainClass>
+									<arguments>
+										<arg>${project.basedir}/src/main/java</arg>
+									</arguments>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+
+	<dependencies>
+		<dependency>
+			<groupId>com.sun.codemodel</groupId>
+			<artifactId>codemodel</artifactId>
+			<version>2.2</version>
+		</dependency>
+
+		<!-- test dependencies -->
+
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.10</version>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 </project>

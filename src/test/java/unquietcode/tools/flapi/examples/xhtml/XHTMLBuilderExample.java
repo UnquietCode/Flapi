@@ -1,7 +1,9 @@
 package unquietcode.tools.flapi.examples.xhtml;
 
 import com.sun.org.apache.xml.internal.serializer.OutputPropertiesFactory;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
 import org.w3c.dom.Document;
 import unquietcode.tools.flapi.Descriptor;
 import unquietcode.tools.flapi.DescriptorHelperImpl;
@@ -29,8 +31,15 @@ import java.util.List;
  */
 public class XHTMLBuilderExample {
 
+	@Rule
+	public TemporaryFolder temp = new TemporaryFolder();
+
 	@Test
 	public void descriptorGenerator() {
+		main(new String[]{temp.getRoot().getAbsolutePath()});
+	}
+
+	public static void main(String[] args) {
 		Descriptor builder =
 			DescriptorGenerator.create(new DescriptorHelperImpl())
 				.setPackage("unquietcode.tools.flapi.examples.xhtml.builder")
@@ -50,6 +59,8 @@ public class XHTMLBuilderExample {
 				.endBlock()
 			.build()
 		;
+
+		builder.writeToFolder(args[0]);
 	}
 
 	@Test

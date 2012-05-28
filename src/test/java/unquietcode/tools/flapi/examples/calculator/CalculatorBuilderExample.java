@@ -1,6 +1,8 @@
 package unquietcode.tools.flapi.examples.calculator;
 
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
 import unquietcode.tools.flapi.Descriptor;
 import unquietcode.tools.flapi.Flapi;
 import unquietcode.tools.flapi.examples.calculator.builder.CalculationBuilder;
@@ -16,8 +18,15 @@ import java.math.BigInteger;
  */
 public class CalculatorBuilderExample {
 
+	@Rule
+	public TemporaryFolder temp = new TemporaryFolder();
+
 	@Test
-	public void beanBuilderDescriptor() {
+	public void descriptorGenerator() {
+		main(new String[]{temp.getRoot().getAbsolutePath()});
+	}
+
+	public static void main(String[] args) {
 		Descriptor descriptor = Flapi.builder()
 			.setDescriptorName("Calculator")
 			.setPackage("unquietcode.tools.flapi.examples.calculator.builder")
@@ -37,6 +46,8 @@ public class CalculatorBuilderExample {
 				.addMethod("equals()").last()
 			.endBlock()
 		.build();
+
+		descriptor.writeToFolder(args[0]);
 	}
 
 	@Test

@@ -1,6 +1,8 @@
 package unquietcode.tools.flapi;
 
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
 import unquietcode.tools.flapi.builder.*;
 
 /**
@@ -12,8 +14,15 @@ import unquietcode.tools.flapi.builder.*;
  */
 public class ActualDescriptorTest {
 
+	@Rule
+	public TemporaryFolder temp = new TemporaryFolder();
+
 	@Test
 	public void descriptorGenerator() {
+		main(new String[]{temp.getRoot().getAbsolutePath()});
+	}
+
+	public static void main(String[] args) {
 		Descriptor builder =
 			DescriptorGenerator.create(new DescriptorHelperImpl())
 				.setPackage("unquietcode.tools.flapi.builder")
@@ -22,10 +31,10 @@ public class ActualDescriptorTest {
 				.setReturnType(Descriptor.class)
 				.enableCondensedClassNames(false)
 
-				.addMethod("setPackage(String packageName)").between(1,1)
-				.addMethod("setDescriptorName(String descriptorName)").between(1,1)
+				.addMethod("setPackage(String packageName)").between(1, 1)
+				.addMethod("setDescriptorName(String descriptorName)").between(1, 1)
 				.addMethod("setStartingMethodName(String methodName)").once()
-				.addMethod("setReturnType(Class returnType)").between(1,1)
+				.addMethod("setReturnType(Class returnType)").between(1, 1)
 				.addMethod("enableCondensedClassNames(boolean value)").once()
 				.addMethod("build()").last()
 
@@ -64,5 +73,7 @@ public class ActualDescriptorTest {
 
 			.build()
 		;
+
+		builder.writeToFolder(args[0]);
 	}
 }

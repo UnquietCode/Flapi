@@ -1,6 +1,8 @@
 package unquietcode.tools.flapi.examples.pizza;
 
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
 import unquietcode.tools.flapi.Descriptor;
 import unquietcode.tools.flapi.DescriptorHelperImpl;
 import unquietcode.tools.flapi.builder.DescriptorGenerator;
@@ -17,8 +19,15 @@ import java.util.List;
  */
 public class DisappearingPizzaExample {
 
+	@Rule
+	public TemporaryFolder temp = new TemporaryFolder();
+
 	@Test
-	public void generateDescriptor() {
+	public void descriptorGenerator() {
+		main(new String[]{temp.getRoot().getAbsolutePath()});
+	}
+
+	public static void main(String[] args) {
 		Descriptor builder =
 			DescriptorGenerator.create(new DescriptorHelperImpl())
 				.setPackage("unquietcode.tools.flapi.examples.pizza.builder")
@@ -30,12 +39,10 @@ public class DisappearingPizzaExample {
 				.addMethod("addCheese()").once()
 				.addMethod("addTopping(unquietcode.tools.flapi.examples.pizza.DisappearingPizzaExample.Topping topping)").atMost(3)
 				.addMethod("bake()").last()
-
-				// to show that the behavior can be whatever you want, an interactive process or not
-
-
 			.build()
 		;
+
+		builder.writeToFolder(args[0]);
 	}
 
 	@Test

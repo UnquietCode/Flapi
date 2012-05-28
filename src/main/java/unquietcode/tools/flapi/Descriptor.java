@@ -44,15 +44,15 @@ public class Descriptor {
 	public void writeToFolder(String folder) {
 		File f = new File(folder);
 		if (!f.exists()) {
-			throw new DescriptorBuilderException("Folder does not exist.");
+			throw new DescriptorBuilderException("Folder '"+folder+"' does not exist.");
 		}
 
 		if (!f.isDirectory()) {
-			throw new DescriptorBuilderException("Not a folder!");
+			throw new DescriptorBuilderException("Folder '"+folder+"' is not a folder!");
 		}
 
 		if (!f.canWrite()) {
-			throw new DescriptorBuilderException("Cannot write to folder.");
+			throw new DescriptorBuilderException("Cannot write to folder '"+folder+"'.");
 		}
 
 		CodeWriter.writeToDirectory(generate(), f);
