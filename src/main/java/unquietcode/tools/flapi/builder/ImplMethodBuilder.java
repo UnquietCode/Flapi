@@ -12,10 +12,10 @@ import javax.annotation.Generated;
  * Visit http://www.unquietcode.com/flapi for more information.
  * 
  * 
- * Generated on May 28, 2012 17:01:37 CDT using version 0.2
+ * Generated on May 28, 2012 19:55:23 CDT using version 0.2
  * 
  */
-@Generated(value = "unquietcode.tools.flapi", date = "May 28, 2012 17:01:37 CDT", comments = "generated using Flapi, the fluent API generator for Java")
+@Generated(value = "unquietcode.tools.flapi", date = "May 28, 2012 19:55:23 CDT", comments = "generated using Flapi, the fluent API generator for Java")
 public class ImplMethodBuilder
     implements MethodBuilder
 {
@@ -40,56 +40,49 @@ public class ImplMethodBuilder
         _checkInvocations();
         _helper.any();
          
-        Object retval = _returnValue;
-        return retval;
+        return _returnValue;
     }
 
     public Object atLeast(int num) {
         _checkInvocations();
         _helper.atLeast(num);
          
-        Object retval = _returnValue;
-        return retval;
+        return _returnValue;
     }
 
     public Object atMost(int num) {
         _checkInvocations();
         _helper.atMost(num);
          
-        Object retval = _returnValue;
-        return retval;
+        return _returnValue;
     }
 
     public Object between(int atLeast, int atMost) {
         _checkInvocations();
         _helper.between(atLeast, atMost);
          
-        Object retval = _returnValue;
-        return retval;
+        return _returnValue;
     }
 
     public Object exactly(int num) {
         _checkInvocations();
         _helper.exactly(num);
          
-        Object retval = _returnValue;
-        return retval;
+        return _returnValue;
     }
 
     public Object last() {
         _checkInvocations();
         _helper.last();
          
-        Object retval = _returnValue;
-        return retval;
+        return _returnValue;
     }
 
     public Object last(Class returnType) {
         _checkInvocations();
         _helper.last(returnType);
          
-        Object retval = _returnValue;
-        return retval;
+        return _returnValue;
     }
 
 }

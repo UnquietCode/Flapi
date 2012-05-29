@@ -295,23 +295,21 @@ public class BlockGenerator extends AbstractGenerator<BlockOutline, Void> {
 			JDefinedClass iTargetBuilder = getTopLevelInterface(targetBlock);
 			JDefinedClass cTargetBuilder = getTopLevelImplementation(targetBlock);
 
-			JVar invocation = _method.body().decl(
+			returnValue = _method.body().decl(
 				iTargetBuilder, "step" + (i + 1),
 				JExpr._new(cTargetBuilder)
 					.arg(helpers.get(i).invoke("get"))
 					.arg(returnValue)
 			);
-
-			returnValue = invocation;
 		}
 
-		JExpression _retval = _method.body().decl(returnType, "retval", returnValue);
-
-		// TODO optimization to avoid unecessary variable declaration
-		// FLAPI-45
-//		JExpression _retval = returnValue != JExpr._this()
-//				? _method.body().decl(returnType, "retval", returnValue)
-//				: returnValue;
+		// return value is stored if invocation tracking is required, but not blockChain present
+		JExpression _retval;
+		if ((returnValue != JExpr._this() && !method.isTerminal() && method.getBlockChain().isEmpty())){
+			_retval = _method.body().decl(returnType, "retval", returnValue);
+		} else {
+			_retval = returnValue;
+		}
 
 		// invocation tracking
 		if (method.minOccurrences > 0) {

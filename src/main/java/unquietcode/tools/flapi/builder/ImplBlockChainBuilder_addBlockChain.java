@@ -12,10 +12,10 @@ import javax.annotation.Generated;
  * Visit http://www.unquietcode.com/flapi for more information.
  * 
  * 
- * Generated on May 28, 2012 17:01:37 CDT using version 0.2
+ * Generated on May 28, 2012 19:55:23 CDT using version 0.2
  * 
  */
-@Generated(value = "unquietcode.tools.flapi", date = "May 28, 2012 17:01:37 CDT", comments = "generated using Flapi, the fluent API generator for Java")
+@Generated(value = "unquietcode.tools.flapi", date = "May 28, 2012 19:55:23 CDT", comments = "generated using Flapi, the fluent API generator for Java")
 public class ImplBlockChainBuilder_addBlockChain
     implements BlockChainBuilder_addBlockChain
 {
@@ -40,8 +40,7 @@ public class ImplBlockChainBuilder_addBlockChain
         _checkInvocations();
         _helper.addBlockReference(blockName);
          
-        Object retval = _returnValue;
-        return retval;
+        return _returnValue;
     }
 
     public BlockBuilder_exitWhenEmpty startBlock(String blockName) {
@@ -50,8 +49,7 @@ public class ImplBlockChainBuilder_addBlockChain
         _helper.startBlock(blockName, helper1);
          
         BlockBuilder_exitWhenEmpty step1 = new ImplBlockBuilder_exitWhenEmpty(helper1 .get(), _returnValue);
-        BlockBuilder_exitWhenEmpty retval = step1;
-        return retval;
+        return step1;
     }
 
     public BlockChainBuilder_addBlockChain addBlockChain() {
@@ -59,9 +57,8 @@ public class ImplBlockChainBuilder_addBlockChain
         _helper.addBlockChain(helper1);
          
         BlockChainBuilder_addBlockChain step1 = new ImplBlockChainBuilder_addBlockChain(helper1 .get(), new ImplBlockChainBuilder(_helper, _returnValue));
-        BlockChainBuilder_addBlockChain retval = step1;
-        _transferInvocations(retval);
-        return retval;
+        _transferInvocations(step1);
+        return step1;
     }
 
 }

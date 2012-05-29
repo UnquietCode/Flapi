@@ -11,15 +11,12 @@ import unquietcode.tools.flapi.builder.DescriptorGenerator;
 import unquietcode.tools.flapi.examples.xhtml.builder.ElementBuilder_setValue;
 import unquietcode.tools.flapi.examples.xhtml.builder.XHTMLBuilder;
 import unquietcode.tools.flapi.examples.xhtml.builder.XHTMLGenerator;
-//import unquietcode.tools.flapi.examples.xhtml.builder.ElementBuilder_setValue;
-//import unquietcode.tools.flapi.examples.xhtml.builder.XHTMLGenerator;
 
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 

@@ -13,10 +13,10 @@ import javax.annotation.Generated;
  * Visit http://www.unquietcode.com/flapi for more information.
  * 
  * 
- * Generated on May 28, 2012 17:01:37 CDT using version 0.2
+ * Generated on May 28, 2012 19:55:23 CDT using version 0.2
  * 
  */
-@Generated(value = "unquietcode.tools.flapi", date = "May 28, 2012 17:01:37 CDT", comments = "generated using Flapi, the fluent API generator for Java")
+@Generated(value = "unquietcode.tools.flapi", date = "May 28, 2012 19:55:23 CDT", comments = "generated using Flapi, the fluent API generator for Java")
 public class ImplDescriptorBuilder_enableCondensedClassNames_setDescriptorName_setPackage_setReturnType
     implements DescriptorBuilder_enableCondensedClassNames_setDescriptorName_setPackage_setReturnType
 {
@@ -74,17 +74,15 @@ public class ImplDescriptorBuilder_enableCondensedClassNames_setDescriptorName_s
         _helper.addMethod(methodSignature, helper1);
          
         MethodBuilder_addBlockChain step1 = new ImplMethodBuilder_addBlockChain(helper1 .get(), this);
-        MethodBuilder_addBlockChain retval = step1;
-        _transferInvocations(retval);
-        return retval;
+        _transferInvocations(step1);
+        return step1;
     }
 
     public Object build() {
         _checkInvocations();
         _helper.build();
          
-        Object retval = _returnValue;
-        return retval;
+        return _returnValue;
     }
 
     public MethodBuilder_addBlockChain startBlock(String blockName, String methodSignature) {
@@ -94,9 +92,8 @@ public class ImplDescriptorBuilder_enableCondensedClassNames_setDescriptorName_s
          
         BlockBuilder_exitWhenEmpty step2 = new ImplBlockBuilder_exitWhenEmpty(helper2 .get(), this);
         MethodBuilder_addBlockChain step1 = new ImplMethodBuilder_addBlockChain(helper1 .get(), step2);
-        MethodBuilder_addBlockChain retval = step1;
-        _transferInvocations(retval);
-        return retval;
+        _transferInvocations(step1);
+        return step1;
     }
 
     public DescriptorBuilder_setDescriptorName_setPackage_setReturnType enableCondensedClassNames(boolean value) {
