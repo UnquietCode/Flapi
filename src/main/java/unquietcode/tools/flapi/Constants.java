@@ -19,6 +19,12 @@
 
 package unquietcode.tools.flapi;
 
+import unquietcode.tools.flapi.support.v0_2.BuilderImplementation;
+import unquietcode.tools.flapi.support.v0_2.ExpectedInvocationsException;
+import unquietcode.tools.flapi.support.v0_2.ObjectWrapper;
+
+import java.io.File;
+
 /**
  * @author Ben Fagin
  * @version 04-28-2012
@@ -34,4 +40,20 @@ public final class Constants {
 	public static final String RETURN_TYPE_NAME = "_ReturnType";
 	public static final String RETURN_VALUE_NAME = "_returnValue";
 	public static final String HELPER_VALUE_NAME = "_helper";
+
+	public static final String[] REQUIRED_FILES = {
+		BuilderImplementation.class.getSimpleName(),
+		ExpectedInvocationsException.class.getSimpleName(),
+		ObjectWrapper.class.getSimpleName()
+	};
+
+	public static String getSupportPath(File folder) {
+		String version[] = PROJECT_VERSION.split("\\.");
+		String path = folder.getAbsolutePath();
+		path += File.separator;
+		path += "unquietcode"+File.separator+"tools"+File.separator+"flapi"+File.separator+"support"+File.separator;
+		path += "v"+version[0]+"_"+version[1];
+
+		return path;
+	}
 }

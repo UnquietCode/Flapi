@@ -23,8 +23,8 @@ import com.sun.codemodel.JCodeModel;
 import unquietcode.tools.flapi.generator.DescriptorGenerator;
 import unquietcode.tools.flapi.outline.DescriptorOutline;
 
-import java.io.File;
-import java.io.OutputStream;
+import java.io.*;
+import java.nio.channels.FileChannel;
 
 /**
  * @author Ben Fagin
@@ -32,7 +32,9 @@ import java.io.OutputStream;
  */
 public class Descriptor {
 	final DescriptorOutline _descriptor;
-	
+	private JCodeModel model;
+
+
 	public Descriptor(DescriptorHelperImpl helper) {
 		_descriptor = helper.outline;
 	}
@@ -56,12 +58,16 @@ public class Descriptor {
 		}
 
 		CodeWriter.writeToDirectory(generate(), f);
+		CodeWriter.writeRequiredClasses(f);
 	}
 
 	private JCodeModel generate() {
-		DescriptorGenerator generator = new DescriptorGenerator(_descriptor);
-		JCodeModel model = generator.generate();
+		if (model != null) {
+			return model;
+		}
 
+		DescriptorGenerator generator = new DescriptorGenerator(_descriptor);
+		model = generator.generate();
 		return model;
 	}
 }

@@ -24,6 +24,8 @@ import unquietcode.tools.flapi.Constants;
 import unquietcode.tools.flapi.DescriptorBuilderException;
 import unquietcode.tools.flapi.outline.BlockOutline;
 import unquietcode.tools.flapi.outline.MethodOutline;
+import unquietcode.tools.flapi.support.v0_2.ExpectedInvocationsException;
+import unquietcode.tools.flapi.support.v0_2.ObjectWrapper;
 
 import java.lang.reflect.Field;
 import java.util.*;
@@ -70,7 +72,7 @@ public class BlockGenerator extends AbstractGenerator<BlockOutline, Void> {
 			int i=1;
 			for (BlockOutline block : method.getBlockChain()) {
 				JDefinedClass blockHelper = getHelperInterface(block);
-				_method.param(getObjectWrapper().narrow(blockHelper), Constants.HELPER_VALUE_NAME+(i++));
+				_method.param(ref(ObjectWrapper.class).narrow(blockHelper), Constants.HELPER_VALUE_NAME+(i++));
 			}
 		}
 
@@ -201,7 +203,7 @@ public class BlockGenerator extends AbstractGenerator<BlockOutline, Void> {
 				String message = "Expected at least "+method.minOccurrences+" invocations of method '"+method.getMethodSignature()+"'.";
 
 				_method.body()._if(JExpr.ref(key).gt(JExpr.lit(0)))._then()
-					._throw(JExpr._new(getMinimumInvocationException()).arg(message));
+					._throw(JExpr._new(ref(ExpectedInvocationsException.class)).arg(message));
 			}
 		}
 	}
@@ -326,7 +328,7 @@ public class BlockGenerator extends AbstractGenerator<BlockOutline, Void> {
 	}
 
 	private JVar addHelper(JDefinedClass iHelper, int id, JMethod _method) {
-		JType wrappedType = getObjectWrapper().narrow(iHelper);
+		JType wrappedType = ref(ObjectWrapper.class).narrow(iHelper);
 		JVar _helper = _method.body().decl(wrappedType, "helper"+id,JExpr._new(wrappedType));
 		return _helper;
 	}

@@ -23,10 +23,10 @@ import com.sun.codemodel.JCodeModel;
 import com.sun.codemodel.writer.FileCodeWriter;
 import com.sun.codemodel.writer.SingleStreamCodeWriter;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.IOException;
-import java.io.OutputStream;
+import java.io.*;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.channels.FileChannel;
 
 /**
  * @author Ben Fagin
@@ -52,6 +52,90 @@ public class CodeWriter {
 			model.build(fileWriter);
 		} catch (Exception ex) {
 			throw new RuntimeException(ex);
+		}
+	}
+
+	public static void writeRequiredClasses(File folder) {
+		String path = Constants.getSupportPath(folder);
+		File dir = new File(path);
+
+		if (!dir.exists()) {
+			boolean create = dir.mkdirs();
+			if (!create) {
+				throw new DescriptorBuilderException("Unable create output directory '"+path+"'.");
+			}
+		}
+
+		for (String requiredFile : Constants.REQUIRED_FILES) {
+			String fileName = requiredFile+".java";
+			copyFile(getResourceFile(fileName), createFile(dir.getAbsolutePath(), fileName));
+		}
+	}
+
+	//---o---o---o---o---o---o---o---o---o---o---o---o---o---o---o---o---o---o---o---o---o---o---//
+
+	private static File getResourceFile(String name) {
+		URL url = CodeWriter.class.getClassLoader().getResource(name);
+		File f;
+
+		if (url == null) {
+			throw new DescriptorBuilderException("Cannot find file '"+name+"' (this is an internal error).");
+		}
+
+		try {
+			f = new File(url.toURI());
+		} catch (URISyntaxException ex) {
+			throw new DescriptorBuilderException(ex);
+		}
+
+		if (!f.exists()) {
+			throw new DescriptorBuilderException("Cannot find file '"+name+"' (this is an internal error).");
+		}
+
+		return f;
+	}
+
+	private static File createFile(String path, String name) {
+		File file = new File(path+File.separator+name);
+
+		if (file.exists()) {
+			if (!file.delete()) {
+				throw new DescriptorBuilderException("Could not remove old file '"+file.getAbsolutePath()+"'.");
+			}
+		}
+
+		boolean create;
+		try {
+			create = file.createNewFile();
+		} catch (IOException ex) {
+			throw new DescriptorBuilderException("Error creating file.", ex);
+		}
+
+		if (!create) {
+			throw new DescriptorBuilderException("Error creating file.");
+		}
+
+		return file;
+	}
+
+	private static void copyFile(File sourceFile, File destFile) {
+		FileChannel source = null;
+		FileChannel destination = null;
+
+		try {
+			source = new FileInputStream(sourceFile).getChannel();
+			destination = new FileOutputStream(destFile).getChannel();
+			destination.transferFrom(source, 0, source.size());
+		} catch (Exception ex) {
+			throw new DescriptorBuilderException("Error while writing files.", ex);
+		} finally {
+			if (source != null) {
+				try {source.close();} catch (Exception ex) { /* nothing */ }
+			}
+
+			if (destination != null) {
+				try {destination.close();} catch (Exception ex) { /* nothing */ }
+			}
 		}
 	}
 }
