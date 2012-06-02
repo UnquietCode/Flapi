@@ -3,6 +3,10 @@ package unquietcode.tools.flapi.builder;
 
 import java.lang.reflect.Field;
 import javax.annotation.Generated;
+import unquietcode.tools.flapi.Descriptor;
+import unquietcode.tools.flapi.support.v0_2.BuilderImplementation;
+import unquietcode.tools.flapi.support.v0_2.ExpectedInvocationsException;
+import unquietcode.tools.flapi.support.v0_2.ObjectWrapper;
 
 
 /**
@@ -13,23 +17,26 @@ import javax.annotation.Generated;
  * Visit http://www.unquietcode.com/flapi for more information.
  * 
  * 
- * Generated on May 28, 2012 19:55:23 CDT using version 0.2
+ * Generated on June 01, 2012 21:44:52 CDT using version 0.2
  * 
  */
-@Generated(value = "unquietcode.tools.flapi", date = "May 28, 2012 19:55:23 CDT", comments = "generated using Flapi, the fluent API generator for Java")
+@Generated(value = "unquietcode.tools.flapi", date = "June 01, 2012 21:44:52 CDT", comments = "generated using Flapi, the fluent API generator for Java")
 public class ImplDescriptorBuilder
-    implements DescriptorBuilder
+    implements DescriptorBuilder, BuilderImplementation
 {
 
     private final DescriptorHelper _helper;
-    private final Object _returnValue;
+    private final BuilderImplementation _parent;
     int ic_Descriptor_setDescriptorName$String_descriptorName = 1;
     int ic_Descriptor_setPackage$String_packageName = 1;
-    int ic_Descriptor_setReturnType$Class_returnType = 1;
 
-    ImplDescriptorBuilder(DescriptorHelper helper, Object returnValue) {
+    ImplDescriptorBuilder(DescriptorHelper helper, BuilderImplementation parent) {
         _helper = helper;
-        _returnValue = returnValue;
+        _parent = parent;
+    }
+
+    public BuilderImplementation _getParent() {
+        return _parent;
     }
 
     private void _transferInvocations(Object next) {
@@ -48,24 +55,14 @@ public class ImplDescriptorBuilder
         } catch (Exception _x) {
             // nothing
         }
-         
-        try {
-            Field field = clazz.getDeclaredField("ic_Descriptor_setReturnType$Class_returnType");
-            field.setInt(next, ic_Descriptor_setReturnType$Class_returnType);
-        } catch (Exception _x) {
-            // nothing
-        }
     }
 
-    private void _checkInvocations() {
+    public void _checkInvocations() {
         if (ic_Descriptor_setDescriptorName$String_descriptorName > 0) {
-            throw new MinimumInvocationsException("Expected at least 1 invocations of method 'setDescriptorName(String descriptorName)'.");
+            throw new ExpectedInvocationsException("Expected at least 1 invocations of method 'setDescriptorName(String descriptorName)'.");
         }
         if (ic_Descriptor_setPackage$String_packageName > 0) {
-            throw new MinimumInvocationsException("Expected at least 1 invocations of method 'setPackage(String packageName)'.");
-        }
-        if (ic_Descriptor_setReturnType$Class_returnType > 0) {
-            throw new MinimumInvocationsException("Expected at least 1 invocations of method 'setReturnType(Class returnType)'.");
+            throw new ExpectedInvocationsException("Expected at least 1 invocations of method 'setPackage(String packageName)'.");
         }
     }
 
@@ -73,16 +70,21 @@ public class ImplDescriptorBuilder
         ObjectWrapper<MethodHelper> helper1 = new ObjectWrapper<MethodHelper>();
         _helper.addMethod(methodSignature, helper1);
          
-        MethodBuilder_addBlockChain step1 = new ImplMethodBuilder_addBlockChain(helper1 .get(), this);
+        ImplMethodBuilder_addBlockChain step1 = new ImplMethodBuilder_addBlockChain(helper1 .get(), this);
         _transferInvocations(step1);
         return step1;
     }
 
-    public Object build() {
-        _checkInvocations();
-        _helper.build();
+    public Descriptor build() {
+        BuilderImplementation cur = _parent;
+        while (cur!= null) {
+            cur._checkInvocations();
+            cur = cur._getParent();
+        }
          
-        return _returnValue;
+        Descriptor intermediateResult = _helper.build();
+         
+        return intermediateResult;
     }
 
     public MethodBuilder_addBlockChain startBlock(String blockName, String methodSignature) {
@@ -90,8 +92,8 @@ public class ImplDescriptorBuilder
         ObjectWrapper<BlockHelper> helper2 = new ObjectWrapper<BlockHelper>();
         _helper.startBlock(blockName, methodSignature, helper1, helper2);
          
-        BlockBuilder_exitWhenEmpty step2 = new ImplBlockBuilder_exitWhenEmpty(helper2 .get(), this);
-        MethodBuilder_addBlockChain step1 = new ImplMethodBuilder_addBlockChain(helper1 .get(), step2);
+        ImplBlockBuilder step2 = new ImplBlockBuilder(helper2 .get(), this);
+        ImplMethodBuilder_addBlockChain step1 = new ImplMethodBuilder_addBlockChain(helper1 .get(), step2);
         _transferInvocations(step1);
         return step1;
     }

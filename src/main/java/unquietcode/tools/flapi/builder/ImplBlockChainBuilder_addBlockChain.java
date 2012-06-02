@@ -2,6 +2,8 @@
 package unquietcode.tools.flapi.builder;
 
 import javax.annotation.Generated;
+import unquietcode.tools.flapi.support.v0_2.BuilderImplementation;
+import unquietcode.tools.flapi.support.v0_2.ObjectWrapper;
 
 
 /**
@@ -12,43 +14,57 @@ import javax.annotation.Generated;
  * Visit http://www.unquietcode.com/flapi for more information.
  * 
  * 
- * Generated on May 28, 2012 19:55:23 CDT using version 0.2
+ * Generated on June 01, 2012 21:44:52 CDT using version 0.2
  * 
  */
-@Generated(value = "unquietcode.tools.flapi", date = "May 28, 2012 19:55:23 CDT", comments = "generated using Flapi, the fluent API generator for Java")
+@Generated(value = "unquietcode.tools.flapi", date = "June 01, 2012 21:44:52 CDT", comments = "generated using Flapi, the fluent API generator for Java")
 public class ImplBlockChainBuilder_addBlockChain
-    implements BlockChainBuilder_addBlockChain
+    implements BlockChainBuilder_addBlockChain, BuilderImplementation
 {
 
     private final BlockChainHelper _helper;
-    private final Object _returnValue;
+    private final BuilderImplementation _parent;
 
-    ImplBlockChainBuilder_addBlockChain(BlockChainHelper helper, Object returnValue) {
+    ImplBlockChainBuilder_addBlockChain(BlockChainHelper helper, BuilderImplementation parent) {
         _helper = helper;
-        _returnValue = returnValue;
+        _parent = parent;
+    }
+
+    public BuilderImplementation _getParent() {
+        return _parent;
     }
 
     private void _transferInvocations(Object next) {
         // nothing
     }
 
-    private void _checkInvocations() {
+    public void _checkInvocations() {
         // nothing
     }
 
-    public Object addBlockReference(String blockName) {
-        _checkInvocations();
+    public BuilderImplementation addBlockReference(String blockName) {
+        BuilderImplementation cur = _parent;
+        while (cur!= null) {
+            cur._checkInvocations();
+            cur = cur._getParent();
+        }
+         
         _helper.addBlockReference(blockName);
          
-        return _returnValue;
+        return _parent;
     }
 
-    public BlockBuilder_exitWhenEmpty startBlock(String blockName) {
+    public BlockBuilder startBlock(String blockName) {
         ObjectWrapper<BlockHelper> helper1 = new ObjectWrapper<BlockHelper>();
-        _checkInvocations();
+        BuilderImplementation cur = _parent;
+        while (cur!= null) {
+            cur._checkInvocations();
+            cur = cur._getParent();
+        }
+         
         _helper.startBlock(blockName, helper1);
          
-        BlockBuilder_exitWhenEmpty step1 = new ImplBlockBuilder_exitWhenEmpty(helper1 .get(), _returnValue);
+        ImplBlockBuilder step1 = new ImplBlockBuilder(helper1 .get(), _parent);
         return step1;
     }
 
@@ -56,7 +72,7 @@ public class ImplBlockChainBuilder_addBlockChain
         ObjectWrapper<BlockChainHelper> helper1 = new ObjectWrapper<BlockChainHelper>();
         _helper.addBlockChain(helper1);
          
-        BlockChainBuilder_addBlockChain step1 = new ImplBlockChainBuilder_addBlockChain(helper1 .get(), new ImplBlockChainBuilder(_helper, _returnValue));
+        ImplBlockChainBuilder_addBlockChain step1 = new ImplBlockChainBuilder_addBlockChain(helper1 .get(), new ImplBlockChainBuilder(_helper, _parent));
         _transferInvocations(step1);
         return step1;
     }

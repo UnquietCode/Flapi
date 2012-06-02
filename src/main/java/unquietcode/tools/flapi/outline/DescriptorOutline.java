@@ -20,7 +20,6 @@
 package unquietcode.tools.flapi.outline;
 
 
-
 /**
  * @author Ben Fagin
  * @version 03-07-2012
@@ -31,6 +30,11 @@ public class DescriptorOutline implements Outline {
 
 	public final BlockOutline selfBlock = new BlockOutline();
 	private final GeneratorOutline generator = new GeneratorOutline(selfBlock);
+
+	public DescriptorOutline() {
+		selfBlock.setIsTopLevel();
+	}
+
 
 	public GeneratorOutline getGenerator() {
 		return generator;
@@ -54,14 +58,6 @@ public class DescriptorOutline implements Outline {
 
 	public void setDescriptorName(String name) {
 		selfBlock.setName(name);
-	}
-
-	public void setReturnType(Class returnType) {
-		generator.returnType = returnType;
-	}
-
-	public Class getReturnType() {
-		return generator.returnType;
 	}
 
 	public void setCreateMethod(String methodName) {

@@ -26,7 +26,6 @@ package unquietcode.tools.flapi.outline;
  */
 public class GeneratorOutline implements Outline {
 	public String methodName = "create";
-	public Class returnType;
 	public BlockOutline descriptorBlock;
 	
 	public GeneratorOutline(BlockOutline descriptorBlock) {

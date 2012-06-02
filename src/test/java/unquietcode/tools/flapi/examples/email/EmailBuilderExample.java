@@ -30,7 +30,6 @@ public class EmailBuilderExample {
 				.setPackage("unquietcode.tools.flapi.examples.email.builder")
 				.setStartingMethodName("compose")
 				.setDescriptorName("Email")
-				.setReturnType(EmailMessage.class)
 
 				.addMethod("subject(String subject)").atMost(1)
 				.addMethod("addRecipient(String emailAddress)").atLeast(1)
@@ -39,7 +38,7 @@ public class EmailBuilderExample {
 				.addMethod("addBCC(String emailAddress)").any()
 				.addMethod("body(String text)").atMost(1)
 				.addMethod("addAttachment(java.io.File file)").any()
-				.addMethod("send()").last()
+				.addMethod("send()").last(EmailMessage.class)
 			.build()
 		;
 

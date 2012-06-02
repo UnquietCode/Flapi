@@ -25,6 +25,8 @@ import unquietcode.tools.flapi.outline.Outline;
 /**
  * @author Ben Fagin
  * @version 03-07-2012
+ *
+ * Marker interface for generators.
  */
 public interface Generator<_InType extends Outline, _OutType> {
 	_OutType generate();

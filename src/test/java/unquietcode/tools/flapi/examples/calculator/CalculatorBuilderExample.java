@@ -30,8 +30,7 @@ public class CalculatorBuilderExample {
 		Descriptor descriptor = Flapi.builder()
 			.setDescriptorName("Calculator")
 			.setPackage("unquietcode.tools.flapi.examples.calculator.builder")
-			.setReturnType(ObjectWrapper.class)
-			.enableCondensedClassNames(true)
+			.enableCondensedClassNames()
 			.setStartingMethodName("begin")
 
 			.startBlock("Calculation", "$(int startingValue)").last()
@@ -43,7 +42,7 @@ public class CalculatorBuilderExample {
 				.addMethod("mod(int value)").any()
 				.addMethod("abs()").any()
 
-				.addMethod("equals()").last()
+				.addMethod("equals()").last(ObjectWrapper.class)
 			.endBlock()
 		.build();
 

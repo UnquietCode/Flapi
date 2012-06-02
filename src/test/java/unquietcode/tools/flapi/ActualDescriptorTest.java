@@ -30,15 +30,12 @@ public class ActualDescriptorTest {
 				.setPackage("unquietcode.tools.flapi.builder")
 				.setStartingMethodName("create")
 				.setDescriptorName("Descriptor")
-				.setReturnType(Descriptor.class)
-				.enableCondensedClassNames(false)
 
 				.addMethod("setPackage(String packageName)").exactly(1)
 				.addMethod("setDescriptorName(String descriptorName)").exactly(1)
 				.addMethod("setStartingMethodName(String methodName)").atMost(1)
-				.addMethod("setReturnType(Class returnType)").exactly(1)
-				.addMethod("enableCondensedClassNames(boolean value)").atMost(1)
-				.addMethod("build()").last()
+				.addMethod("enableCondensedClassNames()").atMost(1)
+				.addMethod("build()").last(Descriptor.class)
 
 				.startBlock("Method", "addMethod(String methodSignature)").any()
 					.addMethod("exactly(int num)").last()
@@ -71,7 +68,6 @@ public class ActualDescriptorTest {
 						.addBlockChain().addBlockReference("Method")
 					.any()
 
-					.addMethod("exitWhenEmpty(boolean value)").atMost(1)
 					.addMethod("endBlock()").last()
 				.endBlock()
 

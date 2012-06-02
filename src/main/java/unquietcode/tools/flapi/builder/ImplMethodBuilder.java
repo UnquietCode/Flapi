@@ -2,6 +2,7 @@
 package unquietcode.tools.flapi.builder;
 
 import javax.annotation.Generated;
+import unquietcode.tools.flapi.support.v0_2.BuilderImplementation;
 
 
 /**
@@ -12,77 +13,116 @@ import javax.annotation.Generated;
  * Visit http://www.unquietcode.com/flapi for more information.
  * 
  * 
- * Generated on May 28, 2012 19:55:23 CDT using version 0.2
+ * Generated on June 01, 2012 21:44:52 CDT using version 0.2
  * 
  */
-@Generated(value = "unquietcode.tools.flapi", date = "May 28, 2012 19:55:23 CDT", comments = "generated using Flapi, the fluent API generator for Java")
+@Generated(value = "unquietcode.tools.flapi", date = "June 01, 2012 21:44:52 CDT", comments = "generated using Flapi, the fluent API generator for Java")
 public class ImplMethodBuilder
-    implements MethodBuilder
+    implements MethodBuilder, BuilderImplementation
 {
 
     private final MethodHelper _helper;
-    private final Object _returnValue;
+    private final BuilderImplementation _parent;
 
-    ImplMethodBuilder(MethodHelper helper, Object returnValue) {
+    ImplMethodBuilder(MethodHelper helper, BuilderImplementation parent) {
         _helper = helper;
-        _returnValue = returnValue;
+        _parent = parent;
+    }
+
+    public BuilderImplementation _getParent() {
+        return _parent;
     }
 
     private void _transferInvocations(Object next) {
         // nothing
     }
 
-    private void _checkInvocations() {
+    public void _checkInvocations() {
         // nothing
     }
 
-    public Object any() {
-        _checkInvocations();
+    public BuilderImplementation any() {
+        BuilderImplementation cur = _parent;
+        while (cur!= null) {
+            cur._checkInvocations();
+            cur = cur._getParent();
+        }
+         
         _helper.any();
          
-        return _returnValue;
+        return _parent;
     }
 
-    public Object atLeast(int num) {
-        _checkInvocations();
+    public BuilderImplementation atLeast(int num) {
+        BuilderImplementation cur = _parent;
+        while (cur!= null) {
+            cur._checkInvocations();
+            cur = cur._getParent();
+        }
+         
         _helper.atLeast(num);
          
-        return _returnValue;
+        return _parent;
     }
 
-    public Object atMost(int num) {
-        _checkInvocations();
+    public BuilderImplementation atMost(int num) {
+        BuilderImplementation cur = _parent;
+        while (cur!= null) {
+            cur._checkInvocations();
+            cur = cur._getParent();
+        }
+         
         _helper.atMost(num);
          
-        return _returnValue;
+        return _parent;
     }
 
-    public Object between(int atLeast, int atMost) {
-        _checkInvocations();
+    public BuilderImplementation between(int atLeast, int atMost) {
+        BuilderImplementation cur = _parent;
+        while (cur!= null) {
+            cur._checkInvocations();
+            cur = cur._getParent();
+        }
+         
         _helper.between(atLeast, atMost);
          
-        return _returnValue;
+        return _parent;
     }
 
-    public Object exactly(int num) {
-        _checkInvocations();
+    public BuilderImplementation exactly(int num) {
+        BuilderImplementation cur = _parent;
+        while (cur!= null) {
+            cur._checkInvocations();
+            cur = cur._getParent();
+        }
+         
         _helper.exactly(num);
          
-        return _returnValue;
+        return _parent;
     }
 
-    public Object last() {
-        _checkInvocations();
+    public BuilderImplementation last() {
+        BuilderImplementation cur = _parent;
+        while (cur!= null) {
+            cur._checkInvocations();
+            cur = cur._getParent();
+        }
+         
         _helper.last();
          
-        return _returnValue;
+        return _parent;
     }
 
-    public Object last(Class returnType) {
-        _checkInvocations();
+    public BuilderImplementation last(Class returnType) {
+        BuilderImplementation cur = _parent;
+        while (cur!= null) {
+            cur._checkInvocations();
+            cur = cur._getParent();
+        }
+         
         _helper.last(returnType);
          
-        return _returnValue;
+        return _parent;
     }
 
 }

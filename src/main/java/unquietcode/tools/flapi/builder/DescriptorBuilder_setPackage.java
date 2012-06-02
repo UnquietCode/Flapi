@@ -2,6 +2,7 @@
 package unquietcode.tools.flapi.builder;
 
 import javax.annotation.Generated;
+import unquietcode.tools.flapi.Descriptor;
 
 
 /**
@@ -12,19 +13,19 @@ import javax.annotation.Generated;
  * Visit http://www.unquietcode.com/flapi for more information.
  * 
  * 
- * Generated on May 28, 2012 19:55:23 CDT using version 0.2
+ * Generated on June 01, 2012 21:44:52 CDT using version 0.2
  * 
  */
-@Generated(value = "unquietcode.tools.flapi", date = "May 28, 2012 19:55:23 CDT", comments = "generated using Flapi, the fluent API generator for Java")
-public interface DescriptorBuilder_setPackage<_ReturnType >{
+@Generated(value = "unquietcode.tools.flapi", date = "June 01, 2012 21:44:52 CDT", comments = "generated using Flapi, the fluent API generator for Java")
+public interface DescriptorBuilder_setPackage<_ParentType >{
 
 
-    MethodBuilder_addBlockChain<DescriptorBuilder_setPackage<_ReturnType>> addMethod(String methodSignature);
+    MethodBuilder_addBlockChain<DescriptorBuilder_setPackage<_ParentType>> addMethod(String methodSignature);
 
-    _ReturnType build();
+    Descriptor build();
 
-    MethodBuilder_addBlockChain<BlockBuilder_exitWhenEmpty<DescriptorBuilder_setPackage<_ReturnType>>> startBlock(String blockName, String methodSignature);
+    MethodBuilder_addBlockChain<BlockBuilder<DescriptorBuilder_setPackage<_ParentType>>> startBlock(String blockName, String methodSignature);
 
-    DescriptorBuilder<_ReturnType> setPackage(String packageName);
+    DescriptorBuilder<_ParentType> setPackage(String packageName);
 
 }

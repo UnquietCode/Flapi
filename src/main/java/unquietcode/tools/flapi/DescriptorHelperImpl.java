@@ -22,10 +22,10 @@ package unquietcode.tools.flapi;
 import unquietcode.tools.flapi.builder.BlockHelper;
 import unquietcode.tools.flapi.builder.DescriptorHelper;
 import unquietcode.tools.flapi.builder.MethodHelper;
-import unquietcode.tools.flapi.builder.ObjectWrapper;
 import unquietcode.tools.flapi.outline.BlockOutline;
 import unquietcode.tools.flapi.outline.DescriptorOutline;
 import unquietcode.tools.flapi.outline.MethodOutline;
+import unquietcode.tools.flapi.support.v0_2.ObjectWrapper;
 
 import java.util.HashMap;
 import java.util.IdentityHashMap;
@@ -39,26 +39,12 @@ public class DescriptorHelperImpl implements DescriptorHelper {
 	final DescriptorOutline outline = new DescriptorOutline();
 
 	@Override
-	public Descriptor _getReturnValue() {
-		return new Descriptor(this);
-	}
-
-	@Override
 	public void setDescriptorName(String descriptorName) {
 		if (descriptorName == null || descriptorName.trim().isEmpty()) {
 			throw new IllegalArgumentException("Name cannot be empty.");
 		}
 
 		outline.setDescriptorName(descriptorName);
-	}
-
-	@Override
-	public void setReturnType(Class returnType) {
-		if (returnType == null) {
-			throw new IllegalArgumentException("Return type cannot be null.");
-		}
-
-		outline.setReturnType(returnType);
 	}
 
 	@Override
@@ -71,16 +57,17 @@ public class DescriptorHelperImpl implements DescriptorHelper {
 	}
 
 	@Override
-	public void enableCondensedClassNames(boolean value) {
-		outline.enableCondensedNames(value);
+	public void enableCondensedClassNames() {
+		outline.enableCondensedNames(true);
 	}
 
 	@Override
-	public void build() {
+	public Descriptor build() {
 		DescriptorValidator validator = new DescriptorValidator(outline);
 		validator.validate();
 
 		resolveBlockReferences();
+		return new Descriptor(this);
 	}
 
 	@Override

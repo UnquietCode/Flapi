@@ -33,7 +33,6 @@ public class BuildChecks_T {
 			.setPackage("unquietcode.something")
 			.setDescriptorName("Something")
 			.setStartingMethodName("create")
-			.setReturnType(Void.class)
 
 			.startBlock("Hello", "hello1()").last()
 				.addMethod("end()").last()
@@ -50,7 +49,6 @@ public class BuildChecks_T {
 			.setPackage("unquietcode.something")
 			.setDescriptorName("Something")
 			.setStartingMethodName("create")
-			.setReturnType(Void.class)
 
 			.startBlock("Hello", "hello1()").any().endBlock()
 			.startBlock("Hello", "hello2()").any().endBlock()
@@ -63,7 +61,6 @@ public class BuildChecks_T {
 			.setPackage("unquietcode.something")
 			.setDescriptorName("Something")
 			.setStartingMethodName("create")
-			.setReturnType(Void.class)
 
 			.startBlock("Hello", "hello1()").any()
 				.startBlock("Hello", "hello2()").any().endBlock()
@@ -78,7 +75,6 @@ public class BuildChecks_T {
 			.setPackage("unquietcode.something")
 			.setDescriptorName("Something")
 			.setStartingMethodName("create")
-			.setReturnType(Void.class)
 
 			.addMethod("hello1()").addBlockChain()
 				.startBlock("Hello").endBlock()
@@ -94,7 +90,6 @@ public class BuildChecks_T {
 			.setPackage("unquietcode.something")
 			.setDescriptorName("Something")
 			.setStartingMethodName("create")
-			.setReturnType(Void.class)
 
 			.addMethod("hello1()").addBlockChain()
 				.startBlock("Hello")
@@ -111,7 +106,6 @@ public class BuildChecks_T {
 			.setPackage("unquietcode.something")
 			.setDescriptorName("Something")
 			.setStartingMethodName("create")
-			.setReturnType(Void.class)
 
 			.startBlock("Block1", "void hello()").any().endBlock()
 			.startBlock("Block2", "void hello()").any().endBlock()
@@ -124,7 +118,6 @@ public class BuildChecks_T {
 			.setPackage("unquietcode.something")
 			.setDescriptorName("Something")
 			.setStartingMethodName("create")
-			.setReturnType(Void.class)
 
 			.startBlock("Hello", "void hello()").any().endBlock()
 			.addMethod("method()").addBlockChain().addBlockReference("Moo").any()
@@ -137,7 +130,6 @@ public class BuildChecks_T {
 			.setPackage("unquietcode.something")
 			.setDescriptorName("Something")
 			.setStartingMethodName("create")
-			.setReturnType(Void.class)
 
 			.addMethod("method()").addBlockChain()
 				.startBlock("Hello")
@@ -158,7 +150,6 @@ public class BuildChecks_T {
 			.setPackage("unquietcode.something")
 			.setDescriptorName("Something")
 			.setStartingMethodName("create")
-			.setReturnType(Void.class)
 
 			.startBlock("BlockA", "void hello1()")
 				.addBlockChain().addBlockReference("BlockA").last()
@@ -178,7 +169,6 @@ public class BuildChecks_T {
 			.setPackage("unquietcode.something")
 			.setDescriptorName("Something")
 			.setStartingMethodName("create")
-			.setReturnType(Void.class)
 
 			.startBlock("Block", "void method()").any()
 			.endBlock()
@@ -191,7 +181,6 @@ public class BuildChecks_T {
 			.setPackage("unquietcode.something")
 			.setDescriptorName("Something")
 			.setStartingMethodName("create")
-			.setReturnType(Void.class)
 
 			.startBlock("Block", "void method()").any()
 				.addMethod("sometimes()").atMost(1)

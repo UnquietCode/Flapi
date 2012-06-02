@@ -12,25 +12,25 @@ import javax.annotation.Generated;
  * Visit http://www.unquietcode.com/flapi for more information.
  * 
  * 
- * Generated on May 28, 2012 19:55:23 CDT using version 0.2
+ * Generated on June 01, 2012 21:44:52 CDT using version 0.2
  * 
  */
-@Generated(value = "unquietcode.tools.flapi", date = "May 28, 2012 19:55:23 CDT", comments = "generated using Flapi, the fluent API generator for Java")
-public interface MethodBuilder<_ReturnType >{
+@Generated(value = "unquietcode.tools.flapi", date = "June 01, 2012 21:44:52 CDT", comments = "generated using Flapi, the fluent API generator for Java")
+public interface MethodBuilder<_ParentType >{
 
 
-    _ReturnType any();
+    _ParentType any();
 
-    _ReturnType atLeast(int num);
+    _ParentType atLeast(int num);
 
-    _ReturnType atMost(int num);
+    _ParentType atMost(int num);
 
-    _ReturnType between(int atLeast, int atMost);
+    _ParentType between(int atLeast, int atMost);
 
-    _ReturnType exactly(int num);
+    _ParentType exactly(int num);
 
-    _ReturnType last();
+    _ParentType last();
 
-    _ReturnType last(Class returnType);
+    _ParentType last(Class returnType);
 
 }

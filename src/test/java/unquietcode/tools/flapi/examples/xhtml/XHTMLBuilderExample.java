@@ -42,10 +42,9 @@ public class XHTMLBuilderExample {
 				.setPackage("unquietcode.tools.flapi.examples.xhtml.builder")
 				.setStartingMethodName("createDocument")
 				.setDescriptorName("XHTML")
-				.setReturnType(Document.class)
 
 				.addMethod("addComment(String comment)").any()
-				.addMethod("done()").last()
+				.addMethod("done()").last(Document.class)
 
 				.startBlock("Element", "startElement(String tagName)").any()
 					.addMethod("setValue(String value)").atMost(1)

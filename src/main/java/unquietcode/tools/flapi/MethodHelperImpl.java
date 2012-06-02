@@ -21,8 +21,8 @@ package unquietcode.tools.flapi;
 
 import unquietcode.tools.flapi.builder.BlockChainHelper;
 import unquietcode.tools.flapi.builder.MethodHelper;
-import unquietcode.tools.flapi.builder.ObjectWrapper;
 import unquietcode.tools.flapi.outline.MethodOutline;
+import unquietcode.tools.flapi.support.v0_2.ObjectWrapper;
 
 /**
  * @author Ben Fagin
@@ -30,10 +30,6 @@ import unquietcode.tools.flapi.outline.MethodOutline;
  */
 public class MethodHelperImpl implements MethodHelper {
 	final MethodOutline method;
-
-	MethodHelperImpl() {
-		this(new MethodOutline());
-	}
 
 	MethodHelperImpl(MethodOutline method) {
 		this.method = method;

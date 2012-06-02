@@ -19,7 +19,7 @@
 
 package unquietcode.tools.flapi;
 
-import unquietcode.tools.flapi.builder.DescriptorBuilder_enableCondensedClassNames_setDescriptorName_setPackage_setReturnType_setStartingMethodName;
+import unquietcode.tools.flapi.builder.DescriptorBuilder_enableCondensedClassNames_setDescriptorName_setPackage_setStartingMethodName;
 import unquietcode.tools.flapi.builder.DescriptorGenerator;
 
 /**
@@ -37,7 +37,7 @@ public class Flapi {
 	 *
 	 * @return a new {@link unquietcode.tools.flapi.builder.DescriptorBuilder}
 	 */
-	public static DescriptorBuilder_enableCondensedClassNames_setDescriptorName_setPackage_setReturnType_setStartingMethodName<Descriptor> builder() {
+	public static DescriptorBuilder_enableCondensedClassNames_setDescriptorName_setPackage_setStartingMethodName<Void> builder() {
 		return DescriptorGenerator.create(new DescriptorHelperImpl());
 	}
 
@@ -45,7 +45,7 @@ public class Flapi {
 		if (major >= 5 && major <= 7) {
 			JDKVersion = major;
 		} else {
-			throw new DescriptorBuilderException("Only JDK versions 5-7 are supported.");
+			throw new DescriptorBuilderException("Only JDK versions [5,7] are supported.");
 		}
 	}
 

@@ -45,12 +45,10 @@ public class HouseBuilderExample {
 
 	public static void main(String[] args) {
 		Descriptor descriptor = Flapi.builder()
-			.setReturnType(Void.class)
 			.setDescriptorName("House")
 			.setPackage("unquietcode.tools.flapi.examples.house.builder")
 
 			.startBlock("Wall", "addWall()").last(Wall.class)
-				.exitWhenEmpty(true)
 				.addMethod("setColor(java.awt.Color color)").atMost(1)
 				.addMethod("setWidth(double inches)").atMost(1)
 			.endBlock()

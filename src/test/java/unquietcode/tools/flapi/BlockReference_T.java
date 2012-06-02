@@ -39,7 +39,6 @@ public class BlockReference_T {
 		Descriptor descriptor = Flapi.builder()
 			.setDescriptorName("Something")
 			.setPackage("some.thing")
-			.setReturnType(Void.class)
 
 			.startBlock("One", "one()").last()
 				.addMethod("exit()").last()

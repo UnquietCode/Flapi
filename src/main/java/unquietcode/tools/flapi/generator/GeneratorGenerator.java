@@ -20,8 +20,6 @@
 package unquietcode.tools.flapi.generator;
 
 import com.sun.codemodel.*;
-import unquietcode.tools.flapi.Descriptor;
-import unquietcode.tools.flapi.DescriptorBuilderException;
 import unquietcode.tools.flapi.outline.GeneratorOutline;
 
 
@@ -37,7 +35,7 @@ public class GeneratorGenerator extends AbstractGenerator<GeneratorOutline, JDef
 
 	@Override
 	public JDefinedClass generate() {
-		JType returnType = getTopLevelInterface(outline.descriptorBlock).narrow(outline.returnType);
+		JType returnType = getTopLevelInterface(outline.descriptorBlock).narrow(ref(Void.class));
 		JDefinedClass returnValue = getTopLevelImplementation(outline.descriptorBlock);
 		JDefinedClass generator = getGeneratorImplementation(outline.descriptorBlock);
 		JDefinedClass helper = getHelperInterface(outline.descriptorBlock);
@@ -61,8 +59,8 @@ public class GeneratorGenerator extends AbstractGenerator<GeneratorOutline, JDef
 		createMethod.body()._return(
 			JExpr._new(returnValue)
 				.arg(pHelper)
-				.arg(pHelper.invoke("_getReturnValue")
-		));
+				.arg(JExpr._null())
+		);
 
 		return generator;
 	}

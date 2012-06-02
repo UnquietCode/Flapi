@@ -12,17 +12,17 @@ import javax.annotation.Generated;
  * Visit http://www.unquietcode.com/flapi for more information.
  * 
  * 
- * Generated on May 28, 2012 19:55:23 CDT using version 0.2
+ * Generated on June 01, 2012 21:44:52 CDT using version 0.2
  * 
  */
-@Generated(value = "unquietcode.tools.flapi", date = "May 28, 2012 19:55:23 CDT", comments = "generated using Flapi, the fluent API generator for Java")
-public interface BlockChainBuilder_addBlockChain<_ReturnType >{
+@Generated(value = "unquietcode.tools.flapi", date = "June 01, 2012 21:44:52 CDT", comments = "generated using Flapi, the fluent API generator for Java")
+public interface BlockChainBuilder_addBlockChain<_ParentType >{
 
 
-    _ReturnType addBlockReference(String blockName);
+    _ParentType addBlockReference(String blockName);
 
-    BlockBuilder_exitWhenEmpty<_ReturnType> startBlock(String blockName);
+    BlockBuilder<_ParentType> startBlock(String blockName);
 
-    BlockChainBuilder_addBlockChain<BlockChainBuilder<_ReturnType>> addBlockChain();
+    BlockChainBuilder_addBlockChain<BlockChainBuilder<_ParentType>> addBlockChain();
 
 }

@@ -27,6 +27,6 @@ package unquietcode.tools.flapi.support.v0_2;
  * guarantees which are used within the generated logic.
  */
 public interface BuilderImplementation {
-	BuilderImplementation getParent();
-	void checkInvocations();
+	BuilderImplementation _getParent();
+	void _checkInvocations();
 }

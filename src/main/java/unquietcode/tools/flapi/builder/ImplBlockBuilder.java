@@ -2,6 +2,8 @@
 package unquietcode.tools.flapi.builder;
 
 import javax.annotation.Generated;
+import unquietcode.tools.flapi.support.v0_2.BuilderImplementation;
+import unquietcode.tools.flapi.support.v0_2.ObjectWrapper;
 
 
 /**
@@ -12,27 +14,31 @@ import javax.annotation.Generated;
  * Visit http://www.unquietcode.com/flapi for more information.
  * 
  * 
- * Generated on May 28, 2012 19:55:23 CDT using version 0.2
+ * Generated on June 01, 2012 21:44:52 CDT using version 0.2
  * 
  */
-@Generated(value = "unquietcode.tools.flapi", date = "May 28, 2012 19:55:23 CDT", comments = "generated using Flapi, the fluent API generator for Java")
+@Generated(value = "unquietcode.tools.flapi", date = "June 01, 2012 21:44:52 CDT", comments = "generated using Flapi, the fluent API generator for Java")
 public class ImplBlockBuilder
-    implements BlockBuilder
+    implements BlockBuilder, BuilderImplementation
 {
 
     private final BlockHelper _helper;
-    private final Object _returnValue;
+    private final BuilderImplementation _parent;
 
-    ImplBlockBuilder(BlockHelper helper, Object returnValue) {
+    ImplBlockBuilder(BlockHelper helper, BuilderImplementation parent) {
         _helper = helper;
-        _returnValue = returnValue;
+        _parent = parent;
+    }
+
+    public BuilderImplementation _getParent() {
+        return _parent;
     }
 
     private void _transferInvocations(Object next) {
         // nothing
     }
 
-    private void _checkInvocations() {
+    public void _checkInvocations() {
         // nothing
     }
 
@@ -40,7 +46,7 @@ public class ImplBlockBuilder
         ObjectWrapper<MethodHelper> helper1 = new ObjectWrapper<MethodHelper>();
         _helper.addBlockReference(blockName, methodSignature, helper1);
          
-        MethodBuilder_addBlockChain step1 = new ImplMethodBuilder_addBlockChain(helper1 .get(), this);
+        ImplMethodBuilder_addBlockChain step1 = new ImplMethodBuilder_addBlockChain(helper1 .get(), this);
         _transferInvocations(step1);
         return step1;
     }
@@ -49,16 +55,21 @@ public class ImplBlockBuilder
         ObjectWrapper<MethodHelper> helper1 = new ObjectWrapper<MethodHelper>();
         _helper.addMethod(methodSignature, helper1);
          
-        MethodBuilder_addBlockChain step1 = new ImplMethodBuilder_addBlockChain(helper1 .get(), this);
+        ImplMethodBuilder_addBlockChain step1 = new ImplMethodBuilder_addBlockChain(helper1 .get(), this);
         _transferInvocations(step1);
         return step1;
     }
 
-    public Object endBlock() {
-        _checkInvocations();
+    public BuilderImplementation endBlock() {
+        BuilderImplementation cur = _parent;
+        while (cur!= null) {
+            cur._checkInvocations();
+            cur = cur._getParent();
+        }
+         
         _helper.endBlock();
          
-        return _returnValue;
+        return _parent;
     }
 
     public MethodBuilder_addBlockChain startBlock(String blockName, String methodSignature) {
@@ -66,8 +77,8 @@ public class ImplBlockBuilder
         ObjectWrapper<BlockHelper> helper2 = new ObjectWrapper<BlockHelper>();
         _helper.startBlock(blockName, methodSignature, helper1, helper2);
          
-        BlockBuilder_exitWhenEmpty step2 = new ImplBlockBuilder_exitWhenEmpty(helper2 .get(), this);
-        MethodBuilder_addBlockChain step1 = new ImplMethodBuilder_addBlockChain(helper1 .get(), step2);
+        ImplBlockBuilder step2 = new ImplBlockBuilder(helper2 .get(), this);
+        ImplMethodBuilder_addBlockChain step1 = new ImplMethodBuilder_addBlockChain(helper1 .get(), step2);
         _transferInvocations(step1);
         return step1;
     }

@@ -27,7 +27,7 @@ import java.util.*;
  */
 public class BlockOutline implements Outline {
 	private String name;
-	private boolean exitWhenEmpty = false;
+	private boolean isTopLevel = false;
 
 	// nested blocks
 	private final List<BlockOutline> blocks = new ArrayList<BlockOutline>();
@@ -39,6 +39,14 @@ public class BlockOutline implements Outline {
 	private final Set<MethodOutline> methods = new HashSet<MethodOutline>();
 
 	// ------------------------------ //
+
+	public void setIsTopLevel() {
+		isTopLevel = true;
+	}
+
+	public boolean isTopLevel() {
+		return isTopLevel;
+	}
 
 	public List<BlockOutline> getBlocks() {
 		return Collections.unmodifiableList(blocks);
@@ -58,14 +66,6 @@ public class BlockOutline implements Outline {
 
 	public void setName(String name) {
 		this.name = name.trim();
-	}
-
-	public boolean shouldExitWhenEmpty() {
-		return exitWhenEmpty;
-	}
-
-	public void exitWhenEmpty(boolean exitWhenEmpty) {
-		this.exitWhenEmpty = exitWhenEmpty;
 	}
 
 	public BlockOutline addBlock(String blockName) {

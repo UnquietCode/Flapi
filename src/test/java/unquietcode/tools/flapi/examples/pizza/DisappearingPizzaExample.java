@@ -33,12 +33,11 @@ public class DisappearingPizzaExample {
 				.setPackage("unquietcode.tools.flapi.examples.pizza.builder")
 				.setStartingMethodName("makePizza")
 				.setDescriptorName("Pizza")
-				.setReturnType(Pizza.class)
 
 				.addMethod("addSauce(unquietcode.tools.flapi.examples.pizza.DisappearingPizzaExample.SauceType sauceType)").atMost(1)
 				.addMethod("addCheese()").atMost(1)
 				.addMethod("addTopping(unquietcode.tools.flapi.examples.pizza.DisappearingPizzaExample.Topping topping)").atMost(3)
-				.addMethod("bake()").last()
+				.addMethod("bake()").last(Pizza.class)
 			.build()
 		;
 

@@ -50,15 +50,21 @@ public class DescriptorValidator {
 			return;
 		}
 
-		boolean seenLast = false;
+		boolean valid = false;
 		for (MethodOutline method : block.getAllMethods()) {
 			if (method.isTerminal()) {
-				seenLast = true;
+				valid = true;
 				break;
 			}
 		}
 
-		if (!seenLast && !block.shouldExitWhenEmpty()) {
+		// FLAPI-73 - blocks with only dynamic methods should exit when empty
+		if (block.getRequiredMethods().isEmpty() && !block.getDynamicMethods().isEmpty()) {
+			valid = true;
+		}
+
+		// if there are no dynamic methods
+		if (!valid) {
 			throw new DescriptorBuilderException("Encountered a block with no terminal method: " + block.getName());
 		}
 

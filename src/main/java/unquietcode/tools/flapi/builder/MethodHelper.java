@@ -2,6 +2,7 @@
 package unquietcode.tools.flapi.builder;
 
 import javax.annotation.Generated;
+import unquietcode.tools.flapi.support.v0_2.ObjectWrapper;
 
 
 /**
@@ -12,27 +13,27 @@ import javax.annotation.Generated;
  * Visit http://www.unquietcode.com/flapi for more information.
  * 
  * 
- * Generated on May 28, 2012 19:55:23 CDT using version 0.2
+ * Generated on June 01, 2012 21:44:52 CDT using version 0.2
  * 
  */
-@Generated(value = "unquietcode.tools.flapi", date = "May 28, 2012 19:55:23 CDT", comments = "generated using Flapi, the fluent API generator for Java")
+@Generated(value = "unquietcode.tools.flapi", date = "June 01, 2012 21:44:52 CDT", comments = "generated using Flapi, the fluent API generator for Java")
 public interface MethodHelper {
 
 
-    void between(int atLeast, int atMost);
-
-    void last(Class returnType);
-
-    void any();
+    void last();
 
     void atMost(int num);
 
-    void last();
+    void any();
 
     void atLeast(int num);
 
     void exactly(int num);
 
     void addBlockChain(ObjectWrapper<BlockChainHelper> _helper1);
+
+    void between(int atLeast, int atMost);
+
+    void last(Class returnType);
 
 }

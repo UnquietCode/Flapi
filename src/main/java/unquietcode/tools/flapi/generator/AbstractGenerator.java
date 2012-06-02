@@ -26,6 +26,7 @@ import unquietcode.tools.flapi.Pair;
 import unquietcode.tools.flapi.outline.BlockOutline;
 import unquietcode.tools.flapi.outline.MethodOutline;
 import unquietcode.tools.flapi.outline.Outline;
+import unquietcode.tools.flapi.support.v0_2.BuilderImplementation;
 
 import java.util.*;
 
@@ -83,7 +84,7 @@ public abstract class AbstractGenerator<_InType extends Outline, _OutType> imple
 
 	protected JInvocation makeHelperCall(JMethod _method, MethodOutline method) {
 		JFieldRef _helper = JExpr.ref(Constants.HELPER_VALUE_NAME);
-		JInvocation helperCall = _helper.invoke(_method.name());
+		JInvocation helperCall = _helper.invoke(_method.name()); //TODO method.name?
 
 		// normal args
 		for (JVar param : _method.listParams()) {
@@ -273,11 +274,15 @@ public abstract class AbstractGenerator<_InType extends Outline, _OutType> imple
 	}
 
 	public JDefinedClass getSubsetImplementation(BlockOutline block, Set<MethodOutline> methods) {
-		return getClass(ctx.getGeneratedName("Impl" + block.getName() + "Builder", methods));
+		JDefinedClass aClass = getClass(ctx.getGeneratedName("Impl" + block.getName() + "Builder", methods));
+		aClass._implements(BuilderImplementation.class);
+		return aClass;
 	}
 
 	public JDefinedClass getBaseImplementation(BlockOutline block) {
-		return getClass("Impl"+block.getName()+"Builder");
+		JDefinedClass aClass = getClass("Impl" + block.getName() + "Builder");
+		aClass._implements(BuilderImplementation.class);
+		return aClass;
 	}
 
 	public JDefinedClass getBaseInterface(BlockOutline block) {
