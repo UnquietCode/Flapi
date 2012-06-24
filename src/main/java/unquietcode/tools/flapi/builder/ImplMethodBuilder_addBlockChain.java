@@ -14,24 +14,24 @@ import unquietcode.tools.flapi.support.v0_2.ObjectWrapper;
  * Visit http://www.unquietcode.com/flapi for more information.
  * 
  * 
- * Generated on June 01, 2012 21:44:52 CDT using version 0.2
+ * Generated on June 24, 2012 16:46:25 CDT using version 0.2
  * 
  */
-@Generated(value = "unquietcode.tools.flapi", date = "June 01, 2012 21:44:52 CDT", comments = "generated using Flapi, the fluent API generator for Java")
+@Generated(value = "unquietcode.tools.flapi", date = "June 24, 2012 16:46:25 CDT", comments = "generated using Flapi, the fluent API generator for Java")
 public class ImplMethodBuilder_addBlockChain
     implements MethodBuilder_addBlockChain, BuilderImplementation
 {
 
     private final MethodHelper _helper;
-    private final BuilderImplementation _parent;
+    private final BuilderImplementation _returnValue;
 
-    ImplMethodBuilder_addBlockChain(MethodHelper helper, BuilderImplementation parent) {
+    ImplMethodBuilder_addBlockChain(MethodHelper helper, BuilderImplementation returnValue) {
         _helper = helper;
-        _parent = parent;
+        _returnValue = returnValue;
     }
 
     public BuilderImplementation _getParent() {
-        return _parent;
+        return _returnValue;
     }
 
     private void _transferInvocations(Object next) {
@@ -43,7 +43,7 @@ public class ImplMethodBuilder_addBlockChain
     }
 
     public BuilderImplementation any() {
-        BuilderImplementation cur = _parent;
+        BuilderImplementation cur = _returnValue;
         while (cur!= null) {
             cur._checkInvocations();
             cur = cur._getParent();
@@ -51,11 +51,11 @@ public class ImplMethodBuilder_addBlockChain
          
         _helper.any();
          
-        return _parent;
+        return _returnValue;
     }
 
     public BuilderImplementation atLeast(int num) {
-        BuilderImplementation cur = _parent;
+        BuilderImplementation cur = _returnValue;
         while (cur!= null) {
             cur._checkInvocations();
             cur = cur._getParent();
@@ -63,11 +63,11 @@ public class ImplMethodBuilder_addBlockChain
          
         _helper.atLeast(num);
          
-        return _parent;
+        return _returnValue;
     }
 
     public BuilderImplementation atMost(int num) {
-        BuilderImplementation cur = _parent;
+        BuilderImplementation cur = _returnValue;
         while (cur!= null) {
             cur._checkInvocations();
             cur = cur._getParent();
@@ -75,11 +75,11 @@ public class ImplMethodBuilder_addBlockChain
          
         _helper.atMost(num);
          
-        return _parent;
+        return _returnValue;
     }
 
     public BuilderImplementation between(int atLeast, int atMost) {
-        BuilderImplementation cur = _parent;
+        BuilderImplementation cur = _returnValue;
         while (cur!= null) {
             cur._checkInvocations();
             cur = cur._getParent();
@@ -87,11 +87,11 @@ public class ImplMethodBuilder_addBlockChain
          
         _helper.between(atLeast, atMost);
          
-        return _parent;
+        return _returnValue;
     }
 
     public BuilderImplementation exactly(int num) {
-        BuilderImplementation cur = _parent;
+        BuilderImplementation cur = _returnValue;
         while (cur!= null) {
             cur._checkInvocations();
             cur = cur._getParent();
@@ -99,11 +99,11 @@ public class ImplMethodBuilder_addBlockChain
          
         _helper.exactly(num);
          
-        return _parent;
+        return _returnValue;
     }
 
     public BuilderImplementation last() {
-        BuilderImplementation cur = _parent;
+        BuilderImplementation cur = _returnValue;
         while (cur!= null) {
             cur._checkInvocations();
             cur = cur._getParent();
@@ -111,11 +111,11 @@ public class ImplMethodBuilder_addBlockChain
          
         _helper.last();
          
-        return _parent;
+        return _returnValue;
     }
 
     public BuilderImplementation last(Class returnType) {
-        BuilderImplementation cur = _parent;
+        BuilderImplementation cur = _returnValue;
         while (cur!= null) {
             cur._checkInvocations();
             cur = cur._getParent();
@@ -123,14 +123,14 @@ public class ImplMethodBuilder_addBlockChain
          
         _helper.last(returnType);
          
-        return _parent;
+        return _returnValue;
     }
 
     public BlockChainBuilder_addBlockChain addBlockChain() {
         ObjectWrapper<BlockChainHelper> helper1 = new ObjectWrapper<BlockChainHelper>();
         _helper.addBlockChain(helper1);
          
-        ImplBlockChainBuilder_addBlockChain step1 = new ImplBlockChainBuilder_addBlockChain(helper1 .get(), new ImplMethodBuilder(_helper, _parent));
+        ImplBlockChainBuilder_addBlockChain step1 = new ImplBlockChainBuilder_addBlockChain(helper1 .get(), new ImplMethodBuilder(_helper, _returnValue));
         _transferInvocations(step1);
         return step1;
     }

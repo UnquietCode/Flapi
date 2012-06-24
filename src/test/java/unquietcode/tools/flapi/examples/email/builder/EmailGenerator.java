@@ -1,7 +1,7 @@
 
 package unquietcode.tools.flapi.examples.email.builder;
 
-import unquietcode.tools.flapi.examples.email.EmailMessage;
+import javax.annotation.Generated;
 
 
 /**
@@ -12,19 +12,20 @@ import unquietcode.tools.flapi.examples.email.EmailMessage;
  * Visit http://www.unquietcode.com/flapi for more information.
  * 
  * 
- * Generated on May 28, 2012 10:14:26 CDT using version 0.2
+ * Generated on June 24, 2012 16:46:25 CDT using version 0.2
  * 
  */
+@Generated(value = "unquietcode.tools.flapi", date = "June 24, 2012 16:46:25 CDT", comments = "generated using Flapi, the fluent API generator for Java")
 public class EmailGenerator {
 
 
     @SuppressWarnings("unchecked")
-    public static EmailBuilder_body_sender_subject<EmailMessage> compose(EmailHelper helper) {
+    public static EmailBuilder_body_sender_subject<Void> compose(EmailHelper helper) {
         if (helper == null) {
             throw new IllegalArgumentException("Helper cannot be null.");
         }
          
-        return new ImplEmailBuilder_body_sender_subject(helper, helper._getReturnValue());
+        return new ImplEmailBuilder_body_sender_subject(helper, null);
     }
 
 }

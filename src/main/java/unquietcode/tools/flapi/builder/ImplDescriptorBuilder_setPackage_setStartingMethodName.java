@@ -17,26 +17,26 @@ import unquietcode.tools.flapi.support.v0_2.ObjectWrapper;
  * Visit http://www.unquietcode.com/flapi for more information.
  * 
  * 
- * Generated on June 01, 2012 21:44:52 CDT using version 0.2
+ * Generated on June 24, 2012 16:46:25 CDT using version 0.2
  * 
  */
-@Generated(value = "unquietcode.tools.flapi", date = "June 01, 2012 21:44:52 CDT", comments = "generated using Flapi, the fluent API generator for Java")
+@Generated(value = "unquietcode.tools.flapi", date = "June 24, 2012 16:46:25 CDT", comments = "generated using Flapi, the fluent API generator for Java")
 public class ImplDescriptorBuilder_setPackage_setStartingMethodName
     implements DescriptorBuilder_setPackage_setStartingMethodName, BuilderImplementation
 {
 
     private final DescriptorHelper _helper;
-    private final BuilderImplementation _parent;
+    private final BuilderImplementation _returnValue;
     int ic_Descriptor_setDescriptorName$String_descriptorName = 1;
     int ic_Descriptor_setPackage$String_packageName = 1;
 
-    ImplDescriptorBuilder_setPackage_setStartingMethodName(DescriptorHelper helper, BuilderImplementation parent) {
+    ImplDescriptorBuilder_setPackage_setStartingMethodName(DescriptorHelper helper, BuilderImplementation returnValue) {
         _helper = helper;
-        _parent = parent;
+        _returnValue = returnValue;
     }
 
     public BuilderImplementation _getParent() {
-        return _parent;
+        return _returnValue;
     }
 
     private void _transferInvocations(Object next) {
@@ -76,7 +76,7 @@ public class ImplDescriptorBuilder_setPackage_setStartingMethodName
     }
 
     public Descriptor build() {
-        BuilderImplementation cur = _parent;
+        BuilderImplementation cur = _returnValue;
         while (cur!= null) {
             cur._checkInvocations();
             cur = cur._getParent();
@@ -102,7 +102,7 @@ public class ImplDescriptorBuilder_setPackage_setStartingMethodName
         --ic_Descriptor_setPackage$String_packageName;
         _helper.setPackage(packageName);
          
-        DescriptorBuilder_setStartingMethodName retval = new ImplDescriptorBuilder_setStartingMethodName(_helper, _parent);
+        DescriptorBuilder_setStartingMethodName retval = new ImplDescriptorBuilder_setStartingMethodName(_helper, _returnValue);
         _transferInvocations(retval);
         return retval;
     }
@@ -110,7 +110,7 @@ public class ImplDescriptorBuilder_setPackage_setStartingMethodName
     public DescriptorBuilder_setPackage setStartingMethodName(String methodName) {
         _helper.setStartingMethodName(methodName);
          
-        DescriptorBuilder_setPackage retval = new ImplDescriptorBuilder_setPackage(_helper, _parent);
+        DescriptorBuilder_setPackage retval = new ImplDescriptorBuilder_setPackage(_helper, _returnValue);
         _transferInvocations(retval);
         return retval;
     }

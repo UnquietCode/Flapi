@@ -12,27 +12,27 @@ import javax.annotation.Generated;
  * Visit http://www.unquietcode.com/flapi for more information.
  * 
  * 
- * Generated on June 01, 2012 21:44:52 CDT using version 0.2
+ * Generated on June 24, 2012 16:46:25 CDT using version 0.2
  * 
  */
-@Generated(value = "unquietcode.tools.flapi", date = "June 01, 2012 21:44:52 CDT", comments = "generated using Flapi, the fluent API generator for Java")
-public interface MethodBuilder_addBlockChain<_ParentType >{
+@Generated(value = "unquietcode.tools.flapi", date = "June 24, 2012 16:46:25 CDT", comments = "generated using Flapi, the fluent API generator for Java")
+public interface MethodBuilder_addBlockChain<_ReturnType >{
 
 
-    _ParentType any();
+    _ReturnType any();
 
-    _ParentType atLeast(int num);
+    _ReturnType atLeast(int num);
 
-    _ParentType atMost(int num);
+    _ReturnType atMost(int num);
 
-    _ParentType between(int atLeast, int atMost);
+    _ReturnType between(int atLeast, int atMost);
 
-    _ParentType exactly(int num);
+    _ReturnType exactly(int num);
 
-    _ParentType last();
+    _ReturnType last();
 
-    _ParentType last(Class returnType);
+    _ReturnType last(Class returnType);
 
-    BlockChainBuilder_addBlockChain<MethodBuilder<_ParentType>> addBlockChain();
+    BlockChainBuilder_addBlockChain<MethodBuilder<_ReturnType>> addBlockChain();
 
 }

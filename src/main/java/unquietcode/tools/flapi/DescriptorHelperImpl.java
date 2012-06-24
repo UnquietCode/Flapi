@@ -48,6 +48,15 @@ public class DescriptorHelperImpl implements DescriptorHelper {
 	}
 
 	@Override
+	public void setReturnType(Class returnType) {
+		if (returnType == null) {
+			throw new IllegalArgumentException("Return type cannot be null.");
+		}
+
+		outline.selfBlock.setReturnType(returnType);
+	}
+
+	@Override
 	public void setStartingMethodName(String methodName) {
 		if (methodName == null || methodName.trim().isEmpty()) {
 			throw new IllegalArgumentException("Name cannot be empty.");

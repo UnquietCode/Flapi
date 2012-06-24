@@ -2,6 +2,8 @@
 package unquietcode.tools.flapi.examples.house.builder;
 
 import javax.annotation.Generated;
+import unquietcode.tools.flapi.examples.house.Wall;
+import unquietcode.tools.flapi.support.v0_2.BuilderImplementation;
 
 
 /**
@@ -12,27 +14,31 @@ import javax.annotation.Generated;
  * Visit http://www.unquietcode.com/flapi for more information.
  * 
  * 
- * Generated on May 28, 2012 17:35:16 CDT using version 0.2
+ * Generated on June 24, 2012 16:46:25 CDT using version 0.2
  * 
  */
-@Generated(value = "unquietcode.tools.flapi", date = "May 28, 2012 17:35:16 CDT", comments = "generated using Flapi, the fluent API generator for Java")
+@Generated(value = "unquietcode.tools.flapi", date = "June 24, 2012 16:46:25 CDT", comments = "generated using Flapi, the fluent API generator for Java")
 public class ImplWallBuilder
-    implements WallBuilder
+    implements WallBuilder, BuilderImplementation
 {
 
     private final WallHelper _helper;
-    private final Object _returnValue;
+    private final Wall _returnValue;
 
-    ImplWallBuilder(WallHelper helper, Object returnValue) {
+    ImplWallBuilder(WallHelper helper, Wall returnValue) {
         _helper = helper;
         _returnValue = returnValue;
+    }
+
+    public BuilderImplementation _getParent() {
+        return null;
     }
 
     private void _transferInvocations(Object next) {
         // nothing
     }
 
-    private void _checkInvocations() {
+    public void _checkInvocations() {
         // nothing
     }
 

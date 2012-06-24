@@ -41,7 +41,7 @@ public class BlockChainHelperImpl implements BlockChainHelper {
 	*/
 	@Override
 	public void addBlockReference(String blockName) {
-		BlockReference ref = new BlockReference();
+		BlockReference ref = new BlockReference(null);
 		ref.setName(blockName);
 		ref.setConstructor(blockMethod);
 		blockMethod.getBlockChain().add(0, ref);
@@ -50,7 +50,7 @@ public class BlockChainHelperImpl implements BlockChainHelper {
 
 	@Override
 	public void startBlock(String blockName, ObjectWrapper<BlockHelper> _helper1) {
-		BlockOutline anonymousBlock = new BlockOutline();
+		BlockOutline anonymousBlock = new BlockOutline(null);
 		anonymousBlock.setName(blockName);
 		blockMethod.getBlockChain().add(0, anonymousBlock);
 

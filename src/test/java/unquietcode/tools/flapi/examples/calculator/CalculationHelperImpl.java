@@ -1,7 +1,7 @@
 package unquietcode.tools.flapi.examples.calculator;
 
 import unquietcode.tools.flapi.examples.calculator.builder.CalculationHelper;
-import unquietcode.tools.flapi.examples.calculator.builder.ObjectWrapper;
+import unquietcode.tools.flapi.support.v0_2.ObjectWrapper;
 
 import java.math.BigInteger;
 
@@ -52,8 +52,7 @@ public class CalculationHelperImpl implements CalculationHelper {
 	}
 
 	@Override
-	public void equals() {
-		// nothing
+	public ObjectWrapper equals() {
+		return _value;
 	}
-
 }

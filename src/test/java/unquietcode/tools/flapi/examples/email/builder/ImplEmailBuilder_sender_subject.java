@@ -3,6 +3,10 @@ package unquietcode.tools.flapi.examples.email.builder;
 
 import java.io.File;
 import java.lang.reflect.Field;
+import javax.annotation.Generated;
+import unquietcode.tools.flapi.examples.email.EmailMessage;
+import unquietcode.tools.flapi.support.v0_2.BuilderImplementation;
+import unquietcode.tools.flapi.support.v0_2.ExpectedInvocationsException;
 
 
 /**
@@ -13,21 +17,26 @@ import java.lang.reflect.Field;
  * Visit http://www.unquietcode.com/flapi for more information.
  * 
  * 
- * Generated on May 28, 2012 10:14:26 CDT using version 0.2
+ * Generated on June 24, 2012 16:46:25 CDT using version 0.2
  * 
  */
+@Generated(value = "unquietcode.tools.flapi", date = "June 24, 2012 16:46:25 CDT", comments = "generated using Flapi, the fluent API generator for Java")
 public class ImplEmailBuilder_sender_subject
-    implements EmailBuilder_sender_subject
+    implements EmailBuilder_sender_subject, BuilderImplementation
 {
 
     private final EmailHelper _helper;
-    private final Object _returnValue;
+    private final BuilderImplementation _returnValue;
     int ic_Email_addRecipient$String_emailAddress = 1;
     int ic_Email_sender$String_emailAddress = 1;
 
-    ImplEmailBuilder_sender_subject(EmailHelper helper, Object returnValue) {
+    ImplEmailBuilder_sender_subject(EmailHelper helper, BuilderImplementation returnValue) {
         _helper = helper;
         _returnValue = returnValue;
+    }
+
+    public BuilderImplementation _getParent() {
+        return _returnValue;
     }
 
     private void _transferInvocations(Object next) {
@@ -48,57 +57,57 @@ public class ImplEmailBuilder_sender_subject
         }
     }
 
-    private void _checkInvocations() {
+    public void _checkInvocations() {
         if (ic_Email_addRecipient$String_emailAddress > 0) {
-            throw new MinimumInvocationsException("Expected at least 1 invocations of method 'addRecipient(String emailAddress)'.");
+            throw new ExpectedInvocationsException("Expected at least 1 invocations of method 'addRecipient(String emailAddress)'.");
         }
         if (ic_Email_sender$String_emailAddress > 0) {
-            throw new MinimumInvocationsException("Expected at least 1 invocations of method 'sender(String emailAddress)'.");
+            throw new ExpectedInvocationsException("Expected at least 1 invocations of method 'sender(String emailAddress)'.");
         }
     }
 
     public EmailBuilder_sender_subject addAttachment(File file) {
         _helper.addAttachment(file);
          
-        EmailBuilder_sender_subject retval = this;
-        return retval;
+        return this;
     }
 
     public EmailBuilder_sender_subject addBCC(String emailAddress) {
         _helper.addBCC(emailAddress);
          
-        EmailBuilder_sender_subject retval = this;
-        return retval;
+        return this;
     }
 
     public EmailBuilder_sender_subject addCC(String emailAddress) {
         _helper.addCC(emailAddress);
          
-        EmailBuilder_sender_subject retval = this;
-        return retval;
+        return this;
     }
 
     public EmailBuilder_sender_subject addRecipient(String emailAddress) {
+        --ic_Email_addRecipient$String_emailAddress;
         _helper.addRecipient(emailAddress);
          
-        EmailBuilder_sender_subject retval = this;
-        --ic_Email_addRecipient$String_emailAddress;
-        return retval;
+        return this;
     }
 
-    public Object send() {
-        _checkInvocations();
-        _helper.send();
+    public EmailMessage send() {
+        BuilderImplementation cur = _returnValue;
+        while (cur!= null) {
+            cur._checkInvocations();
+            cur = cur._getParent();
+        }
          
-        Object retval = _returnValue;
-        return retval;
+        EmailMessage intermediateResult = _helper.send();
+         
+        return intermediateResult;
     }
 
     public EmailBuilder_subject sender(String emailAddress) {
+        --ic_Email_sender$String_emailAddress;
         _helper.sender(emailAddress);
          
         EmailBuilder_subject retval = new ImplEmailBuilder_subject(_helper, _returnValue);
-        --ic_Email_sender$String_emailAddress;
         _transferInvocations(retval);
         return retval;
     }

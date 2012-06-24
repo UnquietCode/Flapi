@@ -64,7 +64,7 @@ public class BlockHelperImpl implements BlockHelper {
 
 	@Override
 	public void addBlockReference(String blockName, String methodSignature, ObjectWrapper<MethodHelper> _helper1) {
-		BlockReference blockReference = new BlockReference();
+		BlockReference blockReference = new BlockReference(block);
 		blockReference.setName(blockName);
 
 		MethodOutline blockMethod = block.addMethod(methodSignature);

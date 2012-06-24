@@ -36,8 +36,11 @@ public class MethodParser {
 	private char[] signature;
 	private int cur = 0;
 
-
 	public MethodParser(String methodSignature) {
+		this(methodSignature, "");
+	}
+
+	public MethodParser(String methodSignature, String prefix) {
 		if (methodSignature == null) {
 			throw new IllegalArgumentException("method signature cannot be null");
 		}
@@ -118,7 +121,7 @@ public class MethodParser {
 
 		// set variables
 		returnType = _returnType;
-		methodName = _methodName;
+		methodName = prefix + _methodName;
 		varargName = _varargName;
 		varargType = _varargType;
 	}
@@ -196,10 +199,14 @@ public class MethodParser {
 		return sb.toString();
 	}
 
-	private String match(Set <Character> chars, int count) {
+	private String match(Set<Character> chars, int count) {
 		StringBuilder sb = new StringBuilder();
 
 		while (count != 0) {
+			if (cur >= signature.length) {
+				throwGeneralException("Unexpected EOF.");
+			}
+
 			if (chars.contains(signature[cur])) {
 				sb.append(signature[cur]);
 			} else {
@@ -235,7 +242,7 @@ public class MethodParser {
 	private void throwGeneralException(String message) throws ParseException {
 		StringBuilder sb = new StringBuilder();
 		sb.append(message)
-		  .append(" (method signature is [ ").append(new String(signature)).append(" ])");
+		  .append(" (method signature is [ '").append(new String(signature)).append("' ])");
 
 		throw new ParseException(sb.toString());
 	}
@@ -261,7 +268,7 @@ public class MethodParser {
 			sb.append("'").append(signature[cur]).append("'");
 		}
 
-		sb.append(" (method signature is [ ").append(new String(signature)).append(" ]).");
+		sb.append(" (method signature is [ '").append(new String(signature)).append("' ]).");
 		throw new ParseException(sb.toString());
 	}
 

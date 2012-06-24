@@ -1,6 +1,7 @@
 
 package unquietcode.tools.flapi.examples.pizza.builder;
 
+import javax.annotation.Generated;
 import unquietcode.tools.flapi.examples.pizza.DisappearingPizzaExample.Topping;
 
 
@@ -12,13 +13,14 @@ import unquietcode.tools.flapi.examples.pizza.DisappearingPizzaExample.Topping;
  * Visit http://www.unquietcode.com/flapi for more information.
  * 
  * 
- * Generated on May 28, 2012 10:15:25 CDT using version 0.2
+ * Generated on June 24, 2012 16:46:25 CDT using version 0.2
  * 
  */
+@Generated(value = "unquietcode.tools.flapi", date = "June 24, 2012 16:46:25 CDT", comments = "generated using Flapi, the fluent API generator for Java")
 public interface PizzaBuilder_addToppingi2 <_ReturnType >{
 
 
-    _ReturnType bake();
+    unquietcode.tools.flapi.examples.pizza.DisappearingPizzaExample.Pizza bake();
 
     PizzaBuilder_addTopping<_ReturnType> addTopping(Topping topping);
 

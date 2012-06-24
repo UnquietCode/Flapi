@@ -27,7 +27,8 @@ import java.util.*;
  */
 public class BlockOutline implements Outline {
 	private String name;
-	private boolean isTopLevel = false;
+	private Class returnType = null;
+	private final BlockOutline parentBlock;
 
 	// nested blocks
 	private final List<BlockOutline> blocks = new ArrayList<BlockOutline>();
@@ -40,12 +41,16 @@ public class BlockOutline implements Outline {
 
 	// ------------------------------ //
 
-	public void setIsTopLevel() {
-		isTopLevel = true;
+	public BlockOutline(BlockOutline parentBlock) {
+		this.parentBlock = parentBlock;
 	}
 
-	public boolean isTopLevel() {
-		return isTopLevel;
+	public Class getReturnType() {
+		return constructor != null ? constructor.getReturnType() : null;
+	}
+
+	public void setReturnType(Class returnType) {
+		this.returnType = returnType;
 	}
 
 	public List<BlockOutline> getBlocks() {
@@ -68,8 +73,12 @@ public class BlockOutline implements Outline {
 		this.name = name.trim();
 	}
 
+	public boolean isTerminal() {
+		return constructor != null && constructor.isTerminal();
+	}
+
 	public BlockOutline addBlock(String blockName) {
-		BlockOutline block = new BlockOutline();
+		BlockOutline block = new BlockOutline(this);
 		block.name = blockName;
 		blocks.add(block);
 

@@ -35,6 +35,10 @@ import unquietcode.tools.flapi.outline.MethodOutline;
 public class BlockReference extends BlockOutline {
 	private boolean resolved = false;
 
+	public BlockReference(BlockOutline parentBlock) {
+		super(parentBlock);
+	}
+
 	public boolean isResolved() {
 		return resolved;
 	}

@@ -35,16 +35,17 @@ public class MethodOutline implements Outline, Comparable<MethodOutline> {
 	public Integer maxOccurrences;
 	private String methodSignature;
 	private boolean isTerminal = false;
-	private Class intermediateResult;
+	private boolean isImplicitTerminal = false;
+	private Class returnType;
 	private final List<BlockOutline> blockChain = new ArrayList<BlockOutline>();
 
 
-	public Class getIntermediateResult() {
-		return intermediateResult;
+	public Class getReturnType() {
+		return returnType;
 	}
 
-	public void setIntermediateResult(Class intermediateResult) {
-		this.intermediateResult = intermediateResult;
+	public void setReturnType(Class returnType) {
+		this.returnType = returnType;
 	}
 
 	public String getMethodSignature() {
@@ -71,6 +72,15 @@ public class MethodOutline implements Outline, Comparable<MethodOutline> {
 		isTerminal = value;
 	}
 
+	public void setImplicitTerminal() {
+		isTerminal = true;
+		isImplicitTerminal = true;
+	}
+
+	public boolean isImplicitTerminal() {
+		return isImplicitTerminal;
+	}
+
 	public String returnType() {
 		MethodParser parsed = new MethodParser(methodSignature);
 		return parsed.returnType;
@@ -91,14 +101,9 @@ public class MethodOutline implements Outline, Comparable<MethodOutline> {
 		clone.methodSignature = methodSignature;
 		clone.isTerminal = isTerminal;
 		clone.blockChain.addAll(blockChain);
-		clone.intermediateResult = intermediateResult;
+		clone.returnType = returnType;
 
 		return clone;
-	}
-
-	@Override
-	public String toString() {
-		return methodSignature + "-" + maxOccurrences;
 	}
 
 	public String getMethodKey() {
@@ -115,6 +120,11 @@ public class MethodOutline implements Outline, Comparable<MethodOutline> {
 		}
 
 		return sb.toString();
+	}
+
+	@Override
+	public String toString() {
+		return methodSignature + "-" + maxOccurrences;
 	}
 
 	/*

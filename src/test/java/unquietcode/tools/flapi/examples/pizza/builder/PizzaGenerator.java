@@ -1,6 +1,7 @@
 
 package unquietcode.tools.flapi.examples.pizza.builder;
 
+import javax.annotation.Generated;
 
 
 /**
@@ -11,19 +12,20 @@ package unquietcode.tools.flapi.examples.pizza.builder;
  * Visit http://www.unquietcode.com/flapi for more information.
  * 
  * 
- * Generated on May 28, 2012 10:15:25 CDT using version 0.2
+ * Generated on June 24, 2012 16:46:25 CDT using version 0.2
  * 
  */
+@Generated(value = "unquietcode.tools.flapi", date = "June 24, 2012 16:46:25 CDT", comments = "generated using Flapi, the fluent API generator for Java")
 public class PizzaGenerator {
 
 
     @SuppressWarnings("unchecked")
-    public static PizzaBuilder_addCheese_addSauce_addToppingi3 <unquietcode.tools.flapi.examples.pizza.DisappearingPizzaExample.Pizza> makePizza(PizzaHelper helper) {
+    public static PizzaBuilder_addCheese_addSauce_addToppingi3 <Void> makePizza(PizzaHelper helper) {
         if (helper == null) {
             throw new IllegalArgumentException("Helper cannot be null.");
         }
          
-        return new ImplPizzaBuilder_addCheese_addSauce_addToppingi3(helper, helper._getReturnValue());
+        return new ImplPizzaBuilder_addCheese_addSauce_addToppingi3(helper, null);
     }
 
 }

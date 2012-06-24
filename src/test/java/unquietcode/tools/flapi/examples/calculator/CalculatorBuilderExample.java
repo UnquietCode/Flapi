@@ -8,7 +8,7 @@ import unquietcode.tools.flapi.Flapi;
 import unquietcode.tools.flapi.examples.calculator.builder.CalculationBuilder;
 import unquietcode.tools.flapi.examples.calculator.builder.CalculatorBuilder;
 import unquietcode.tools.flapi.examples.calculator.builder.CalculatorGenerator;
-import unquietcode.tools.flapi.examples.calculator.builder.ObjectWrapper;
+import unquietcode.tools.flapi.support.v0_2.ObjectWrapper;
 
 import java.math.BigInteger;
 
@@ -30,7 +30,6 @@ public class CalculatorBuilderExample {
 		Descriptor descriptor = Flapi.builder()
 			.setDescriptorName("Calculator")
 			.setPackage("unquietcode.tools.flapi.examples.calculator.builder")
-			.enableCondensedClassNames()
 			.setStartingMethodName("begin")
 
 			.startBlock("Calculation", "$(int startingValue)").last()
@@ -79,7 +78,7 @@ public class CalculatorBuilderExample {
 
 	@Test
 	public void cleanedUpUsage() {
-		ObjectWrapper<BigInteger> result = Calculator
+		ObjectWrapper result = Calculator
 		.begin(0)
 			.plus(1)
 			.plus(1)

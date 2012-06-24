@@ -37,9 +37,10 @@ public final class Constants {
 	public static final String PROJECT_URL = "http://www.unquietcode.com/flapi";
 	public static final String PROJECT_VERSION = "0.2";
 
-	public static final String RETURN_TYPE_NAME = "_ParentType";
-	public static final String RETURN_VALUE_NAME = "_parent";
+	public static final String RETURN_TYPE_NAME = "_ReturnType";
+	public static final String RETURN_VALUE_NAME = "_returnValue";
 	public static final String HELPER_VALUE_NAME = "_helper";
+	public static final String RESULT_VALUE_NAME = "intermediateResult";
 
 	public static final String[] REQUIRED_FILES = {
 		BuilderImplementation.class.getSimpleName(),

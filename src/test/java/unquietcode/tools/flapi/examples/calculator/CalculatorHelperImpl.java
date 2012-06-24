@@ -2,7 +2,7 @@ package unquietcode.tools.flapi.examples.calculator;
 
 import unquietcode.tools.flapi.examples.calculator.builder.CalculationHelper;
 import unquietcode.tools.flapi.examples.calculator.builder.CalculatorHelper;
-import unquietcode.tools.flapi.examples.calculator.builder.ObjectWrapper;
+import unquietcode.tools.flapi.support.v0_2.ObjectWrapper;
 
 import java.math.BigInteger;
 
@@ -15,10 +15,6 @@ public class CalculatorHelperImpl implements CalculatorHelper {
 
 	CalculatorHelperImpl() { }
 
-	@Override
-	public ObjectWrapper _getReturnValue() {
-		return value;
-	}
 
 	@Override
 	public void $(int startingValue, ObjectWrapper<CalculationHelper> _helper1) {

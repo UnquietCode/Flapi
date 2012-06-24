@@ -13,26 +13,26 @@ import unquietcode.tools.flapi.support.v0_2.ObjectWrapper;
  * Visit http://www.unquietcode.com/flapi for more information.
  * 
  * 
- * Generated on June 01, 2012 21:44:52 CDT using version 0.2
+ * Generated on June 24, 2012 16:46:25 CDT using version 0.2
  * 
  */
-@Generated(value = "unquietcode.tools.flapi", date = "June 01, 2012 21:44:52 CDT", comments = "generated using Flapi, the fluent API generator for Java")
+@Generated(value = "unquietcode.tools.flapi", date = "June 24, 2012 16:46:25 CDT", comments = "generated using Flapi, the fluent API generator for Java")
 public interface MethodHelper {
 
 
+    void between(int atLeast, int atMost);
+
     void last();
 
-    void atMost(int num);
-
-    void any();
+    void addBlockChain(ObjectWrapper<BlockChainHelper> _helper1);
 
     void atLeast(int num);
 
     void exactly(int num);
 
-    void addBlockChain(ObjectWrapper<BlockChainHelper> _helper1);
+    void atMost(int num);
 
-    void between(int atLeast, int atMost);
+    void any();
 
     void last(Class returnType);
 

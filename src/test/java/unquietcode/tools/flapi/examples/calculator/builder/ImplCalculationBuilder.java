@@ -1,6 +1,9 @@
 
 package unquietcode.tools.flapi.examples.calculator.builder;
 
+import javax.annotation.Generated;
+import unquietcode.tools.flapi.support.v0_2.BuilderImplementation;
+import unquietcode.tools.flapi.support.v0_2.ObjectWrapper;
 
 
 /**
@@ -11,84 +14,80 @@ package unquietcode.tools.flapi.examples.calculator.builder;
  * Visit http://www.unquietcode.com/flapi for more information.
  * 
  * 
- * Generated on May 28, 2012 10:12:35 CDT using version 0.2
+ * Generated on June 24, 2012 16:46:25 CDT using version 0.2
  * 
  */
+@Generated(value = "unquietcode.tools.flapi", date = "June 24, 2012 16:46:25 CDT", comments = "generated using Flapi, the fluent API generator for Java")
 public class ImplCalculationBuilder
-    implements CalculationBuilder
+    implements CalculationBuilder, BuilderImplementation
 {
 
     private final CalculationHelper _helper;
-    private final Object _returnValue;
+    private final BuilderImplementation _returnValue;
 
-    ImplCalculationBuilder(CalculationHelper helper, Object returnValue) {
+    ImplCalculationBuilder(CalculationHelper helper, BuilderImplementation returnValue) {
         _helper = helper;
         _returnValue = returnValue;
+    }
+
+    public BuilderImplementation _getParent() {
+        return null;
     }
 
     private void _transferInvocations(Object next) {
         // nothing
     }
 
-    private void _checkInvocations() {
+    public void _checkInvocations() {
         // nothing
     }
 
     public CalculationBuilder abs() {
         _helper.abs();
          
-        CalculationBuilder retval = this;
-        return retval;
+        return this;
     }
 
     public CalculationBuilder divide(int value) {
         _helper.divide(value);
          
-        CalculationBuilder retval = this;
-        return retval;
+        return this;
     }
 
-    public Object equals() {
-        _checkInvocations();
-        _helper.equals();
+    public ObjectWrapper equals() {
+        ObjectWrapper intermediateResult = _helper.equals();
          
-        Object retval = _returnValue;
-        return retval;
+        return intermediateResult;
     }
 
     public CalculationBuilder minus(int value) {
         _helper.minus(value);
          
-        CalculationBuilder retval = this;
-        return retval;
+        return this;
     }
 
     public CalculationBuilder mod(int value) {
         _helper.mod(value);
          
-        CalculationBuilder retval = this;
-        return retval;
+        return this;
     }
 
     public CalculationBuilder plus(int value) {
         _helper.plus(value);
          
-        CalculationBuilder retval = this;
-        return retval;
+        return this;
     }
 
     public CalculationBuilder power(int value) {
         _helper.power(value);
          
-        CalculationBuilder retval = this;
-        return retval;
+        return this;
     }
 
     public CalculationBuilder times(int value) {
         _helper.times(value);
          
-        CalculationBuilder retval = this;
-        return retval;
+        return this;
     }
 
 }

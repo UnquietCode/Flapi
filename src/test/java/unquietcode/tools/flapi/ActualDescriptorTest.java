@@ -34,6 +34,7 @@ public class ActualDescriptorTest {
 				.addMethod("setPackage(String packageName)").exactly(1)
 				.addMethod("setDescriptorName(String descriptorName)").exactly(1)
 				.addMethod("setStartingMethodName(String methodName)").atMost(1)
+				.addMethod("setReturnType(Class returnType)").atMost(1)
 				.addMethod("enableCondensedClassNames()").atMost(1)
 				.addMethod("build()").last(Descriptor.class)
 

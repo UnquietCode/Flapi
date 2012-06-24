@@ -21,9 +21,10 @@ package unquietcode.tools.flapi.generator;
 
 import com.sun.codemodel.*;
 import unquietcode.tools.flapi.Constants;
-import unquietcode.tools.flapi.DescriptorBuilderException;
+import unquietcode.tools.flapi.MethodParser;
 import unquietcode.tools.flapi.outline.BlockOutline;
 import unquietcode.tools.flapi.outline.MethodOutline;
+import unquietcode.tools.flapi.outline.MethodType;
 import unquietcode.tools.flapi.support.v0_2.BuilderImplementation;
 import unquietcode.tools.flapi.support.v0_2.ExpectedInvocationsException;
 import unquietcode.tools.flapi.support.v0_2.ObjectWrapper;
@@ -35,6 +36,7 @@ import java.util.*;
  * @author Ben Fagin
  * @version 03-11-2012
  * @version 05-27-2012  merged all block generation code together
+ * @version 06-24-2012  modified to better support terminal blocks and implicit terminals
  */
 public class BlockGenerator extends AbstractGenerator<BlockOutline, Void> {
 
@@ -53,7 +55,6 @@ public class BlockGenerator extends AbstractGenerator<BlockOutline, Void> {
 		}
 
 		return null;
-
 	}
 
 
@@ -63,8 +64,8 @@ public class BlockGenerator extends AbstractGenerator<BlockOutline, Void> {
 		JDefinedClass iHelper = getHelperInterface(outline);
 
 		for (MethodOutline method : outline.getAllMethods()) {
-			JType returnType = method.getIntermediateResult() != null
-							 ? ref(method.getIntermediateResult())
+			JType returnType = method.getReturnType() != null
+							 ? ref(method.getReturnType())
 							 : ctx.model.VOID
 			;
 			JMethod _method = addMethod(iHelper, returnType, JMod.NONE, method);
@@ -110,7 +111,7 @@ public class BlockGenerator extends AbstractGenerator<BlockOutline, Void> {
 
 				// if we should exit when empty, and this is the last one
 				if (isCandidateForDynamicTerminal(method, combination)) {
-					method.isTerminal(true);
+					method.setImplicitTerminal();
 				}
 
 				JType returnType = getDynamicReturnType(outline, combination, method);
@@ -130,9 +131,10 @@ public class BlockGenerator extends AbstractGenerator<BlockOutline, Void> {
 	}
 
 	private boolean isCandidateForDynamicTerminal(MethodOutline method, Set<MethodOutline> combination) {
-		return  outline.getRequiredMethods().isEmpty()      // no required methods
-			&&  combination.size() == 1                     // this is the only method in the subset
-			&&  method.maxOccurrences == 1                  // this is the last occurrence of the method
+		return outline.getRequiredMethods().isEmpty()      // no required methods
+			&& combination.size() == 1                     // this is the only method in the subset
+			&& method.maxOccurrences == 1                  // this is the last occurrence of the method
+			&& !method.isTerminal()                        // the method should not already be terminal
 		;
 	}
 
@@ -141,20 +143,28 @@ public class BlockGenerator extends AbstractGenerator<BlockOutline, Void> {
 		JDefinedClass iSubset = getSubsetInterface(outline, methodCombination);
 		cSubset._implements(iSubset);
 
+		JType returnType = outline.isTerminal() && outline.getReturnType() != null
+						 ? ref(outline.getReturnType())
+						 : ref(BuilderImplementation.class)
+		;
 		JFieldVar _helper = cSubset.field(JMod.PRIVATE+JMod.FINAL, getHelperInterface(outline), Constants.HELPER_VALUE_NAME);
-		JFieldVar _parent = cSubset.field(JMod.PRIVATE+JMod.FINAL, ref(BuilderImplementation.class), Constants.RETURN_VALUE_NAME);
+		JFieldVar _returnValue = cSubset.field(JMod.PRIVATE+JMod.FINAL, returnType, Constants.RETURN_VALUE_NAME);
 
 		// constructor
 		JMethod constructor = cSubset.constructor(JMod.NONE);
 		JVar pHelper = constructor.param(getHelperInterface(outline), "helper");
-		JVar pParent = constructor.param(ref(BuilderImplementation.class), "parent");
+		JVar pParent = constructor.param(returnType, "returnValue");
 
 		constructor.body().assign(_helper, pHelper);
-		constructor.body().assign(_parent, pParent);
+		constructor.body().assign(_returnValue, pParent);
 
 		// BuilderImplementation _getParent
 		JMethod _getParent = cSubset.method(JMod.PUBLIC, ref(BuilderImplementation.class), "_getParent");
-		_getParent.body()._return(_parent);
+		if (!outline.isTerminal()) {
+			_getParent.body()._return(_returnValue);
+		} else {
+			_getParent.body()._return(JExpr._null());
+		}
 
 		return cSubset;
 	}
@@ -218,14 +228,20 @@ public class BlockGenerator extends AbstractGenerator<BlockOutline, Void> {
 		JType returnType;
 
 		if (method.getBlockChain().isEmpty() && method.isTerminal()) {
-			if (method.getIntermediateResult() == null) {
-				if (outline.isTopLevel()) {
-					returnType = ctx.model.VOID;
+			if (method.getReturnType() == null) {
+				Class blockReturnType = outline.getReturnType();
+
+				if (blockReturnType != null) {
+					if (Void.class.equals(blockReturnType)) {
+						returnType = ctx.model.VOID;
+					} else {
+						returnType = ref(blockReturnType);
+					}
 				} else {
 					returnType = ref(BuilderImplementation.class);
 				}
 			} else {
-				returnType = ref(method.getIntermediateResult());
+				returnType = ref(method.getReturnType());
 			}
 		} else {
 			returnType = getDynamicReturnType(outline, allMethods, method).erasure();
@@ -239,7 +255,7 @@ public class BlockGenerator extends AbstractGenerator<BlockOutline, Void> {
 
 		// terminal method exits the class (eventually)
 		if (method.isTerminal()) {
-			if (method.getIntermediateResult() == null) {
+			if (method.getReturnType() == null) {
 				returnValue = JExpr.ref(Constants.RETURN_VALUE_NAME);
 			} else {
 				returnValue = null;  // (means return the intermediate result)
@@ -272,18 +288,13 @@ public class BlockGenerator extends AbstractGenerator<BlockOutline, Void> {
 			helpers.add(addHelper(getHelperInterface(blockChain), helpers.size() + 1, _method));
 		}
 
-		// FLAPI-58
-		// We have to adjust the invocation tracking up front in case this
-		// call is an 'implicit' exitWhenEmpty() departure. The method will be
-		// terminal, but it is still being tracked (unlike normal terminals).
-
 		// invocation tracking
 		if (method.minOccurrences > 0) {
 			_method.body().directStatement("--ic_"+makeMethodKey(outline, method)+";");
 		}
 
 		// invocation check before helper call
-		if (method.isTerminal()) {
+		if (method.isTerminal()  && !outline.isTerminal()) {
 			JVar _cur = _method.body().decl(ref(BuilderImplementation.class), "cur", JExpr.ref(Constants.RETURN_VALUE_NAME));
 			JWhileLoop _while = _method.body()._while(_cur.ne(JExpr._null()));
 			_while.body().add(_cur.invoke("_checkInvocations"));
@@ -292,21 +303,33 @@ public class BlockGenerator extends AbstractGenerator<BlockOutline, Void> {
 		}
 
 		// invoke the main helper
-		JInvocation helperCall = makeHelperCall(_method, method);
+		String helperMethodName = new MethodParser(method.getMethodSignature()).methodName;
+		JInvocation helperCall = makeHelperCall(_method, helperMethodName);
 
 		// add the wrapped helpers as parameters
 		for (JVar helper : helpers) {
 			helperCall.arg(helper);
 		}
 
-		// add to method body, capture result if needed
-		if (method.getIntermediateResult() != null) {
-			if (initialReturnValue != null) {  // (sanity check)
-				throw new DescriptorBuilderException("Expected a null return value here! (this is an internal error)");
-			}
+		// TODO: This is horribly ugly and confusing, but it works damnit!
 
-			initialReturnValue
-				= _method.body().decl(ref(method.getIntermediateResult()), "intermediateResult", helperCall);
+		// add to method body, capture result if needed
+		if (method.isTerminal()) {
+
+			// implicit, so call the special helper method
+			if (method.isImplicitTerminal()) {
+				_method.body().add(helperCall);
+				initialReturnValue = JExpr.ref(Constants.RETURN_VALUE_NAME);
+
+			// normal, so get return value from helper call
+			} else {
+				if (method.getReturnType() != null) {
+					initialReturnValue
+						= _method.body().decl(ref(method.getReturnType()), Constants.RESULT_VALUE_NAME, helperCall);
+				} else {
+					_method.body().add(helperCall);
+				}
+			}
 		} else {
 			_method.body().add(helperCall);
 		}
@@ -316,7 +339,6 @@ public class BlockGenerator extends AbstractGenerator<BlockOutline, Void> {
 
 		for (int i = method.getBlockChain().size()-1; i >=0; --i) {
 			BlockOutline targetBlock = method.getBlockChain().get(i);
-			JDefinedClass iTargetBuilder = getTopLevelInterface(targetBlock);
 			JDefinedClass cTargetBuilder = getTopLevelImplementation(targetBlock);
 
 			returnValue = _method.body().decl(
@@ -336,7 +358,7 @@ public class BlockGenerator extends AbstractGenerator<BlockOutline, Void> {
 		}
 
 		// No need to transfer if it is to ourselves!
-		if (!method.isTerminal() && returnValue != JExpr._this()) {
+		if (!method.isTerminal() && returnValue != JExpr._this() && !outline.isTerminal()) {
 			_method.body().invoke("_transferInvocations").arg(_retval);
 		}
 

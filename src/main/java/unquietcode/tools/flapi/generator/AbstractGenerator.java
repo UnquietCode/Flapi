@@ -55,6 +55,14 @@ public abstract class AbstractGenerator<_InType extends Outline, _OutType> imple
 		return ctx.model.ref(clazz);
 	}
 
+	protected JType refUnboxed(Class clazz) {
+		if (Void.class.equals(clazz)) {
+			return ctx.model.VOID;
+		}
+
+		return ctx.model._ref(clazz);
+	}
+
 	protected JClass ref(String FQCN) {
 		return ctx.model.ref(FQCN);
 	}
@@ -64,7 +72,10 @@ public abstract class AbstractGenerator<_InType extends Outline, _OutType> imple
 	}
 
 	protected JMethod addMethod(JDefinedClass _class, JType returnType, int mods, MethodOutline method) {
-		MethodParser parsed = new MethodParser(method.getMethodSignature());
+		return addMethod(_class, returnType, mods, new MethodParser(method.getMethodSignature()));
+	}
+
+	protected JMethod addMethod(JDefinedClass _class, JType returnType, int mods, MethodParser parsed) {
 		JMethod m = _class.method(mods, returnType, parsed.methodName);
 
 		// regular params
@@ -82,9 +93,9 @@ public abstract class AbstractGenerator<_InType extends Outline, _OutType> imple
 		return m;
 	}
 
-	protected JInvocation makeHelperCall(JMethod _method, MethodOutline method) {
+	protected JInvocation makeHelperCall(JMethod _method, String methodName) {
 		JFieldRef _helper = JExpr.ref(Constants.HELPER_VALUE_NAME);
-		JInvocation helperCall = _helper.invoke(_method.name()); //TODO method.name?
+		JInvocation helperCall = _helper.invoke(methodName);
 
 		// normal args
 		for (JVar param : _method.listParams()) {
@@ -129,8 +140,8 @@ public abstract class AbstractGenerator<_InType extends Outline, _OutType> imple
 
 		// get base type without block chain
 		if (method.isTerminal()) {
-			if (method.getIntermediateResult() != null) {
-				returnType = ref(method.getIntermediateResult());
+			if (method.getReturnType() != null) {
+				returnType = ref(method.getReturnType());
 			} else {
 				returnType = builder.typeParams()[0];
 			}

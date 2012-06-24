@@ -9,12 +9,6 @@ import unquietcode.tools.flapi.examples.pizza.builder.PizzaHelper;
 public class PizzaHelperImpl implements PizzaHelper {
 	private final DisappearingPizzaExample.Pizza pizza = new DisappearingPizzaExample.Pizza();
 
-
-	@Override
-	public DisappearingPizzaExample.Pizza _getReturnValue() {
-		return pizza;
-	}
-
 	@Override
 	public void addSauce(DisappearingPizzaExample.SauceType sauceType) {
 		pizza.sauce = sauceType;
@@ -31,7 +25,7 @@ public class PizzaHelperImpl implements PizzaHelper {
 	}
 
 	@Override
-	public void bake() {
+	public DisappearingPizzaExample.Pizza bake() {
 		new Thread() {
 			int time = 0;
 
@@ -51,5 +45,7 @@ public class PizzaHelperImpl implements PizzaHelper {
 				}
 			}
 		}.run();
+
+		return pizza;
 	}
 }

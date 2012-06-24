@@ -16,19 +16,15 @@ public class EmailHelperImpl implements EmailHelper {
 	}
 
 	@Override
-	public EmailMessage _getReturnValue() {
-		return email;
-	}
-
-	@Override
 	public void subject(String subject) {
 		email.setSubject(subject);
 	}
 
 	@Override
-	public void send() {
+	public EmailMessage send() {
 		System.out.println("Sending email...\n");
 		System.out.println(email.toString());
+		return email;
 	}
 
 	@Override

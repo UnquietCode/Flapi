@@ -60,7 +60,7 @@ public class MethodHelperImpl implements MethodHelper {
 		}
 
 		last();
-		method.setIntermediateResult(returnType);
+		method.setReturnType(returnType);
 	}
 
 	@Override

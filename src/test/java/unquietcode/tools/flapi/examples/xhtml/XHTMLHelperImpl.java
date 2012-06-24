@@ -3,8 +3,8 @@ package unquietcode.tools.flapi.examples.xhtml;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import unquietcode.tools.flapi.examples.xhtml.builder.ElementHelper;
-import unquietcode.tools.flapi.examples.xhtml.builder.ObjectWrapper;
 import unquietcode.tools.flapi.examples.xhtml.builder.XHTMLHelper;
+import unquietcode.tools.flapi.support.v0_2.ObjectWrapper;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 
@@ -25,13 +25,8 @@ public class XHTMLHelperImpl implements XHTMLHelper {
 	}
 
 	@Override
-	public Document _getReturnValue() {
+	public Document done() {
 		return document;
-	}
-
-	@Override
-	public void done() {
-		// nothing
 	}
 
 	@Override

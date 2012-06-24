@@ -20,8 +20,8 @@
 package unquietcode.tools.flapi.examples.house;
 
 import unquietcode.tools.flapi.examples.house.builder.HouseHelper;
-import unquietcode.tools.flapi.examples.house.builder.ObjectWrapper;
 import unquietcode.tools.flapi.examples.house.builder.WallHelper;
+import unquietcode.tools.flapi.support.v0_2.ObjectWrapper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,12 +32,6 @@ import java.util.List;
  */
 public class HouseHelperImpl implements HouseHelper {
 	private List<Wall> walls = new ArrayList<Wall>();
-
-
-	@Override
-	public Void _getReturnValue() {
-		return null;
-	}
 
 	@Override
 	public ExpensiveHouse constructExpensiveHouse() {

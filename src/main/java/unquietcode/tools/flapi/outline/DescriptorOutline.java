@@ -27,14 +27,8 @@ package unquietcode.tools.flapi.outline;
 public class DescriptorOutline implements Outline {
 	private String packageName;
 	private boolean enableCondensedNames = false;
-
-	public final BlockOutline selfBlock = new BlockOutline();
+	public final BlockOutline selfBlock = new BlockOutline(null);
 	private final GeneratorOutline generator = new GeneratorOutline(selfBlock);
-
-	public DescriptorOutline() {
-		selfBlock.setIsTopLevel();
-	}
-
 
 	public GeneratorOutline getGenerator() {
 		return generator;
@@ -42,10 +36,6 @@ public class DescriptorOutline implements Outline {
 	
 	public String getPackageName() {
 		return packageName;
-	}
-
-	public String getDescriptorName() {
-		return selfBlock.getName();
 	}
 
 	public void enableCondensedNames(boolean value) {

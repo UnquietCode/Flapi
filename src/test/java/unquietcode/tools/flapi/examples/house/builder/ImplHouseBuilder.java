@@ -5,6 +5,8 @@ import javax.annotation.Generated;
 import unquietcode.tools.flapi.examples.house.AffordableHouse;
 import unquietcode.tools.flapi.examples.house.ExpensiveHouse;
 import unquietcode.tools.flapi.examples.house.Wall;
+import unquietcode.tools.flapi.support.v0_2.BuilderImplementation;
+import unquietcode.tools.flapi.support.v0_2.ObjectWrapper;
 
 
 /**
@@ -15,54 +17,70 @@ import unquietcode.tools.flapi.examples.house.Wall;
  * Visit http://www.unquietcode.com/flapi for more information.
  * 
  * 
- * Generated on May 28, 2012 17:35:16 CDT using version 0.2
+ * Generated on June 24, 2012 16:46:25 CDT using version 0.2
  * 
  */
-@Generated(value = "unquietcode.tools.flapi", date = "May 28, 2012 17:35:16 CDT", comments = "generated using Flapi, the fluent API generator for Java")
+@Generated(value = "unquietcode.tools.flapi", date = "June 24, 2012 16:46:25 CDT", comments = "generated using Flapi, the fluent API generator for Java")
 public class ImplHouseBuilder
-    implements HouseBuilder
+    implements HouseBuilder, BuilderImplementation
 {
 
     private final HouseHelper _helper;
-    private final Object _returnValue;
+    private final BuilderImplementation _returnValue;
 
-    ImplHouseBuilder(HouseHelper helper, Object returnValue) {
+    ImplHouseBuilder(HouseHelper helper, BuilderImplementation returnValue) {
         _helper = helper;
         _returnValue = returnValue;
+    }
+
+    public BuilderImplementation _getParent() {
+        return _returnValue;
     }
 
     private void _transferInvocations(Object next) {
         // nothing
     }
 
-    private void _checkInvocations() {
+    public void _checkInvocations() {
         // nothing
     }
 
     public WallBuilder_setColor_setWidth addWall() {
         ObjectWrapper<WallHelper> helper1 = new ObjectWrapper<WallHelper>();
-        _checkInvocations();
+        BuilderImplementation cur = _returnValue;
+        while (cur!= null) {
+            cur._checkInvocations();
+            cur = cur._getParent();
+        }
+         
         Wall intermediateResult = _helper.addWall(helper1);
          
-        WallBuilder_setColor_setWidth step1 = new ImplWallBuilder_setColor_setWidth(helper1 .get(), intermediateResult);
-        WallBuilder_setColor_setWidth retval = step1;
-        return retval;
+        ImplWallBuilder_setColor_setWidth step1 = new ImplWallBuilder_setColor_setWidth(helper1 .get(), intermediateResult);
+        return step1;
     }
 
     public AffordableHouse constructAffordableHouse() {
-        _checkInvocations();
+        BuilderImplementation cur = _returnValue;
+        while (cur!= null) {
+            cur._checkInvocations();
+            cur = cur._getParent();
+        }
+         
         AffordableHouse intermediateResult = _helper.constructAffordableHouse();
          
-        AffordableHouse retval = intermediateResult;
-        return retval;
+        return intermediateResult;
     }
 
     public ExpensiveHouse constructExpensiveHouse() {
-        _checkInvocations();
+        BuilderImplementation cur = _returnValue;
+        while (cur!= null) {
+            cur._checkInvocations();
+            cur = cur._getParent();
+        }
+         
         ExpensiveHouse intermediateResult = _helper.constructExpensiveHouse();
          
-        ExpensiveHouse retval = intermediateResult;
-        return retval;
+        return intermediateResult;
     }
 
 }

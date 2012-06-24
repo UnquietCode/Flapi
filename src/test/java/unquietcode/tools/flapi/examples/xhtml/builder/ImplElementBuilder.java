@@ -1,6 +1,9 @@
 
 package unquietcode.tools.flapi.examples.xhtml.builder;
 
+import javax.annotation.Generated;
+import unquietcode.tools.flapi.support.v0_2.BuilderImplementation;
+import unquietcode.tools.flapi.support.v0_2.ObjectWrapper;
 
 
 /**
@@ -11,59 +14,65 @@ package unquietcode.tools.flapi.examples.xhtml.builder;
  * Visit http://www.unquietcode.com/flapi for more information.
  * 
  * 
- * Generated on May 28, 2012 10:15:58 CDT using version 0.2
+ * Generated on June 24, 2012 16:46:25 CDT using version 0.2
  * 
  */
+@Generated(value = "unquietcode.tools.flapi", date = "June 24, 2012 16:46:25 CDT", comments = "generated using Flapi, the fluent API generator for Java")
 public class ImplElementBuilder
-    implements ElementBuilder
+    implements ElementBuilder, BuilderImplementation
 {
 
     private final ElementHelper _helper;
-    private final Object _returnValue;
+    private final BuilderImplementation _returnValue;
 
-    ImplElementBuilder(ElementHelper helper, Object returnValue) {
+    ImplElementBuilder(ElementHelper helper, BuilderImplementation returnValue) {
         _helper = helper;
         _returnValue = returnValue;
+    }
+
+    public BuilderImplementation _getParent() {
+        return _returnValue;
     }
 
     private void _transferInvocations(Object next) {
         // nothing
     }
 
-    private void _checkInvocations() {
+    public void _checkInvocations() {
         // nothing
     }
 
     public ElementBuilder addAttribute(String key, String value) {
         _helper.addAttribute(key, value);
          
-        ElementBuilder retval = this;
-        return retval;
+        return this;
     }
 
     public ElementBuilder addComment(String comment) {
         _helper.addComment(comment);
          
-        ElementBuilder retval = this;
-        return retval;
+        return this;
     }
 
-    public Object endElement() {
-        _checkInvocations();
+    public BuilderImplementation endElement() {
+        BuilderImplementation cur = _returnValue;
+        while (cur!= null) {
+            cur._checkInvocations();
+            cur = cur._getParent();
+        }
+         
         _helper.endElement();
          
-        Object retval = _returnValue;
-        return retval;
+        return _returnValue;
     }
 
     public ElementBuilder_setValue startElement(String tagName) {
         ObjectWrapper<ElementHelper> helper1 = new ObjectWrapper<ElementHelper>();
         _helper.startElement(tagName, helper1);
          
-        ElementBuilder_setValue step1 = new ImplElementBuilder_setValue(helper1 .get(), this);
-        ElementBuilder_setValue retval = step1;
-        _transferInvocations(retval);
-        return retval;
+        ImplElementBuilder_setValue step1 = new ImplElementBuilder_setValue(helper1 .get(), this);
+        _transferInvocations(step1);
+        return step1;
     }
 
 }

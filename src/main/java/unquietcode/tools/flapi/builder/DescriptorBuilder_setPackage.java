@@ -13,19 +13,19 @@ import unquietcode.tools.flapi.Descriptor;
  * Visit http://www.unquietcode.com/flapi for more information.
  * 
  * 
- * Generated on June 01, 2012 21:44:52 CDT using version 0.2
+ * Generated on June 24, 2012 16:46:25 CDT using version 0.2
  * 
  */
-@Generated(value = "unquietcode.tools.flapi", date = "June 01, 2012 21:44:52 CDT", comments = "generated using Flapi, the fluent API generator for Java")
-public interface DescriptorBuilder_setPackage<_ParentType >{
+@Generated(value = "unquietcode.tools.flapi", date = "June 24, 2012 16:46:25 CDT", comments = "generated using Flapi, the fluent API generator for Java")
+public interface DescriptorBuilder_setPackage<_ReturnType >{
 
 
-    MethodBuilder_addBlockChain<DescriptorBuilder_setPackage<_ParentType>> addMethod(String methodSignature);
+    MethodBuilder_addBlockChain<DescriptorBuilder_setPackage<_ReturnType>> addMethod(String methodSignature);
 
     Descriptor build();
 
-    MethodBuilder_addBlockChain<BlockBuilder<DescriptorBuilder_setPackage<_ParentType>>> startBlock(String blockName, String methodSignature);
+    MethodBuilder_addBlockChain<BlockBuilder<DescriptorBuilder_setPackage<_ReturnType>>> startBlock(String blockName, String methodSignature);
 
-    DescriptorBuilder<_ParentType> setPackage(String packageName);
+    DescriptorBuilder<_ReturnType> setPackage(String packageName);
 
 }

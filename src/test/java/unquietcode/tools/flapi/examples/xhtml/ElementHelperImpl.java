@@ -3,7 +3,7 @@ package unquietcode.tools.flapi.examples.xhtml;
 import org.w3c.dom.Comment;
 import org.w3c.dom.Element;
 import unquietcode.tools.flapi.examples.xhtml.builder.ElementHelper;
-import unquietcode.tools.flapi.examples.xhtml.builder.ObjectWrapper;
+import unquietcode.tools.flapi.support.v0_2.ObjectWrapper;
 
 /*
  * @author Ben Fagin

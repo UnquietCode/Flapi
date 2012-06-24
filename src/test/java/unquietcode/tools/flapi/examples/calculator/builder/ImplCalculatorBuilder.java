@@ -1,6 +1,9 @@
 
 package unquietcode.tools.flapi.examples.calculator.builder;
 
+import javax.annotation.Generated;
+import unquietcode.tools.flapi.support.v0_2.BuilderImplementation;
+import unquietcode.tools.flapi.support.v0_2.ObjectWrapper;
 
 
 /**
@@ -11,37 +14,46 @@ package unquietcode.tools.flapi.examples.calculator.builder;
  * Visit http://www.unquietcode.com/flapi for more information.
  * 
  * 
- * Generated on May 28, 2012 10:12:35 CDT using version 0.2
+ * Generated on June 24, 2012 16:46:25 CDT using version 0.2
  * 
  */
+@Generated(value = "unquietcode.tools.flapi", date = "June 24, 2012 16:46:25 CDT", comments = "generated using Flapi, the fluent API generator for Java")
 public class ImplCalculatorBuilder
-    implements CalculatorBuilder
+    implements CalculatorBuilder, BuilderImplementation
 {
 
     private final CalculatorHelper _helper;
-    private final Object _returnValue;
+    private final BuilderImplementation _returnValue;
 
-    ImplCalculatorBuilder(CalculatorHelper helper, Object returnValue) {
+    ImplCalculatorBuilder(CalculatorHelper helper, BuilderImplementation returnValue) {
         _helper = helper;
         _returnValue = returnValue;
+    }
+
+    public BuilderImplementation _getParent() {
+        return _returnValue;
     }
 
     private void _transferInvocations(Object next) {
         // nothing
     }
 
-    private void _checkInvocations() {
+    public void _checkInvocations() {
         // nothing
     }
 
     public CalculationBuilder $(int startingValue) {
         ObjectWrapper<CalculationHelper> helper1 = new ObjectWrapper<CalculationHelper>();
-        _checkInvocations();
+        BuilderImplementation cur = _returnValue;
+        while (cur!= null) {
+            cur._checkInvocations();
+            cur = cur._getParent();
+        }
+         
         _helper.$(startingValue, helper1);
          
-        CalculationBuilder step1 = new ImplCalculationBuilder(helper1 .get(), _returnValue);
-        CalculationBuilder retval = step1;
-        return retval;
+        ImplCalculationBuilder step1 = new ImplCalculationBuilder(helper1 .get(), _returnValue);
+        return step1;
     }
 
 }

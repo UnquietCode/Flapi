@@ -81,7 +81,7 @@ public class XHTMLBuilderExample {
 	@Test
 	public void dividedUsage() {
 		Document doc;
-		ElementBuilder_setValue<XHTMLBuilder<Document>> movies
+		ElementBuilder_setValue<XHTMLBuilder<Void>> movies
 			= XHTMLGenerator.createDocument(new XHTMLHelperImpl())
 			.addComment("This is a list of movies in my library.")
 			.startElement("movies");
