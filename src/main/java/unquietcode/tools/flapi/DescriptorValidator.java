@@ -23,6 +23,7 @@ import unquietcode.tools.flapi.outline.BlockOutline;
 import unquietcode.tools.flapi.outline.DescriptorOutline;
 import unquietcode.tools.flapi.outline.MethodOutline;
 
+import javax.lang.model.SourceVersion;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -50,22 +51,8 @@ public class DescriptorValidator {
 
 	private void checkThatDescriptorMethodNameIsValid() {
 		String name = descriptor.getCreateMethod();
-		boolean valid = true;
 
-		// should not start with a number
-		try {
-			Integer.parseInt(name.charAt(0)+"");
-			valid = false;
-		} catch (NumberFormatException ex) {
-			// nothing
-		}
-
-		// should only contain valid identifier characters
-		if (!name.replaceAll("[a-zA-Z0-9_$]", "").trim().isEmpty()) {
-			valid = false;
-		}
-
-		if (!valid) {
+		if (!SourceVersion.isIdentifier(name)) {
 			throw new DescriptorBuilderException("Invalid method name for create method: '"+name+"'.");
 		}
 	}

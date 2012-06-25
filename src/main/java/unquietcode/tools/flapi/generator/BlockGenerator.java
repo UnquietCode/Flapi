@@ -24,7 +24,6 @@ import unquietcode.tools.flapi.Constants;
 import unquietcode.tools.flapi.MethodParser;
 import unquietcode.tools.flapi.outline.BlockOutline;
 import unquietcode.tools.flapi.outline.MethodOutline;
-import unquietcode.tools.flapi.outline.MethodType;
 import unquietcode.tools.flapi.support.v0_2.BuilderImplementation;
 import unquietcode.tools.flapi.support.v0_2.ExpectedInvocationsException;
 import unquietcode.tools.flapi.support.v0_2.ObjectWrapper;

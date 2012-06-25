@@ -27,6 +27,7 @@ import unquietcode.tools.flapi.MethodParser;
 import unquietcode.tools.flapi.outline.MethodOutline;
 
 import javax.annotation.Generated;
+import javax.lang.model.SourceVersion;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -153,7 +154,7 @@ public class GeneratorContext {
 		clazz.javadoc().append(header);
 
 		// @Generated, when JDK version is >= 6
-		if (Flapi.getJDKVersion() >= 6) {
+		if (Flapi.getJDKVersion().ordinal() >= SourceVersion.RELEASE_6.ordinal()) {
 			clazz.annotate(Generated.class)
 				.param("value", "unquietcode.tools.flapi")
 				.param("date", dateFormat.format(generationDate))

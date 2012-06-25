@@ -22,6 +22,8 @@ package unquietcode.tools.flapi;
 import unquietcode.tools.flapi.builder.DescriptorBuilder_enableCondensedClassNames_setDescriptorName_setPackage_setReturnType_setStartingMethodName;
 import unquietcode.tools.flapi.builder.DescriptorGenerator;
 
+import javax.lang.model.SourceVersion;
+
 /**
  * @author Ben Fagin
  * @version 05-11-2012
@@ -29,7 +31,7 @@ import unquietcode.tools.flapi.builder.DescriptorGenerator;
  * From here you can reach the world.
  */
 public class Flapi {
-	private static int JDKVersion = 6;
+	private static SourceVersion JDKVersion = SourceVersion.RELEASE_6;
 
 
 	/**
@@ -41,15 +43,16 @@ public class Flapi {
 		return DescriptorGenerator.create(new DescriptorHelperImpl());
 	}
 
-	public static void setJDKVersion(int major) {
-		if (major >= 5 && major <= 7) {
-			JDKVersion = major;
+	public static void setJDKVersion(SourceVersion version) {
+
+		if (version != null && version.ordinal() >= SourceVersion.RELEASE_5.ordinal()) {
+			JDKVersion = version;
 		} else {
 			throw new DescriptorBuilderException("Only JDK versions [5,7] are supported.");
 		}
 	}
 
-	public static int getJDKVersion() {
+	public static SourceVersion getJDKVersion() {
 		return JDKVersion;
 	}
 }
