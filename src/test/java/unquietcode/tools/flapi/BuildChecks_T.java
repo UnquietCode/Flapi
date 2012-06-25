@@ -19,6 +19,7 @@
 
 package unquietcode.tools.flapi;
 
+import org.junit.Assert;
 import org.junit.Test;
 import unquietcode.tools.flapi.builder.DescriptorGenerator;
 
@@ -188,14 +189,26 @@ public class BuildChecks_T {
 			.endBlock()
 		.build();
 	}
+
+	@Test
+	public void createMethodIsAValidName() {
+		String[] names = new String[]{"4four", "inv*lid", "", " "};
+
+		for (String name : names) {
+			try {
+				DescriptorGenerator.create(new DescriptorHelperImpl())
+					.setPackage("unquietcode.something")
+					.setDescriptorName("Something")
+					.setStartingMethodName(name)
+					.addMethod("done()").last()
+				.build();
+
+				Assert.fail("Expected an exception for name '"+name+"'.");
+			} catch (DescriptorBuilderException ex) {
+				// nothing
+			} catch (IllegalArgumentException ex) {
+				// nothing
+			}
+		}
+	}
 }
-
-
-
-
-
-/*
-    name collision error
-    block referencing
-    last present
- */

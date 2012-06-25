@@ -53,6 +53,10 @@ public class DescriptorOutline implements Outline {
 	public void setCreateMethod(String methodName) {
 		generator.methodName = methodName;
 	}
+
+	public String getCreateMethod() {
+		return generator.methodName;
+	}
 	
 	public MethodOutline addMethod(String methodSignature) {
 		return selfBlock.addMethod(methodSignature);

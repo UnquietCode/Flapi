@@ -23,7 +23,9 @@ import unquietcode.tools.flapi.outline.BlockOutline;
 import unquietcode.tools.flapi.outline.DescriptorOutline;
 import unquietcode.tools.flapi.outline.MethodOutline;
 
+import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -41,8 +43,31 @@ public class DescriptorValidator {
 	}
 
 	public void validate() {
+		checkThatDescriptorMethodNameIsValid();
 		checkForNameCollisions();
 		checkForBlocksWithNoEnd(descriptor.selfBlock);
+	}
+
+	private void checkThatDescriptorMethodNameIsValid() {
+		String name = descriptor.getCreateMethod();
+		boolean valid = true;
+
+		// should not start with a number
+		try {
+			Integer.parseInt(name.charAt(0)+"");
+			valid = false;
+		} catch (NumberFormatException ex) {
+			// nothing
+		}
+
+		// should only contain valid identifier characters
+		if (!name.replaceAll("[a-zA-Z0-9_$]", "").trim().isEmpty()) {
+			valid = false;
+		}
+
+		if (!valid) {
+			throw new DescriptorBuilderException("Invalid method name for create method: '"+name+"'.");
+		}
 	}
 
 	private void checkForBlocksWithNoEnd(BlockOutline block) {
