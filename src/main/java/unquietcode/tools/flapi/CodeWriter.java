@@ -27,6 +27,7 @@ import java.io.*;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.channels.FileChannel;
+import java.util.Scanner;
 
 /**
  * @author Ben Fagin
@@ -74,25 +75,14 @@ public class CodeWriter {
 
 	//---o---o---o---o---o---o---o---o---o---o---o---o---o---o---o---o---o---o---o---o---o---o---//
 
-	private static File getResourceFile(String name) {
-		URL url = CodeWriter.class.getClassLoader().getResource(name);
-		File f;
+	private static InputStream getResourceFile(String name) {
+		InputStream stream = CodeWriter.class.getClassLoader().getResourceAsStream(name);
 
-		if (url == null) {
+		if (stream == null) {
 			throw new DescriptorBuilderException("Cannot find file '"+name+"' (this is an internal error).");
 		}
 
-		try {
-			f = new File(url.toURI());
-		} catch (URISyntaxException ex) {
-			throw new DescriptorBuilderException(ex);
-		}
-
-		if (!f.exists()) {
-			throw new DescriptorBuilderException("Cannot find file '"+name+"' (this is an internal error).");
-		}
-
-		return f;
+		return stream;
 	}
 
 	private static File createFile(String path, String name) {
@@ -118,21 +108,16 @@ public class CodeWriter {
 		return file;
 	}
 
-	private static void copyFile(File sourceFile, File destFile) {
-		FileChannel source = null;
-		FileChannel destination = null;
+	private static void copyFile(InputStream sourceFile, File destFile) {
+		FileOutputStream destination = null;
 
 		try {
-			source = new FileInputStream(sourceFile).getChannel();
-			destination = new FileOutputStream(destFile).getChannel();
-			destination.transferFrom(source, 0, source.size());
+			String data = new Scanner(sourceFile).useDelimiter("\\A").next();
+			destination = new FileOutputStream(destFile);
+			destination.write(data.getBytes());
 		} catch (Exception ex) {
 			throw new DescriptorBuilderException("Error while writing files.", ex);
 		} finally {
-			if (source != null) {
-				try {source.close();} catch (Exception ex) { /* nothing */ }
-			}
-
 			if (destination != null) {
 				try {destination.close();} catch (Exception ex) { /* nothing */ }
 			}
