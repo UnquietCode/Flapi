@@ -29,6 +29,7 @@ public class BlockOutline implements Outline {
 	private String name;
 	private Class returnType = null;
 	private final BlockOutline parentBlock;
+	private boolean isTopLevel = false;
 
 	// nested blocks
 	private final List<BlockOutline> blocks = new ArrayList<BlockOutline>();
@@ -43,6 +44,14 @@ public class BlockOutline implements Outline {
 
 	public BlockOutline(BlockOutline parentBlock) {
 		this.parentBlock = parentBlock;
+	}
+
+	public boolean isTopLevel() {
+		return isTopLevel;
+	}
+
+	public void setIsTopLevel() {
+		isTopLevel = true;
 	}
 
 	public Class getReturnType() {

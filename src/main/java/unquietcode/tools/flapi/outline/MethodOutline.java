@@ -133,4 +133,46 @@ public class MethodOutline implements Outline, Comparable<MethodOutline> {
 	public @Override int compareTo(MethodOutline other) {
 		return methodSignature.compareTo(other.methodSignature);
 	}
+
+	/*@Override
+	public boolean equals(Object obj) {
+		if (!(obj instanceof MethodOutline)) {
+			return false;
+		}
+
+		MethodOutline that = (MethodOutline) obj;
+		return null;
+	}
+*/
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+
+		MethodOutline that = (MethodOutline) o;
+
+		if (isTerminal != that.isTerminal) return false;
+		if (blockChain != null ? blockChain.size() != that.blockChain.size() : that.blockChain != null) return false;
+		if (maxOccurrences != null ? !maxOccurrences.equals(that.maxOccurrences) : that.maxOccurrences != null)
+			return false;
+		if (methodSignature != null ? !methodSignature.equals(that.methodSignature) : that.methodSignature != null)
+			return false;
+		if (minOccurrences != null ? !minOccurrences.equals(that.minOccurrences) : that.minOccurrences != null)
+			return false;
+		if (returnType != null ? !returnType.equals(that.returnType) : that.returnType != null) return false;
+
+		return true;
+	}
+
+	@Override
+	public int hashCode() {
+		int result = minOccurrences != null ? minOccurrences.hashCode() : 0;
+		result = 31 * result + (maxOccurrences != null ? maxOccurrences.hashCode() : 0);
+		result = 31 * result + (methodSignature != null ? methodSignature.hashCode() : 0);
+		result = 31 * result + (isTerminal ? 1 : 0);
+		result = 31 * result + (returnType != null ? returnType.hashCode() : 0);
+		result = 31 * result + (blockChain != null ? blockChain.hashCode() : 0);
+		return result;
+	}
 }

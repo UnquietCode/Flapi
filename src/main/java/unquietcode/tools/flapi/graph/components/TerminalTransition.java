@@ -17,17 +17,44 @@
      Read the included LICENSE.TXT for more information.
  ******************************************************************************/
 
-package unquietcode.tools.flapi.generator;
+package unquietcode.tools.flapi.graph.components;
 
-
-import unquietcode.tools.flapi.outline.Outline;
+import unquietcode.tools.flapi.graph.TransitionVisitor;
 
 /**
  * @author Ben Fagin
- * @version 03-07-2012
- *
- * Marker interface for generators.
+ * @version 08-15-2012
  */
-public interface Generator<_InType extends Outline, _OutType> {
-	_OutType generate();
+public class TerminalTransition extends Transition {
+	Class returnType;
+
+	public TerminalTransition() {
+		super(TransitionType.Terminal);
+	}
+
+	public TerminalTransition(Class returnType) {
+		this();
+		this.returnType = returnType;
+	}
+
+	public Class getReturnType() {
+		return returnType;
+	}
+
+	public void setReturnType(Class returnType) {
+		this.returnType = returnType;
+	}
+
+	@Override
+	public void accept(TransitionVisitor visitor) {
+		visitor.visit(this);
+	}
+
+	@Override
+	public Transition copy() {
+		TerminalTransition copy = new TerminalTransition();
+		basicCopy(copy);
+		copy.returnType = this.returnType;
+		return copy;
+	}
 }

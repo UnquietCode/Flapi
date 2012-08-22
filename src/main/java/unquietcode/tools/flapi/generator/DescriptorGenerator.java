@@ -20,27 +20,40 @@
 package unquietcode.tools.flapi.generator;
 
 import com.sun.codemodel.JCodeModel;
+import unquietcode.tools.flapi.graph.GraphBuilder;
+import unquietcode.tools.flapi.graph.components.StateClass;
+import unquietcode.tools.flapi.graph.processors.GraphProcessor;
+import unquietcode.tools.flapi.graph.processors.ImplicitTerminalProcessor;
 import unquietcode.tools.flapi.outline.DescriptorOutline;
 
 /**
  * @author Ben Fagin
  * @version 03-07-2012
  */
-public class DescriptorGenerator extends AbstractGenerator<DescriptorOutline, JCodeModel> {
+public class DescriptorGenerator extends AbstractGenerator {
+	private DescriptorOutline outline;
+
 	public DescriptorGenerator(DescriptorOutline outline) {
-		super(outline, new GeneratorContext(outline.getPackageName()));
+		super(new GeneratorContext(outline.getPackageName()));
 		ctx.condenseNames(outline.shouldEnableCondensedNames());
+		this.outline = outline;
 	}
 	
-	@Override
 	public JCodeModel generate() {
-		// create the generator
-		GeneratorGenerator generatorGen = new GeneratorGenerator(outline.getGenerator(), ctx);
-		generatorGen.generate();
+		GraphBuilder converter = new GraphBuilder();
+		StateClass topLevel = converter.buildGraph(outline);
 
-		// now process all blocks
-		BlockGenerator blockGen = new BlockGenerator(outline.selfBlock, ctx);
-		blockGen.generate();
+		// find implicit terminals and rewire them
+		ImplicitTerminalProcessor implicitTerminalProcessor = new ImplicitTerminalProcessor();
+		implicitTerminalProcessor.visit(topLevel);
+
+		// create the generator
+		GeneratorGenerator generatorGen = new GeneratorGenerator(ctx);
+		generatorGen.generate(topLevel, outline.getGenerator());
+
+		// and the rest
+		GraphProcessor processor = new GraphProcessor(ctx);
+		processor.generate(topLevel);
 
 		return ctx.model;
 	}

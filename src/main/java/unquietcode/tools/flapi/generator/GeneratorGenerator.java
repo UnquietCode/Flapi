@@ -20,6 +20,7 @@
 package unquietcode.tools.flapi.generator;
 
 import com.sun.codemodel.*;
+import unquietcode.tools.flapi.graph.components.StateClass;
 import unquietcode.tools.flapi.outline.GeneratorOutline;
 
 
@@ -27,18 +28,17 @@ import unquietcode.tools.flapi.outline.GeneratorOutline;
  * @author Ben Fagin
  * @version 03-07-2012
  */
-public class GeneratorGenerator extends AbstractGenerator<GeneratorOutline, JDefinedClass> {
+public class GeneratorGenerator extends AbstractGenerator {
 
-	public GeneratorGenerator(GeneratorOutline outline, GeneratorContext context) {
-		super(outline, context);
+	public GeneratorGenerator(GeneratorContext context) {
+		super(context);
 	}
 
-	@Override
-	public JDefinedClass generate() {
-		JType returnType = getTopLevelInterface(outline.descriptorBlock).narrow(ref(Void.class));
-		JDefinedClass returnValue = getTopLevelImplementation(outline.descriptorBlock);
-		JDefinedClass generator = getGeneratorImplementation(outline.descriptorBlock);
-		JDefinedClass helper = getHelperInterface(outline.descriptorBlock);
+	public JDefinedClass generate(StateClass topLevel, GeneratorOutline outline) {
+		JType returnType = BUILDER_INTERFACE_STRATEGY.createType(ctx, topLevel).narrow(ref(Void.class));
+		JDefinedClass returnValue = BUILDER_CLASS_STRATEGY.createType(ctx, topLevel);
+		JDefinedClass generator = GENERATOR_CLASS_STRATEGY.createType(ctx, topLevel);
+		JDefinedClass helper = HELPER_INTERFACE_STRATEGY.createType(ctx, topLevel);
 
 		// -- add the constructor methods --
 

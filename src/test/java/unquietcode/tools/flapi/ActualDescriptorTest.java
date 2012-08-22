@@ -3,9 +3,10 @@ package unquietcode.tools.flapi;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
-import unquietcode.tools.flapi.builder.*;
+import unquietcode.tools.flapi.builder.DescriptorGenerator;
 
-import javax.annotation.Generated;
+import java.io.File;
+import java.util.Scanner;
 
 /**
  * @author Benjamin Fagin
@@ -76,5 +77,28 @@ public class ActualDescriptorTest {
 		;
 
 		builder.writeToFolder(args[0]);
+	}
+
+	/*
+		Useful for printing out individual files from the generation for inspection.
+	 */
+	@Test
+	public void generateAndRetrieve() throws Exception {
+		main(new String[]{temp.getRoot().getAbsolutePath()});
+		String print[] = {"DescriptorGenerator"};
+
+		for (String name : print) {
+			String path = temp.getRoot().getAbsolutePath();
+			path += "/unquietcode/tools/flapi/builder/" +name+".java";
+			File file = new File(path);
+
+			Scanner scanner = new Scanner(file);
+			String text = scanner.useDelimiter("\\A").next();
+
+			System.out.println(name+":");
+			System.out.println("---------------------------------");
+			System.out.println(text);
+			System.out.println("\n\n");
+		}
 	}
 }

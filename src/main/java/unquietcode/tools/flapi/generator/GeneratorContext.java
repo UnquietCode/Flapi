@@ -24,13 +24,16 @@ import unquietcode.tools.flapi.Constants;
 import unquietcode.tools.flapi.DescriptorBuilderException;
 import unquietcode.tools.flapi.Flapi;
 import unquietcode.tools.flapi.MethodParser;
-import unquietcode.tools.flapi.outline.MethodOutline;
+import unquietcode.tools.flapi.graph.components.StateClass;
+import unquietcode.tools.flapi.graph.components.Transition;
 
 import javax.annotation.Generated;
 import javax.lang.model.SourceVersion;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.TreeSet;
 
 /**
  * @author Ben Fagin
@@ -99,12 +102,16 @@ public class GeneratorContext {
 	Map<String, String> nameMap = new HashMap<String, String>();
 	int nameIdCounter = 1;
 
-	public String getGeneratedName(String suffix, Set<MethodOutline> methods) {
+	public String getGeneratedName(String prefix, String suffix, StateClass state) {
 		StringBuilder name = new StringBuilder();
-		name.append(name).append(suffix);
+		name.append(prefix).append(state.getName()).append(suffix);
 
-		for (MethodOutline method : new TreeSet<MethodOutline>(methods)) {
-			MethodParser parsed = new MethodParser(method.getMethodSignature());
+		for (Transition transition : new TreeSet<Transition>(state.getTransitions())) {
+			if (transition.getMaxOccurrences() < 1) {
+				continue;
+			}
+
+			MethodParser parsed = new MethodParser(transition.getMethodSignature());
 			name.append("_");
 
 			if (condenseNames) {
@@ -119,8 +126,8 @@ public class GeneratorContext {
 				name.append(parsed.methodName);
 			}
 
-			if (method.maxOccurrences > 1) {
-				name.append("i").append(method.maxOccurrences);
+			if (transition.getMaxOccurrences() > 1) {
+				name.append("i").append(transition.getMaxOccurrences());
 			}
 		}
 

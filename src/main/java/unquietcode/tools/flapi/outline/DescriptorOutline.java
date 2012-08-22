@@ -30,6 +30,10 @@ public class DescriptorOutline implements Outline {
 	public final BlockOutline selfBlock = new BlockOutline(null);
 	private final GeneratorOutline generator = new GeneratorOutline(selfBlock);
 
+	public DescriptorOutline() {
+		selfBlock.setIsTopLevel();
+	}
+
 	public GeneratorOutline getGenerator() {
 		return generator;
 	}
