@@ -14,27 +14,27 @@ import javax.annotation.Generated;
  * Visit http://www.unquietcode.com/flapi for more information.
  * 
  * 
- * Generated on June 24, 2012 16:46:25 CDT using version 0.2
+ * Generated on September 01, 2012 17:06:14 CDT using version 0.2
  * 
  */
-@Generated(value = "unquietcode.tools.flapi", date = "June 24, 2012 16:46:25 CDT", comments = "generated using Flapi, the fluent API generator for Java")
+@Generated(value = "unquietcode.tools.flapi", date = "September 01, 2012 17:06:14 CDT", comments = "generated using Flapi, the fluent API generator for Java")
 public interface CalculationHelper {
 
 
-    void divide(int value);
+    void times(int value);
 
-    ObjectWrapper equals();
+    void divide(int value);
 
     void power(int value);
 
     void abs();
 
-    void mod(int value);
+    void plus(int value);
+
+    ObjectWrapper equals();
 
     void minus(int value);
 
-    void plus(int value);
-
-    void times(int value);
+    void mod(int value);
 
 }

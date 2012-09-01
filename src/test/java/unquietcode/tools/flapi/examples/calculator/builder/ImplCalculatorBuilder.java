@@ -1,9 +1,10 @@
 
 package unquietcode.tools.flapi.examples.calculator.builder;
 
-import javax.annotation.Generated;
 import unquietcode.tools.flapi.support.v0_2.BuilderImplementation;
 import unquietcode.tools.flapi.support.v0_2.ObjectWrapper;
+
+import javax.annotation.Generated;
 
 
 /**
@@ -14,24 +15,28 @@ import unquietcode.tools.flapi.support.v0_2.ObjectWrapper;
  * Visit http://www.unquietcode.com/flapi for more information.
  * 
  * 
- * Generated on June 24, 2012 16:46:25 CDT using version 0.2
+ * Generated on September 01, 2012 17:06:14 CDT using version 0.2
  * 
  */
-@Generated(value = "unquietcode.tools.flapi", date = "June 24, 2012 16:46:25 CDT", comments = "generated using Flapi, the fluent API generator for Java")
+@Generated(value = "unquietcode.tools.flapi", date = "September 01, 2012 17:06:14 CDT", comments = "generated using Flapi, the fluent API generator for Java")
 public class ImplCalculatorBuilder
     implements CalculatorBuilder, BuilderImplementation
 {
 
     private final CalculatorHelper _helper;
-    private final BuilderImplementation _returnValue;
+    private final Object _returnValue;
 
-    ImplCalculatorBuilder(CalculatorHelper helper, BuilderImplementation returnValue) {
+    ImplCalculatorBuilder(CalculatorHelper helper, Object returnValue) {
         _helper = helper;
         _returnValue = returnValue;
     }
 
     public BuilderImplementation _getParent() {
-        return _returnValue;
+        if (_returnValue instanceof BuilderImplementation) {
+            return ((BuilderImplementation) _returnValue);
+        } else {
+            return null;
+        }
     }
 
     private void _transferInvocations(Object next) {
@@ -43,16 +48,16 @@ public class ImplCalculatorBuilder
     }
 
     public CalculationBuilder $(int startingValue) {
-        ObjectWrapper<CalculationHelper> helper1 = new ObjectWrapper<CalculationHelper>();
-        BuilderImplementation cur = _returnValue;
+        BuilderImplementation cur = this;
         while (cur!= null) {
             cur._checkInvocations();
             cur = cur._getParent();
         }
          
+        ObjectWrapper<CalculationHelper> helper1 = new ObjectWrapper<CalculationHelper>();
         _helper.$(startingValue, helper1);
+        ImplCalculationBuilder step1 = new ImplCalculationBuilder(helper1 .get(), null);
          
-        ImplCalculationBuilder step1 = new ImplCalculationBuilder(helper1 .get(), _returnValue);
         return step1;
     }
 
