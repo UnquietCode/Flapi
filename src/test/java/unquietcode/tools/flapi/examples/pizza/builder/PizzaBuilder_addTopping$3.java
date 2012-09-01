@@ -18,11 +18,11 @@ import javax.annotation.Generated;
  * 
  */
 @Generated(value = "unquietcode.tools.flapi", date = "September 01, 2012 17:06:14 CDT", comments = "generated using Flapi, the fluent API generator for Java")
-public interface PizzaBuilder_addTopping<_ReturnType >{
+public interface PizzaBuilder_addTopping$3 <_ReturnType >{
 
+
+    PizzaBuilder_addTopping$2 <_ReturnType> addTopping(Topping topping);
 
     unquietcode.tools.flapi.examples.pizza.DisappearingPizzaExample.Pizza bake();
-
-    PizzaBuilder<_ReturnType> addTopping(Topping topping);
 
 }

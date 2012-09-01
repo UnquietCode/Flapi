@@ -1,7 +1,7 @@
 
 package unquietcode.tools.flapi.examples.pizza.builder;
 
-import unquietcode.tools.flapi.examples.pizza.DisappearingPizzaExample.SauceType;
+import unquietcode.tools.flapi.examples.pizza.DisappearingPizzaExample.Topping;
 import unquietcode.tools.flapi.support.v0_2.BuilderImplementation;
 
 import javax.annotation.Generated;
@@ -19,14 +19,14 @@ import javax.annotation.Generated;
  * 
  */
 @Generated(value = "unquietcode.tools.flapi", date = "September 01, 2012 17:06:14 CDT", comments = "generated using Flapi, the fluent API generator for Java")
-public class ImplPizzaBuilder_addCheese_addSauce
-    implements PizzaBuilder_addCheese_addSauce, BuilderImplementation
+public class ImplPizzaBuilder_addCheese_addTopping$2
+    implements PizzaBuilder_addCheese_addTopping$2, BuilderImplementation
 {
 
     private final PizzaHelper _helper;
     private final Object _returnValue;
 
-    ImplPizzaBuilder_addCheese_addSauce(PizzaHelper helper, Object returnValue) {
+    ImplPizzaBuilder_addCheese_addTopping$2(PizzaHelper helper, Object returnValue) {
         _helper = helper;
         _returnValue = returnValue;
     }
@@ -47,14 +47,6 @@ public class ImplPizzaBuilder_addCheese_addSauce
         // nothing
     }
 
-    public PizzaBuilder_addSauce addCheese() {
-        _helper.addCheese();
-        ImplPizzaBuilder_addSauce step1 = new ImplPizzaBuilder_addSauce(_helper, _returnValue);
-         
-        _transferInvocations(step1);
-        return step1;
-    }
-
     public unquietcode.tools.flapi.examples.pizza.DisappearingPizzaExample.Pizza bake() {
         BuilderImplementation cur = this;
         while (cur!= null) {
@@ -67,9 +59,17 @@ public class ImplPizzaBuilder_addCheese_addSauce
         return intermediateResult;
     }
 
-    public PizzaBuilder_addCheese addSauce(SauceType sauceType) {
-        _helper.addSauce(sauceType);
-        ImplPizzaBuilder_addCheese step1 = new ImplPizzaBuilder_addCheese(_helper, _returnValue);
+    public PizzaBuilder_addCheese_addTopping addTopping(Topping topping) {
+        _helper.addTopping(topping);
+        ImplPizzaBuilder_addCheese_addTopping step1 = new ImplPizzaBuilder_addCheese_addTopping(_helper, _returnValue);
+         
+        _transferInvocations(step1);
+        return step1;
+    }
+
+    public PizzaBuilder_addTopping$2 addCheese() {
+        _helper.addCheese();
+        ImplPizzaBuilder_addTopping$2 step1 = new ImplPizzaBuilder_addTopping$2(_helper, _returnValue);
          
         _transferInvocations(step1);
         return step1;

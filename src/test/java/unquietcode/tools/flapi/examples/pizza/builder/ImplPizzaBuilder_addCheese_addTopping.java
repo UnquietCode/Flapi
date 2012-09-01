@@ -1,9 +1,10 @@
 
 package unquietcode.tools.flapi.examples.pizza.builder;
 
-import javax.annotation.Generated;
 import unquietcode.tools.flapi.examples.pizza.DisappearingPizzaExample.Topping;
 import unquietcode.tools.flapi.support.v0_2.BuilderImplementation;
+
+import javax.annotation.Generated;
 
 
 /**
@@ -14,24 +15,28 @@ import unquietcode.tools.flapi.support.v0_2.BuilderImplementation;
  * Visit http://www.unquietcode.com/flapi for more information.
  * 
  * 
- * Generated on June 24, 2012 16:46:25 CDT using version 0.2
+ * Generated on September 01, 2012 17:06:14 CDT using version 0.2
  * 
  */
-@Generated(value = "unquietcode.tools.flapi", date = "June 24, 2012 16:46:25 CDT", comments = "generated using Flapi, the fluent API generator for Java")
+@Generated(value = "unquietcode.tools.flapi", date = "September 01, 2012 17:06:14 CDT", comments = "generated using Flapi, the fluent API generator for Java")
 public class ImplPizzaBuilder_addCheese_addTopping
     implements PizzaBuilder_addCheese_addTopping, BuilderImplementation
 {
 
     private final PizzaHelper _helper;
-    private final BuilderImplementation _returnValue;
+    private final Object _returnValue;
 
-    ImplPizzaBuilder_addCheese_addTopping(PizzaHelper helper, BuilderImplementation returnValue) {
+    ImplPizzaBuilder_addCheese_addTopping(PizzaHelper helper, Object returnValue) {
         _helper = helper;
         _returnValue = returnValue;
     }
 
     public BuilderImplementation _getParent() {
-        return _returnValue;
+        if (_returnValue instanceof BuilderImplementation) {
+            return ((BuilderImplementation) _returnValue);
+        } else {
+            return null;
+        }
     }
 
     private void _transferInvocations(Object next) {
@@ -42,8 +47,24 @@ public class ImplPizzaBuilder_addCheese_addTopping
         // nothing
     }
 
+    public PizzaBuilder_addCheese addTopping(Topping topping) {
+        _helper.addTopping(topping);
+        ImplPizzaBuilder_addCheese step1 = new ImplPizzaBuilder_addCheese(_helper, _returnValue);
+         
+        _transferInvocations(step1);
+        return step1;
+    }
+
+    public PizzaBuilder_addTopping addCheese() {
+        _helper.addCheese();
+        ImplPizzaBuilder_addTopping step1 = new ImplPizzaBuilder_addTopping(_helper, _returnValue);
+         
+        _transferInvocations(step1);
+        return step1;
+    }
+
     public unquietcode.tools.flapi.examples.pizza.DisappearingPizzaExample.Pizza bake() {
-        BuilderImplementation cur = _returnValue;
+        BuilderImplementation cur = this;
         while (cur!= null) {
             cur._checkInvocations();
             cur = cur._getParent();
@@ -52,22 +73,6 @@ public class ImplPizzaBuilder_addCheese_addTopping
         unquietcode.tools.flapi.examples.pizza.DisappearingPizzaExample.Pizza intermediateResult = _helper.bake();
          
         return intermediateResult;
-    }
-
-    public PizzaBuilder_addTopping addCheese() {
-        _helper.addCheese();
-         
-        PizzaBuilder_addTopping retval = new ImplPizzaBuilder_addTopping(_helper, _returnValue);
-        _transferInvocations(retval);
-        return retval;
-    }
-
-    public PizzaBuilder_addCheese addTopping(Topping topping) {
-        _helper.addTopping(topping);
-         
-        PizzaBuilder_addCheese retval = new ImplPizzaBuilder_addCheese(_helper, _returnValue);
-        _transferInvocations(retval);
-        return retval;
     }
 
 }
