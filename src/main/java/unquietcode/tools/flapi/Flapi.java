@@ -21,6 +21,7 @@ package unquietcode.tools.flapi;
 
 import unquietcode.tools.flapi.builder.DescriptorBuilder_enableCondensedClassNames_setDescriptorName_setPackage_setReturnType_setStartingMethodName;
 import unquietcode.tools.flapi.builder.DescriptorGenerator;
+import unquietcode.tools.flapi.helpers.DescriptorHelperImpl;
 
 import javax.lang.model.SourceVersion;
 

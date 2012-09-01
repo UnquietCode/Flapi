@@ -17,10 +17,8 @@
      Read the included LICENSE.TXT for more information.
  ******************************************************************************/
 
-package unquietcode.tools.flapi;
+package unquietcode.tools.flapi.outline;
 
-import unquietcode.tools.flapi.outline.BlockOutline;
-import unquietcode.tools.flapi.outline.MethodOutline;
 
 /**
  * @author Ben Fagin

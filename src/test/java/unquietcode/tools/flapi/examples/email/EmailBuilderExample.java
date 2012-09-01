@@ -4,9 +4,9 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 import unquietcode.tools.flapi.Descriptor;
-import unquietcode.tools.flapi.DescriptorHelperImpl;
 import unquietcode.tools.flapi.builder.DescriptorGenerator;
 import unquietcode.tools.flapi.examples.email.builder.EmailGenerator;
+import unquietcode.tools.flapi.helpers.DescriptorHelperImpl;
 
 /**
  * @author Benjamin Fagin

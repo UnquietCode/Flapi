@@ -20,6 +20,7 @@
 package unquietcode.tools.flapi;
 
 import unquietcode.tools.flapi.outline.BlockOutline;
+import unquietcode.tools.flapi.outline.BlockReference;
 import unquietcode.tools.flapi.outline.DescriptorOutline;
 import unquietcode.tools.flapi.outline.MethodOutline;
 

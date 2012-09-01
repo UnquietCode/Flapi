@@ -17,8 +17,9 @@
      Read the included LICENSE.TXT for more information.
  ******************************************************************************/
 
-package unquietcode.tools.flapi;
+package unquietcode.tools.flapi.helpers;
 
+import unquietcode.tools.flapi.DescriptorBuilderException;
 import unquietcode.tools.flapi.builder.BlockChainHelper;
 import unquietcode.tools.flapi.builder.MethodHelper;
 import unquietcode.tools.flapi.outline.MethodOutline;

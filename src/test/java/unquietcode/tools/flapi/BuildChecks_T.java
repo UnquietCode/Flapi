@@ -22,6 +22,7 @@ package unquietcode.tools.flapi;
 import org.junit.Assert;
 import org.junit.Test;
 import unquietcode.tools.flapi.builder.DescriptorGenerator;
+import unquietcode.tools.flapi.helpers.DescriptorHelperImpl;
 
 /**
  * Tests which check the build process for the appropriate errors.

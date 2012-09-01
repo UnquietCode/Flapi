@@ -6,11 +6,11 @@ import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 import org.w3c.dom.Document;
 import unquietcode.tools.flapi.Descriptor;
-import unquietcode.tools.flapi.DescriptorHelperImpl;
 import unquietcode.tools.flapi.builder.DescriptorGenerator;
 import unquietcode.tools.flapi.examples.xhtml.builder.ElementBuilder_setValue;
 import unquietcode.tools.flapi.examples.xhtml.builder.XHTMLBuilder;
 import unquietcode.tools.flapi.examples.xhtml.builder.XHTMLGenerator;
+import unquietcode.tools.flapi.helpers.DescriptorHelperImpl;
 
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;

@@ -19,11 +19,11 @@
 
 package unquietcode.tools.flapi.graph;
 
-import unquietcode.tools.flapi.BlockReference;
 import unquietcode.tools.flapi.DescriptorBuilderException;
 import unquietcode.tools.flapi.generator.AbstractGenerator;
 import unquietcode.tools.flapi.graph.components.*;
 import unquietcode.tools.flapi.outline.BlockOutline;
+import unquietcode.tools.flapi.outline.BlockReference;
 import unquietcode.tools.flapi.outline.DescriptorOutline;
 import unquietcode.tools.flapi.outline.MethodOutline;
 

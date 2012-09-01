@@ -4,6 +4,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 import unquietcode.tools.flapi.builder.DescriptorGenerator;
+import unquietcode.tools.flapi.helpers.DescriptorHelperImpl;
 
 import java.io.File;
 import java.util.Scanner;
