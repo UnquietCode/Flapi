@@ -1,10 +1,10 @@
 
 package unquietcode.tools.flapi.examples.house.builder;
 
-import java.awt.Color;
-import javax.annotation.Generated;
-import unquietcode.tools.flapi.examples.house.Wall;
 import unquietcode.tools.flapi.support.v0_2.BuilderImplementation;
+
+import javax.annotation.Generated;
+import java.awt.*;
 
 
 /**
@@ -15,24 +15,28 @@ import unquietcode.tools.flapi.support.v0_2.BuilderImplementation;
  * Visit http://www.unquietcode.com/flapi for more information.
  * 
  * 
- * Generated on June 24, 2012 16:46:25 CDT using version 0.2
+ * Generated on September 01, 2012 17:06:14 CDT using version 0.2
  * 
  */
-@Generated(value = "unquietcode.tools.flapi", date = "June 24, 2012 16:46:25 CDT", comments = "generated using Flapi, the fluent API generator for Java")
+@Generated(value = "unquietcode.tools.flapi", date = "September 01, 2012 17:06:14 CDT", comments = "generated using Flapi, the fluent API generator for Java")
 public class ImplWallBuilder_setColor
     implements WallBuilder_setColor, BuilderImplementation
 {
 
     private final WallHelper _helper;
-    private final Wall _returnValue;
+    private final Object _returnValue;
 
-    ImplWallBuilder_setColor(WallHelper helper, Wall returnValue) {
+    ImplWallBuilder_setColor(WallHelper helper, Object returnValue) {
         _helper = helper;
         _returnValue = returnValue;
     }
 
     public BuilderImplementation _getParent() {
-        return null;
+        if (_returnValue instanceof BuilderImplementation) {
+            return ((BuilderImplementation) _returnValue);
+        } else {
+            return null;
+        }
     }
 
     private void _transferInvocations(Object next) {
@@ -43,7 +47,8 @@ public class ImplWallBuilder_setColor
         // nothing
     }
 
-    public Wall setColor(Color color) {
+    public Object setColor(Color color) {
+        _checkInvocations();
         _helper.setColor(color);
          
         return _returnValue;
