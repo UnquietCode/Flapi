@@ -58,8 +58,10 @@ public class BuilderClassTypeCreationStrategy implements TypeCreationStrategy {
 		void createType(JDefinedClass cBuilder, StateClass state) {
 			JDefinedClass iBuilder = BUILDER_INTERFACE_STRATEGY.createType(ctx, state);
 			JDefinedClass iHelper = HELPER_INTERFACE_STRATEGY.createType(ctx, state);
+			JClass builderType = ref(BuilderImplementation.class);
+
 			cBuilder._implements(iBuilder);
-			cBuilder._implements(ref(BuilderImplementation.class));
+			cBuilder._implements(builderType);
 
 			JType returnType = ref(Object.class);
 			JFieldVar _helper = cBuilder.field(JMod.PRIVATE+JMod.FINAL, iHelper, Constants.HELPER_VALUE_NAME);
@@ -74,9 +76,9 @@ public class BuilderClassTypeCreationStrategy implements TypeCreationStrategy {
 			constructor.body().assign(_returnValue, pParent);
 
 			// BuilderImplementation._getParent()
-			JMethod _getParent = cBuilder.method(JMod.PUBLIC, ref(BuilderImplementation.class), "_getParent");
-			JConditional l_if = _getParent.body()._if(_returnValue._instanceof(ref(BuilderImplementation.class)));
-			l_if._then()._return(_returnValue);
+			JMethod _getParent = cBuilder.method(JMod.PUBLIC, builderType, "_getParent");
+			JConditional l_if = _getParent.body()._if(_returnValue._instanceof(builderType));
+			l_if._then()._return(JExpr.cast(builderType, _returnValue));
 			l_if._else()._return(JExpr._null());
 
 			addInvocationTracking(cBuilder, state.getTransitions());
