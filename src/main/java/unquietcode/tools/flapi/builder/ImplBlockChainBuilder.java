@@ -1,9 +1,10 @@
 
 package unquietcode.tools.flapi.builder;
 
-import javax.annotation.Generated;
 import unquietcode.tools.flapi.support.v0_2.BuilderImplementation;
 import unquietcode.tools.flapi.support.v0_2.ObjectWrapper;
+
+import javax.annotation.Generated;
 
 
 /**
@@ -14,24 +15,28 @@ import unquietcode.tools.flapi.support.v0_2.ObjectWrapper;
  * Visit http://www.unquietcode.com/flapi for more information.
  * 
  * 
- * Generated on June 24, 2012 16:46:25 CDT using version 0.2
+ * Generated on September 01, 2012 18:27:59 CDT using version 0.2
  * 
  */
-@Generated(value = "unquietcode.tools.flapi", date = "June 24, 2012 16:46:25 CDT", comments = "generated using Flapi, the fluent API generator for Java")
+@Generated(value = "unquietcode.tools.flapi", date = "September 01, 2012 18:27:59 CDT", comments = "generated using Flapi, the fluent API generator for Java")
 public class ImplBlockChainBuilder
     implements BlockChainBuilder, BuilderImplementation
 {
 
     private final BlockChainHelper _helper;
-    private final BuilderImplementation _returnValue;
+    private final Object _returnValue;
 
-    ImplBlockChainBuilder(BlockChainHelper helper, BuilderImplementation returnValue) {
+    ImplBlockChainBuilder(BlockChainHelper helper, Object returnValue) {
         _helper = helper;
         _returnValue = returnValue;
     }
 
     public BuilderImplementation _getParent() {
-        return _returnValue;
+        if (_returnValue instanceof BuilderImplementation) {
+            return ((BuilderImplementation) _returnValue);
+        } else {
+            return null;
+        }
     }
 
     private void _transferInvocations(Object next) {
@@ -42,29 +47,19 @@ public class ImplBlockChainBuilder
         // nothing
     }
 
-    public BuilderImplementation addBlockReference(String blockName) {
-        BuilderImplementation cur = _returnValue;
-        while (cur!= null) {
-            cur._checkInvocations();
-            cur = cur._getParent();
-        }
-         
+    public Object addBlockReference(String blockName) {
+        _checkInvocations();
         _helper.addBlockReference(blockName);
          
         return _returnValue;
     }
 
     public BlockBuilder startBlock(String blockName) {
+        _checkInvocations();
         ObjectWrapper<BlockHelper> helper1 = new ObjectWrapper<BlockHelper>();
-        BuilderImplementation cur = _returnValue;
-        while (cur!= null) {
-            cur._checkInvocations();
-            cur = cur._getParent();
-        }
-         
         _helper.startBlock(blockName, helper1);
-         
         ImplBlockBuilder step1 = new ImplBlockBuilder(helper1 .get(), _returnValue);
+         
         return step1;
     }
 

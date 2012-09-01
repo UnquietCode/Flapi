@@ -1,12 +1,13 @@
 
 package unquietcode.tools.flapi.builder;
 
-import java.lang.reflect.Field;
-import javax.annotation.Generated;
 import unquietcode.tools.flapi.Descriptor;
 import unquietcode.tools.flapi.support.v0_2.BuilderImplementation;
 import unquietcode.tools.flapi.support.v0_2.ExpectedInvocationsException;
 import unquietcode.tools.flapi.support.v0_2.ObjectWrapper;
+
+import javax.annotation.Generated;
+import java.lang.reflect.Field;
 
 
 /**
@@ -17,37 +18,33 @@ import unquietcode.tools.flapi.support.v0_2.ObjectWrapper;
  * Visit http://www.unquietcode.com/flapi for more information.
  * 
  * 
- * Generated on June 24, 2012 16:46:25 CDT using version 0.2
+ * Generated on September 01, 2012 18:27:59 CDT using version 0.2
  * 
  */
-@Generated(value = "unquietcode.tools.flapi", date = "June 24, 2012 16:46:25 CDT", comments = "generated using Flapi, the fluent API generator for Java")
+@Generated(value = "unquietcode.tools.flapi", date = "September 01, 2012 18:27:59 CDT", comments = "generated using Flapi, the fluent API generator for Java")
 public class ImplDescriptorBuilder_enableCondensedClassNames_setPackage_setReturnType
     implements DescriptorBuilder_enableCondensedClassNames_setPackage_setReturnType, BuilderImplementation
 {
 
     private final DescriptorHelper _helper;
-    private final BuilderImplementation _returnValue;
-    int ic_Descriptor_setDescriptorName$String_descriptorName = 1;
+    private final Object _returnValue;
     int ic_Descriptor_setPackage$String_packageName = 1;
 
-    ImplDescriptorBuilder_enableCondensedClassNames_setPackage_setReturnType(DescriptorHelper helper, BuilderImplementation returnValue) {
+    ImplDescriptorBuilder_enableCondensedClassNames_setPackage_setReturnType(DescriptorHelper helper, Object returnValue) {
         _helper = helper;
         _returnValue = returnValue;
     }
 
     public BuilderImplementation _getParent() {
-        return _returnValue;
+        if (_returnValue instanceof BuilderImplementation) {
+            return ((BuilderImplementation) _returnValue);
+        } else {
+            return null;
+        }
     }
 
     private void _transferInvocations(Object next) {
         Class clazz = next.getClass();
-         
-        try {
-            Field field = clazz.getDeclaredField("ic_Descriptor_setDescriptorName$String_descriptorName");
-            field.setInt(next, ic_Descriptor_setDescriptorName$String_descriptorName);
-        } catch (Exception _x) {
-            // nothing
-        }
          
         try {
             Field field = clazz.getDeclaredField("ic_Descriptor_setPackage$String_packageName");
@@ -58,25 +55,13 @@ public class ImplDescriptorBuilder_enableCondensedClassNames_setPackage_setRetur
     }
 
     public void _checkInvocations() {
-        if (ic_Descriptor_setDescriptorName$String_descriptorName > 0) {
-            throw new ExpectedInvocationsException("Expected at least 1 invocations of method 'setDescriptorName(String descriptorName)'.");
-        }
         if (ic_Descriptor_setPackage$String_packageName > 0) {
             throw new ExpectedInvocationsException("Expected at least 1 invocations of method 'setPackage(String packageName)'.");
         }
     }
 
-    public MethodBuilder_addBlockChain addMethod(String methodSignature) {
-        ObjectWrapper<MethodHelper> helper1 = new ObjectWrapper<MethodHelper>();
-        _helper.addMethod(methodSignature, helper1);
-         
-        ImplMethodBuilder_addBlockChain step1 = new ImplMethodBuilder_addBlockChain(helper1 .get(), this);
-        _transferInvocations(step1);
-        return step1;
-    }
-
     public Descriptor build() {
-        BuilderImplementation cur = _returnValue;
+        BuilderImplementation cur = this;
         while (cur!= null) {
             cur._checkInvocations();
             cur = cur._getParent();
@@ -87,40 +72,47 @@ public class ImplDescriptorBuilder_enableCondensedClassNames_setPackage_setRetur
         return intermediateResult;
     }
 
-    public MethodBuilder_addBlockChain startBlock(String blockName, String methodSignature) {
-        ObjectWrapper<MethodHelper> helper1 = new ObjectWrapper<MethodHelper>();
-        ObjectWrapper<BlockHelper> helper2 = new ObjectWrapper<BlockHelper>();
-        _helper.startBlock(blockName, methodSignature, helper1, helper2);
+    public DescriptorBuilder_enableCondensedClassNames_setReturnType setPackage(String packageName) {
+        --ic_Descriptor_setPackage$String_packageName;
+        _helper.setPackage(packageName);
+        ImplDescriptorBuilder_enableCondensedClassNames_setReturnType step1 = new ImplDescriptorBuilder_enableCondensedClassNames_setReturnType(_helper, _returnValue);
          
-        ImplBlockBuilder step2 = new ImplBlockBuilder(helper2 .get(), this);
-        ImplMethodBuilder_addBlockChain step1 = new ImplMethodBuilder_addBlockChain(helper1 .get(), step2);
         _transferInvocations(step1);
         return step1;
     }
 
     public DescriptorBuilder_setPackage_setReturnType enableCondensedClassNames() {
         _helper.enableCondensedClassNames();
+        ImplDescriptorBuilder_setPackage_setReturnType step1 = new ImplDescriptorBuilder_setPackage_setReturnType(_helper, _returnValue);
          
-        DescriptorBuilder_setPackage_setReturnType retval = new ImplDescriptorBuilder_setPackage_setReturnType(_helper, _returnValue);
-        _transferInvocations(retval);
-        return retval;
-    }
-
-    public DescriptorBuilder_enableCondensedClassNames_setReturnType setPackage(String packageName) {
-        --ic_Descriptor_setPackage$String_packageName;
-        _helper.setPackage(packageName);
-         
-        DescriptorBuilder_enableCondensedClassNames_setReturnType retval = new ImplDescriptorBuilder_enableCondensedClassNames_setReturnType(_helper, _returnValue);
-        _transferInvocations(retval);
-        return retval;
+        _transferInvocations(step1);
+        return step1;
     }
 
     public DescriptorBuilder_enableCondensedClassNames_setPackage setReturnType(Class returnType) {
         _helper.setReturnType(returnType);
+        ImplDescriptorBuilder_enableCondensedClassNames_setPackage step1 = new ImplDescriptorBuilder_enableCondensedClassNames_setPackage(_helper, _returnValue);
          
-        DescriptorBuilder_enableCondensedClassNames_setPackage retval = new ImplDescriptorBuilder_enableCondensedClassNames_setPackage(_helper, _returnValue);
-        _transferInvocations(retval);
-        return retval;
+        _transferInvocations(step1);
+        return step1;
+    }
+
+    public MethodBuilder_addBlockChain addMethod(String methodSignature) {
+        ObjectWrapper<MethodHelper> helper1 = new ObjectWrapper<MethodHelper>();
+        _helper.addMethod(methodSignature, helper1);
+        ImplMethodBuilder_addBlockChain step1 = new ImplMethodBuilder_addBlockChain(helper1 .get(), this);
+         
+        return step1;
+    }
+
+    public MethodBuilder_addBlockChain startBlock(String blockName, String methodSignature) {
+        ObjectWrapper<MethodHelper> helper1 = new ObjectWrapper<MethodHelper>();
+        ObjectWrapper<BlockHelper> helper2 = new ObjectWrapper<BlockHelper>();
+        _helper.startBlock(blockName, methodSignature, helper1, helper2);
+        ImplBlockBuilder step1 = new ImplBlockBuilder(helper2 .get(), this);
+        ImplMethodBuilder_addBlockChain step2 = new ImplMethodBuilder_addBlockChain(helper1 .get(), step1);
+         
+        return step2;
     }
 
 }
