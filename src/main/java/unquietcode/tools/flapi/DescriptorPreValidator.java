@@ -49,7 +49,7 @@ public class DescriptorPreValidator {
 	private void checkThatDescriptorMethodNameIsValid() {
 		String name = outline.getCreateMethod();
 
-		if (!SourceVersion.isIdentifier(name)) {
+		if (!SourceVersion.isName(name)) {
 			throw new DescriptorBuilderException("Invalid method name for create method: '"+name+"'.");
 		}
 	}

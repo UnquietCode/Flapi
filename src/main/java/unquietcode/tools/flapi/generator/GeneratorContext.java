@@ -47,13 +47,22 @@ public class GeneratorContext {
 	private boolean condenseNames = false;
 
 	public GeneratorContext(String rootPackage) {
-		if (rootPackage != null) {
-			thePackage = model._package(rootPackage.trim());
+		if (rootPackage != null && !rootPackage.trim().equals("")) {
+			thePackage = model._package(checkPackageName(rootPackage));
 		} else {
 			thePackage = model.rootPackage();
 		}
 	}
 
+	private String checkPackageName(String name) {
+		name = name.trim();
+
+		if (!SourceVersion.isName(name)) {
+			throw new DescriptorBuilderException("Package name '"+name+"' is not allowed.");
+		}
+
+		return name;
+	}
 
 	public void condenseNames(boolean value) {
 		condenseNames = value;

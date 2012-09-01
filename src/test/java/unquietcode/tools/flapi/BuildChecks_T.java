@@ -192,7 +192,7 @@ public class BuildChecks_T {
 
 	@Test
 	public void createMethodIsAValidName() {
-		String[] names = new String[]{"4four", "inv*lid", "", " "};
+		String[] names = new String[]{"4four", "inv*lid", "", " ", "new"};
 
 		for (String name : names) {
 			try {
@@ -207,6 +207,25 @@ public class BuildChecks_T {
 			} catch (DescriptorBuilderException ex) {
 				// nothing
 			} catch (IllegalArgumentException ex) {
+				// nothing
+			}
+		}
+	}
+
+	@Test
+	public void packageIsAValidName() {
+		String[] names = new String[]{".something", ".", "my .package", "my. package", "my.new.thing"};
+
+		for (String name : names) {
+			try {
+				DescriptorGenerator.create(new DescriptorHelperImpl())
+					.setPackage(name)
+					.setDescriptorName("Something")
+					.addMethod("done()").last()
+				.build();
+
+				Assert.fail("Expected an exception for name '"+name+"'.");
+			} catch (DescriptorBuilderException ex) {
 				// nothing
 			}
 		}
