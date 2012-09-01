@@ -136,7 +136,7 @@ public class GeneratorContext {
 			}
 
 			if (transition.getMaxOccurrences() > 1) {
-				name.append("i").append(transition.getMaxOccurrences());
+				name.append("$").append(transition.getMaxOccurrences());
 			}
 		}
 

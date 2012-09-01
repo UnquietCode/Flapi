@@ -112,7 +112,7 @@ public abstract class Transition implements Comparable<Transition> {
 	public MethodImplementor methodImplementor() {
 		return new MethodImplementor() {
 			public boolean shouldTrackInvocations() {
-				return maxOccurrences > 1;
+				return minOccurrences > 0;
 			}
 
 			public boolean shouldCheckInvocations() {

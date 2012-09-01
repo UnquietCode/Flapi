@@ -27,6 +27,7 @@ import unquietcode.tools.flapi.generator.MethodImplementor;
 import unquietcode.tools.flapi.graph.GenericVisitor;
 import unquietcode.tools.flapi.graph.components.StateClass;
 import unquietcode.tools.flapi.graph.components.Transition;
+import unquietcode.tools.flapi.graph.components.TransitionType;
 import unquietcode.tools.flapi.support.v0_2.BuilderImplementation;
 
 import java.util.Collections;
@@ -80,7 +81,10 @@ public class GraphProcessor extends AbstractGenerator implements GenericVisitor<
 
 		// create the method on the class
 		ReturnTypeProcessor rtv = new ReturnTypeProcessor(ctx);
-		JType returnType = rtv.computeReturnType(transition).erasure();
+		JType returnType = transition.getType() == TransitionType.Ascending         // Ascending ==> _ReturnType
+						 ? ref(Object.class)                                        // which could be anything,
+						 : rtv.computeReturnType(transition).erasure()              // so be flexible.
+		;
 		MethodParser parsed = new MethodParser(transition.getMethodSignature());
 		final JMethod _method = addMethod(cBuilder, returnType, JMod.PUBLIC, parsed);
 
