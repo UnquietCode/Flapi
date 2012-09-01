@@ -87,9 +87,16 @@ public abstract class AbstractGenerator {
 
 	protected String makeMethodKey(Transition transition) {
 		StringBuilder sb = new StringBuilder();
-		sb.append(transition.getOwner().getName()).append("_");
+		sb.append(transition.getOwner().getName()).append("_")
+		  .append(makeMethodKey(transition.getMethodSignature()));
 
-		MethodParser parser = new MethodParser(transition.getMethodSignature());
+		return sb.toString();
+	}
+
+	public static String makeMethodKey(String methodSignature) {
+		StringBuilder sb = new StringBuilder();
+		MethodParser parser = new MethodParser(methodSignature);
+
 		sb.append(parser.methodName).append("$");
 		boolean first = true;
 

@@ -21,7 +21,6 @@ package unquietcode.tools.flapi.outline;
 
 
 import unquietcode.tools.flapi.MethodParser;
-import unquietcode.tools.flapi.Pair;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -106,22 +105,6 @@ public class MethodOutline implements Outline, Comparable<MethodOutline> {
 		return clone;
 	}
 
-	public String getMethodKey() {
-		StringBuilder sb = new StringBuilder();
-		MethodParser parser = new MethodParser(methodSignature);
-		sb.append(parser.methodName).append("$");
-		boolean first = true;
-
-		for (Pair<String, String> param : parser.params) {
-			if (!first) { sb.append("$"); }
-			else { first = false; }
-
-			sb.append(param.first).append("_").append(param.second);
-		}
-
-		return sb.toString();
-	}
-
 	@Override
 	public String toString() {
 		return methodSignature + "-" + maxOccurrences;
@@ -133,17 +116,6 @@ public class MethodOutline implements Outline, Comparable<MethodOutline> {
 	public @Override int compareTo(MethodOutline other) {
 		return methodSignature.compareTo(other.methodSignature);
 	}
-
-	/*@Override
-	public boolean equals(Object obj) {
-		if (!(obj instanceof MethodOutline)) {
-			return false;
-		}
-
-		MethodOutline that = (MethodOutline) obj;
-		return null;
-	}
-*/
 
 	@Override
 	public boolean equals(Object o) {

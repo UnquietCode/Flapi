@@ -21,6 +21,7 @@ package unquietcode.tools.flapi.graph;
 
 import unquietcode.tools.flapi.BlockReference;
 import unquietcode.tools.flapi.DescriptorBuilderException;
+import unquietcode.tools.flapi.generator.AbstractGenerator;
 import unquietcode.tools.flapi.graph.components.*;
 import unquietcode.tools.flapi.outline.BlockOutline;
 import unquietcode.tools.flapi.outline.DescriptorOutline;
@@ -138,7 +139,8 @@ public class GraphBuilder {
 	private StateClass getStateFromBlockAndMethods(BlockOutline block, Set<MethodOutline> allMethods) {
 		TreeSet<String> names = new TreeSet<String>();
 		for (MethodOutline method : allMethods) {
-			names.add(method.getMethodKey()+"-"+method.maxOccurrences);
+			String key = AbstractGenerator.makeMethodKey(method.getMethodSignature());
+			names.add(key+"-"+method.maxOccurrences);
 		}
 
 		StringBuilder sb = new StringBuilder();
