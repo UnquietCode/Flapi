@@ -30,6 +30,7 @@ import unquietcode.tools.flapi.support.v0_2.ObjectWrapper;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 
 public class ReturnValueProcessor extends AbstractGenerator {
@@ -55,6 +56,7 @@ public class ReturnValueProcessor extends AbstractGenerator {
 
 		// setup initial return value
 		final ObjectWrapper<JExpression> initialValue = new ObjectWrapper<JExpression>();
+		final AtomicInteger counter = new AtomicInteger(1);
 
 		transition.accept(new TransitionVisitor() {
 			@Override
@@ -67,7 +69,7 @@ public class ReturnValueProcessor extends AbstractGenerator {
 				JDefinedClass cTargetBuilder = BUILDER_CLASS_STRATEGY.createType(ctx, transition.getSibling());
 
 				initialValue.set(method.body().decl(
-					cTargetBuilder, "step1",
+					cTargetBuilder, "step"+counter.getAndIncrement(),
 					JExpr._new(cTargetBuilder)
 						.arg(JExpr.ref(Constants.HELPER_VALUE_NAME))
 						.arg(JExpr.ref(Constants.RETURN_VALUE_NAME))
@@ -98,7 +100,7 @@ public class ReturnValueProcessor extends AbstractGenerator {
 			JDefinedClass cTargetBuilder = BUILDER_CLASS_STRATEGY.createType(ctx, sequentialState);
 
 			returnValue = method.body().decl(
-				cTargetBuilder, "step" + (i + 1),
+				cTargetBuilder, "step"+counter.getAndIncrement(),
 				JExpr._new(cTargetBuilder)
 					.arg(helpers.get(i).invoke("get"))
 					.arg(returnValue)

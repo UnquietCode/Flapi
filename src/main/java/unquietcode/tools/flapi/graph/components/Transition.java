@@ -111,6 +111,10 @@ public abstract class Transition implements Comparable<Transition> {
 
 	public MethodImplementor methodImplementor() {
 		return new MethodImplementor() {
+			public boolean shouldComputeActualReturnType() {
+				return !(type == TransitionType.Ascending && stateChain.isEmpty());
+			}
+
 			public boolean shouldTrackInvocations() {
 				return minOccurrences > 0;
 			}

@@ -31,4 +31,5 @@ public interface MethodImplementor {
 	boolean shouldCheckInvocations();
 	boolean shouldCheckParentInvocations();
 	boolean shouldTransferInvocations();
+	boolean shouldComputeActualReturnType();
 }
