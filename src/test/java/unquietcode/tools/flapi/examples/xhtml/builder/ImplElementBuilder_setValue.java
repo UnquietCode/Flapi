@@ -1,9 +1,10 @@
 
 package unquietcode.tools.flapi.examples.xhtml.builder;
 
-import javax.annotation.Generated;
 import unquietcode.tools.flapi.support.v0_2.BuilderImplementation;
 import unquietcode.tools.flapi.support.v0_2.ObjectWrapper;
+
+import javax.annotation.Generated;
 
 
 /**
@@ -14,24 +15,28 @@ import unquietcode.tools.flapi.support.v0_2.ObjectWrapper;
  * Visit http://www.unquietcode.com/flapi for more information.
  * 
  * 
- * Generated on June 24, 2012 16:46:25 CDT using version 0.2
+ * Generated on September 01, 2012 17:06:14 CDT using version 0.2
  * 
  */
-@Generated(value = "unquietcode.tools.flapi", date = "June 24, 2012 16:46:25 CDT", comments = "generated using Flapi, the fluent API generator for Java")
+@Generated(value = "unquietcode.tools.flapi", date = "September 01, 2012 17:06:14 CDT", comments = "generated using Flapi, the fluent API generator for Java")
 public class ImplElementBuilder_setValue
     implements ElementBuilder_setValue, BuilderImplementation
 {
 
     private final ElementHelper _helper;
-    private final BuilderImplementation _returnValue;
+    private final Object _returnValue;
 
-    ImplElementBuilder_setValue(ElementHelper helper, BuilderImplementation returnValue) {
+    ImplElementBuilder_setValue(ElementHelper helper, Object returnValue) {
         _helper = helper;
         _returnValue = returnValue;
     }
 
     public BuilderImplementation _getParent() {
-        return _returnValue;
+        if (_returnValue instanceof BuilderImplementation) {
+            return ((BuilderImplementation) _returnValue);
+        } else {
+            return null;
+        }
     }
 
     private void _transferInvocations(Object next) {
@@ -42,10 +47,26 @@ public class ImplElementBuilder_setValue
         // nothing
     }
 
+    public ElementBuilder_setValue startElement(String tagName) {
+        ObjectWrapper<ElementHelper> helper1 = new ObjectWrapper<ElementHelper>();
+        _helper.startElement(tagName, helper1);
+        ImplElementBuilder_setValue step1 = new ImplElementBuilder_setValue(helper1 .get(), this);
+         
+        return step1;
+    }
+
     public ElementBuilder_setValue addAttribute(String key, String value) {
         _helper.addAttribute(key, value);
          
         return this;
+    }
+
+    public ElementBuilder setValue(String value) {
+        _helper.setValue(value);
+        ImplElementBuilder step1 = new ImplElementBuilder(_helper, _returnValue);
+         
+        _transferInvocations(step1);
+        return step1;
     }
 
     public ElementBuilder_setValue addComment(String comment) {
@@ -54,33 +75,11 @@ public class ImplElementBuilder_setValue
         return this;
     }
 
-    public BuilderImplementation endElement() {
-        BuilderImplementation cur = _returnValue;
-        while (cur!= null) {
-            cur._checkInvocations();
-            cur = cur._getParent();
-        }
-         
+    public Object endElement() {
+        _checkInvocations();
         _helper.endElement();
          
         return _returnValue;
-    }
-
-    public ElementBuilder_setValue startElement(String tagName) {
-        ObjectWrapper<ElementHelper> helper1 = new ObjectWrapper<ElementHelper>();
-        _helper.startElement(tagName, helper1);
-         
-        ImplElementBuilder_setValue step1 = new ImplElementBuilder_setValue(helper1 .get(), this);
-        _transferInvocations(step1);
-        return step1;
-    }
-
-    public ElementBuilder setValue(String value) {
-        _helper.setValue(value);
-         
-        ElementBuilder retval = new ImplElementBuilder(_helper, _returnValue);
-        _transferInvocations(retval);
-        return retval;
     }
 
 }
