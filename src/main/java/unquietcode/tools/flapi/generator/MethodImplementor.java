@@ -29,5 +29,6 @@ package unquietcode.tools.flapi.generator;
 public interface MethodImplementor {
 	boolean shouldTrackInvocations();
 	boolean shouldCheckInvocations();
+	boolean shouldCheckParentInvocations();
 	boolean shouldTransferInvocations();
 }

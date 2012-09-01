@@ -133,10 +133,6 @@ public class BuilderClassTypeCreationStrategy implements TypeCreationStrategy {
 						._throw(JExpr._new(ref(ExpectedInvocationsException.class)).arg(message));
 				}
 			}
-
-			_method.body().directStatement(" ");
-			JVar _parent = _method.body().decl(ref(BuilderImplementation.class), "parent", JExpr._this().invoke("_getParent"));
-			_method.body()._if(_parent.ne(JExpr._null()))._then().invoke(_parent, "_checkInvocations");
 		}
 	}
 }

@@ -111,20 +111,20 @@ public abstract class Transition implements Comparable<Transition> {
 
 	public MethodImplementor methodImplementor() {
 		return new MethodImplementor() {
-
-			@Override
 			public boolean shouldTrackInvocations() {
 				return maxOccurrences > 1;
 			}
 
-			@Override
 			public boolean shouldCheckInvocations() {
 				return type == TransitionType.Terminal || type == TransitionType.Ascending;
 			}
 
-			@Override
 			public boolean shouldTransferInvocations() {
 				return type == TransitionType.Lateral;
+			}
+
+			public boolean shouldCheckParentInvocations() {
+				return type == TransitionType.Terminal;
 			}
 		};
 	}

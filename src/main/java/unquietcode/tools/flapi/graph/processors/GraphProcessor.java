@@ -27,6 +27,7 @@ import unquietcode.tools.flapi.generator.MethodImplementor;
 import unquietcode.tools.flapi.graph.GenericVisitor;
 import unquietcode.tools.flapi.graph.components.StateClass;
 import unquietcode.tools.flapi.graph.components.Transition;
+import unquietcode.tools.flapi.support.v0_2.BuilderImplementation;
 
 import java.util.Collections;
 import java.util.IdentityHashMap;
@@ -88,9 +89,17 @@ public class GraphProcessor extends AbstractGenerator implements GenericVisitor<
 			_method.body().directStatement("--ic_"+makeMethodKey(transition)+";");
 		}
 
-		// invocation check before helper call
+		// invocation check (done before helper call)
 		if (mi.shouldCheckInvocations()) {
-			_method.body().invoke("_checkInvocations");
+			if (mi.shouldCheckParentInvocations()) {
+				JVar _cur = _method.body().decl(ref(BuilderImplementation.class), "cur", JExpr._this());
+				JWhileLoop _while = _method.body()._while(_cur.ne(JExpr._null()));
+				_while.body().add(_cur.invoke("_checkInvocations"));
+				_while.body().assign(_cur, _cur.invoke("_getParent"));
+				_method.body().directStatement(" ");
+			} else {
+				_method.body().invoke("_checkInvocations");
+			}
 		}
 
 		// return value work, including helper call
