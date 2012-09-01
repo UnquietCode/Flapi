@@ -1,9 +1,10 @@
 
 package unquietcode.tools.flapi.examples.email.builder;
 
-import java.io.File;
-import javax.annotation.Generated;
 import unquietcode.tools.flapi.examples.email.EmailMessage;
+
+import javax.annotation.Generated;
+import java.io.File;
 
 
 /**
@@ -14,10 +15,10 @@ import unquietcode.tools.flapi.examples.email.EmailMessage;
  * Visit http://www.unquietcode.com/flapi for more information.
  * 
  * 
- * Generated on June 24, 2012 16:46:25 CDT using version 0.2
+ * Generated on September 01, 2012 17:06:14 CDT using version 0.2
  * 
  */
-@Generated(value = "unquietcode.tools.flapi", date = "June 24, 2012 16:46:25 CDT", comments = "generated using Flapi, the fluent API generator for Java")
+@Generated(value = "unquietcode.tools.flapi", date = "September 01, 2012 17:06:14 CDT", comments = "generated using Flapi, the fluent API generator for Java")
 public interface EmailBuilder_body<_ReturnType >{
 
 
@@ -27,10 +28,10 @@ public interface EmailBuilder_body<_ReturnType >{
 
     EmailBuilder_body<_ReturnType> addCC(String emailAddress);
 
+    EmailBuilder<_ReturnType> body(String text);
+
     EmailBuilder_body<_ReturnType> addRecipient(String emailAddress);
 
     EmailMessage send();
-
-    EmailBuilder<_ReturnType> body(String text);
 
 }

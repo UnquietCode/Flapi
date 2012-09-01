@@ -1,12 +1,13 @@
 
 package unquietcode.tools.flapi.examples.email.builder;
 
-import java.io.File;
-import java.lang.reflect.Field;
-import javax.annotation.Generated;
 import unquietcode.tools.flapi.examples.email.EmailMessage;
 import unquietcode.tools.flapi.support.v0_2.BuilderImplementation;
 import unquietcode.tools.flapi.support.v0_2.ExpectedInvocationsException;
+
+import javax.annotation.Generated;
+import java.io.File;
+import java.lang.reflect.Field;
 
 
 /**
@@ -17,26 +18,29 @@ import unquietcode.tools.flapi.support.v0_2.ExpectedInvocationsException;
  * Visit http://www.unquietcode.com/flapi for more information.
  * 
  * 
- * Generated on June 24, 2012 16:46:25 CDT using version 0.2
+ * Generated on September 01, 2012 17:06:14 CDT using version 0.2
  * 
  */
-@Generated(value = "unquietcode.tools.flapi", date = "June 24, 2012 16:46:25 CDT", comments = "generated using Flapi, the fluent API generator for Java")
+@Generated(value = "unquietcode.tools.flapi", date = "September 01, 2012 17:06:14 CDT", comments = "generated using Flapi, the fluent API generator for Java")
 public class ImplEmailBuilder_subject
     implements EmailBuilder_subject, BuilderImplementation
 {
 
     private final EmailHelper _helper;
-    private final BuilderImplementation _returnValue;
+    private final Object _returnValue;
     int ic_Email_addRecipient$String_emailAddress = 1;
-    int ic_Email_sender$String_emailAddress = 1;
 
-    ImplEmailBuilder_subject(EmailHelper helper, BuilderImplementation returnValue) {
+    ImplEmailBuilder_subject(EmailHelper helper, Object returnValue) {
         _helper = helper;
         _returnValue = returnValue;
     }
 
     public BuilderImplementation _getParent() {
-        return _returnValue;
+        if (_returnValue instanceof BuilderImplementation) {
+            return ((BuilderImplementation) _returnValue);
+        } else {
+            return null;
+        }
     }
 
     private void _transferInvocations(Object next) {
@@ -48,21 +52,11 @@ public class ImplEmailBuilder_subject
         } catch (Exception _x) {
             // nothing
         }
-         
-        try {
-            Field field = clazz.getDeclaredField("ic_Email_sender$String_emailAddress");
-            field.setInt(next, ic_Email_sender$String_emailAddress);
-        } catch (Exception _x) {
-            // nothing
-        }
     }
 
     public void _checkInvocations() {
         if (ic_Email_addRecipient$String_emailAddress > 0) {
             throw new ExpectedInvocationsException("Expected at least 1 invocations of method 'addRecipient(String emailAddress)'.");
-        }
-        if (ic_Email_sender$String_emailAddress > 0) {
-            throw new ExpectedInvocationsException("Expected at least 1 invocations of method 'sender(String emailAddress)'.");
         }
     }
 
@@ -72,8 +66,17 @@ public class ImplEmailBuilder_subject
         return this;
     }
 
-    public EmailBuilder_subject addBCC(String emailAddress) {
-        _helper.addBCC(emailAddress);
+    public EmailBuilder subject(String subject) {
+        _helper.subject(subject);
+        ImplEmailBuilder step1 = new ImplEmailBuilder(_helper, _returnValue);
+         
+        _transferInvocations(step1);
+        return step1;
+    }
+
+    public EmailBuilder_subject addRecipient(String emailAddress) {
+        --ic_Email_addRecipient$String_emailAddress;
+        _helper.addRecipient(emailAddress);
          
         return this;
     }
@@ -84,15 +87,8 @@ public class ImplEmailBuilder_subject
         return this;
     }
 
-    public EmailBuilder_subject addRecipient(String emailAddress) {
-        --ic_Email_addRecipient$String_emailAddress;
-        _helper.addRecipient(emailAddress);
-         
-        return this;
-    }
-
     public EmailMessage send() {
-        BuilderImplementation cur = _returnValue;
+        BuilderImplementation cur = this;
         while (cur!= null) {
             cur._checkInvocations();
             cur = cur._getParent();
@@ -103,12 +99,10 @@ public class ImplEmailBuilder_subject
         return intermediateResult;
     }
 
-    public EmailBuilder subject(String subject) {
-        _helper.subject(subject);
+    public EmailBuilder_subject addBCC(String emailAddress) {
+        _helper.addBCC(emailAddress);
          
-        EmailBuilder retval = new ImplEmailBuilder(_helper, _returnValue);
-        _transferInvocations(retval);
-        return retval;
+        return this;
     }
 
 }
