@@ -23,24 +23,24 @@ import com.sun.codemodel.JCodeModel;
 import unquietcode.tools.flapi.generator.DescriptorGenerator;
 import unquietcode.tools.flapi.outline.DescriptorOutline;
 
-import java.io.*;
-import java.nio.channels.FileChannel;
+import java.io.File;
+import java.io.OutputStream;
 
 /**
  * @author Ben Fagin
  * @version 03-04-2012
  */
 public class Descriptor {
-	final DescriptorOutline _descriptor;
-	private JCodeModel model;
+	private final JCodeModel model;
 
 
-	public Descriptor(DescriptorHelperImpl helper) {
-		_descriptor = helper.outline;
+	public Descriptor(DescriptorOutline outline) {
+		DescriptorGenerator generator = new DescriptorGenerator(outline);
+		model = generator.generate();
 	}
 
 	public void writeToStream(OutputStream stream) {
-		CodeWriter.writeToStream(generate(), stream);
+		CodeWriter.writeToStream(model, stream);
 	}
 
 	public void writeToFolder(String folder) {
@@ -57,17 +57,7 @@ public class Descriptor {
 			throw new DescriptorBuilderException("Cannot write to folder '"+folder+"'.");
 		}
 
-		CodeWriter.writeToDirectory(generate(), f);
+		CodeWriter.writeToDirectory(model, f);
 		CodeWriter.writeRequiredClasses(f);
-	}
-
-	private JCodeModel generate() {
-		if (model != null) {
-			return model;
-		}
-
-		DescriptorGenerator generator = new DescriptorGenerator(_descriptor);
-		model = generator.generate();
-		return model;
 	}
 }

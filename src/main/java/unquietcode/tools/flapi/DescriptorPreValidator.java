@@ -24,72 +24,38 @@ import unquietcode.tools.flapi.outline.DescriptorOutline;
 import unquietcode.tools.flapi.outline.MethodOutline;
 
 import javax.lang.model.SourceVersion;
-import java.util.Arrays;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 /**
  * @author Ben Fagin
- * @version 05-12-2012
+ * @version 08-25-2012
  *
  * Validates a descriptor to ensure that minimum requirements are met.
+ * The "pre" validator works on the {@link DescriptorOutline} model.
  */
-public class DescriptorValidator {
-	private final DescriptorOutline descriptor;
-	private final Object EXISTS = new Object();
+public class DescriptorPreValidator {
+	private final DescriptorOutline outline;
 
-	public DescriptorValidator(DescriptorOutline descriptor) {
-		this.descriptor = descriptor;
+	public DescriptorPreValidator(DescriptorOutline outline) {
+		this.outline = outline;
 	}
 
 	public void validate() {
 		checkThatDescriptorMethodNameIsValid();
 		checkForNameCollisions();
-		checkForBlocksWithNoEnd(descriptor.selfBlock);
 	}
 
 	private void checkThatDescriptorMethodNameIsValid() {
-		String name = descriptor.getCreateMethod();
+		String name = outline.getCreateMethod();
 
 		if (!SourceVersion.isIdentifier(name)) {
 			throw new DescriptorBuilderException("Invalid method name for create method: '"+name+"'.");
 		}
 	}
 
-	private void checkForBlocksWithNoEnd(BlockOutline block) {
-		if (block instanceof BlockReference) {
-			return;
-		}
-
-		boolean valid = false;
-		for (MethodOutline method : block.getAllMethods()) {
-			if (method.isTerminal()) {
-				valid = true;
-				break;
-			}
-		}
-
-		// FLAPI-73 - blocks with only dynamic methods should exit when empty
-		if (block.getRequiredMethods().isEmpty() && !block.getDynamicMethods().isEmpty()) {
-			valid = true;
-		}
-
-		// if there are no dynamic methods
-		if (!valid) {
-			throw new DescriptorBuilderException("Encountered a block with no terminal method: " + block.getName());
-		}
-
-		// recurse
-		for (MethodOutline method : block.getAllMethods()) {
-			for (BlockOutline chain : method.getBlockChain()) {
-				checkForBlocksWithNoEnd(chain);
-			}
-		}
-	}
-
 	private void checkForNameCollisions() {
-		_checkForNameCollisions(descriptor.selfBlock, new HashSet<String>());
+		_checkForNameCollisions(outline.selfBlock, new HashSet<String>());
 	}
 
 	private void _checkForNameCollisions(BlockOutline block, Set<String> names) {

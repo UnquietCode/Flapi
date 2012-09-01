@@ -19,6 +19,8 @@
 
 package unquietcode.tools.flapi.graph;
 
+import unquietcode.tools.flapi.BlockReference;
+import unquietcode.tools.flapi.DescriptorBuilderException;
 import unquietcode.tools.flapi.graph.components.*;
 import unquietcode.tools.flapi.outline.BlockOutline;
 import unquietcode.tools.flapi.outline.DescriptorOutline;
@@ -26,33 +28,87 @@ import unquietcode.tools.flapi.outline.MethodOutline;
 
 import java.util.*;
 
+
 /**
  * @author Ben Fagin
  * @version 08-12-2012
  */
 public class GraphBuilder {
+	private Map<String, StateClass> blocks = new HashMap<String, StateClass>();
+	private Map<String, StateClass> states = new HashMap<String, StateClass>();
+	private Map<BlockReference, BlockOutline> referenceMap = new IdentityHashMap<BlockReference, BlockOutline>();
+
 
 	public StateClass buildGraph(DescriptorOutline descriptor) {
+		// convert all terminals on the descriptor block to Void so that they become terminals
+		for (MethodOutline method : descriptor.selfBlock.getAllMethods()) {
+			if (method.isTerminal() && method.getReturnType() == null) {
+				method.setReturnType(Void.class);
+			}
+		}
+
+		// resolve block references
+		Map<String, BlockOutline> blocks = new HashMap<String, BlockOutline>();
+		findAllBlocks(blocks, descriptor.selfBlock);
+		initializeReferenceMap(blocks, referenceMap, descriptor.selfBlock);
+
 		return convertBlock(descriptor.selfBlock);
 	}
 
-	private Map<String, StateClass> blocks = new HashMap<String, StateClass>();
-	private Map<String, StateClass> states = new HashMap<String, StateClass>();
+	private void findAllBlocks(Map<String, BlockOutline> blocks, BlockOutline block) {
+		if (block instanceof BlockReference) {
+			return;
+		}
+
+		blocks.put(block.getName(), block);
+
+		for (MethodOutline method : block.getAllMethods()) {
+			for (BlockOutline chain : method.getBlockChain()) {
+				findAllBlocks(blocks, chain);
+			}
+		}
+
+		for (BlockOutline child : block.getBlocks()) {
+			findAllBlocks(blocks, child);
+		}
+	}
+
+	private void initializeReferenceMap(Map<String, BlockOutline> blocks,
+	                                    Map<BlockReference, BlockOutline> references,
+	                                    BlockOutline block
+	){
+		if (block instanceof BlockReference) {
+			BlockOutline resolved = blocks.get(block.getName());
+			if (resolved == null) {
+				throw new DescriptorBuilderException("Could not resolve block reference with name '"+block.getName()+"'.");
+			}
+			references.put((BlockReference) block, resolved);
+		}
+
+		for (MethodOutline method : block.getAllMethods()) {
+			for (BlockOutline chain : method.getBlockChain()) {
+				initializeReferenceMap(blocks, references, chain);
+			}
+		}
+	}
 
 	private StateClass convertBlock(BlockOutline block) {
 		StateClass topLevel;
+		String blockName = block.getName();
 
 		if (blocks.containsKey(block.getName())) {
 			return blocks.get(block.getName());
+		} else if (block instanceof BlockReference) {
+			BlockOutline resolved = referenceMap.get(block);
+			return convertBlock(resolved);
 		} else {
-			// here the top level could also be the base
 			topLevel = getStateFromBlockAndMethods(block, block.getDynamicMethods());
 			topLevel.setIsTopLevel();
-			blocks.put(block.getName(), topLevel);
+			blocks.put(blockName, topLevel);
 		}
 
 		StateClass baseState = getStateFromBlockAndMethods(block, block.getRequiredMethods());
-		baseState.setName(block.getName());
+		baseState.setName(blockName);
 
 		for (MethodOutline method : block.getRequiredMethods()) {
 			addTransition(baseState, block, block.getRequiredMethods(), method);
@@ -238,79 +294,4 @@ public class GraphBuilder {
 
 		return minusMethod;
 	}
-
-	// todo, might a block reference create the wrong classes?
-	// or is it empty enough that it will really be the stub it's supposed to be
-
-/*
-	private void resolveBlockReferences() {
-		Map<String, BlockOutline> blocks = new HashMap<String, BlockOutline>();
-		_getBlockNames(outline.selfBlock, blocks);
-		_resolveBlockReferences(outline.selfBlock, blocks, new IdentityHashMap<BlockOutline, Object>());
-	}
-
-	private void _getBlockNames(BlockOutline block, Map<String, BlockOutline> blocks) {
-		// references aren't valid names
-		if (block instanceof BlockReference) {
-			return;
-		}
-
-		blocks.put(block.getName(), block);
-
-		for (BlockOutline child : block.getBlocks()) {
-			_getBlockNames(child, blocks);
-		}
-
-		for (MethodOutline method : block.getAllMethods()) {
-			for (BlockOutline chain : method.getBlockChain()) {
-				_getBlockNames(chain, blocks);
-			}
-		}
-	}
-
-	private void _resolveBlockReferences(BlockOutline block, Map<String, BlockOutline> blocks, IdentityHashMap<BlockOutline, Object> seen) {
-		if (seen.containsKey(block)) {
-			return;
-		} else {
-			seen.put(block, null);
-		}
-
-		for (MethodOutline method : block.getAllMethods()) {
-			for (BlockOutline aBlock : method.getBlockChain()) {
-				if (aBlock instanceof BlockReference) {
-					BlockReference _aBlock = (BlockReference) aBlock;
-
-					// skip if already resolved
-					// we need this in case the descriptor is generated twice
-					if (_aBlock.isResolved()) {
-						continue;
-					}
-
-					BlockOutline actual = blocks.get(aBlock.getName());
-
-					// couldn't find a block under that name
-					if (actual == null) {
-						StringBuilder sb = new StringBuilder();
-						sb.append("Invalid block reference '").append(aBlock.getName()).append("'.\n")
-						  .append("Referenced in method ").append(method.getMethodSignature())
-						  .append(" of block '").append(block.getName()).append("'.");
-
-						throw new DescriptorBuilderException(sb.toString());
-					}
-
-					// set the methods
-					aBlock.getAllMethods().addAll(actual.getAllMethods());
-
-					// mark resolved
-					_aBlock.setResolved(true);
-				}
-			}
-		}
-
-		for (MethodOutline method : block.getAllMethods()) {
-			for (BlockOutline chain : method.getBlockChain()) {
-				_resolveBlockReferences(chain, blocks, seen);
-			}
-		}
-	}*/
 }

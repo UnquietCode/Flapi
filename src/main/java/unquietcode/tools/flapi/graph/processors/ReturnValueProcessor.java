@@ -31,8 +31,6 @@ import unquietcode.tools.flapi.support.v0_2.ObjectWrapper;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.google.common.base.Preconditions.checkState;
-
 
 public class ReturnValueProcessor extends AbstractGenerator {
 
@@ -84,8 +82,12 @@ public class ReturnValueProcessor extends AbstractGenerator {
 
 			@Override
 			public void visit(TerminalTransition transition) {
-				checkState(helperResult != null, "expected an intermediate value");
-				initialValue.set(helperResult);
+				if (helperResult != null) {
+					initialValue.set(helperResult);
+				} else {
+					// null result on a terminal just means that it was void
+					initialValue.set(JExpr._null());
+				}
 			}
 		});
 
@@ -125,6 +127,9 @@ public class ReturnValueProcessor extends AbstractGenerator {
 		transition.accept(new TransitionVisitor.$() {
 			public @Override void visit(TerminalTransition transition) {
 				Class clazz = transition.getReturnType() == null ? Void.class : transition.getReturnType();
+
+				// Set the return type unless it's (V)oid, in which case as a convenience we
+				// set the return to (v)oid, which is also done on the *Helper interfaces.
 
 				if (!clazz.equals(Void.class)) {
 					helperReturnType.set(ctx.model.ref(clazz));

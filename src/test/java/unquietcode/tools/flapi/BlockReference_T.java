@@ -19,14 +19,8 @@
 
 package unquietcode.tools.flapi;
 
+import org.junit.Ignore;
 import org.junit.Test;
-import unquietcode.tools.flapi.outline.BlockOutline;
-import unquietcode.tools.flapi.outline.MethodOutline;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import static junit.framework.Assert.assertEquals;
 
 /**
  * @author Ben Fagin
@@ -34,6 +28,11 @@ import static junit.framework.Assert.assertEquals;
  */
 public class BlockReference_T {
 
+	// Even though this test is no longer relevant, it is still useful for visualizing the
+	// result of the block referencing. Eventually it will benefit from the in-memory compilation
+	// test harness (FLAPI-25).
+
+	@Ignore("This test is irrelevant now.")
 	@Test
 	public void blockReferenceMethodsResolve() {
 		Descriptor descriptor = Flapi.builder()
@@ -49,20 +48,6 @@ public class BlockReference_T {
 			.endBlock()
 		.build();
 
-		// extract the ref and make sure it has methods
-
-		List<BlockReference> refs = new ArrayList<BlockReference>();
-		for (BlockOutline block : descriptor._descriptor.selfBlock.getBlocks()) {
-			for (MethodOutline method : block.getAllMethods()) {
-				for (BlockOutline chain : method.getBlockChain()) {
-					if (chain instanceof BlockReference) {
-						refs.add((BlockReference) chain);
-					}
-				}
-			}
-		}
-
-		assertEquals("one ref", 1, refs.size());
-		assertEquals("one method", 1, refs.get(0).getAllMethods().size());
+		descriptor.writeToStream(System.out);
 	}
 }

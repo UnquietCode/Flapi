@@ -22,14 +22,8 @@ package unquietcode.tools.flapi;
 import unquietcode.tools.flapi.builder.BlockHelper;
 import unquietcode.tools.flapi.builder.DescriptorHelper;
 import unquietcode.tools.flapi.builder.MethodHelper;
-import unquietcode.tools.flapi.outline.BlockOutline;
 import unquietcode.tools.flapi.outline.DescriptorOutline;
-import unquietcode.tools.flapi.outline.MethodOutline;
 import unquietcode.tools.flapi.support.v0_2.ObjectWrapper;
-
-import java.util.HashMap;
-import java.util.IdentityHashMap;
-import java.util.Map;
 
 /**
  * @author Ben Fagin
@@ -72,11 +66,7 @@ public class DescriptorHelperImpl implements DescriptorHelper {
 
 	@Override
 	public Descriptor build() {
-		DescriptorValidator validator = new DescriptorValidator(outline);
-		validator.validate();
-
-		resolveBlockReferences();
-		return new Descriptor(this);
+		return new Descriptor(outline);
 	}
 
 	@Override
@@ -92,78 +82,5 @@ public class DescriptorHelperImpl implements DescriptorHelper {
 	@Override
 	public void startBlock(String blockName, String methodSignature, ObjectWrapper<MethodHelper> _helper1, ObjectWrapper<BlockHelper> _helper2) {
 		BlockHelperImpl._startBlock(outline.selfBlock, blockName, methodSignature, _helper1, _helper2);
-	}
-
-	//---o---o---o---o---o---o---o---o---o---o---o---o---o---o---o---o---o---o---o---o---o---o---//
-
-	private void resolveBlockReferences() {
-		Map<String, BlockOutline> blocks = new HashMap<String, BlockOutline>();
-		_getBlockNames(outline.selfBlock, blocks);
-		_resolveBlockReferences(outline.selfBlock, blocks, new IdentityHashMap<BlockOutline, Object>());
-	}
-
-	private void _getBlockNames(BlockOutline block, Map<String, BlockOutline> blocks) {
-		// references aren't valid names
-		if (block instanceof BlockReference) {
-			return;
-		}
-
-		blocks.put(block.getName(), block);
-
-		for (BlockOutline child : block.getBlocks()) {
-			_getBlockNames(child, blocks);
-		}
-
-		for (MethodOutline method : block.getAllMethods()) {
-			for (BlockOutline chain : method.getBlockChain()) {
-				_getBlockNames(chain, blocks);
-			}
-		}
-	}
-
-	private void _resolveBlockReferences(BlockOutline block, Map<String, BlockOutline> blocks, IdentityHashMap<BlockOutline, Object> seen) {
-		if (seen.containsKey(block)) {
-			return;
-		} else {
-			seen.put(block, null);
-		}
-
-		for (MethodOutline method : block.getAllMethods()) {
-			for (BlockOutline aBlock : method.getBlockChain()) {
-				if (aBlock instanceof BlockReference) {
-					BlockReference _aBlock = (BlockReference) aBlock;
-
-					// skip if already resolved
-					// we need this in case the descriptor is generated twice
-					if (_aBlock.isResolved()) {
-						continue;
-					}
-
-					BlockOutline actual = blocks.get(aBlock.getName());
-
-					// couldn't find a block under that name
-					if (actual == null) {
-						StringBuilder sb = new StringBuilder();
-						sb.append("Invalid block reference '").append(aBlock.getName()).append("'.\n")
-						  .append("Referenced in method ").append(method.getMethodSignature())
-						  .append(" of block '").append(block.getName()).append("'.");
-
-						throw new DescriptorBuilderException(sb.toString());
-					}
-
-					// set the methods
-					aBlock.getAllMethods().addAll(actual.getAllMethods());
-
-					// mark resolved
-					_aBlock.setResolved(true);
-				}
-			}
-		}
-
-		for (MethodOutline method : block.getAllMethods()) {
-			for (BlockOutline chain : method.getBlockChain()) {
-				_resolveBlockReferences(chain, blocks, seen);
-			}
-		}
 	}
 }
