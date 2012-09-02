@@ -1,8 +1,6 @@
 package unquietcode.tools.flapi.examples.pizza;
 
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
 import unquietcode.tools.flapi.Descriptor;
 import unquietcode.tools.flapi.builder.DescriptorGenerator;
 import unquietcode.tools.flapi.examples.pizza.builder.PizzaGenerator;
@@ -18,14 +16,6 @@ import java.util.List;
  * Descriptor example which shows the use of restricted methods.
  */
 public class DisappearingPizzaExample {
-
-	@Rule
-	public TemporaryFolder temp = new TemporaryFolder();
-
-	@Test
-	public void descriptorGenerator() {
-		main(new String[]{temp.getRoot().getAbsolutePath()});
-	}
 
 	public static void main(String[] args) {
 		Descriptor builder =

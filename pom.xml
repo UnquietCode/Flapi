@@ -211,7 +211,7 @@
 								</goals>
 								<configuration>
 									<classpathScope>test</classpathScope>
-									<mainClass>unquietcode.tools.flapi.ActualDescriptorTest</mainClass>
+									<mainClass>unquietcode.tools.flapi.MainDescriptor</mainClass>
 									<arguments>
 										<arg>${project.basedir}/src/main/java</arg>
 									</arguments>

@@ -104,11 +104,6 @@ public abstract class Transition implements Comparable<Transition> {
 		copy.owner = this.owner;
 	}
 
-	// - - --  ---------  - - --   -------- - -   - ----- -- ----------  -- ---
-
-	// ------- - - ------- -------- -  --     -- - -   ---- - -      -----------
-
-
 	public MethodImplementor methodImplementor() {
 		return new MethodImplementor() {
 			public boolean shouldComputeActualReturnType() {

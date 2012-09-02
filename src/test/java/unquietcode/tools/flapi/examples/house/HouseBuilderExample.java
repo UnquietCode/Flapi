@@ -19,9 +19,7 @@
 
 package unquietcode.tools.flapi.examples.house;
 
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
 import unquietcode.tools.flapi.Descriptor;
 import unquietcode.tools.flapi.Flapi;
 import unquietcode.tools.flapi.examples.house.builder.HouseBuilder;
@@ -34,14 +32,6 @@ import java.awt.*;
  * @version 05-28-2012
  */
 public class HouseBuilderExample {
-
-	@Rule
-	public TemporaryFolder temp = new TemporaryFolder();
-
-	@Test
-	public void descriptorGenerator() {
-		main(new String[]{temp.getRoot().getAbsolutePath()});
-	}
 
 	public static void main(String[] args) {
 		Descriptor descriptor = Flapi.builder()
