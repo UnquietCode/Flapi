@@ -84,10 +84,13 @@ public class ReturnValueProcessor extends AbstractGenerator {
 
 			@Override
 			public void visit(TerminalTransition transition) {
+				// null result on a terminal just means that it was void
+
 				if (helperResult != null) {
 					initialValue.set(helperResult);
+				} else if (transition.getStateChain().isEmpty()) {
+					initialValue.set(null);
 				} else {
-					// null result on a terminal just means that it was void
 					initialValue.set(JExpr._null());
 				}
 			}
