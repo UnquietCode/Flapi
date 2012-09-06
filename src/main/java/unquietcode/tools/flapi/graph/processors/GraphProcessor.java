@@ -116,7 +116,7 @@ public class GraphProcessor extends AbstractGenerator implements GenericVisitor<
 		}
 
 		// return call
-		if (returnValue != null) {
+		if (returnValue != null && !ctx.model.VOID.equals(returnType)) {
 			_method.body()._return(returnValue);
 		}
 	}

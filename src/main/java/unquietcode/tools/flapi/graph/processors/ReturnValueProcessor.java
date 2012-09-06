@@ -88,8 +88,6 @@ public class ReturnValueProcessor extends AbstractGenerator {
 
 				if (helperResult != null) {
 					initialValue.set(helperResult);
-				} else if (transition.getStateChain().isEmpty()) {
-					initialValue.set(null);
 				} else {
 					initialValue.set(JExpr._null());
 				}
