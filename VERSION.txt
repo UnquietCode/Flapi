@@ -1,5 +1,30 @@
 # Version 0.1
 Notes also available at: https://github.com/UnquietCode/Flapi/wiki/v0_1
+JIRA: https://unquietcode.atlassian.net/secure/ReleaseNote.jspa?projectId=10160&version=10140
 
 Initial beta release.
+
+------------------------------------------------
+
+# Version 0.2
+Notes also available at: https://github.com/UnquietCode/Flapi/wiki/v0_2
+JIRA: https://unquietcode.atlassian.net/secure/ReleaseNote.jspa?projectId=10160&version=10141
+
+Stable beta release. There are still some features to be added.
+This version includes a few notable changes:
+
++ StateClass rearchitecture [FLAPI-83]
++ common interface for implementation classes [FLAPI-67]
++ intermediate values, descriptor value, etc. [FLAPI-50]
++ implicit terminals [FLAPI-37]
++ more javadocs [FLAPI-7]
++ Remove runtime dependencies on the tool. [FLAPI-47] [FLAPI-70]
++ Change 'once' to 'exactly'. [FLAPI-48]
++ [FLAPI-55] - Utilize the @Generated annotation
++ boolean configuration methods no longer require a parameter [FLAPI-59]
++ loaded into maven repo
++ test improvements
+	+ [FLAPI-25] - Create a test harness to test known cases of compilation failures.
+	+ [FLAPI-56] - Incorporate existing examples into tests.
+
 ------------------------------------------------
