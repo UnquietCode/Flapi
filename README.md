@@ -1,48 +1,52 @@
-#Flapi
-...is a fluent API generator for Java. Fluent builders allow developers to more easily interact with your code, using a syntax more akin to natural language.
-See [these](http://www.unquietcode.com/blog/2011/programming/using-generics-to-build-fluent-apis-in-java) [articles](http://martinfowler.com/bliki/FluentInterface.html)
-for more information.
+Welcome! From here you learn how to start using Flapi.
 
-**Remember:** Flapi is still a beta! Be gentle, and please help the project by testing and reporting bugs.
+## What is it?
+Flapi is a fluent API generator for Java. Fluent builders allow developers to more easily interact with your code, using a syntax more akin to natural language. See [these](http://www.unquietcode.com/blog/2011/programming/using-generics-to-build-fluent-apis-in-java) [articles](http://martinfowler.com/bliki/FluentInterface.html) for more information.
+
+Flapi is now a stable release, with all of the important features implemented. Please help the project by testing and reporting bugs, either on GitHub or JIRA.
 
 ## [Getting Started](https://github.com/UnquietCode/Flapi/wiki/Getting-Started)
-You can grab the latest jar from [the repository](https://github.com/UnquietCode/Flapi/tree/master/lib).
-Requires com.sun.codemodel version 2.2 as a runtime dependency. I'll be setting up a maven repository soon.
+You can grab the latest jar from [the repository](https://github.com/UnquietCode/Flapi/tree/master/lib)
+directly.
+
+Or, if you are using Maven you can also include the following repository and dependency in your POM file:
+```
+<repositories>
+  <repository>
+    <id>uqc</id>
+    <name>UnquietCode Repository</name>
+    <url>http://www.unquietcode.com/maven/releases</url>
+  </repository>
+</repositories>
+
+...
+
+<dependency>
+  <groupId>unquietcode.tools.flapi</groupId>
+  <artifactId>flapi</artifactId>
+  <version>0.2</version>
+</dependency>
+```
+
+## What's New?
+Version 0.2 is out and includes bugfixes, a rearchitecture of the underlying code generation logic, and a few
+changes to the API. New features include multiple return values and implicit terminals. See the
+[Release Notes](https://github.com/UnquietCode/Flapi/wiki/v0_2) for the full details. The [House Builder example](https://github.com/UnquietCode/Flapi/wiki/House-Builder-Example) 
+demonstrates both implicit terminals and returning multiple values.
+
+As well, the 'support' classes are now written out alongside the descriptors, which means that Flapi is no longer required as a runtime dependency when using your generated builders. (yay!)
 
 ## [Examples](https://github.com/UnquietCode/Flapi/wiki/Examples)
+Many helpful examples are included on the wiki, corresponding to examples and tests in the src/test directory.
 
 ## [Blog Post](http://www.unquietcode.com/blog/2012/software/introducing-flapi)
+The original blog post describing Flapi.
 
 ## Problems?
-Use the [issue tracker](https://github.com/UnquietCode/Flapi/issues) to report problems encountered. Remember, this is still a beta.
+Use the [issue tracker](https://github.com/UnquietCode/Flapi/issues) to report problems encountered or new
+feature requests.
 
 ## Contributing
 Feel free to fork the project and fiddle around! Submit pull requests to improve the code. Create issues to help support the project.
 
 # Thanks!
-
--------------------------------------------
-Flapi - the fluent API generator for Java
-For more information, visit http://www.unquietcode.com/flapi
-
-Copyright 2011-2012 Benjamin Fagin
-Licensed under the Apache License 2.0.
-View the LICENSE.txt file for more information.
-
-Current version is 0.1
-See the VERSION.txt notes for more information.
-
--------------------------------------------
-To use:
-
-Add the maven dependency or jar to your project. Using the included classes,
-build a descriptor. Use the descriptor to generate code files in a directory.
-Finally, pull those files into your project. Implement the various *Helper
-classes and their methods. Once everything is wired together you can make
-use of your new API!
-
-See [the wiki](https://github.com/UnquietCode/Flapi/wiki) for more information on how to get started. You might also
-find some useful examples in the src/test directory.
-
-
-Enjoy!
