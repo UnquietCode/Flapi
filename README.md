@@ -1,5 +1,3 @@
-Welcome! From here you learn how to start using Flapi.
-
 ## What is it?
 Flapi is a fluent API generator for Java. Fluent builders allow developers to more easily interact with your code, using a syntax more akin to natural language. See [these](http://www.unquietcode.com/blog/2011/programming/using-generics-to-build-fluent-apis-in-java) [articles](http://martinfowler.com/bliki/FluentInterface.html) for more information.
 
