@@ -44,8 +44,13 @@ public class Flapi {
 		return DescriptorGenerator.create(new DescriptorHelperImpl());
 	}
 
+	/**
+	 * Set the JDK version that Flapi should use when generating source files.
+	 * Certain features are only available in newer versions of the runtime.
+	 *
+	 * @param version the JDK version to use when generating sources
+	 */
 	public static void setJDKVersion(SourceVersion version) {
-
 		if (version != null && version.ordinal() >= SourceVersion.RELEASE_5.ordinal()) {
 			JDKVersion = version;
 		} else {
@@ -53,6 +58,9 @@ public class Flapi {
 		}
 	}
 
+	/**
+	 * @return the JDK version currently being used when generating source files.
+	 */
 	public static SourceVersion getJDKVersion() {
 		return JDKVersion;
 	}

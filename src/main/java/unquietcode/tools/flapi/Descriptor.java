@@ -39,10 +39,28 @@ public class Descriptor {
 		model = generator.generate();
 	}
 
+	/**
+	 * Write the generated classes to a stream. The order is generally alphabetic
+	 * but is not guaranteed. Several lines of separator are written out between
+	 * each file.
+	 *
+	 * @see com.sun.codemodel.writer.SingleStreamCodeWriter
+	 * @param stream to write generated files
+	 */
 	public void writeToStream(OutputStream stream) {
 		CodeWriter.writeToStream(model, stream);
 	}
 
+	/**
+	 * Write the generated classes out to the specified folder.
+	 * Classes in other packages will be written to folders relative
+	 * to this one.
+	 *
+	 * Existing files will be overwritten!
+	 *
+	 * @see com.sun.codemodel.writer.FileCodeWriter
+	 * @param folder where files are to be written
+	 */
 	public void writeToFolder(String folder) {
 		File f = new File(folder);
 		if (!f.exists()) {
