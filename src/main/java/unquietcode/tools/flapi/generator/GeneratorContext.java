@@ -40,8 +40,10 @@ import java.util.TreeSet;
  * @version 03-07-2012
  */
 public class GeneratorContext {
+	private static final SimpleDateFormat dateFormat = new SimpleDateFormat("MMMM dd, yyyy H:mm:ss z");
+
 	public final JCodeModel model = new JCodeModel();
-	final JPackage thePackage;
+	private final JPackage thePackage;
 	private final Map<String, JDefinedClass> interfaces = new HashMap<String, JDefinedClass>();
 	private final Map<String, JDefinedClass> classes = new HashMap<String, JDefinedClass>();
 	private boolean condenseNames = false;
@@ -149,8 +151,6 @@ public class GeneratorContext {
 	private Date generationDate = null;
 
 	private void addGeneratedHeader(JDefinedClass clazz) {
-		final SimpleDateFormat dateFormat = new SimpleDateFormat("MMMM dd, yyyy k:mm:ss z");
-
 		if (header == null) {
 			generationDate = new Date();
 

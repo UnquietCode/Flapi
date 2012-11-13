@@ -56,8 +56,8 @@ public class HouseBuilderExample {
 
 		// using the builder
 		Wall wall1 = houseBuilder.addWall()
-			.setColor(Color.RED)
 			.setWidth(120.35)
+			.setColor(Color.RED)
 		;
 
 		Wall wall2 = houseBuilder.addWall()
