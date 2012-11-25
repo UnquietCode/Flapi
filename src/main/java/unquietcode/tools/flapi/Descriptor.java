@@ -75,7 +75,10 @@ public class Descriptor {
 			throw new DescriptorBuilderException("Cannot write to folder '"+folder+"'.");
 		}
 
-		CodeWriter.writeToDirectory(model, f);
+		// write out the support classes
 		CodeWriter.writeRequiredClasses(f);
+
+		// always do this last so we don't unnecessarily write files
+		CodeWriter.writeToDirectory(model, f);
 	}
 }

@@ -24,9 +24,6 @@ import com.sun.codemodel.writer.FileCodeWriter;
 import com.sun.codemodel.writer.SingleStreamCodeWriter;
 
 import java.io.*;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.nio.channels.FileChannel;
 import java.util.Scanner;
 
 /**
@@ -68,8 +65,9 @@ public class CodeWriter {
 		}
 
 		for (String requiredFile : Constants.REQUIRED_FILES) {
-			String fileName = requiredFile+".java";
-			copyFile(getResourceFile(fileName), createFile(dir.getAbsolutePath(), fileName));
+			String resourceName = requiredFile+".avaj";
+			String fileName = requiredFile+".java";   // get it? :)
+			copyFile(getResourceFile(resourceName), createFile(dir.getAbsolutePath(), fileName));
 		}
 	}
 
@@ -113,6 +111,7 @@ public class CodeWriter {
 
 		try {
 			String data = new Scanner(sourceFile).useDelimiter("\\A").next();
+			data = data.replaceAll("\\$VERSION\\$", Constants.getVersionLabel());
 			destination = new FileOutputStream(destFile);
 			destination.write(data.getBytes());
 		} catch (Exception ex) {

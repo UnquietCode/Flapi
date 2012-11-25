@@ -35,7 +35,7 @@ public final class Constants {
 	private Constants() { }
 
 	public static final String PROJECT_URL = "http://www.unquietcode.com/flapi";
-	public static final String PROJECT_VERSION = "0.2";
+	public static final String PROJECT_VERSION = "0.3";     // TODO I hate this. Can we get it from the build?
 
 	public static final String RETURN_TYPE_NAME = "_ReturnType";
 	public static final String RETURN_VALUE_NAME = "_returnValue";
@@ -49,12 +49,16 @@ public final class Constants {
 	};
 
 	public static String getSupportPath(File folder) {
-		String version[] = PROJECT_VERSION.split("\\.");
 		String path = folder.getAbsolutePath();
 		path += File.separator;
 		path += "unquietcode"+File.separator+"tools"+File.separator+"flapi"+File.separator+"support"+File.separator;
-		path += "v"+version[0]+"_"+version[1];
+		path += getVersionLabel();
 
 		return path;
+	}
+
+	public static String getVersionLabel() {
+		String version[] = PROJECT_VERSION.split("\\.");
+		return "v"+version[0]+"_"+version[1];
 	}
 }
