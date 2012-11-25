@@ -2,9 +2,8 @@ package unquietcode.tools.flapi.examples.email;
 
 import org.junit.Test;
 import unquietcode.tools.flapi.Descriptor;
-import unquietcode.tools.flapi.builder.DescriptorGenerator;
+import unquietcode.tools.flapi.Flapi;
 import unquietcode.tools.flapi.examples.email.builder.EmailGenerator;
-import unquietcode.tools.flapi.helpers.DescriptorHelperImpl;
 
 /**
  * @author Benjamin Fagin
@@ -15,22 +14,20 @@ import unquietcode.tools.flapi.helpers.DescriptorHelperImpl;
 public class EmailBuilderExample {
 
 	public static void main(String[] args) {
-		Descriptor builder =
-			DescriptorGenerator.create(new DescriptorHelperImpl())
-				.setPackage("unquietcode.tools.flapi.examples.email.builder")
-				.setStartingMethodName("compose")
-				.setDescriptorName("Email")
+		Descriptor builder = Flapi.builder()
+			.setPackage("unquietcode.tools.flapi.examples.email.builder")
+			.setStartingMethodName("compose")
+			.setDescriptorName("Email")
 
-				.addMethod("subject(String subject)").atMost(1)
-				.addMethod("addRecipient(String emailAddress)").atLeast(1)
-				.addMethod("sender(String emailAddress)").exactly(1)
-				.addMethod("addCC(String emailAddress)").any()
-				.addMethod("addBCC(String emailAddress)").any()
-				.addMethod("body(String text)").atMost(1)
-				.addMethod("addAttachment(java.io.File file)").any()
-				.addMethod("send()").last(EmailMessage.class)
-			.build()
-		;
+			.addMethod("subject(String subject)").atMost(1)
+			.addMethod("addRecipient(String emailAddress)").atLeast(1)
+			.addMethod("sender(String emailAddress)").exactly(1)
+			.addMethod("addCC(String emailAddress)").any()
+			.addMethod("addBCC(String emailAddress)").any()
+			.addMethod("body(String text)").atMost(1)
+			.addMethod("addAttachment(java.io.File file)").any()
+			.addMethod("send()").last(EmailMessage.class)
+		.build();
 
 		builder.writeToFolder(args[0]);
 	}

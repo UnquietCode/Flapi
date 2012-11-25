@@ -2,9 +2,8 @@ package unquietcode.tools.flapi.examples.pizza;
 
 import org.junit.Test;
 import unquietcode.tools.flapi.Descriptor;
-import unquietcode.tools.flapi.builder.DescriptorGenerator;
+import unquietcode.tools.flapi.Flapi;
 import unquietcode.tools.flapi.examples.pizza.builder.PizzaGenerator;
-import unquietcode.tools.flapi.helpers.DescriptorHelperImpl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,18 +17,16 @@ import java.util.List;
 public class DisappearingPizzaExample {
 
 	public static void main(String[] args) {
-		Descriptor builder =
-			DescriptorGenerator.create(new DescriptorHelperImpl())
-				.setPackage("unquietcode.tools.flapi.examples.pizza.builder")
-				.setStartingMethodName("makePizza")
-				.setDescriptorName("Pizza")
+		Descriptor builder = Flapi.builder()
+			.setPackage("unquietcode.tools.flapi.examples.pizza.builder")
+			.setStartingMethodName("makePizza")
+			.setDescriptorName("Pizza")
 
-				.addMethod("addSauce(unquietcode.tools.flapi.examples.pizza.DisappearingPizzaExample.SauceType sauceType)").atMost(1)
-				.addMethod("addCheese()").atMost(1)
-				.addMethod("addTopping(unquietcode.tools.flapi.examples.pizza.DisappearingPizzaExample.Topping topping)").atMost(3)
-				.addMethod("bake()").last(Pizza.class)
-			.build()
-		;
+			.addMethod("addSauce(unquietcode.tools.flapi.examples.pizza.DisappearingPizzaExample.SauceType sauceType)").atMost(1)
+			.addMethod("addCheese()").atMost(1)
+			.addMethod("addTopping(unquietcode.tools.flapi.examples.pizza.DisappearingPizzaExample.Topping topping)").atMost(3)
+			.addMethod("bake()").last(Pizza.class)
+		.build();
 
 		builder.writeToFolder(args[0]);
 	}

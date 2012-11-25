@@ -4,11 +4,10 @@ import com.sun.org.apache.xml.internal.serializer.OutputPropertiesFactory;
 import org.junit.Test;
 import org.w3c.dom.Document;
 import unquietcode.tools.flapi.Descriptor;
-import unquietcode.tools.flapi.builder.DescriptorGenerator;
+import unquietcode.tools.flapi.Flapi;
 import unquietcode.tools.flapi.examples.xhtml.builder.ElementBuilder_setValue;
 import unquietcode.tools.flapi.examples.xhtml.builder.XHTMLBuilder;
 import unquietcode.tools.flapi.examples.xhtml.builder.XHTMLGenerator;
-import unquietcode.tools.flapi.helpers.DescriptorHelperImpl;
 
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
@@ -27,24 +26,22 @@ import java.util.List;
 public class XHTMLBuilderExample {
 
 	public static void main(String[] args) {
-		Descriptor builder =
-			DescriptorGenerator.create(new DescriptorHelperImpl())
-				.setPackage("unquietcode.tools.flapi.examples.xhtml.builder")
-				.setStartingMethodName("createDocument")
-				.setDescriptorName("XHTML")
+		Descriptor builder = Flapi.builder()
+			.setPackage("unquietcode.tools.flapi.examples.xhtml.builder")
+			.setStartingMethodName("createDocument")
+			.setDescriptorName("XHTML")
 
+			.addMethod("addComment(String comment)").any()
+			.addMethod("done()").last(Document.class)
+
+			.startBlock("Element", "startElement(String tagName)").any()
+				.addMethod("setValue(String value)").atMost(1)
+				.addMethod("addAttribute(String key, String value)").any()
 				.addMethod("addComment(String comment)").any()
-				.addMethod("done()").last(Document.class)
-
-				.startBlock("Element", "startElement(String tagName)").any()
-					.addMethod("setValue(String value)").atMost(1)
-					.addMethod("addAttribute(String key, String value)").any()
-					.addMethod("addComment(String comment)").any()
-					.addMethod("endElement()").last()
-					.addBlockReference("Element", "startElement(String tagName)").any()
-				.endBlock()
-			.build()
-		;
+				.addMethod("endElement()").last()
+				.addBlockReference("Element", "startElement(String tagName)").any()
+			.endBlock()
+		.build();
 
 		builder.writeToFolder(args[0]);
 	}
