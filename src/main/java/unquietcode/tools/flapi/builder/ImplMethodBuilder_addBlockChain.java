@@ -15,10 +15,10 @@ import javax.annotation.Generated;
  * Visit http://www.unquietcode.com/flapi for more information.
  * 
  * 
- * Generated on September 01, 2012 18:27:59 CDT using version 0.2
+ * Generated on November 24, 2012 14:26:52 CST using version 0.3
  * 
  */
-@Generated(value = "unquietcode.tools.flapi", date = "September 01, 2012 18:27:59 CDT", comments = "generated using Flapi, the fluent API generator for Java")
+@Generated(value = "unquietcode.tools.flapi", date = "November 24, 2012 14:26:52 CST", comments = "generated using Flapi, the fluent API generator for Java")
 public class ImplMethodBuilder_addBlockChain
     implements MethodBuilder_addBlockChain, BuilderImplementation
 {
@@ -47,16 +47,23 @@ public class ImplMethodBuilder_addBlockChain
         // nothing
     }
 
-    public Object last(Class returnType) {
+    public Object any() {
         _checkInvocations();
-        _helper.last(returnType);
+        _helper.any();
          
         return _returnValue;
     }
 
-    public Object any() {
+    public Object between(int atLeast, int atMost) {
         _checkInvocations();
-        _helper.any();
+        _helper.between(atLeast, atMost);
+         
+        return _returnValue;
+    }
+
+    public Object atLeast(int num) {
+        _checkInvocations();
+        _helper.atLeast(num);
          
         return _returnValue;
     }
@@ -82,13 +89,6 @@ public class ImplMethodBuilder_addBlockChain
         return _returnValue;
     }
 
-    public Object atLeast(int num) {
-        _checkInvocations();
-        _helper.atLeast(num);
-         
-        return _returnValue;
-    }
-
     public BlockChainBuilder_addBlockChain addBlockChain() {
         ObjectWrapper<BlockChainHelper> helper1 = new ObjectWrapper<BlockChainHelper>();
         _helper.addBlockChain(helper1);
@@ -99,9 +99,9 @@ public class ImplMethodBuilder_addBlockChain
         return step2;
     }
 
-    public Object between(int atLeast, int atMost) {
+    public Object last(Class returnType) {
         _checkInvocations();
-        _helper.between(atLeast, atMost);
+        _helper.last(returnType);
          
         return _returnValue;
     }

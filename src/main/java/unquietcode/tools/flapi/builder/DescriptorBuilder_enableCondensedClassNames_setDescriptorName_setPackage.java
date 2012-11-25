@@ -14,23 +14,27 @@ import javax.annotation.Generated;
  * Visit http://www.unquietcode.com/flapi for more information.
  * 
  * 
- * Generated on September 01, 2012 18:27:59 CDT using version 0.2
+ * Generated on November 24, 2012 14:26:52 CST using version 0.3
  * 
  */
-@Generated(value = "unquietcode.tools.flapi", date = "September 01, 2012 18:27:59 CDT", comments = "generated using Flapi, the fluent API generator for Java")
+@Generated(value = "unquietcode.tools.flapi", date = "November 24, 2012 14:26:52 CST", comments = "generated using Flapi, the fluent API generator for Java")
 public interface DescriptorBuilder_enableCondensedClassNames_setDescriptorName_setPackage<_ReturnType >{
 
 
-    DescriptorBuilder_enableCondensedClassNames_setPackage<_ReturnType> setDescriptorName(String descriptorName);
-
-    DescriptorBuilder_enableCondensedClassNames_setDescriptorName<_ReturnType> setPackage(String packageName);
-
-    DescriptorBuilder_setDescriptorName_setPackage<_ReturnType> enableCondensedClassNames();
+    MethodBuilder_addBlockChain<DescriptorBuilder_enableCondensedClassNames_setDescriptorName_setPackage<_ReturnType>> addBlockReference(String blockName, String methodSignature);
 
     MethodBuilder_addBlockChain<BlockBuilder<DescriptorBuilder_enableCondensedClassNames_setDescriptorName_setPackage<_ReturnType>>> startBlock(String blockName, String methodSignature);
 
     Descriptor build();
 
+    DescriptorBuilder_setDescriptorName_setPackage<_ReturnType> enableCondensedClassNames();
+
+    MethodBuilder_addBlockChain<BlockBuilder<DescriptorBuilder_enableCondensedClassNames_setDescriptorName_setPackage<_ReturnType>>> startBlock(String methodSignature);
+
     MethodBuilder_addBlockChain<DescriptorBuilder_enableCondensedClassNames_setDescriptorName_setPackage<_ReturnType>> addMethod(String methodSignature);
+
+    DescriptorBuilder_enableCondensedClassNames_setPackage<_ReturnType> setDescriptorName(String descriptorName);
+
+    DescriptorBuilder_enableCondensedClassNames_setDescriptorName<_ReturnType> setPackage(String packageName);
 
 }

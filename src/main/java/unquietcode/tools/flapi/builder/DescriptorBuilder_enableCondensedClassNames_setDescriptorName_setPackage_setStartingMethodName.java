@@ -14,25 +14,29 @@ import javax.annotation.Generated;
  * Visit http://www.unquietcode.com/flapi for more information.
  * 
  * 
- * Generated on September 01, 2012 18:27:59 CDT using version 0.2
+ * Generated on November 24, 2012 14:26:52 CST using version 0.3
  * 
  */
-@Generated(value = "unquietcode.tools.flapi", date = "September 01, 2012 18:27:59 CDT", comments = "generated using Flapi, the fluent API generator for Java")
+@Generated(value = "unquietcode.tools.flapi", date = "November 24, 2012 14:26:52 CST", comments = "generated using Flapi, the fluent API generator for Java")
 public interface DescriptorBuilder_enableCondensedClassNames_setDescriptorName_setPackage_setStartingMethodName<_ReturnType >{
 
 
-    Descriptor build();
-
     MethodBuilder_addBlockChain<DescriptorBuilder_enableCondensedClassNames_setDescriptorName_setPackage_setStartingMethodName<_ReturnType>> addMethod(String methodSignature);
-
-    DescriptorBuilder_enableCondensedClassNames_setDescriptorName_setStartingMethodName<_ReturnType> setPackage(String packageName);
-
-    DescriptorBuilder_enableCondensedClassNames_setDescriptorName_setPackage<_ReturnType> setStartingMethodName(String methodName);
-
-    DescriptorBuilder_setDescriptorName_setPackage_setStartingMethodName<_ReturnType> enableCondensedClassNames();
 
     DescriptorBuilder_enableCondensedClassNames_setPackage_setStartingMethodName<_ReturnType> setDescriptorName(String descriptorName);
 
+    Descriptor build();
+
+    DescriptorBuilder_enableCondensedClassNames_setDescriptorName_setPackage<_ReturnType> setStartingMethodName(String methodName);
+
+    MethodBuilder_addBlockChain<BlockBuilder<DescriptorBuilder_enableCondensedClassNames_setDescriptorName_setPackage_setStartingMethodName<_ReturnType>>> startBlock(String methodSignature);
+
     MethodBuilder_addBlockChain<BlockBuilder<DescriptorBuilder_enableCondensedClassNames_setDescriptorName_setPackage_setStartingMethodName<_ReturnType>>> startBlock(String blockName, String methodSignature);
+
+    DescriptorBuilder_setDescriptorName_setPackage_setStartingMethodName<_ReturnType> enableCondensedClassNames();
+
+    DescriptorBuilder_enableCondensedClassNames_setDescriptorName_setStartingMethodName<_ReturnType> setPackage(String packageName);
+
+    MethodBuilder_addBlockChain<DescriptorBuilder_enableCondensedClassNames_setDescriptorName_setPackage_setStartingMethodName<_ReturnType>> addBlockReference(String blockName, String methodSignature);
 
 }

@@ -14,10 +14,10 @@ import javax.annotation.Generated;
  * Visit http://www.unquietcode.com/flapi for more information.
  * 
  * 
- * Generated on September 01, 2012 18:27:59 CDT using version 0.2
+ * Generated on November 24, 2012 14:26:52 CST using version 0.3
  * 
  */
-@Generated(value = "unquietcode.tools.flapi", date = "September 01, 2012 18:27:59 CDT", comments = "generated using Flapi, the fluent API generator for Java")
+@Generated(value = "unquietcode.tools.flapi", date = "November 24, 2012 14:26:52 CST", comments = "generated using Flapi, the fluent API generator for Java")
 public class ImplMethodBuilder
     implements MethodBuilder, BuilderImplementation
 {
@@ -46,20 +46,6 @@ public class ImplMethodBuilder
         // nothing
     }
 
-    public Object atLeast(int num) {
-        _checkInvocations();
-        _helper.atLeast(num);
-         
-        return _returnValue;
-    }
-
-    public Object last(Class returnType) {
-        _checkInvocations();
-        _helper.last(returnType);
-         
-        return _returnValue;
-    }
-
     public Object exactly(int num) {
         _checkInvocations();
         _helper.exactly(num);
@@ -67,9 +53,16 @@ public class ImplMethodBuilder
         return _returnValue;
     }
 
-    public Object last() {
+    public Object atMost(int num) {
         _checkInvocations();
-        _helper.last();
+        _helper.atMost(num);
+         
+        return _returnValue;
+    }
+
+    public Object atLeast(int num) {
+        _checkInvocations();
+        _helper.atLeast(num);
          
         return _returnValue;
     }
@@ -81,16 +74,23 @@ public class ImplMethodBuilder
         return _returnValue;
     }
 
-    public Object between(int atLeast, int atMost) {
+    public Object last() {
         _checkInvocations();
-        _helper.between(atLeast, atMost);
+        _helper.last();
          
         return _returnValue;
     }
 
-    public Object atMost(int num) {
+    public Object last(Class returnType) {
         _checkInvocations();
-        _helper.atMost(num);
+        _helper.last(returnType);
+         
+        return _returnValue;
+    }
+
+    public Object between(int atLeast, int atMost) {
+        _checkInvocations();
+        _helper.between(atLeast, atMost);
          
         return _returnValue;
     }

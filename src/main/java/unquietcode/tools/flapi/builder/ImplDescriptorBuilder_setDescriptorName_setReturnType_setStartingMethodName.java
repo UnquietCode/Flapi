@@ -18,10 +18,10 @@ import java.lang.reflect.Field;
  * Visit http://www.unquietcode.com/flapi for more information.
  * 
  * 
- * Generated on September 01, 2012 18:27:59 CDT using version 0.2
+ * Generated on November 24, 2012 14:26:52 CST using version 0.3
  * 
  */
-@Generated(value = "unquietcode.tools.flapi", date = "September 01, 2012 18:27:59 CDT", comments = "generated using Flapi, the fluent API generator for Java")
+@Generated(value = "unquietcode.tools.flapi", date = "November 24, 2012 14:26:52 CST", comments = "generated using Flapi, the fluent API generator for Java")
 public class ImplDescriptorBuilder_setDescriptorName_setReturnType_setStartingMethodName
     implements DescriptorBuilder_setDescriptorName_setReturnType_setStartingMethodName, BuilderImplementation
 {
@@ -60,9 +60,9 @@ public class ImplDescriptorBuilder_setDescriptorName_setReturnType_setStartingMe
         }
     }
 
-    public MethodBuilder_addBlockChain addMethod(String methodSignature) {
+    public MethodBuilder_addBlockChain addBlockReference(String blockName, String methodSignature) {
         ObjectWrapper<MethodHelper> helper1 = new ObjectWrapper<MethodHelper>();
-        _helper.addMethod(methodSignature, helper1);
+        _helper.addBlockReference(blockName, methodSignature, helper1);
         ImplMethodBuilder_addBlockChain step1 = new ImplMethodBuilder_addBlockChain(helper1 .get(), this);
          
         return step1;
@@ -80,15 +80,6 @@ public class ImplDescriptorBuilder_setDescriptorName_setReturnType_setStartingMe
         return intermediateResult;
     }
 
-    public DescriptorBuilder_setReturnType_setStartingMethodName setDescriptorName(String descriptorName) {
-        --ic_Descriptor_setDescriptorName$String_descriptorName;
-        _helper.setDescriptorName(descriptorName);
-        ImplDescriptorBuilder_setReturnType_setStartingMethodName step1 = new ImplDescriptorBuilder_setReturnType_setStartingMethodName(_helper, _returnValue);
-         
-        _transferInvocations(step1);
-        return step1;
-    }
-
     public DescriptorBuilder_setDescriptorName_setReturnType setStartingMethodName(String methodName) {
         _helper.setStartingMethodName(methodName);
         ImplDescriptorBuilder_setDescriptorName_setReturnType step1 = new ImplDescriptorBuilder_setDescriptorName_setReturnType(_helper, _returnValue);
@@ -97,12 +88,14 @@ public class ImplDescriptorBuilder_setDescriptorName_setReturnType_setStartingMe
         return step1;
     }
 
-    public DescriptorBuilder_setDescriptorName_setStartingMethodName setReturnType(Class returnType) {
-        _helper.setReturnType(returnType);
-        ImplDescriptorBuilder_setDescriptorName_setStartingMethodName step1 = new ImplDescriptorBuilder_setDescriptorName_setStartingMethodName(_helper, _returnValue);
+    public MethodBuilder_addBlockChain startBlock(String methodSignature) {
+        ObjectWrapper<MethodHelper> helper1 = new ObjectWrapper<MethodHelper>();
+        ObjectWrapper<BlockHelper> helper2 = new ObjectWrapper<BlockHelper>();
+        _helper.startBlock(methodSignature, helper1, helper2);
+        ImplBlockBuilder step1 = new ImplBlockBuilder(helper2 .get(), this);
+        ImplMethodBuilder_addBlockChain step2 = new ImplMethodBuilder_addBlockChain(helper1 .get(), step1);
          
-        _transferInvocations(step1);
-        return step1;
+        return step2;
     }
 
     public MethodBuilder_addBlockChain startBlock(String blockName, String methodSignature) {
@@ -113,6 +106,31 @@ public class ImplDescriptorBuilder_setDescriptorName_setReturnType_setStartingMe
         ImplMethodBuilder_addBlockChain step2 = new ImplMethodBuilder_addBlockChain(helper1 .get(), step1);
          
         return step2;
+    }
+
+    public DescriptorBuilder_setDescriptorName_setStartingMethodName setReturnType(Class returnType) {
+        _helper.setReturnType(returnType);
+        ImplDescriptorBuilder_setDescriptorName_setStartingMethodName step1 = new ImplDescriptorBuilder_setDescriptorName_setStartingMethodName(_helper, _returnValue);
+         
+        _transferInvocations(step1);
+        return step1;
+    }
+
+    public DescriptorBuilder_setReturnType_setStartingMethodName setDescriptorName(String descriptorName) {
+        --ic_Descriptor_setDescriptorName$String_descriptorName;
+        _helper.setDescriptorName(descriptorName);
+        ImplDescriptorBuilder_setReturnType_setStartingMethodName step1 = new ImplDescriptorBuilder_setReturnType_setStartingMethodName(_helper, _returnValue);
+         
+        _transferInvocations(step1);
+        return step1;
+    }
+
+    public MethodBuilder_addBlockChain addMethod(String methodSignature) {
+        ObjectWrapper<MethodHelper> helper1 = new ObjectWrapper<MethodHelper>();
+        _helper.addMethod(methodSignature, helper1);
+        ImplMethodBuilder_addBlockChain step1 = new ImplMethodBuilder_addBlockChain(helper1 .get(), this);
+         
+        return step1;
     }
 
 }
