@@ -16,22 +16,25 @@
 
      Read the included LICENSE.TXT for more information.
  ******************************************************************************/
-
-package unquietcode.tools.flapi.outline;
-
-
+package unquietcode.tools.flapi.support.v0_3;
 /**
  * @author Ben Fagin
- * @version 03-10-2012
+ * @version 05-31-2012
  *
- * A block which serves as a reference to an already created block.
- * Instances should therefore not be treated as 'definitions' of
- * blocks but rather containers of information related to an existing
- * block. Certain properties however, such as the {@link #getConstructor()},
- * are unique to each {@link BlockOutline}, including references.
+ * Thrown when the number of invocations of a particular method
+ * is greater or less than the expected number, as determined
+ * by the individual descriptor.
  */
-public class BlockReference extends BlockOutline {
-	public BlockReference(BlockOutline parentBlock) {
-		super(parentBlock);
+public class ExpectedInvocationsException extends RuntimeException {
+	public ExpectedInvocationsException(String message) {
+		super(message);
+	}
+
+	public ExpectedInvocationsException(Throwable cause) {
+		super(cause);
+	}
+
+	public ExpectedInvocationsException(String message, Throwable cause) {
+		super(message, cause);
 	}
 }

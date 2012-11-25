@@ -50,4 +50,30 @@ public class BlockReference_T {
 
 		descriptor.writeToStream(System.out);
 	}
+
+	@Ignore("unfinished")
+	@Test
+	public void testThatBlockReferencesKeepBlockChain() {
+		Descriptor descriptor = Flapi.builder()
+			.setDescriptorName("Something")
+			.setPackage("some.thing")
+
+			.startBlock("One", "one()").any()
+				.addMethod("exit()").last()
+			.endBlock()
+
+			.startBlock("Two", "two()")
+				.addBlockChain().addBlockReference("One").any()
+				.addMethod("exit()").last()
+			.endBlock()
+
+			.startBlock("Three", "three()").any()
+				.addBlockReference("Two", "twoRef()").last() // this should go One->Two->exit
+			.endBlock()
+
+			.addMethod("exit()").last()
+		.build();
+
+		descriptor.writeToStream(System.out);
+	}
 }

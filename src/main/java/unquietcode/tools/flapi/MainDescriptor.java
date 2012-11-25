@@ -87,30 +87,21 @@ public class MainDescriptor {
 					.addBlockChain().addBlockReference("Method")
 				.any()
 
-//				.addBlockReference("Block", "startBlock(String methodSignature)").any()
+				.addBlockReference("Block", "startBlock(String methodSignature)")
+					.addBlockChain().addBlockReference("Method")
+				.any()
 
 				.addMethod("endBlock()").last()
 			.endBlock()
 
-			// Block Reference (copied out of Block's use, because it's not encapsulated anywhere)
-//			.addMethod("addBlockReference(String blockName, String methodSignature)")
-//				.addBlockChain().addBlockReference("Method")
-//			.any()
+			// Block Reference (copied out of Block's use)
+			.addMethod("addBlockReference(String blockName, String methodSignature)")
+				.addBlockChain().addBlockReference("Method")
+			.any()
 
-			// Now that it's available, this can become:
-//			.addBlockReference("Block", "startBlock(String methodSignature)").any()
-//						.endBlock().endBlock()
-//
-			// which I expect to create the method startBlock(...)
-			// which goes from Method -> Block -> Parent
-			// but it is actually creating
-
-			// support this?
-//			.addMethod("startBlock(String methodSignature)")
-//				.addBlockChain().addBlockReference("Block")
-//			.any()
-
-
+			.addBlockReference("Block", "startBlock(String methodSignature)")
+				.addBlockChain().addBlockReference("Method")
+			.any()
 		.build();
 
 		builder.writeToFolder(args[0]);

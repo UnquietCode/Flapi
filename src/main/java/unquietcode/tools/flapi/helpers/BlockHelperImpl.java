@@ -64,7 +64,21 @@ public class BlockHelperImpl implements BlockHelper {
 	}
 
 	@Override
+	public void startBlock(String methodSignature, ObjectWrapper<MethodHelper> _helper1, ObjectWrapper<BlockHelper> _helper2) {
+		_startBlock(block, null, methodSignature, _helper1, _helper2);
+	}
+
+	@Override
 	public void addBlockReference(String blockName, String methodSignature, ObjectWrapper<MethodHelper> _helper1) {
+		_addBlockReference(block, blockName, methodSignature, _helper1);
+	}
+
+	static void _addBlockReference(
+		BlockOutline block,
+		String blockName,
+		String methodSignature,
+		ObjectWrapper<MethodHelper> _helper1
+	){
 		BlockReference blockReference = new BlockReference(block);
 		blockReference.setName(blockName);
 

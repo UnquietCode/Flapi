@@ -56,7 +56,7 @@ public class GraphBuilder {
 		return convertBlock(descriptor.selfBlock);
 	}
 
-	private void findAllBlocks(Map<String, BlockOutline> blocks, BlockOutline block) {
+	private static void findAllBlocks(Map<String, BlockOutline> blocks, BlockOutline block) {
 		if (block instanceof BlockReference) {
 			return;
 		}
@@ -74,9 +74,9 @@ public class GraphBuilder {
 		}
 	}
 
-	private void initializeReferenceMap(Map<String, BlockOutline> blocks,
-	                                    Map<BlockReference, BlockOutline> references,
-	                                    BlockOutline block
+	private static void initializeReferenceMap(Map<String, BlockOutline> blocks,
+		                                       Map<BlockReference, BlockOutline> references,
+	                                           BlockOutline block
 	){
 		if (block instanceof BlockReference) {
 			BlockOutline resolved = blocks.get(block.getName());
@@ -111,20 +111,20 @@ public class GraphBuilder {
 		StateClass baseState = getStateFromBlockAndMethods(block, block.getRequiredMethods());
 		baseState.setName(blockName);
 
-		for (MethodOutline method : block.getRequiredMethods()) {
-			addTransition(baseState, block, block.getRequiredMethods(), method);
+		for (MethodOutline requiredMethod : block.getRequiredMethods()) {
+			addTransition(baseState, block, block.getRequiredMethods(), requiredMethod);
 		}
 
 		// create the sibling states
-		for (Set<MethodOutline> methods : makeCombinations(block.getDynamicMethods())) {
-			StateClass combination = getStateFromBlockAndMethods(block, methods);
+		for (Set<MethodOutline> combination : makeCombinations(block.getDynamicMethods())) {
+			StateClass theState = getStateFromBlockAndMethods(block, combination);
 
-			if (combination != baseState) {
-				combination.setBaseState(baseState);
+			if (theState != baseState) {
+				theState.setBaseState(baseState);
 			}
 
-			for (MethodOutline method : methods) {
-				addTransition(combination, block, methods, method);
+			for (MethodOutline dynamicMethod : combination) {
+				addTransition(theState, block, combination, dynamicMethod);
 			}
 		}
 
@@ -162,7 +162,12 @@ public class GraphBuilder {
 		return state;
 	}
 
-	private void addTransition(StateClass state, BlockOutline block, Set<MethodOutline> combination, MethodOutline method) {
+	private void addTransition(
+		StateClass state,
+		BlockOutline block,
+		Set<MethodOutline> combination,
+		MethodOutline method
+	){
 		Transition transition;
 
 		if (method.isTerminal()) {
@@ -198,7 +203,11 @@ public class GraphBuilder {
 		}
 	}
 
-	protected Set<Set<MethodOutline>> makeCombinations(Set<MethodOutline> methods) {
+	/**
+	 * Returns the set of all possible combinations of methods which
+	 * result from permuting the provided set of methods.
+	 */
+	protected static Set<Set<MethodOutline>> makeCombinations(Set<MethodOutline> methods) {
 		Set<Set<MethodOutline>> combinations = new HashSet<Set<MethodOutline>>();
 		Stack<Set<MethodOutline>> stack = new Stack<Set<MethodOutline>>();
 
@@ -248,7 +257,7 @@ public class GraphBuilder {
 		return combinations;
 	}
 
-	private Set<Set<MethodOutline>> deduplicate(Set<Set<MethodOutline>> combinations) {
+	private static Set<Set<MethodOutline>> deduplicate(Set<Set<MethodOutline>> combinations) {
 		Set<Set<MethodOutline>> retval = new HashSet<Set<MethodOutline>>();
 		Set<String> seen = new HashSet<String>();
 
