@@ -87,7 +87,6 @@ public class DescriptorPreValidator {
 		}
 
 		// recurse (We don't need to check child blocks since we get them from their constructors.)
-
 		for (MethodOutline method : block.getAllMethods()) {
 			for (BlockOutline chain : method.getBlockChain()) {
 				if (chain == block) {

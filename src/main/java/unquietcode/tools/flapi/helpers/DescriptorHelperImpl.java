@@ -72,6 +72,7 @@ public class DescriptorHelperImpl implements DescriptorHelper {
 
 	@Override
 	public Descriptor build() {
+		outline.prepare();
 		return new Descriptor(outline);
 	}
 

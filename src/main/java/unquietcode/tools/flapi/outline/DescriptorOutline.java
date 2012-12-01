@@ -20,6 +20,8 @@
 package unquietcode.tools.flapi.outline;
 
 
+import unquietcode.tools.flapi.MethodParser;
+
 /**
  * @author Ben Fagin
  * @version 03-07-2012
@@ -61,16 +63,32 @@ public class DescriptorOutline implements Outline {
 	public String getCreateMethod() {
 		return generator.methodName;
 	}
-	
-	public MethodOutline addMethod(String methodSignature) {
-		return selfBlock.addMethod(methodSignature);
-	}
 
-	public BlockOutline addBlock(String blockName) {
-		return selfBlock.addBlock(blockName);
-	}
-	
 	public void setPackageName(String packageName) {
 		this.packageName = packageName;
+	}
+
+	public void prepare() {
+		generateNamesForAnonymousBlocks(selfBlock);
+	}
+
+	private static void generateNamesForAnonymousBlocks(BlockOutline block) {
+		// If the name is null, generate one.
+		if (block.getName() == null) {
+			MethodParser parsed = new MethodParser(block.getConstructor().getMethodSignature());
+			block.setName("Anonymous_$"+parsed.methodName);
+		}
+		// TODO what about when it's intentionally null, (like in BlockChain)
+
+		// recurse
+		for (MethodOutline method : block.getAllMethods()) {
+			for (BlockOutline chain : method.getBlockChain()) {
+				if (chain == block) {
+					continue;
+				}
+
+				generateNamesForAnonymousBlocks(chain);
+			}
+		}
 	}
 }
