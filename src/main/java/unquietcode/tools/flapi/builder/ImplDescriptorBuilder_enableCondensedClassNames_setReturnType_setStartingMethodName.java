@@ -1,11 +1,10 @@
 
 package unquietcode.tools.flapi.builder;
 
-import unquietcode.tools.flapi.Descriptor;
-import unquietcode.tools.flapi.support.v0_2.BuilderImplementation;
-import unquietcode.tools.flapi.support.v0_2.ObjectWrapper;
-
 import javax.annotation.Generated;
+import unquietcode.tools.flapi.Descriptor;
+import unquietcode.tools.flapi.support.BuilderImplementation;
+import unquietcode.tools.flapi.support.v0_2.ObjectWrapper;
 
 
 /**
@@ -16,10 +15,10 @@ import javax.annotation.Generated;
  * Visit http://www.unquietcode.com/flapi for more information.
  * 
  * 
- * Generated on November 24, 2012 14:26:52 CST using version 0.3
+ * Generated on November 25, 2012 17:55:21 CST using version 0.3
  * 
  */
-@Generated(value = "unquietcode.tools.flapi", date = "November 24, 2012 14:26:52 CST", comments = "generated using Flapi, the fluent API generator for Java")
+@Generated(value = "unquietcode.tools.flapi", date = "November 25, 2012 17:55:21 CST", comments = "generated using Flapi, the fluent API generator for Java")
 public class ImplDescriptorBuilder_enableCondensedClassNames_setReturnType_setStartingMethodName
     implements DescriptorBuilder_enableCondensedClassNames_setReturnType_setStartingMethodName, BuilderImplementation
 {
@@ -56,10 +55,18 @@ public class ImplDescriptorBuilder_enableCondensedClassNames_setReturnType_setSt
         return step1;
     }
 
-    public MethodBuilder_addBlockChain startBlock(String blockName, String methodSignature) {
+    public MethodBuilder_addBlockChain addBlockReference(String blockName, String methodSignature) {
+        ObjectWrapper<MethodHelper> helper1 = new ObjectWrapper<MethodHelper>();
+        _helper.addBlockReference(blockName, methodSignature, helper1);
+        ImplMethodBuilder_addBlockChain step1 = new ImplMethodBuilder_addBlockChain(helper1 .get(), this);
+         
+        return step1;
+    }
+
+    public MethodBuilder_addBlockChain startBlock(String methodSignature) {
         ObjectWrapper<MethodHelper> helper1 = new ObjectWrapper<MethodHelper>();
         ObjectWrapper<BlockHelper> helper2 = new ObjectWrapper<BlockHelper>();
-        _helper.startBlock(blockName, methodSignature, helper1, helper2);
+        _helper.startBlock(methodSignature, helper1, helper2);
         ImplBlockBuilder step1 = new ImplBlockBuilder(helper2 .get(), this);
         ImplMethodBuilder_addBlockChain step2 = new ImplMethodBuilder_addBlockChain(helper1 .get(), step1);
          
@@ -82,6 +89,16 @@ public class ImplDescriptorBuilder_enableCondensedClassNames_setReturnType_setSt
         return step1;
     }
 
+    public MethodBuilder_addBlockChain startBlock(String blockName, String methodSignature) {
+        ObjectWrapper<MethodHelper> helper1 = new ObjectWrapper<MethodHelper>();
+        ObjectWrapper<BlockHelper> helper2 = new ObjectWrapper<BlockHelper>();
+        _helper.startBlock(blockName, methodSignature, helper1, helper2);
+        ImplBlockBuilder step1 = new ImplBlockBuilder(helper2 .get(), this);
+        ImplMethodBuilder_addBlockChain step2 = new ImplMethodBuilder_addBlockChain(helper1 .get(), step1);
+         
+        return step2;
+    }
+
     public Descriptor build() {
         BuilderImplementation cur = this;
         while (cur!= null) {
@@ -92,24 +109,6 @@ public class ImplDescriptorBuilder_enableCondensedClassNames_setReturnType_setSt
         Descriptor intermediateResult = _helper.build();
          
         return intermediateResult;
-    }
-
-    public MethodBuilder_addBlockChain addBlockReference(String blockName, String methodSignature) {
-        ObjectWrapper<MethodHelper> helper1 = new ObjectWrapper<MethodHelper>();
-        _helper.addBlockReference(blockName, methodSignature, helper1);
-        ImplMethodBuilder_addBlockChain step1 = new ImplMethodBuilder_addBlockChain(helper1 .get(), this);
-         
-        return step1;
-    }
-
-    public MethodBuilder_addBlockChain startBlock(String methodSignature) {
-        ObjectWrapper<MethodHelper> helper1 = new ObjectWrapper<MethodHelper>();
-        ObjectWrapper<BlockHelper> helper2 = new ObjectWrapper<BlockHelper>();
-        _helper.startBlock(methodSignature, helper1, helper2);
-        ImplBlockBuilder step1 = new ImplBlockBuilder(helper2 .get(), this);
-        ImplMethodBuilder_addBlockChain step2 = new ImplMethodBuilder_addBlockChain(helper1 .get(), step1);
-         
-        return step2;
     }
 
     public DescriptorBuilder_enableCondensedClassNames_setStartingMethodName setReturnType(Class returnType) {

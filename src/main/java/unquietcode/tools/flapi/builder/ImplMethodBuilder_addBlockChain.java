@@ -1,10 +1,9 @@
 
 package unquietcode.tools.flapi.builder;
 
-import unquietcode.tools.flapi.support.v0_2.BuilderImplementation;
-import unquietcode.tools.flapi.support.v0_2.ObjectWrapper;
-
 import javax.annotation.Generated;
+import unquietcode.tools.flapi.support.BuilderImplementation;
+import unquietcode.tools.flapi.support.v0_2.ObjectWrapper;
 
 
 /**
@@ -15,10 +14,10 @@ import javax.annotation.Generated;
  * Visit http://www.unquietcode.com/flapi for more information.
  * 
  * 
- * Generated on November 24, 2012 14:26:52 CST using version 0.3
+ * Generated on November 25, 2012 17:55:21 CST using version 0.3
  * 
  */
-@Generated(value = "unquietcode.tools.flapi", date = "November 24, 2012 14:26:52 CST", comments = "generated using Flapi, the fluent API generator for Java")
+@Generated(value = "unquietcode.tools.flapi", date = "November 25, 2012 17:55:21 CST", comments = "generated using Flapi, the fluent API generator for Java")
 public class ImplMethodBuilder_addBlockChain
     implements MethodBuilder_addBlockChain, BuilderImplementation
 {
@@ -47,30 +46,9 @@ public class ImplMethodBuilder_addBlockChain
         // nothing
     }
 
-    public Object any() {
-        _checkInvocations();
-        _helper.any();
-         
-        return _returnValue;
-    }
-
     public Object between(int atLeast, int atMost) {
         _checkInvocations();
         _helper.between(atLeast, atMost);
-         
-        return _returnValue;
-    }
-
-    public Object atLeast(int num) {
-        _checkInvocations();
-        _helper.atLeast(num);
-         
-        return _returnValue;
-    }
-
-    public Object last() {
-        _checkInvocations();
-        _helper.last();
          
         return _returnValue;
     }
@@ -82,9 +60,37 @@ public class ImplMethodBuilder_addBlockChain
         return _returnValue;
     }
 
+    public Object last() {
+        _checkInvocations();
+        _helper.last();
+         
+        return _returnValue;
+    }
+
+    public Object last(Class returnType) {
+        _checkInvocations();
+        _helper.last(returnType);
+         
+        return _returnValue;
+    }
+
     public Object exactly(int num) {
         _checkInvocations();
         _helper.exactly(num);
+         
+        return _returnValue;
+    }
+
+    public Object atLeast(int num) {
+        _checkInvocations();
+        _helper.atLeast(num);
+         
+        return _returnValue;
+    }
+
+    public Object any() {
+        _checkInvocations();
+        _helper.any();
          
         return _returnValue;
     }
@@ -97,13 +103,6 @@ public class ImplMethodBuilder_addBlockChain
          
         _transferInvocations(step2);
         return step2;
-    }
-
-    public Object last(Class returnType) {
-        _checkInvocations();
-        _helper.last(returnType);
-         
-        return _returnValue;
     }
 
 }

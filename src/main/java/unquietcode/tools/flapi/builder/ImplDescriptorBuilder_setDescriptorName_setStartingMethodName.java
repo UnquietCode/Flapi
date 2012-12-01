@@ -1,13 +1,12 @@
 
 package unquietcode.tools.flapi.builder;
 
+import java.lang.reflect.Field;
+import javax.annotation.Generated;
 import unquietcode.tools.flapi.Descriptor;
-import unquietcode.tools.flapi.support.v0_2.BuilderImplementation;
+import unquietcode.tools.flapi.support.BuilderImplementation;
 import unquietcode.tools.flapi.support.v0_2.ExpectedInvocationsException;
 import unquietcode.tools.flapi.support.v0_2.ObjectWrapper;
-
-import javax.annotation.Generated;
-import java.lang.reflect.Field;
 
 
 /**
@@ -18,10 +17,10 @@ import java.lang.reflect.Field;
  * Visit http://www.unquietcode.com/flapi for more information.
  * 
  * 
- * Generated on November 24, 2012 14:26:52 CST using version 0.3
+ * Generated on November 25, 2012 17:55:21 CST using version 0.3
  * 
  */
-@Generated(value = "unquietcode.tools.flapi", date = "November 24, 2012 14:26:52 CST", comments = "generated using Flapi, the fluent API generator for Java")
+@Generated(value = "unquietcode.tools.flapi", date = "November 25, 2012 17:55:21 CST", comments = "generated using Flapi, the fluent API generator for Java")
 public class ImplDescriptorBuilder_setDescriptorName_setStartingMethodName
     implements DescriptorBuilder_setDescriptorName_setStartingMethodName, BuilderImplementation
 {
@@ -60,16 +59,6 @@ public class ImplDescriptorBuilder_setDescriptorName_setStartingMethodName
         }
     }
 
-    public MethodBuilder_addBlockChain startBlock(String blockName, String methodSignature) {
-        ObjectWrapper<MethodHelper> helper1 = new ObjectWrapper<MethodHelper>();
-        ObjectWrapper<BlockHelper> helper2 = new ObjectWrapper<BlockHelper>();
-        _helper.startBlock(blockName, methodSignature, helper1, helper2);
-        ImplBlockBuilder step1 = new ImplBlockBuilder(helper2 .get(), this);
-        ImplMethodBuilder_addBlockChain step2 = new ImplMethodBuilder_addBlockChain(helper1 .get(), step1);
-         
-        return step2;
-    }
-
     public MethodBuilder_addBlockChain addMethod(String methodSignature) {
         ObjectWrapper<MethodHelper> helper1 = new ObjectWrapper<MethodHelper>();
         _helper.addMethod(methodSignature, helper1);
@@ -90,14 +79,6 @@ public class ImplDescriptorBuilder_setDescriptorName_setStartingMethodName
         return intermediateResult;
     }
 
-    public DescriptorBuilder_setDescriptorName setStartingMethodName(String methodName) {
-        _helper.setStartingMethodName(methodName);
-        ImplDescriptorBuilder_setDescriptorName step1 = new ImplDescriptorBuilder_setDescriptorName(_helper, _returnValue);
-         
-        _transferInvocations(step1);
-        return step1;
-    }
-
     public MethodBuilder_addBlockChain addBlockReference(String blockName, String methodSignature) {
         ObjectWrapper<MethodHelper> helper1 = new ObjectWrapper<MethodHelper>();
         _helper.addBlockReference(blockName, methodSignature, helper1);
@@ -106,10 +87,19 @@ public class ImplDescriptorBuilder_setDescriptorName_setStartingMethodName
         return step1;
     }
 
-    public DescriptorBuilder_setStartingMethodName setDescriptorName(String descriptorName) {
-        --ic_Descriptor_setDescriptorName$String_descriptorName;
-        _helper.setDescriptorName(descriptorName);
-        ImplDescriptorBuilder_setStartingMethodName step1 = new ImplDescriptorBuilder_setStartingMethodName(_helper, _returnValue);
+    public MethodBuilder_addBlockChain startBlock(String blockName, String methodSignature) {
+        ObjectWrapper<MethodHelper> helper1 = new ObjectWrapper<MethodHelper>();
+        ObjectWrapper<BlockHelper> helper2 = new ObjectWrapper<BlockHelper>();
+        _helper.startBlock(blockName, methodSignature, helper1, helper2);
+        ImplBlockBuilder step1 = new ImplBlockBuilder(helper2 .get(), this);
+        ImplMethodBuilder_addBlockChain step2 = new ImplMethodBuilder_addBlockChain(helper1 .get(), step1);
+         
+        return step2;
+    }
+
+    public DescriptorBuilder_setDescriptorName setStartingMethodName(String methodName) {
+        _helper.setStartingMethodName(methodName);
+        ImplDescriptorBuilder_setDescriptorName step1 = new ImplDescriptorBuilder_setDescriptorName(_helper, _returnValue);
          
         _transferInvocations(step1);
         return step1;
@@ -123,6 +113,15 @@ public class ImplDescriptorBuilder_setDescriptorName_setStartingMethodName
         ImplMethodBuilder_addBlockChain step2 = new ImplMethodBuilder_addBlockChain(helper1 .get(), step1);
          
         return step2;
+    }
+
+    public DescriptorBuilder_setStartingMethodName setDescriptorName(String descriptorName) {
+        --ic_Descriptor_setDescriptorName$String_descriptorName;
+        _helper.setDescriptorName(descriptorName);
+        ImplDescriptorBuilder_setStartingMethodName step1 = new ImplDescriptorBuilder_setStartingMethodName(_helper, _returnValue);
+         
+        _transferInvocations(step1);
+        return step1;
     }
 
 }
