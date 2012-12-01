@@ -20,20 +20,14 @@
 package unquietcode.tools.flapi.generator;
 
 import com.sun.codemodel.*;
-import unquietcode.tools.flapi.Constants;
-import unquietcode.tools.flapi.DescriptorBuilderException;
-import unquietcode.tools.flapi.Flapi;
-import unquietcode.tools.flapi.MethodParser;
+import unquietcode.tools.flapi.*;
 import unquietcode.tools.flapi.graph.components.StateClass;
 import unquietcode.tools.flapi.graph.components.Transition;
 
 import javax.annotation.Generated;
 import javax.lang.model.SourceVersion;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.TreeSet;
+import java.util.*;
 
 /**
  * @author Ben Fagin
@@ -108,33 +102,77 @@ public class GeneratorContext {
 		return interfaces.containsKey(name);
 	}
 
-	//---o---o---o---o---o---o---o---o---o---o---o---o---o---o---o---o---o---o---o---o---o---o---//
+	//---o---o---o---o---o---o---o--- Name Creation --o---o---o---o---o---o---o---o---o---o---//
 
 	Map<String, String> nameMap = new HashMap<String, String>();
 	int nameIdCounter = 1;
+	private final Map<String, String> hashToSuffix = new HashMap<String, String>();
+	private final Map<String, CharacterGenerator> nameToGenerator = new HashMap<String, CharacterGenerator>();
 
+	/**
+	 * Generates a name based on the following rules:
+	 *  once => prefix + state name + suffix
+	 *  1st method => name$number
+	 *  2nd..Nth method => name$letter$number
+	 *
+	 *  Where 'letter' is for instance id and number is maxOccurs.
+	 *  The letter was added to address FLAPI-105, which identified
+	 *  a lack of support for two methods with the same name but
+	 *  different parameters.
+	 *
+	 * @param prefix prefix for the name (eg 'Impl')
+	 * @param suffix suffix for the name (eg 'Builder')
+	 * @param state state to generate a name for
+	 * @return the generated name, which should be unique across the graph
+	 */
 	public String getGeneratedName(String prefix, String suffix, StateClass state) {
 		StringBuilder name = new StringBuilder();
 		name.append(prefix).append(state.getName()).append(suffix);
 
 		for (Transition transition : new TreeSet<Transition>(state.getTransitions())) {
-			if (transition.getMaxOccurrences() < 1) {
-				continue;
+			MethodParser parsed = new MethodParser(transition.getMethodSignature());
+			String methodName = parsed.methodName;
+
+			// create the special method+parameter 'hash' key
+			String krazyKey = methodName;
+			for (Pair<String, String> param : parsed.params) {
+				krazyKey += "|"+param.first;
 			}
 
-			MethodParser parsed = new MethodParser(transition.getMethodSignature());
+			// if this specific combo has been seen before, use the existing char
+			if (hashToSuffix.containsKey(krazyKey)) {
+				methodName += hashToSuffix.get(krazyKey);
+
+			// else create a new suffix
+			} else {
+				CharacterGenerator characterGen;
+				String methodSuffix;
+
+				if (nameToGenerator.containsKey(methodName)) {
+					characterGen = nameToGenerator.get(methodName);
+					methodSuffix = characterGen.getAndIncrement();
+				} else {
+					characterGen = new CharacterGenerator("$");
+					nameToGenerator.put(methodName, characterGen);
+					methodSuffix = "";  // don't label the first one because generally it's the only one
+				}
+
+				methodName += methodSuffix;
+				hashToSuffix.put(krazyKey, methodSuffix);
+			}
+
 			name.append("_");
 
 			if (condenseNames) {
-				if (nameMap.containsKey(parsed.methodName)) {
-					name.append(nameMap.get(parsed.methodName));
+				if (nameMap.containsKey(methodName)) {
+					name.append(nameMap.get(methodName));
 				} else {
 					String gen = "m"+(nameIdCounter++);
 					name.append(gen);
-					nameMap.put(parsed.methodName, gen);
+					nameMap.put(methodName, gen);
 				}
 			} else {
-				name.append(parsed.methodName);
+				name.append(methodName);
 			}
 
 			if (transition.getMaxOccurrences() > 1) {
@@ -179,3 +217,7 @@ public class GeneratorContext {
 		}
 	}
 }
+
+// :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: //
+// :::::::::::::::::::::::::: P07470 :::::::::::::::::::::::::::::::: //
+// :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: //
