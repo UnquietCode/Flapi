@@ -12,20 +12,20 @@ import javax.annotation.Generated;
  * Visit http://www.unquietcode.com/flapi for more information.
  * 
  * 
- * Generated on November 25, 2012 17:55:21 CST using version 0.3
+ * Generated on December 01, 2012 13:14:02 CST using version 0.3
  * 
  */
-@Generated(value = "unquietcode.tools.flapi", date = "November 25, 2012 17:55:21 CST", comments = "generated using Flapi, the fluent API generator for Java")
+@Generated(value = "unquietcode.tools.flapi", date = "December 01, 2012 13:14:02 CST", comments = "generated using Flapi, the fluent API generator for Java")
 public class DescriptorGenerator {
 
 
     @SuppressWarnings("unchecked")
-    public static DescriptorBuilder_enableCondensedClassNames_setDescriptorName_setPackage_setReturnType_setStartingMethodName<Void> create(DescriptorHelper helper) {
+    public static DescriptorBuilder_m1_m2_m3_m4_m5_m6_m7_m8_m9_m10 <Void> create(DescriptorHelper helper) {
         if (helper == null) {
             throw new IllegalArgumentException("Helper cannot be null.");
         }
          
-        return new ImplDescriptorBuilder_enableCondensedClassNames_setDescriptorName_setPackage_setReturnType_setStartingMethodName(helper, null);
+        return new ImplDescriptorBuilder_m1_m2_m3_m4_m5_m6_m7_m8_m9_m10(helper, null);
     }
 
 }

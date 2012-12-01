@@ -19,7 +19,7 @@
 
 package unquietcode.tools.flapi;
 
-import unquietcode.tools.flapi.builder.DescriptorBuilder_enableCondensedClassNames_setDescriptorName_setPackage_setReturnType_setStartingMethodName;
+import unquietcode.tools.flapi.builder.DescriptorBuilder_m1_m2_m3_m4_m5_m6_m7_m8_m9_m10;
 import unquietcode.tools.flapi.builder.DescriptorGenerator;
 import unquietcode.tools.flapi.helpers.DescriptorHelperImpl;
 
@@ -37,10 +37,8 @@ public class Flapi {
 
 	/**
 	 * Shortcut to build a new descriptor.
-	 *
-	 * @return a new {@link unquietcode.tools.flapi.builder.DescriptorBuilder}
 	 */
-	public static DescriptorBuilder_enableCondensedClassNames_setDescriptorName_setPackage_setReturnType_setStartingMethodName<Void> builder() {
+	public static DescriptorBuilder_m1_m2_m3_m4_m5_m6_m7_m8_m9_m10<Void> builder() {
 		return DescriptorGenerator.create(new DescriptorHelperImpl());
 	}
 

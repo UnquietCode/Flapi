@@ -2,7 +2,6 @@
 package unquietcode.tools.flapi.builder;
 
 import javax.annotation.Generated;
-import unquietcode.tools.flapi.support.ObjectWrapper;
 
 
 /**
@@ -17,23 +16,11 @@ import unquietcode.tools.flapi.support.ObjectWrapper;
  * 
  */
 @Generated(value = "unquietcode.tools.flapi", date = "December 01, 2012 13:14:02 CST", comments = "generated using Flapi, the fluent API generator for Java")
-public interface MethodHelper {
+public interface BlockChainBuilder_m19_m10 <_ReturnType >{
 
 
-    void exactly(int num);
+    BlockBuilder_m1_m2_m20_m9_m10 <_ReturnType> startBlock(String blockName);
 
-    void between(int atLeast, int atMost);
-
-    void any();
-
-    void last(Class returnType);
-
-    void addBlockChain(ObjectWrapper<BlockChainHelper> _helper1);
-
-    void last();
-
-    void atMost(int num);
-
-    void atLeast(int num);
+    _ReturnType addBlockReference(String blockName);
 
 }

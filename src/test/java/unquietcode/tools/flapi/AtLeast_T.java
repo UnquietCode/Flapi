@@ -22,7 +22,7 @@ package unquietcode.tools.flapi;
 import org.junit.Test;
 import unquietcode.tools.flapi.builder.DescriptorGenerator;
 import unquietcode.tools.flapi.helpers.DescriptorHelperImpl;
-import unquietcode.tools.flapi.support.v0_2.ExpectedInvocationsException;
+import unquietcode.tools.flapi.support.ExpectedInvocationsException;
 
 /**
  * @author Ben Fagin

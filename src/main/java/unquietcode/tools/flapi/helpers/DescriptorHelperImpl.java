@@ -24,7 +24,7 @@ import unquietcode.tools.flapi.builder.BlockHelper;
 import unquietcode.tools.flapi.builder.DescriptorHelper;
 import unquietcode.tools.flapi.builder.MethodHelper;
 import unquietcode.tools.flapi.outline.DescriptorOutline;
-import unquietcode.tools.flapi.support.v0_2.ObjectWrapper;
+import unquietcode.tools.flapi.support.ObjectWrapper;
 
 /**
  * @author Ben Fagin

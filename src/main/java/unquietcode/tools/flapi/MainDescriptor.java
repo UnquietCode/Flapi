@@ -34,6 +34,7 @@ public class MainDescriptor {
 			.setPackage("unquietcode.tools.flapi.builder")
 			.setStartingMethodName("create")
 			.setDescriptorName("Descriptor")
+			.enableCondensedClassNames()
 
 			// descriptor methods
 			.addMethod("setPackage(String packageName)").exactly(1)
