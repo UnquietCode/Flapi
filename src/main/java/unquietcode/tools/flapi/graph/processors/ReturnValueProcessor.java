@@ -26,7 +26,7 @@ import unquietcode.tools.flapi.generator.AbstractGenerator;
 import unquietcode.tools.flapi.generator.GeneratorContext;
 import unquietcode.tools.flapi.graph.TransitionVisitor;
 import unquietcode.tools.flapi.graph.components.*;
-import unquietcode.tools.flapi.support.v0_2.ObjectWrapper;
+import unquietcode.tools.flapi.support.ObjectWrapper;
 
 import java.util.ArrayList;
 import java.util.List;

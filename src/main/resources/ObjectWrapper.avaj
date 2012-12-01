@@ -16,7 +16,7 @@
 
      Read the included LICENSE.TXT for more information.
  ******************************************************************************/
-package unquietcode.tools.flapi.support.$VERSION$;
+package unquietcode.tools.flapi.support;
 /**
  * @author Ben Fagin
  * @version 04-24-2012

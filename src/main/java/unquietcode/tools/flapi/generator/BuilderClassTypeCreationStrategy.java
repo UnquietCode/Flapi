@@ -23,8 +23,8 @@ import com.sun.codemodel.*;
 import unquietcode.tools.flapi.Constants;
 import unquietcode.tools.flapi.graph.components.StateClass;
 import unquietcode.tools.flapi.graph.components.Transition;
-import unquietcode.tools.flapi.support.v0_2.BuilderImplementation;
-import unquietcode.tools.flapi.support.v0_2.ExpectedInvocationsException;
+import unquietcode.tools.flapi.support.BuilderImplementation;
+import unquietcode.tools.flapi.support.ExpectedInvocationsException;
 
 import java.lang.reflect.Field;
 import java.util.Set;

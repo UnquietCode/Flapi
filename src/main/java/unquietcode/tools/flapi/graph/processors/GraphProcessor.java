@@ -27,7 +27,7 @@ import unquietcode.tools.flapi.generator.MethodImplementor;
 import unquietcode.tools.flapi.graph.GenericVisitor;
 import unquietcode.tools.flapi.graph.components.StateClass;
 import unquietcode.tools.flapi.graph.components.Transition;
-import unquietcode.tools.flapi.support.v0_2.BuilderImplementation;
+import unquietcode.tools.flapi.support.BuilderImplementation;
 
 import java.util.Collections;
 import java.util.IdentityHashMap;

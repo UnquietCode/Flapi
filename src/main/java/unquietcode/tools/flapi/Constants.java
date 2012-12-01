@@ -19,9 +19,9 @@
 
 package unquietcode.tools.flapi;
 
-import unquietcode.tools.flapi.support.v0_2.BuilderImplementation;
-import unquietcode.tools.flapi.support.v0_2.ExpectedInvocationsException;
-import unquietcode.tools.flapi.support.v0_2.ObjectWrapper;
+import unquietcode.tools.flapi.support.BuilderImplementation;
+import unquietcode.tools.flapi.support.ExpectedInvocationsException;
+import unquietcode.tools.flapi.support.ObjectWrapper;
 
 import java.io.File;
 
@@ -52,13 +52,7 @@ public final class Constants {
 		String path = folder.getAbsolutePath();
 		path += File.separator;
 		path += "unquietcode"+File.separator+"tools"+File.separator+"flapi"+File.separator+"support"+File.separator;
-		path += getVersionLabel();
 
 		return path;
-	}
-
-	public static String getVersionLabel() {
-		String version[] = PROJECT_VERSION.split("\\.");
-		return "v"+version[0]+"_"+version[1];
 	}
 }

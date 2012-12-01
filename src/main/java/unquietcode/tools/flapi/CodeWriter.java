@@ -111,7 +111,6 @@ public class CodeWriter {
 
 		try {
 			String data = new Scanner(sourceFile).useDelimiter("\\A").next();
-			data = data.replaceAll("\\$VERSION\\$", Constants.getVersionLabel());
 			destination = new FileOutputStream(destFile);
 			destination.write(data.getBytes());
 		} catch (Exception ex) {
