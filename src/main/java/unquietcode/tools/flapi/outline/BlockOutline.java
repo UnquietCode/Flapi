@@ -46,14 +46,6 @@ public class BlockOutline implements Outline {
 		this.parentBlock = parentBlock;
 	}
 
-	public boolean isTopLevel() {
-		return isTopLevel;
-	}
-
-	public void setIsTopLevel() {
-		isTopLevel = true;
-	}
-
 	public Class getReturnType() {
 		return constructor != null ? constructor.getReturnType() : null;
 	}
@@ -80,10 +72,6 @@ public class BlockOutline implements Outline {
 
 	public void setName(String name) {
 		this.name = name.trim();
-	}
-
-	public boolean isTerminal() {
-		return constructor != null && constructor.isTerminal();
 	}
 
 	public BlockOutline addBlock(String blockName) {
