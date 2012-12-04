@@ -41,13 +41,6 @@ public class GraphBuilder {
 
 
 	public StateClass buildGraph(DescriptorOutline descriptor) {
-		// convert all terminals on the descriptor block to Void so that they become terminals
-		for (MethodOutline method : descriptor.selfBlock.getAllMethods()) {
-			if (method.isTerminal() && method.getReturnType() == null) {
-				method.setReturnType(Void.class);
-			}
-		}
-
 		// resolve block references
 		Map<String, BlockOutline> blocks = new HashMap<String, BlockOutline>();
 		findAllBlocks(blocks, descriptor.selfBlock);
@@ -108,11 +101,12 @@ public class GraphBuilder {
 			blocks.put(blockName, topLevel);
 		}
 
-		StateClass baseState = getStateFromBlockAndMethods(block, block.getRequiredMethods());
+		Set<MethodOutline> blockRequiredMethods = block.getRequiredMethods();
+		StateClass baseState = getStateFromBlockAndMethods(block, blockRequiredMethods);
 		baseState.setName(blockName);
 
-		for (MethodOutline requiredMethod : block.getRequiredMethods()) {
-			addTransition(baseState, block, block.getRequiredMethods(), requiredMethod);
+		for (MethodOutline requiredMethod : blockRequiredMethods) {
+			addTransition(baseState, block, blockRequiredMethods, requiredMethod);
 		}
 
 		// create the sibling states

@@ -34,7 +34,6 @@ public class MethodOutline implements Outline, Comparable<MethodOutline> {
 	public Integer maxOccurrences;
 	private String methodSignature;
 	private boolean isTerminal = false;
-	private boolean isImplicitTerminal = false;
 	private Class returnType;
 	private final List<BlockOutline> blockChain = new ArrayList<BlockOutline>();
 
@@ -69,15 +68,6 @@ public class MethodOutline implements Outline, Comparable<MethodOutline> {
 
 	public void isTerminal(boolean value) {
 		isTerminal = value;
-	}
-
-	public void setImplicitTerminal() {
-		isTerminal = true;
-		isImplicitTerminal = true;
-	}
-
-	public boolean isImplicitTerminal() {
-		return isImplicitTerminal;
 	}
 
 	public String returnType() {
