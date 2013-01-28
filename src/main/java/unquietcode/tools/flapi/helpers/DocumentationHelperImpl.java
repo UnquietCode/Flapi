@@ -19,7 +19,7 @@
 
 package unquietcode.tools.flapi.helpers;
 
-import unquietcode.tools.flapi.builder.DocumentationHelper;
+import unquietcode.tools.flapi.builder.Documentation.DocumentationHelper;
 import unquietcode.tools.flapi.outline.MethodOutline;
 
 /**

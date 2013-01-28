@@ -20,9 +20,9 @@
 package unquietcode.tools.flapi.helpers;
 
 import unquietcode.tools.flapi.DescriptorBuilderException;
-import unquietcode.tools.flapi.builder.BlockChainHelper;
-import unquietcode.tools.flapi.builder.DocumentationHelper;
-import unquietcode.tools.flapi.builder.MethodHelper;
+import unquietcode.tools.flapi.builder.BlockChain.BlockChainHelper;
+import unquietcode.tools.flapi.builder.Documentation.DocumentationHelper;
+import unquietcode.tools.flapi.builder.Method.MethodHelper;
 import unquietcode.tools.flapi.outline.MethodOutline;
 import unquietcode.tools.flapi.support.ObjectWrapper;
 

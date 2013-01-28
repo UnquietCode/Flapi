@@ -1,0 +1,47 @@
+
+package unquietcode.tools.flapi.builder.Method;
+
+import javax.annotation.Generated;
+import unquietcode.tools.flapi.builder.BlockChain.BlockChainHelper;
+import unquietcode.tools.flapi.builder.Documentation.DocumentationHelper;
+import unquietcode.tools.flapi.support.ObjectWrapper;
+
+
+/**
+ * This class was generated using Flapi, the fluent API generator for Java.
+ * Modifications to this file will be lost upon regeneration.
+ * You have been warned!
+ * 
+ * Visit http://www.unquietcode.com/flapi for more information.
+ * 
+ * 
+ * Generated on January 27, 2013 22:49:58 CST using version 0.3
+ * 
+ */
+@Generated(value = "unquietcode.tools.flapi", date = "January 27, 2013 22:49:58 CST", comments = "generated using Flapi, the fluent API generator for Java")
+public interface MethodHelper {
+
+
+    void addBlockChain(ObjectWrapper<BlockChainHelper> _helper1);
+
+    void any();
+
+    void atLeast(int num);
+
+    void atMost(int num);
+
+    void between(int atLeast, int atMost);
+
+    void exactly(int num);
+
+    void last();
+
+    void last(Class returnType);
+
+    /**
+     * Add javadoc style documentation to the method.
+     * 
+     */
+    void withDocumentation(ObjectWrapper<DocumentationHelper> _helper1);
+
+}

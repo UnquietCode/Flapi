@@ -19,8 +19,8 @@
 
 package unquietcode.tools.flapi.helpers;
 
-import unquietcode.tools.flapi.builder.BlockHelper;
-import unquietcode.tools.flapi.builder.MethodHelper;
+import unquietcode.tools.flapi.builder.Block.BlockHelper;
+import unquietcode.tools.flapi.builder.Method.MethodHelper;
 import unquietcode.tools.flapi.outline.BlockOutline;
 import unquietcode.tools.flapi.outline.BlockReference;
 import unquietcode.tools.flapi.outline.MethodOutline;

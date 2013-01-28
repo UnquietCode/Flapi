@@ -21,7 +21,7 @@ package unquietcode.tools.flapi;
 
 import org.junit.Assert;
 import org.junit.Test;
-import unquietcode.tools.flapi.builder.DescriptorGenerator;
+import unquietcode.tools.flapi.builder.Descriptor.DescriptorGenerator;
 import unquietcode.tools.flapi.helpers.DescriptorHelperImpl;
 
 /**

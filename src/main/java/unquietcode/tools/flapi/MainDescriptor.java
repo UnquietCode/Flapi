@@ -109,7 +109,6 @@ public class MainDescriptor {
 			.any()
 		.build();
 
-//		builder.writeToFolder(args[0]);
-		builder.writeToFolder("/Users/bfagin/Downloads/tmp");
+		builder.writeToFolder(args[0]);
 	}
 }
