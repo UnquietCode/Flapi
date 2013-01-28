@@ -19,19 +19,14 @@
 
 package unquietcode.tools.flapi;
 
-import com.sun.codemodel.JDefinedClass;
-import com.sun.xml.internal.xsom.SCD;
-import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
-import unquietcode.tools.flapi.generator.AbstractGenerator;
 import unquietcode.tools.flapi.generator.GeneratorContext;
 import unquietcode.tools.flapi.graph.components.LateralTransition;
-import unquietcode.tools.flapi.graph.components.RecursiveTransition;
 import unquietcode.tools.flapi.graph.components.StateClass;
 import unquietcode.tools.flapi.graph.components.Transition;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 
 public class GraphNaming_T {
 

@@ -12,13 +12,13 @@ import unquietcode.tools.flapi.builder.Method.MethodBuilder_m11_m12_m13_m14_m15_
  * Modifications to this file will be lost upon regeneration.
  * You have been warned!
  * 
- * Visit http://www.unquietcode.com/flapi for more information.
+ * Visit https://github.com/UnquietCode/Flapi for more information.
  * 
  * 
- * Generated on January 27, 2013 23:00:49 CST using version 0.3
+ * Generated on January 29, 2013 21:38:13 CST using version 0.3
  * 
  */
-@Generated(value = "unquietcode.tools.flapi", date = "January 27, 2013 23:00:49 CST", comments = "generated using Flapi, the fluent API generator for Java")
+@Generated(value = "unquietcode.tools.flapi", date = "January 29, 2013 21:38:13 CST", comments = "generated using Flapi, the fluent API generator for Java")
 public interface DescriptorBuilder_m1_m2_m3_m4_m5_m6_m7_m8_m9_m10 <_ReturnType >{
 
 

@@ -43,21 +43,17 @@ public class DescriptorPostValidator {
 	}
 
 	public void validate() {
-		checkForBlocksWithNoEnd(
-			graph,
-			Collections.newSetFromMap(new IdentityHashMap<StateClass, Boolean>()),
-			new ObjectWrapper<Boolean>(false)
-		);
+		checkForBlocksWithNoEnd(graph, Collections.newSetFromMap(new IdentityHashMap<StateClass, Boolean>()));
 	}
 
-	private void checkForBlocksWithNoEnd(
-		StateClass state, final Set<StateClass> seen, final ObjectWrapper<Boolean> valid
-	){
+	private void checkForBlocksWithNoEnd(StateClass state, final Set<StateClass> seen) {
 		if (seen.contains(state)) {
 			return;
 		} else {
 			seen.add(state);
 		}
+
+		final ObjectWrapper<Boolean> valid = new ObjectWrapper<Boolean>(false);
 
 		// check this state's transitions
 		for (Transition transition : state.getTransitions()) {
@@ -78,7 +74,7 @@ public class DescriptorPostValidator {
 			// check every other transition to ensure that they can find a terminal
 			transition.acceptForTraversal(new GenericVisitor<StateClass>() {
 				public void visit(StateClass next) {
-					checkForBlocksWithNoEnd(next, seen, new ObjectWrapper<Boolean>(false));
+					checkForBlocksWithNoEnd(next, seen);
 
 					// If there is at least one transition, and there are no
 					// dead ends, then there must be at least one end,

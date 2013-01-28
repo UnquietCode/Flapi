@@ -14,13 +14,13 @@ import unquietcode.tools.flapi.support.ObjectWrapper;
  * Modifications to this file will be lost upon regeneration.
  * You have been warned!
  * 
- * Visit http://www.unquietcode.com/flapi for more information.
+ * Visit https://github.com/UnquietCode/Flapi for more information.
  * 
  * 
- * Generated on January 27, 2013 23:00:49 CST using version 0.3
+ * Generated on January 29, 2013 21:38:13 CST using version 0.3
  * 
  */
-@Generated(value = "unquietcode.tools.flapi", date = "January 27, 2013 23:00:49 CST", comments = "generated using Flapi, the fluent API generator for Java")
+@Generated(value = "unquietcode.tools.flapi", date = "January 29, 2013 21:38:13 CST", comments = "generated using Flapi, the fluent API generator for Java")
 public class ImplMethodBuilder_m11_m12_m13_m14_m15_m16_m17_m18
     implements MethodBuilder_m11_m12_m13_m14_m15_m16_m17_m18, BuilderImplementation
 {

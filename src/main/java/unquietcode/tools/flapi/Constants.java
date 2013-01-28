@@ -34,7 +34,7 @@ import java.io.File;
 public final class Constants {
 	private Constants() { }
 
-	public static final String PROJECT_URL = "http://www.unquietcode.com/flapi";
+	public static final String PROJECT_URL = "https://github.com/UnquietCode/Flapi";
 	public static final String PROJECT_VERSION = "0.3";     // TODO I hate this. Can we get it from the build?
 
 	public static final String RETURN_TYPE_NAME = "_ReturnType";
