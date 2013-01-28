@@ -47,7 +47,7 @@ public abstract class AbstractGenerator {
 	protected static final TypeCreationStrategy BUILDER_INTERFACE_STRATEGY = new TypeCreationStrategy() {
 		public @Override JDefinedClass createType(GeneratorContext ctx, StateClass state) {
 			String name = ctx.getGeneratedName("", "Builder", state);
-			JDefinedClass _interface = ctx.getOrCreateInterface(name);
+			JDefinedClass _interface = ctx.getOrCreateInterface(state.getName(), name);
 
 			if (_interface.typeParams().length == 0) {
 				_interface.generify(Constants.RETURN_TYPE_NAME);
@@ -66,14 +66,14 @@ public abstract class AbstractGenerator {
 
 	protected static final TypeCreationStrategy HELPER_INTERFACE_STRATEGY = new TypeCreationStrategy() {
 		public @Override JDefinedClass createType(GeneratorContext ctx, StateClass state) {
-			return ctx.getOrCreateInterface(state.getName()+"Helper");
+			return ctx.getOrCreateInterface(state.getName(), state.getName()+"Helper");
 		}
 	};
 
 	protected static final TypeCreationStrategy GENERATOR_CLASS_STRATEGY = new TypeCreationStrategy() {
 		public JDefinedClass createType(GeneratorContext ctx, StateClass state) {
 			String name = state.getName()+"Generator";
-			return ctx.getOrCreateClass(name);
+			return ctx.getOrCreateClass(state.getName(), name);
 		}
 	};
 

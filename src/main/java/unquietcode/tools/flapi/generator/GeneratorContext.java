@@ -64,11 +64,14 @@ public class GeneratorContext {
 		condenseNames = value;
 	}
 
-	public JDefinedClass getOrCreateInterface(String name) {
+	public JDefinedClass getOrCreateInterface(String subPackage, String name) {
 		JDefinedClass _interface = interfaces.get(name);
 		if (_interface == null) {
+			JPackage _package = subPackage != null && !subPackage.isEmpty()
+								 ? thePackage.subPackage(subPackage)
+								 : thePackage;
 			try {
-				_interface = thePackage._interface(name);
+				_interface = _package._interface(name);
 				interfaces.put(name, _interface);
 				addGeneratedHeader(_interface);
 			} catch (JClassAlreadyExistsException ex) {
@@ -79,11 +82,14 @@ public class GeneratorContext {
 		return _interface;
 	}
 
-	public JDefinedClass getOrCreateClass(String name) {
+	public JDefinedClass getOrCreateClass(String subPackage, String name) {
 		JDefinedClass _class = classes.get(name);
 		if (_class == null) {
+			JPackage _package = subPackage != null && !subPackage.isEmpty()
+						  		 ? thePackage.subPackage(subPackage)
+								 : thePackage;
 			try {
-				_class = thePackage._class(JMod.PUBLIC, name);
+				_class = _package._class(JMod.PUBLIC, name);
 				classes.put(name, _class);
 				addGeneratedHeader(_class);
 			} catch (JClassAlreadyExistsException ex) {

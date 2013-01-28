@@ -41,11 +41,11 @@ public class BuilderClassTypeCreationStrategy implements TypeCreationStrategy {
 		final String name = ctx.getGeneratedName("Impl", "Builder", state);
 
 		if (ctx.doesClassExist(name)) {
-			return ctx.getOrCreateClass(name);
+			return ctx.getOrCreateClass(state.getName(), name);
 		}
 
 		AbstractGeneratorParent gen = new AbstractGeneratorParent(ctx);
-		JDefinedClass cBuilder = ctx.getOrCreateClass(name);
+		JDefinedClass cBuilder = ctx.getOrCreateClass(state.getName(), name);
 		gen.createType(cBuilder, state);
 		return cBuilder;
 	}
@@ -68,7 +68,7 @@ public class BuilderClassTypeCreationStrategy implements TypeCreationStrategy {
 			JFieldVar _returnValue = cBuilder.field(JMod.PRIVATE+JMod.FINAL, returnType, Constants.RETURN_VALUE_NAME);
 
 			// constructor
-			JMethod constructor = cBuilder.constructor(JMod.NONE);
+			JMethod constructor = cBuilder.constructor(JMod.PUBLIC);
 			JVar pHelper = constructor.param(iHelper, "helper");
 			JVar pParent = constructor.param(returnType, "returnValue");
 
