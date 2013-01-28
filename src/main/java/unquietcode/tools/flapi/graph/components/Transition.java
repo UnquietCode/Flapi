@@ -22,6 +22,7 @@ package unquietcode.tools.flapi.graph.components;
 import unquietcode.tools.flapi.generator.MethodImplementor;
 import unquietcode.tools.flapi.graph.GenericVisitor;
 import unquietcode.tools.flapi.graph.TransitionVisitor;
+import unquietcode.tools.flapi.outline.MethodInfo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,12 +32,9 @@ import java.util.List;
  * @version 07-10-2012
  */
 public abstract class Transition implements Comparable<Transition> {
+	private MethodInfo methodInfo = new MethodInfo();
 	private final List<StateClass> stateChain = new ArrayList<StateClass>();
-	private Integer minOccurrences = -1;
-	private Integer maxOccurrences = -1;
-	private String methodSignature;
 	private StateClass owner;
-	private String documentation;
 	private final TransitionType type;
 
 	public abstract void accept(TransitionVisitor visitor);
@@ -55,37 +53,13 @@ public abstract class Transition implements Comparable<Transition> {
 		return type;
 	}
 
-	public Integer getMinOccurrences() {
-		return minOccurrences;
-	}
-
-	public void setMinOccurrences(Integer minOccurrences) {
-		this.minOccurrences = minOccurrences;
-	}
-
-	public Integer getMaxOccurrences() {
-		return maxOccurrences;
-	}
-
-	public void setMaxOccurrences(Integer maxOccurrences) {
-		this.maxOccurrences = maxOccurrences;
-	}
-
-	public String getMethodSignature() {
-		return methodSignature;
-	}
-
-	public void setMethodSignature(String methodSignature) {
-		this.methodSignature = methodSignature;
-	}
-
 	public List<StateClass> getStateChain() {
 		return stateChain;
 	}
 
 	@Override
 	public int compareTo(Transition other) {
-		return methodSignature.compareTo(other.methodSignature);
+		return methodInfo.getMethodSignature().compareTo(other.info().getMethodSignature());
 	}
 
 	void setOwner(StateClass owner) {
@@ -96,21 +70,22 @@ public abstract class Transition implements Comparable<Transition> {
 		return owner;
 	}
 
-	public String getDocumentation() {
-		return documentation;
+	public String getMethodSignature() {
+		return methodInfo.getMethodSignature();
 	}
 
-	public void setDocumentation(String documentation) {
-		this.documentation = documentation;
+	public MethodInfo info() {
+		return methodInfo;
+	}
+
+	public void setMethodInfo(MethodInfo methodInfo) {
+		this.methodInfo = methodInfo;
 	}
 
 	public abstract Transition copy();
 	protected void basicCopy(Transition copy) {
-		copy.maxOccurrences = this.maxOccurrences;
-		copy.minOccurrences = this.minOccurrences;
-		copy.methodSignature = this.methodSignature;
+		copy.methodInfo = this.methodInfo.copy();
 		copy.stateChain.addAll(this.stateChain);
-		copy.documentation = this.documentation;
 		copy.owner = this.owner;
 	}
 
@@ -121,7 +96,7 @@ public abstract class Transition implements Comparable<Transition> {
 			}
 
 			public boolean shouldTrackInvocations() {
-				return minOccurrences > 0;
+				return methodInfo.getMinOccurrences() > 0;
 			}
 
 			public boolean shouldCheckInvocations() {

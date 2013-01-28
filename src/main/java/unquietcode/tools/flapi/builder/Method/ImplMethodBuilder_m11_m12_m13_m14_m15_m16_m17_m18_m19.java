@@ -2,12 +2,9 @@
 package unquietcode.tools.flapi.builder.Method;
 
 import javax.annotation.Generated;
-import unquietcode.tools.flapi.builder.BlockChain.BlockChainBuilder_m11_m20_m10;
+import unquietcode.tools.flapi.builder.BlockChain.BlockChainBuilder_m11_m21_m10;
 import unquietcode.tools.flapi.builder.BlockChain.BlockChainHelper;
-import unquietcode.tools.flapi.builder.BlockChain.ImplBlockChainBuilder_m11_m20_m10;
-import unquietcode.tools.flapi.builder.Documentation.DocumentationBuilder_m22_m23;
-import unquietcode.tools.flapi.builder.Documentation.DocumentationHelper;
-import unquietcode.tools.flapi.builder.Documentation.ImplDocumentationBuilder_m22_m23;
+import unquietcode.tools.flapi.builder.BlockChain.ImplBlockChainBuilder_m11_m21_m10;
 import unquietcode.tools.flapi.support.BuilderImplementation;
 import unquietcode.tools.flapi.support.ObjectWrapper;
 
@@ -20,10 +17,10 @@ import unquietcode.tools.flapi.support.ObjectWrapper;
  * Visit http://www.unquietcode.com/flapi for more information.
  * 
  * 
- * Generated on January 27, 2013 22:49:58 CST using version 0.3
+ * Generated on January 27, 2013 23:00:49 CST using version 0.3
  * 
  */
-@Generated(value = "unquietcode.tools.flapi", date = "January 27, 2013 22:49:58 CST", comments = "generated using Flapi, the fluent API generator for Java")
+@Generated(value = "unquietcode.tools.flapi", date = "January 27, 2013 23:00:49 CST", comments = "generated using Flapi, the fluent API generator for Java")
 public class ImplMethodBuilder_m11_m12_m13_m14_m15_m16_m17_m18_m19
     implements MethodBuilder_m11_m12_m13_m14_m15_m16_m17_m18_m19, BuilderImplementation
 {
@@ -52,11 +49,11 @@ public class ImplMethodBuilder_m11_m12_m13_m14_m15_m16_m17_m18_m19
         // nothing
     }
 
-    public BlockChainBuilder_m11_m20_m10 addBlockChain() {
+    public BlockChainBuilder_m11_m21_m10 addBlockChain() {
         ObjectWrapper<BlockChainHelper> helper1 = new ObjectWrapper<BlockChainHelper>();
         _helper.addBlockChain(helper1);
         ImplMethodBuilder_m12_m13_m14_m15_m16_m17_m18_m19 step1 = new ImplMethodBuilder_m12_m13_m14_m15_m16_m17_m18_m19(_helper, _returnValue);
-        ImplBlockChainBuilder_m11_m20_m10 step2 = new ImplBlockChainBuilder_m11_m20_m10(helper1 .get(), step1);
+        ImplBlockChainBuilder_m11_m21_m10 step2 = new ImplBlockChainBuilder_m11_m21_m10(helper1 .get(), step1);
          
         _transferInvocations(step2);
         return step2;
@@ -112,17 +109,16 @@ public class ImplMethodBuilder_m11_m12_m13_m14_m15_m16_m17_m18_m19
     }
 
     /**
-     * Add javadoc style documentation to the method.
+     * Marks this method with a Deprecated annotation.
+     * Also adds a note to the Javadocs.
      * 
      */
-    public DocumentationBuilder_m22_m23 withDocumentation() {
-        ObjectWrapper<DocumentationHelper> helper1 = new ObjectWrapper<DocumentationHelper>();
-        _helper.withDocumentation(helper1);
+    public MethodBuilder_m11_m12_m13_m14_m15_m16_m17_m18 markAsDeprecated(String reason) {
+        _helper.markAsDeprecated(reason);
         ImplMethodBuilder_m11_m12_m13_m14_m15_m16_m17_m18 step1 = new ImplMethodBuilder_m11_m12_m13_m14_m15_m16_m17_m18(_helper, _returnValue);
-        ImplDocumentationBuilder_m22_m23 step2 = new ImplDocumentationBuilder_m22_m23(helper1 .get(), step1);
          
-        _transferInvocations(step2);
-        return step2;
+        _transferInvocations(step1);
+        return step1;
     }
 
 }

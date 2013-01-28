@@ -181,8 +181,8 @@ public class GeneratorContext {
 				name.append(methodName);
 			}
 
-			if (transition.getMaxOccurrences() > 1) {
-				name.append("$").append(transition.getMaxOccurrences());
+			if (transition.info().getMaxOccurrences() > 1) {
+				name.append("$").append(transition.info().getMaxOccurrences());
 			}
 		}
 

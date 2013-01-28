@@ -19,10 +19,7 @@
 
 package unquietcode.tools.flapi.generator;
 
-import com.sun.codemodel.JClass;
-import com.sun.codemodel.JDefinedClass;
-import com.sun.codemodel.JMethod;
-import com.sun.codemodel.JType;
+import com.sun.codemodel.*;
 import unquietcode.tools.flapi.Constants;
 import unquietcode.tools.flapi.MethodParser;
 import unquietcode.tools.flapi.Pair;
@@ -164,8 +161,19 @@ public abstract class AbstractGenerator {
 		}
 
 		// documentation
-		if (transition.getDocumentation() != null) {
-			m.javadoc().append(transition.getDocumentation());
+		if (transition.info().getDocumentation() != null) {
+			m.javadoc().append(transition.info().getDocumentation());
+		}
+
+		// deprecation
+		if (transition.info().isDeprecated()) {
+			m.annotate(Deprecated.class);
+			JCommentPart doc = m.javadoc().addDeprecated();
+
+			String docString = transition.info().getDeprecationReason();
+			if (docString != null && !(docString = docString.trim()).isEmpty()) {
+				doc.append(docString);
+			}
 		}
 
 		return m;

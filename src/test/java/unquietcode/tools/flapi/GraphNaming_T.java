@@ -39,12 +39,12 @@ public class GraphNaming_T {
 	@Test
 	public void twoMethodsInDifferentStatesYieldsDifferentStateNames() {
 		Transition t1 = new LateralTransition();
-		t1.setMethodSignature("method(int a, int b)");
-		t1.setMaxOccurrences(1);
+		t1.info().setMethodSignature("method(int a, int b)");
+		t1.info().setMaxOccurrences(1);
 
 		Transition t2 = new LateralTransition();
-		t2.setMethodSignature("method(int a)");
-		t2.setMaxOccurrences(1);
+		t2.info().setMethodSignature("method(int a)");
+		t2.info().setMaxOccurrences(1);
 
 		GeneratorContext ctx = new GeneratorContext("");
 
@@ -67,12 +67,12 @@ public class GraphNaming_T {
 	@Test
 	public void twoMethodsInTheSameClass() {
 		Transition t1 = new LateralTransition();
-		t1.setMethodSignature("method(int a, int b)");
-		t1.setMaxOccurrences(1);
+		t1.info().setMethodSignature("method(int a, int b)");
+		t1.info().setMaxOccurrences(1);
 
 		Transition t2 = new LateralTransition();
-		t2.setMethodSignature("method(int a)");
-		t2.setMaxOccurrences(1);
+		t2.info().setMethodSignature("method(int a)");
+		t2.info().setMaxOccurrences(1);
 
 		StateClass sc1 = new StateClass();
 		sc1.setName("State");

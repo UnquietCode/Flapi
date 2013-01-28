@@ -88,7 +88,7 @@ public class BuilderClassTypeCreationStrategy implements TypeCreationStrategy {
 			// filter the methods
 			Set<Transition> filtered = new TreeSet<Transition>(transitions);
 			for (Transition transition : transitions) {
-				if (transition.getMinOccurrences() <= 0) {
+				if (transition.info().getMinOccurrences() <= 0) {
 					filtered.remove(transition);
 				}
 			}
@@ -96,7 +96,7 @@ public class BuilderClassTypeCreationStrategy implements TypeCreationStrategy {
 
 			// fields
 			for (Transition transition : transitions) {
-				cBuilder.field(JMod.NONE, ctx.model.INT, "ic_"+makeMethodKey(transition), JExpr.lit(transition.getMinOccurrences()));
+				cBuilder.field(JMod.NONE, ctx.model.INT, "ic_"+makeMethodKey(transition), JExpr.lit(transition.info().getMinOccurrences()));
 			}
 
 			// create the _transferInvocations method
@@ -129,7 +129,7 @@ public class BuilderClassTypeCreationStrategy implements TypeCreationStrategy {
 			} else {
 				for (Transition transition : transitions) {
 					String key = "ic_"+makeMethodKey(transition);
-					String message = "Expected at least "+transition.getMinOccurrences()+" invocations of method '"+transition.getMethodSignature()+"'.";
+					String message = "Expected at least "+transition.info().getMinOccurrences()+" invocations of method '"+transition.getMethodSignature()+"'.";
 
 					_method.body()._if(JExpr.ref(key).gt(JExpr.lit(0)))._then()
 						._throw(JExpr._new(ref(ExpectedInvocationsException.class)).arg(message));

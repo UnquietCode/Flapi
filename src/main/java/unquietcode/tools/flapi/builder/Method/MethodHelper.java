@@ -15,10 +15,10 @@ import unquietcode.tools.flapi.support.ObjectWrapper;
  * Visit http://www.unquietcode.com/flapi for more information.
  * 
  * 
- * Generated on January 27, 2013 22:49:58 CST using version 0.3
+ * Generated on January 27, 2013 23:00:49 CST using version 0.3
  * 
  */
-@Generated(value = "unquietcode.tools.flapi", date = "January 27, 2013 22:49:58 CST", comments = "generated using Flapi, the fluent API generator for Java")
+@Generated(value = "unquietcode.tools.flapi", date = "January 27, 2013 23:00:49 CST", comments = "generated using Flapi, the fluent API generator for Java")
 public interface MethodHelper {
 
 
@@ -37,6 +37,13 @@ public interface MethodHelper {
     void last();
 
     void last(Class returnType);
+
+    /**
+     * Marks this method with a Deprecated annotation.
+     * Also adds a note to the Javadocs.
+     * 
+     */
+    void markAsDeprecated(String reason);
 
     /**
      * Add javadoc style documentation to the method.

@@ -48,6 +48,14 @@ public class MainDescriptor {
 			// Method
 			.startBlock("Method", "addMethod(String methodSignature)").any()
 
+				// @Deprecated marker
+				.addMethod("markAsDeprecated(String reason)")
+					.withDocumentation()
+						.addContent("Marks this method with a Deprecated annotation.")
+						.addContent("\nAlso adds a note to the Javadocs.")
+					.finish()
+				.atMost(1)
+
 				// Documentation
 				.startBlock("Documentation", "withDocumentation()")
 					.withDocumentation()

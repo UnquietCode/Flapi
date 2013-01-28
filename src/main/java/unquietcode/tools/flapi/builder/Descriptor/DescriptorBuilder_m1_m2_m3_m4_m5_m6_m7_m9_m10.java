@@ -3,8 +3,8 @@ package unquietcode.tools.flapi.builder.Descriptor;
 
 import javax.annotation.Generated;
 import unquietcode.tools.flapi.Descriptor;
-import unquietcode.tools.flapi.builder.Block.BlockBuilder_m1_m2_m21_m9_m10;
-import unquietcode.tools.flapi.builder.Method.MethodBuilder_m11_m12_m13_m14_m15_m16_m17_m18_m19;
+import unquietcode.tools.flapi.builder.Block.BlockBuilder_m1_m2_m22_m9_m10;
+import unquietcode.tools.flapi.builder.Method.MethodBuilder_m11_m12_m13_m14_m15_m16_m17_m18_m19_m20;
 
 
 /**
@@ -15,16 +15,16 @@ import unquietcode.tools.flapi.builder.Method.MethodBuilder_m11_m12_m13_m14_m15_
  * Visit http://www.unquietcode.com/flapi for more information.
  * 
  * 
- * Generated on January 27, 2013 22:49:58 CST using version 0.3
+ * Generated on January 27, 2013 23:00:49 CST using version 0.3
  * 
  */
-@Generated(value = "unquietcode.tools.flapi", date = "January 27, 2013 22:49:58 CST", comments = "generated using Flapi, the fluent API generator for Java")
+@Generated(value = "unquietcode.tools.flapi", date = "January 27, 2013 23:00:49 CST", comments = "generated using Flapi, the fluent API generator for Java")
 public interface DescriptorBuilder_m1_m2_m3_m4_m5_m6_m7_m9_m10 <_ReturnType >{
 
 
-    MethodBuilder_m11_m12_m13_m14_m15_m16_m17_m18_m19 <DescriptorBuilder_m1_m2_m3_m4_m5_m6_m7_m9_m10 <_ReturnType>> addBlockReference(String blockName, String methodSignature);
+    MethodBuilder_m11_m12_m13_m14_m15_m16_m17_m18_m19_m20 <DescriptorBuilder_m1_m2_m3_m4_m5_m6_m7_m9_m10 <_ReturnType>> addBlockReference(String blockName, String methodSignature);
 
-    MethodBuilder_m11_m12_m13_m14_m15_m16_m17_m18_m19 <DescriptorBuilder_m1_m2_m3_m4_m5_m6_m7_m9_m10 <_ReturnType>> addMethod(String methodSignature);
+    MethodBuilder_m11_m12_m13_m14_m15_m16_m17_m18_m19_m20 <DescriptorBuilder_m1_m2_m3_m4_m5_m6_m7_m9_m10 <_ReturnType>> addMethod(String methodSignature);
 
     Descriptor build();
 
@@ -36,8 +36,8 @@ public interface DescriptorBuilder_m1_m2_m3_m4_m5_m6_m7_m9_m10 <_ReturnType >{
 
     DescriptorBuilder_m1_m2_m3_m4_m5_m6_m9_m10 <_ReturnType> setReturnType(Class returnType);
 
-    MethodBuilder_m11_m12_m13_m14_m15_m16_m17_m18_m19 <BlockBuilder_m1_m2_m21_m9_m10 <DescriptorBuilder_m1_m2_m3_m4_m5_m6_m7_m9_m10 <_ReturnType>>> startBlock(String blockName, String methodSignature);
+    MethodBuilder_m11_m12_m13_m14_m15_m16_m17_m18_m19_m20 <BlockBuilder_m1_m2_m22_m9_m10 <DescriptorBuilder_m1_m2_m3_m4_m5_m6_m7_m9_m10 <_ReturnType>>> startBlock(String blockName, String methodSignature);
 
-    MethodBuilder_m11_m12_m13_m14_m15_m16_m17_m18_m19 <BlockBuilder_m1_m2_m21_m9_m10 <DescriptorBuilder_m1_m2_m3_m4_m5_m6_m7_m9_m10 <_ReturnType>>> startBlock(String methodSignature);
+    MethodBuilder_m11_m12_m13_m14_m15_m16_m17_m18_m19_m20 <BlockBuilder_m1_m2_m22_m9_m10 <DescriptorBuilder_m1_m2_m3_m4_m5_m6_m7_m9_m10 <_ReturnType>>> startBlock(String methodSignature);
 
 }

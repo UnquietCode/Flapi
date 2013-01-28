@@ -68,7 +68,7 @@ public class ImplicitTerminalProcessor implements GenericVisitor<StateClass> {
 		}
 
 		// only apply when this is the last occurrence of the method
-		if (transition.getMaxOccurrences() != 1) {
+		if (transition.info().getMaxOccurrences() != 1) {
 			return null;
 		}
 
@@ -87,9 +87,7 @@ public class ImplicitTerminalProcessor implements GenericVisitor<StateClass> {
 			replacement = new AscendingTransition();
 		}
 
-		replacement.setMaxOccurrences(transition.getMaxOccurrences());
-		replacement.setMinOccurrences(transition.getMinOccurrences());
-		replacement.setMethodSignature(transition.getMethodSignature());
+		replacement.setMethodInfo(transition.info().copy());
 		replacement.getStateChain().addAll(transition.getStateChain());
 
 		return replacement;

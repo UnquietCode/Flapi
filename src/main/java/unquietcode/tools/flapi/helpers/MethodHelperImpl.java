@@ -44,14 +44,14 @@ public class MethodHelperImpl implements MethodHelper {
 
 	@Override
 	public void any() {
-		method.minOccurrences = 0;
-		method.maxOccurrences = -1;
+		method.setMinOccurrences(0);
+		method.setMaxOccurrences(-1);
 	}
 
 	@Override
 	public void last() {
-		method.minOccurrences = 0;
-		method.maxOccurrences = 1;
+		method.setMinOccurrences(0);
+		method.setMaxOccurrences(1);
 		method.isTerminal(true);
 	}
 
@@ -71,8 +71,8 @@ public class MethodHelperImpl implements MethodHelper {
 			throw new DescriptorBuilderException("must have at least >= 0");
 		}
 
-		method.maxOccurrences = -1;
-		method.minOccurrences = num;
+		method.setMaxOccurrences(-1);
+		method.setMinOccurrences(num);
 	}
 
 	@Override
@@ -81,8 +81,8 @@ public class MethodHelperImpl implements MethodHelper {
 			throw new DescriptorBuilderException("must have at least > 0");
 		}
 
-		method.minOccurrences = 0;
-		method.maxOccurrences = num;
+		method.setMinOccurrences(0);
+		method.setMaxOccurrences(num);
 	}
 
 	@Override
@@ -99,8 +99,8 @@ public class MethodHelperImpl implements MethodHelper {
 			throw new DescriptorBuilderException("must have atLeast <= then atMost");
 		}
 
-		method.maxOccurrences = atLeast;
-		method.minOccurrences = atMost;
+		method.setMaxOccurrences(atLeast);
+		method.setMinOccurrences(atMost);
 	}
 
 	@Override
@@ -112,5 +112,10 @@ public class MethodHelperImpl implements MethodHelper {
 	public void withDocumentation(ObjectWrapper<DocumentationHelper> _helper1) {
 		DocumentationHelper helper = new DocumentationHelperImpl(method);
 		_helper1.set(helper);
+	}
+
+	@Override
+	public void markAsDeprecated(String reason) {
+		method.setDeprecated(reason);
 	}
 }

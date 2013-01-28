@@ -29,23 +29,11 @@ import java.util.List;
  * @author Ben Fagin
  * @version 03-07-2012
  */
-public class MethodOutline implements Outline, Comparable<MethodOutline> {
-	public Integer minOccurrences;
-	public Integer maxOccurrences;
-	private String methodSignature;
+public class MethodOutline extends MethodInfo implements Outline {
 	private boolean isTerminal = false;
 	private Class returnType;
 	private final List<BlockOutline> blockChain = new ArrayList<BlockOutline>();
-	private String documentation;
 
-
-	public String getDocumentation() {
-		return documentation;
-	}
-
-	public void setDocumentation(String documentation) {
-		this.documentation = documentation;
-	}
 
 	public Class getReturnType() {
 		return returnType;
@@ -55,14 +43,6 @@ public class MethodOutline implements Outline, Comparable<MethodOutline> {
 		this.returnType = returnType;
 	}
 
-	public String getMethodSignature() {
-		return methodSignature;
-	}
-
-	public void setMethodSignature(String methodSignature) {
-		this.methodSignature = methodSignature.trim();
-	}
-	
 	public List<BlockOutline> getBlockChain() {
 		return blockChain;
 	}
@@ -80,7 +60,7 @@ public class MethodOutline implements Outline, Comparable<MethodOutline> {
 	}
 
 	public String returnType() {
-		MethodParser parsed = new MethodParser(methodSignature);
+		MethodParser parsed = new MethodParser(getMethodSignature());
 		return parsed.returnType;
 	}
 
@@ -88,50 +68,30 @@ public class MethodOutline implements Outline, Comparable<MethodOutline> {
 		A required method must be present on all interfaces.
 	 */
 	public boolean isRequired() {
-		return maxOccurrences == -1 || isTerminal;
+		return getMaxOccurrences() == -1 || isTerminal;
 	}
 
 
 	public MethodOutline copy()  {
 		MethodOutline clone = new MethodOutline();
-		clone.minOccurrences = minOccurrences;
-		clone.maxOccurrences = maxOccurrences;
-		clone.methodSignature = methodSignature;
+		super.copy(clone);
 		clone.isTerminal = isTerminal;
 		clone.blockChain.addAll(blockChain);
 		clone.returnType = returnType;
-		clone.documentation = documentation;
 
 		return clone;
-	}
-
-	@Override
-	public String toString() {
-		return methodSignature + "-" + maxOccurrences;
-	}
-
-	/*
-		Used by sorted collections to provide consistent ordering.
-	 */
-	public @Override int compareTo(MethodOutline other) {
-		return methodSignature.compareTo(other.methodSignature);
 	}
 
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
 		if (o == null || getClass() != o.getClass()) return false;
+		if (!super.equals(o)) return false;
 
 		MethodOutline that = (MethodOutline) o;
 
 		if (isTerminal != that.isTerminal) return false;
-		if (blockChain != null ? blockChain.size() != that.blockChain.size() : that.blockChain != null) return false;
-		if (maxOccurrences != null ? !maxOccurrences.equals(that.maxOccurrences) : that.maxOccurrences != null)
-			return false;
-		if (methodSignature != null ? !methodSignature.equals(that.methodSignature) : that.methodSignature != null)
-			return false;
-		if (minOccurrences != null ? !minOccurrences.equals(that.minOccurrences) : that.minOccurrences != null)
-			return false;
+		if (blockChain != null ? !blockChain.equals(that.blockChain) : that.blockChain != null) return false;
 		if (returnType != null ? !returnType.equals(that.returnType) : that.returnType != null) return false;
 
 		return true;
@@ -139,9 +99,7 @@ public class MethodOutline implements Outline, Comparable<MethodOutline> {
 
 	@Override
 	public int hashCode() {
-		int result = minOccurrences != null ? minOccurrences.hashCode() : 0;
-		result = 31 * result + (maxOccurrences != null ? maxOccurrences.hashCode() : 0);
-		result = 31 * result + (methodSignature != null ? methodSignature.hashCode() : 0);
+		int result = super.hashCode();
 		result = 31 * result + (isTerminal ? 1 : 0);
 		result = 31 * result + (returnType != null ? returnType.hashCode() : 0);
 		result = 31 * result + (blockChain != null ? blockChain.hashCode() : 0);

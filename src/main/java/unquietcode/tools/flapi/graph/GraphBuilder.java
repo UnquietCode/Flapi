@@ -134,7 +134,7 @@ public class GraphBuilder {
 		TreeSet<String> names = new TreeSet<String>();
 		for (MethodOutline method : allMethods) {
 			String key = AbstractGenerator.makeMethodKey(method.getMethodSignature());
-			names.add(key+"-"+method.maxOccurrences);
+			names.add(key+"-"+method.getMaxOccurrences());
 		}
 
 		StringBuilder sb = new StringBuilder();
@@ -186,10 +186,7 @@ public class GraphBuilder {
 			transition = lateral;
 		}
 
-		transition.setMethodSignature(method.getMethodSignature());
-		transition.setMaxOccurrences(method.isTerminal() ? -1 : method.maxOccurrences);
-		transition.setMinOccurrences(method.isTerminal() ? -1 : method.minOccurrences);
-		transition.setDocumentation(method.getDocumentation());
+		transition.setMethodInfo(method);
 		state.addTransitions(transition);
 
 		for (BlockOutline chain : method.getBlockChain()) {
@@ -227,10 +224,10 @@ public class GraphBuilder {
 					changed = true;
 
 					// if we can afford to lose one occurrence then do it and re-add
-					if (method.maxOccurrences > 1) {
+					if (method.getMaxOccurrences() > 1) {
 						MethodOutline m = method.copy();
 
-						m.maxOccurrences = m.maxOccurrences - 1;
+						m.setMaxOccurrences(m.getMaxOccurrences() - 1);
 						next.add(m);
 					}
 				}
@@ -292,9 +289,9 @@ public class GraphBuilder {
 		minusMethod.remove(method);
 
 		// only add back if it's not the last instance
-		if (method.maxOccurrences > 1) {
+		if (method.getMaxOccurrences() > 1) {
 			MethodOutline m = method.copy();
-			m.maxOccurrences = m.maxOccurrences - 1;
+			m.setMaxOccurrences(m.getMaxOccurrences() - 1);
 			minusMethod.add(m);
 		}
 
