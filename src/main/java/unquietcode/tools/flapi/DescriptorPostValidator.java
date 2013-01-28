@@ -50,10 +50,8 @@ public class DescriptorPostValidator {
 		);
 	}
 
-
-	private void checkForBlocksWithNoEnd(StateClass state,
-	                                     final Set<StateClass> seen,
-	                                     final ObjectWrapper<Boolean> valid
+	private void checkForBlocksWithNoEnd(
+		StateClass state, final Set<StateClass> seen, final ObjectWrapper<Boolean> valid
 	){
 		if (seen.contains(state)) {
 			return;
@@ -61,6 +59,7 @@ public class DescriptorPostValidator {
 			seen.add(state);
 		}
 
+		// check this state's transitions
 		for (Transition transition : state.getTransitions()) {
 			if (transition instanceof RecursiveTransition) {
 				continue;
@@ -77,19 +76,16 @@ public class DescriptorPostValidator {
 			});
 
 			// check every other transition to ensure that they can find a terminal
-			final Set<StateClass> localSeen = Collections.newSetFromMap(new IdentityHashMap<StateClass, Boolean>());
-			final ObjectWrapper<Boolean> localValid = new ObjectWrapper<Boolean>(false);
-			localSeen.add(state);
-
 			transition.acceptForTraversal(new GenericVisitor<StateClass>() {
 				public void visit(StateClass next) {
-					checkForBlocksWithNoEnd(next, localSeen, localValid);
+					checkForBlocksWithNoEnd(next, seen, new ObjectWrapper<Boolean>(false));
+
+					// If there is at least one transition, and there are no
+					// dead ends, then there must be at least one end,
+					// so if we reach here then it is valid.
+					valid.set(true);
 				}
 			});
-
-			if (localValid.get() == true) {
-				valid.set(true);
-			}
 		}
 
 		if (valid.get() != true) {

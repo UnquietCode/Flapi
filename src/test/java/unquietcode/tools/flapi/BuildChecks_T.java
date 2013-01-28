@@ -21,6 +21,7 @@ package unquietcode.tools.flapi;
 
 import org.junit.Assert;
 import org.junit.Test;
+import something.Something.SomethingGenerator;
 import unquietcode.tools.flapi.builder.Descriptor.DescriptorGenerator;
 import unquietcode.tools.flapi.helpers.DescriptorHelperImpl;
 
@@ -148,7 +149,7 @@ public class BuildChecks_T {
 
 	@Test
 	public void selfReferencedBlock() {
-		DescriptorGenerator.create(new DescriptorHelperImpl())
+		Flapi.builder()
 			.setPackage("unquietcode.something")
 			.setDescriptorName("Something")
 			.setStartingMethodName("create")
@@ -231,4 +232,41 @@ public class BuildChecks_T {
 			}
 		}
 	}
+
+	@Test(expected=DescriptorBuilderException.class)
+	public void emptyDescriptorIsRejected() {
+		Flapi.builder()
+			.setPackage("something")
+			.setDescriptorName("Something")
+		.build();
+	}
+
+	@Test(expected=DescriptorBuilderException.class)
+	public void emptyBlockIsRejected() {
+		Flapi.builder()
+			.setPackage("something")
+			.setDescriptorName("Something")
+
+			.startBlock("anon()").any()
+
+			.endBlock()
+		.build();
+	}
+
+	@Test(expected=DescriptorBuilderException.class)
+	public void emptyBlockWithBlockChainIsRejected() {
+		Descriptor descriptor = Flapi.builder()
+			.setPackage("something")
+			.setDescriptorName("Something")
+
+			.startBlock("anon1()")
+				.addBlockChain().startBlock("Anon2")
+					.addMethod("done()").last()
+				.endBlock()
+			.last()
+
+			.endBlock()
+		.build();
+	}
+
 }
