@@ -29,7 +29,7 @@ import unquietcode.tools.flapi.MethodParser;
 public class DescriptorOutline implements Outline {
 	private String packageName;
 	private boolean enableCondensedNames = false;
-	public final BlockOutline selfBlock = new BlockOutline(null);
+	public final BlockOutline selfBlock = new BlockOutline();
 	private final GeneratorOutline generator = new GeneratorOutline(selfBlock);
 
 

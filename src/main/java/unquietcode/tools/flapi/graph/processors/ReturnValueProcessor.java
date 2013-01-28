@@ -157,8 +157,7 @@ public class ReturnValueProcessor extends AbstractGenerator {
 	private void addMethodsToHelper(Transition transition, JType helperReturnType, List<JVar> helpers) {
 		JDefinedClass iHelper = HELPER_INTERFACE_STRATEGY.createType(ctx, transition.getOwner());
 		JType methodCallType = helperReturnType == null ? ctx.model.VOID : helperReturnType;
-		MethodParser parsed = new MethodParser(transition.getMethodSignature());
-		JMethod _method = addMethod(iHelper, methodCallType, JMod.NONE, parsed);
+		JMethod _method = addMethod(iHelper, methodCallType, JMod.NONE, transition);
 
 		int i=1;
 		for (JVar helper : helpers) {

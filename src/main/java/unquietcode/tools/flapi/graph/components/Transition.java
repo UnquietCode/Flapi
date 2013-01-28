@@ -36,6 +36,7 @@ public abstract class Transition implements Comparable<Transition> {
 	private Integer maxOccurrences = -1;
 	private String methodSignature;
 	private StateClass owner;
+	private String documentation;
 	private final TransitionType type;
 
 	public abstract void accept(TransitionVisitor visitor);
@@ -95,12 +96,21 @@ public abstract class Transition implements Comparable<Transition> {
 		return owner;
 	}
 
+	public String getDocumentation() {
+		return documentation;
+	}
+
+	public void setDocumentation(String documentation) {
+		this.documentation = documentation;
+	}
+
 	public abstract Transition copy();
 	protected void basicCopy(Transition copy) {
 		copy.maxOccurrences = this.maxOccurrences;
 		copy.minOccurrences = this.minOccurrences;
 		copy.methodSignature = this.methodSignature;
 		copy.stateChain.addAll(this.stateChain);
+		copy.documentation = this.documentation;
 		copy.owner = this.owner;
 	}
 

@@ -3,6 +3,7 @@ package unquietcode.tools.flapi.builder;
 
 import javax.annotation.Generated;
 import unquietcode.tools.flapi.support.BuilderImplementation;
+import unquietcode.tools.flapi.support.ObjectWrapper;
 
 
 /**
@@ -17,14 +18,14 @@ import unquietcode.tools.flapi.support.BuilderImplementation;
  * 
  */
 @Generated(value = "unquietcode.tools.flapi", date = "January 27, 2013 22:16:43 CST", comments = "generated using Flapi, the fluent API generator for Java")
-public class ImplMethodBuilder_m12_m13_m14_m15_m16_m17_m18
-    implements MethodBuilder_m12_m13_m14_m15_m16_m17_m18, BuilderImplementation
+public class ImplMethodBuilder_m11_m12_m13_m14_m15_m16_m17_m18_m19
+    implements MethodBuilder_m11_m12_m13_m14_m15_m16_m17_m18_m19, BuilderImplementation
 {
 
     private final MethodHelper _helper;
     private final Object _returnValue;
 
-    ImplMethodBuilder_m12_m13_m14_m15_m16_m17_m18(MethodHelper helper, Object returnValue) {
+    ImplMethodBuilder_m11_m12_m13_m14_m15_m16_m17_m18_m19(MethodHelper helper, Object returnValue) {
         _helper = helper;
         _returnValue = returnValue;
     }
@@ -43,6 +44,16 @@ public class ImplMethodBuilder_m12_m13_m14_m15_m16_m17_m18
 
     public void _checkInvocations() {
         // nothing
+    }
+
+    public BlockChainBuilder_m11_m20_m10 addBlockChain() {
+        ObjectWrapper<BlockChainHelper> helper1 = new ObjectWrapper<BlockChainHelper>();
+        _helper.addBlockChain(helper1);
+        ImplMethodBuilder_m12_m13_m14_m15_m16_m17_m18_m19 step1 = new ImplMethodBuilder_m12_m13_m14_m15_m16_m17_m18_m19(_helper, _returnValue);
+        ImplBlockChainBuilder_m11_m20_m10 step2 = new ImplBlockChainBuilder_m11_m20_m10(helper1 .get(), step1);
+         
+        _transferInvocations(step2);
+        return step2;
     }
 
     public Object any() {
@@ -92,6 +103,20 @@ public class ImplMethodBuilder_m12_m13_m14_m15_m16_m17_m18
         _helper.last(returnType);
          
         return _returnValue;
+    }
+
+    /**
+     * Add javadoc style documentation to the method.
+     * 
+     */
+    public DocumentationBuilder_m22_m23 withDocumentation() {
+        ObjectWrapper<DocumentationHelper> helper1 = new ObjectWrapper<DocumentationHelper>();
+        _helper.withDocumentation(helper1);
+        ImplMethodBuilder_m11_m12_m13_m14_m15_m16_m17_m18 step1 = new ImplMethodBuilder_m11_m12_m13_m14_m15_m16_m17_m18(_helper, _returnValue);
+        ImplDocumentationBuilder_m22_m23 step2 = new ImplDocumentationBuilder_m22_m23(helper1 .get(), step1);
+         
+        _transferInvocations(step2);
+        return step2;
     }
 
 }

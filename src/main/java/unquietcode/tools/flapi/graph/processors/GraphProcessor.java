@@ -58,12 +58,11 @@ public class GraphProcessor extends AbstractGenerator implements GenericVisitor<
 		JDefinedClass iBuilder = BUILDER_INTERFACE_STRATEGY.createType(ctx, state);
 
 		for (Transition transition : state.getTransitions()) {
-			MethodParser parsed = new MethodParser(transition.getMethodSignature());
 
 			// add methods to interface
 			ReturnTypeProcessor rt = new ReturnTypeProcessor(ctx);
 			JType returnType = rt.computeReturnType(transition);
-			addMethod(iBuilder, returnType, JMod.NONE, parsed);
+			addMethod(iBuilder, returnType, JMod.NONE, transition);
 
 			// add methods to class
 			addMethodToClass(state, transition);
@@ -84,8 +83,7 @@ public class GraphProcessor extends AbstractGenerator implements GenericVisitor<
 						 ? rtv.computeReturnType(transition).erasure()
 						 : ref(Object.class)
 		;
-		MethodParser parsed = new MethodParser(transition.getMethodSignature());
-		final JMethod _method = addMethod(cBuilder, returnType, JMod.PUBLIC, parsed);
+		final JMethod _method = addMethod(cBuilder, returnType, JMod.PUBLIC, transition);
 
 		// invocation tracking
 		if (mi.shouldTrackInvocations()) {

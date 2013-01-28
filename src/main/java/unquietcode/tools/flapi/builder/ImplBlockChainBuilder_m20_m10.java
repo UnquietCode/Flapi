@@ -14,18 +14,18 @@ import unquietcode.tools.flapi.support.ObjectWrapper;
  * Visit http://www.unquietcode.com/flapi for more information.
  * 
  * 
- * Generated on December 01, 2012 13:14:02 CST using version 0.3
+ * Generated on January 27, 2013 22:16:43 CST using version 0.3
  * 
  */
-@Generated(value = "unquietcode.tools.flapi", date = "December 01, 2012 13:14:02 CST", comments = "generated using Flapi, the fluent API generator for Java")
-public class ImplBlockChainBuilder_m19_m10
-    implements BlockChainBuilder_m19_m10, BuilderImplementation
+@Generated(value = "unquietcode.tools.flapi", date = "January 27, 2013 22:16:43 CST", comments = "generated using Flapi, the fluent API generator for Java")
+public class ImplBlockChainBuilder_m20_m10
+    implements BlockChainBuilder_m20_m10, BuilderImplementation
 {
 
     private final BlockChainHelper _helper;
     private final Object _returnValue;
 
-    ImplBlockChainBuilder_m19_m10(BlockChainHelper helper, Object returnValue) {
+    ImplBlockChainBuilder_m20_m10(BlockChainHelper helper, Object returnValue) {
         _helper = helper;
         _returnValue = returnValue;
     }
@@ -46,20 +46,20 @@ public class ImplBlockChainBuilder_m19_m10
         // nothing
     }
 
-    public BlockBuilder_m1_m2_m20_m9_m10 startBlock(String blockName) {
-        _checkInvocations();
-        ObjectWrapper<BlockHelper> helper1 = new ObjectWrapper<BlockHelper>();
-        _helper.startBlock(blockName, helper1);
-        ImplBlockBuilder_m1_m2_m20_m9_m10 step1 = new ImplBlockBuilder_m1_m2_m20_m9_m10(helper1 .get(), _returnValue);
-         
-        return step1;
-    }
-
     public Object addBlockReference(String blockName) {
         _checkInvocations();
         _helper.addBlockReference(blockName);
          
         return _returnValue;
+    }
+
+    public BlockBuilder_m1_m2_m21_m9_m10 startBlock(String blockName) {
+        _checkInvocations();
+        ObjectWrapper<BlockHelper> helper1 = new ObjectWrapper<BlockHelper>();
+        _helper.startBlock(blockName, helper1);
+        ImplBlockBuilder_m1_m2_m21_m9_m10 step1 = new ImplBlockBuilder_m1_m2_m21_m9_m10(helper1 .get(), _returnValue);
+         
+        return step1;
     }
 
 }

@@ -16,16 +16,11 @@ import javax.annotation.Generated;
  * 
  */
 @Generated(value = "unquietcode.tools.flapi", date = "January 27, 2013 22:16:43 CST", comments = "generated using Flapi, the fluent API generator for Java")
-public class DescriptorGenerator {
+public interface DocumentationHelper {
 
 
-    @SuppressWarnings("unchecked")
-    public static DescriptorBuilder_m1_m2_m3_m4_m5_m6_m7_m8_m9_m10 <Void> create(DescriptorHelper helper) {
-        if (helper == null) {
-            throw new IllegalArgumentException("Helper cannot be null.");
-        }
-         
-        return new ImplDescriptorBuilder_m1_m2_m3_m4_m5_m6_m7_m8_m9_m10(helper, null);
-    }
+    void addContent(String content);
+
+    void finish();
 
 }

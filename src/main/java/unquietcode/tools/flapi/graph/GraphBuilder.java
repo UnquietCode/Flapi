@@ -189,6 +189,7 @@ public class GraphBuilder {
 		transition.setMethodSignature(method.getMethodSignature());
 		transition.setMaxOccurrences(method.isTerminal() ? -1 : method.maxOccurrences);
 		transition.setMinOccurrences(method.isTerminal() ? -1 : method.minOccurrences);
+		transition.setDocumentation(method.getDocumentation());
 		state.addTransitions(transition);
 
 		for (BlockOutline chain : method.getBlockChain()) {

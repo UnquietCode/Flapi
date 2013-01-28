@@ -16,16 +16,27 @@ import javax.annotation.Generated;
  * 
  */
 @Generated(value = "unquietcode.tools.flapi", date = "January 27, 2013 22:16:43 CST", comments = "generated using Flapi, the fluent API generator for Java")
-public class DescriptorGenerator {
+public interface MethodBuilder_m12_m13_m14_m15_m16_m17_m18_m19 <_ReturnType >{
 
 
-    @SuppressWarnings("unchecked")
-    public static DescriptorBuilder_m1_m2_m3_m4_m5_m6_m7_m8_m9_m10 <Void> create(DescriptorHelper helper) {
-        if (helper == null) {
-            throw new IllegalArgumentException("Helper cannot be null.");
-        }
-         
-        return new ImplDescriptorBuilder_m1_m2_m3_m4_m5_m6_m7_m8_m9_m10(helper, null);
-    }
+    _ReturnType any();
+
+    _ReturnType atLeast(int num);
+
+    _ReturnType atMost(int num);
+
+    _ReturnType between(int atLeast, int atMost);
+
+    _ReturnType exactly(int num);
+
+    _ReturnType last();
+
+    _ReturnType last(Class returnType);
+
+    /**
+     * Add javadoc style documentation to the method.
+     * 
+     */
+    DocumentationBuilder_m22_m23 <MethodBuilder_m12_m13_m14_m15_m16_m17_m18 <_ReturnType>> withDocumentation();
 
 }

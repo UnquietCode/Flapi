@@ -36,7 +36,16 @@ public class MethodOutline implements Outline, Comparable<MethodOutline> {
 	private boolean isTerminal = false;
 	private Class returnType;
 	private final List<BlockOutline> blockChain = new ArrayList<BlockOutline>();
+	private String documentation;
 
+
+	public String getDocumentation() {
+		return documentation;
+	}
+
+	public void setDocumentation(String documentation) {
+		this.documentation = documentation;
+	}
 
 	public Class getReturnType() {
 		return returnType;
@@ -91,6 +100,7 @@ public class MethodOutline implements Outline, Comparable<MethodOutline> {
 		clone.isTerminal = isTerminal;
 		clone.blockChain.addAll(blockChain);
 		clone.returnType = returnType;
+		clone.documentation = documentation;
 
 		return clone;
 	}

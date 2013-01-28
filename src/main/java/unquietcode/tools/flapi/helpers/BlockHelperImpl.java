@@ -79,7 +79,7 @@ public class BlockHelperImpl implements BlockHelper {
 		String methodSignature,
 		ObjectWrapper<MethodHelper> _helper1
 	){
-		BlockReference blockReference = new BlockReference(block);
+		BlockReference blockReference = new BlockReference();
 		blockReference.setName(blockName);
 
 		MethodOutline blockMethod = block.addMethod(methodSignature);

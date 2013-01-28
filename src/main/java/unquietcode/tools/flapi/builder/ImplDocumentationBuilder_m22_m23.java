@@ -17,14 +17,14 @@ import unquietcode.tools.flapi.support.BuilderImplementation;
  * 
  */
 @Generated(value = "unquietcode.tools.flapi", date = "January 27, 2013 22:16:43 CST", comments = "generated using Flapi, the fluent API generator for Java")
-public class ImplMethodBuilder_m12_m13_m14_m15_m16_m17_m18
-    implements MethodBuilder_m12_m13_m14_m15_m16_m17_m18, BuilderImplementation
+public class ImplDocumentationBuilder_m22_m23
+    implements DocumentationBuilder_m22_m23, BuilderImplementation
 {
 
-    private final MethodHelper _helper;
+    private final DocumentationHelper _helper;
     private final Object _returnValue;
 
-    ImplMethodBuilder_m12_m13_m14_m15_m16_m17_m18(MethodHelper helper, Object returnValue) {
+    ImplDocumentationBuilder_m22_m23(DocumentationHelper helper, Object returnValue) {
         _helper = helper;
         _returnValue = returnValue;
     }
@@ -45,51 +45,15 @@ public class ImplMethodBuilder_m12_m13_m14_m15_m16_m17_m18
         // nothing
     }
 
-    public Object any() {
-        _checkInvocations();
-        _helper.any();
+    public DocumentationBuilder_m22_m23 addContent(String content) {
+        _helper.addContent(content);
          
-        return _returnValue;
+        return this;
     }
 
-    public Object atLeast(int num) {
+    public Object finish() {
         _checkInvocations();
-        _helper.atLeast(num);
-         
-        return _returnValue;
-    }
-
-    public Object atMost(int num) {
-        _checkInvocations();
-        _helper.atMost(num);
-         
-        return _returnValue;
-    }
-
-    public Object between(int atLeast, int atMost) {
-        _checkInvocations();
-        _helper.between(atLeast, atMost);
-         
-        return _returnValue;
-    }
-
-    public Object exactly(int num) {
-        _checkInvocations();
-        _helper.exactly(num);
-         
-        return _returnValue;
-    }
-
-    public Object last() {
-        _checkInvocations();
-        _helper.last();
-         
-        return _returnValue;
-    }
-
-    public Object last(Class returnType) {
-        _checkInvocations();
-        _helper.last(returnType);
+        _helper.finish();
          
         return _returnValue;
     }

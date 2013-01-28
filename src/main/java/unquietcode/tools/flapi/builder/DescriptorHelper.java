@@ -14,31 +14,31 @@ import unquietcode.tools.flapi.support.ObjectWrapper;
  * Visit http://www.unquietcode.com/flapi for more information.
  * 
  * 
- * Generated on December 01, 2012 13:14:02 CST using version 0.3
+ * Generated on January 27, 2013 22:16:43 CST using version 0.3
  * 
  */
-@Generated(value = "unquietcode.tools.flapi", date = "December 01, 2012 13:14:02 CST", comments = "generated using Flapi, the fluent API generator for Java")
+@Generated(value = "unquietcode.tools.flapi", date = "January 27, 2013 22:16:43 CST", comments = "generated using Flapi, the fluent API generator for Java")
 public interface DescriptorHelper {
 
 
-    void addMethod(String methodSignature, ObjectWrapper<MethodHelper> _helper1);
-
-    void startBlock(String methodSignature, ObjectWrapper<MethodHelper> _helper1, ObjectWrapper<BlockHelper> _helper2);
-
     void addBlockReference(String blockName, String methodSignature, ObjectWrapper<MethodHelper> _helper1);
 
-    void startBlock(String blockName, String methodSignature, ObjectWrapper<MethodHelper> _helper1, ObjectWrapper<BlockHelper> _helper2);
-
-    void setDescriptorName(String descriptorName);
+    void addMethod(String methodSignature, ObjectWrapper<MethodHelper> _helper1);
 
     Descriptor build();
 
-    void setPackage(String packageName);
-
     void enableCondensedClassNames();
+
+    void setDescriptorName(String descriptorName);
+
+    void setPackage(String packageName);
 
     void setReturnType(Class returnType);
 
     void setStartingMethodName(String methodName);
+
+    void startBlock(String blockName, String methodSignature, ObjectWrapper<MethodHelper> _helper1, ObjectWrapper<BlockHelper> _helper2);
+
+    void startBlock(String methodSignature, ObjectWrapper<MethodHelper> _helper1, ObjectWrapper<BlockHelper> _helper2);
 
 }

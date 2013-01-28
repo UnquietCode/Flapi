@@ -76,7 +76,7 @@ public class BlockOutline implements Outline {
 	}
 
 	public BlockOutline addBlock(String blockName) {
-		BlockOutline block = new BlockOutline(this);
+		BlockOutline block = new BlockOutline();
 		block.name = blockName;
 		blocks.add(block);
 

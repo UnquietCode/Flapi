@@ -49,10 +49,14 @@ public class MainDescriptor {
 			.startBlock("Method", "addMethod(String methodSignature)").any()
 
 				// Documentation
-//				.startBlock("Documentation", "withDocumentation()").atMost(1)
-//					.addMethod("withContent(String content)").any()
-//					.addMethod("withParameter(String parameterName, String parameterValue)").any()
-//				.endBlock()
+				.startBlock("Documentation", "withDocumentation()")
+					.withDocumentation()
+						.addContent("Add javadoc style documentation to the method.")
+					.finish()
+				.atMost(1)
+					.addMethod("addContent(String content)").any()
+					.addMethod("finish()").last()
+				.endBlock()
 
 				// method quantities
 				.addMethod("exactly(int num)").last()

@@ -147,7 +147,8 @@ public abstract class AbstractGenerator {
 		return clazz;
 	}
 
-	protected JMethod addMethod(JDefinedClass _class, JType returnType, int mods, MethodParser parsed) {
+	protected JMethod addMethod(JDefinedClass _class, JType returnType, int mods, Transition transition) {
+		MethodParser parsed = new MethodParser(transition.getMethodSignature());
 		JMethod m = _class.method(mods, returnType, parsed.methodName);
 
 		// regular params
@@ -160,6 +161,11 @@ public abstract class AbstractGenerator {
 		if (parsed.varargType != null) {
 			JType clazz = getType(parsed.varargType);
 			m.varParam(clazz, parsed.varargName);
+		}
+
+		// documentation
+		if (transition.getDocumentation() != null) {
+			m.javadoc().append(transition.getDocumentation());
 		}
 
 		return m;

@@ -23,6 +23,7 @@ package unquietcode.tools.flapi.graph.components;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.TreeSet;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
@@ -69,8 +70,8 @@ public class StateClass {
 		return str;
 	}
 
-	public Set<Transition> getTransitions() {
-		Set<Transition> retval = new HashSet<Transition>(transitions);
+	public TreeSet<Transition> getTransitions() {
+		TreeSet<Transition> retval = new TreeSet<Transition>(transitions);
 
 		if (base != null) {
 			for (Transition transition : base.transitions) {

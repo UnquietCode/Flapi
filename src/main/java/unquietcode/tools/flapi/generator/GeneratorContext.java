@@ -129,7 +129,7 @@ public class GeneratorContext {
 		StringBuilder name = new StringBuilder();
 		name.append(prefix).append(state.getName()).append(suffix);
 
-		for (Transition transition : new TreeSet<Transition>(state.getTransitions())) {
+		for (Transition transition : state.getTransitions()) {
 			MethodParser parsed = new MethodParser(transition.getMethodSignature());
 			String methodName = parsed.methodName;
 

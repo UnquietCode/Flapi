@@ -21,6 +21,7 @@ package unquietcode.tools.flapi.helpers;
 
 import unquietcode.tools.flapi.DescriptorBuilderException;
 import unquietcode.tools.flapi.builder.BlockChainHelper;
+import unquietcode.tools.flapi.builder.DocumentationHelper;
 import unquietcode.tools.flapi.builder.MethodHelper;
 import unquietcode.tools.flapi.outline.MethodOutline;
 import unquietcode.tools.flapi.support.ObjectWrapper;
@@ -105,5 +106,11 @@ public class MethodHelperImpl implements MethodHelper {
 	@Override
 	public void addBlockChain(ObjectWrapper<BlockChainHelper> _helper1) {
 		_helper1.set(new BlockChainHelperImpl(method));
+	}
+
+	@Override
+	public void withDocumentation(ObjectWrapper<DocumentationHelper> _helper1) {
+		DocumentationHelper helper = new DocumentationHelperImpl(method);
+		_helper1.set(helper);
 	}
 }

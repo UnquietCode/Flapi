@@ -13,10 +13,10 @@ import unquietcode.tools.flapi.support.ObjectWrapper;
  * Visit http://www.unquietcode.com/flapi for more information.
  * 
  * 
- * Generated on December 01, 2012 13:14:02 CST using version 0.3
+ * Generated on January 27, 2013 22:16:43 CST using version 0.3
  * 
  */
-@Generated(value = "unquietcode.tools.flapi", date = "December 01, 2012 13:14:02 CST", comments = "generated using Flapi, the fluent API generator for Java")
+@Generated(value = "unquietcode.tools.flapi", date = "January 27, 2013 22:16:43 CST", comments = "generated using Flapi, the fluent API generator for Java")
 public interface BlockChainHelper {
 
 
