@@ -22,6 +22,8 @@ package unquietcode.tools.flapi.outline;
 
 import unquietcode.tools.flapi.MethodParser;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 /**
  * @author Ben Fagin
  * @version 03-07-2012
@@ -66,16 +68,15 @@ public class DescriptorOutline implements Outline {
 	}
 
 	public void prepare() {
-		generateNamesForAnonymousBlocks(selfBlock);
+		generateNamesForAnonymousBlocks(selfBlock, new AtomicInteger(1));
 	}
 
-	private static void generateNamesForAnonymousBlocks(BlockOutline block) {
+	private static void generateNamesForAnonymousBlocks(BlockOutline block, AtomicInteger counter) {
 		// If the name is null, generate one.
 		if (block.getName() == null) {
 			MethodParser parsed = new MethodParser(block.getConstructor().getMethodSignature());
-			block.setName("Anonymous_$"+parsed.methodName);
+			block.setName("Anonymous"+counter.getAndIncrement()+"_"+parsed.methodName);
 		}
-		// TODO what about when it's intentionally null, (like in BlockChain)
 
 		// recurse
 		for (MethodOutline method : block.getAllMethods()) {
@@ -84,7 +85,7 @@ public class DescriptorOutline implements Outline {
 					continue;
 				}
 
-				generateNamesForAnonymousBlocks(chain);
+				generateNamesForAnonymousBlocks(chain, counter);
 			}
 		}
 	}
