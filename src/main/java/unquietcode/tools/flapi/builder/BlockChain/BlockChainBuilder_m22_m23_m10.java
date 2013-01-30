@@ -1,7 +1,8 @@
 
-package unquietcode.tools.flapi.builder.Documentation;
+package unquietcode.tools.flapi.builder.BlockChain;
 
 import javax.annotation.Generated;
+import unquietcode.tools.flapi.builder.Block.BlockBuilder_m1_m2_m24_m9_m10;
 
 
 /**
@@ -16,19 +17,13 @@ import javax.annotation.Generated;
  * 
  */
 @Generated(value = "unquietcode.tools.flapi", date = "January 30, 2013 1:01:45 CST", comments = "generated using Flapi, the fluent API generator for Java")
-public interface DocumentationHelper {
+public interface BlockChainBuilder_m22_m23_m10 <_ReturnType >{
 
 
-    /**
-     * add more content to the Javadocs
-     * 
-     */
-    void addContent(String content);
+    _ReturnType addBlockReference(String blockName);
 
-    /**
-     * finish writing the documentation
-     * 
-     */
-    void finish();
+    BlockBuilder_m1_m2_m24_m9_m10 <_ReturnType> startBlock();
+
+    BlockBuilder_m1_m2_m24_m9_m10 <_ReturnType> startBlock(String blockName);
 
 }

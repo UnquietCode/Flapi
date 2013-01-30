@@ -13,18 +13,18 @@ import unquietcode.tools.flapi.support.BuilderImplementation;
  * Visit https://github.com/UnquietCode/Flapi for more information.
  * 
  * 
- * Generated on January 29, 2013 21:38:13 CST using version 0.3
+ * Generated on January 30, 2013 1:01:45 CST using version 0.3
  * 
  */
-@Generated(value = "unquietcode.tools.flapi", date = "January 29, 2013 21:38:13 CST", comments = "generated using Flapi, the fluent API generator for Java")
-public class ImplDocumentationBuilder_m23_m24
-    implements DocumentationBuilder_m23_m24, BuilderImplementation
+@Generated(value = "unquietcode.tools.flapi", date = "January 30, 2013 1:01:45 CST", comments = "generated using Flapi, the fluent API generator for Java")
+public class ImplDocumentationBuilder_m25_m26
+    implements DocumentationBuilder_m25_m26, BuilderImplementation
 {
 
     private final DocumentationHelper _helper;
     private final Object _returnValue;
 
-    public ImplDocumentationBuilder_m23_m24(DocumentationHelper helper, Object returnValue) {
+    public ImplDocumentationBuilder_m25_m26(DocumentationHelper helper, Object returnValue) {
         _helper = helper;
         _returnValue = returnValue;
     }
@@ -45,12 +45,20 @@ public class ImplDocumentationBuilder_m23_m24
         // nothing
     }
 
-    public DocumentationBuilder_m23_m24 addContent(String content) {
+    /**
+     * add more content to the Javadocs
+     * 
+     */
+    public DocumentationBuilder_m25_m26 addContent(String content) {
         _helper.addContent(content);
          
         return this;
     }
 
+    /**
+     * finish writing the documentation
+     * 
+     */
     public Object finish() {
         _checkInvocations();
         _helper.finish();

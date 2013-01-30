@@ -51,8 +51,16 @@ public class BlockChainHelperImpl implements BlockChainHelper {
 
 	@Override
 	public void startBlock(String blockName, ObjectWrapper<BlockHelper> _helper1) {
+		BlockOutline innerBlock = new BlockOutline();
+		innerBlock.setName(blockName);
+		blockMethod.getBlockChain().add(0, innerBlock);
+
+		_helper1.set(new BlockHelperImpl(innerBlock));
+	}
+
+	@Override
+	public void startBlock(ObjectWrapper<BlockHelper> _helper1) {
 		BlockOutline anonymousBlock = new BlockOutline();
-		anonymousBlock.setName(blockName);
 		blockMethod.getBlockChain().add(0, anonymousBlock);
 
 		_helper1.set(new BlockHelperImpl(anonymousBlock));

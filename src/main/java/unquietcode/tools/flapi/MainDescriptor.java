@@ -37,22 +37,56 @@ public class MainDescriptor {
 			.enableCondensedClassNames()
 
 			// descriptor methods
-			.addMethod("setPackage(String packageName)").exactly(1)
-			.addMethod("setDescriptorName(String descriptorName)").exactly(1)
-			.addMethod("setStartingMethodName(String methodName)").atMost(1)
-			.addMethod("setReturnType(Class returnType)").atMost(1)
-			.addMethod("enableCondensedClassNames()").atMost(1)
-			//.addMethod("withAnnotations(Annotation...annotations)").any()
-			.addMethod("build()").last(Descriptor.class)
+			.addMethod("setPackage(String packageName)")
+				.withDocumentation()
+					.addContent("set the root package name to use for the generated classes")
+				.finish()
+			.exactly(1)
+
+			.addMethod("setDescriptorName(String descriptorName)")
+				.withDocumentation()
+					.addContent("set the name of the top level descriptor")
+				.finish()
+			.exactly(1)
+
+			.addMethod("setStartingMethodName(String methodName)")
+				.withDocumentation()
+					.addContent("set the name of the generator's starting method (default is 'create')")
+				.finish()
+			.atMost(1)
+
+			.addMethod("setReturnType(Class returnType)")
+				.withDocumentation()
+					.addContent("set the return type for the top level descriptor (default is void)")
+				.finish()
+			.atMost(1)
+
+			.addMethod("enableCondensedClassNames()")
+				.withDocumentation()
+					.addContent("Allow class names to be condensed, at the cost of no longer being\n")
+					.addContent("humanly readable. If your generated class names are too long to be\n")
+					.addContent("compiled, you will have to use this.")
+				.finish()
+			.atMost(1)
+
+			.addMethod("build()")
+				.withDocumentation()
+					.addContent("Finish work and build the descriptor. This should only be called once.")
+				.finish()
+			.last(Descriptor.class)
 
 			// Method
-			.startBlock("Method", "addMethod(String methodSignature)").any()
+			.startBlock("Method", "addMethod(String methodSignature)")
+				.withDocumentation()
+					.addContent("Add a new method to the top level descriptor block.")
+				.finish()
+			.any()
 
 				// @Deprecated marker
 				.addMethod("markAsDeprecated(String reason)")
 					.withDocumentation()
-						.addContent("Marks this method with a Deprecated annotation.")
-						.addContent("\nAlso adds a note to the Javadocs.")
+						.addContent("Marks this method with a Deprecated annotation.\n")
+						.addContent("Also adds a note to the Javadocs.")
 					.finish()
 				.atMost(1)
 
@@ -61,9 +95,19 @@ public class MainDescriptor {
 					.withDocumentation()
 						.addContent("Add javadoc style documentation to the method.")
 					.finish()
+
+					.addAlias("withDocumentation(String documentation)")
 				.atMost(1)
-					.addMethod("addContent(String content)").any()
-					.addMethod("finish()").last()
+					.addMethod("addContent(String content)")
+						.withDocumentation()
+							.addContent("add more content to the Javadocs")
+						.finish()
+					.any()
+					.addMethod("finish()")
+						.withDocumentation()
+							.addContent("finish writing the documentation")
+						.finish()
+					.last()
 				.endBlock()
 
 				// method quantities
@@ -79,8 +123,12 @@ public class MainDescriptor {
 				.startBlock("BlockChain", "addBlockChain()").atMost(1)
 					.addMethod("addBlockReference(String blockName)").last()
 					.addBlockReference("Block", "startBlock(String blockName)").last()
+					.addBlockReference("Block", "startBlock()").last()
 					.addBlockReference("BlockChain", "addBlockChain()").atMost(1)
 				.endBlock()
+
+				// Method Aliases
+				.addMethod("addAlias(String methodSignature)").any()
 			.endBlock()
 
 			// Block
@@ -117,6 +165,7 @@ public class MainDescriptor {
 			.any()
 		.build();
 
-		builder.writeToFolder(args[0]);
+		//builder.writeToFolder(args[0]);
+		builder.writeToFolder("/Users/bfagin/Downloads/tmp");
 	}
 }

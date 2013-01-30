@@ -2,9 +2,9 @@
 package unquietcode.tools.flapi.builder.BlockChain;
 
 import javax.annotation.Generated;
-import unquietcode.tools.flapi.builder.Block.BlockBuilder_m1_m2_m22_m9_m10;
+import unquietcode.tools.flapi.builder.Block.BlockBuilder_m1_m2_m24_m9_m10;
 import unquietcode.tools.flapi.builder.Block.BlockHelper;
-import unquietcode.tools.flapi.builder.Block.ImplBlockBuilder_m1_m2_m22_m9_m10;
+import unquietcode.tools.flapi.builder.Block.ImplBlockBuilder_m1_m2_m24_m9_m10;
 import unquietcode.tools.flapi.support.BuilderImplementation;
 import unquietcode.tools.flapi.support.ObjectWrapper;
 
@@ -17,18 +17,18 @@ import unquietcode.tools.flapi.support.ObjectWrapper;
  * Visit https://github.com/UnquietCode/Flapi for more information.
  * 
  * 
- * Generated on January 29, 2013 21:38:13 CST using version 0.3
+ * Generated on January 30, 2013 1:01:45 CST using version 0.3
  * 
  */
-@Generated(value = "unquietcode.tools.flapi", date = "January 29, 2013 21:38:13 CST", comments = "generated using Flapi, the fluent API generator for Java")
-public class ImplBlockChainBuilder_m11_m21_m10
-    implements BlockChainBuilder_m11_m21_m10, BuilderImplementation
+@Generated(value = "unquietcode.tools.flapi", date = "January 30, 2013 1:01:45 CST", comments = "generated using Flapi, the fluent API generator for Java")
+public class ImplBlockChainBuilder_m12_m22_m23_m10
+    implements BlockChainBuilder_m12_m22_m23_m10, BuilderImplementation
 {
 
     private final BlockChainHelper _helper;
     private final Object _returnValue;
 
-    public ImplBlockChainBuilder_m11_m21_m10(BlockChainHelper helper, Object returnValue) {
+    public ImplBlockChainBuilder_m12_m22_m23_m10(BlockChainHelper helper, Object returnValue) {
         _helper = helper;
         _returnValue = returnValue;
     }
@@ -49,11 +49,11 @@ public class ImplBlockChainBuilder_m11_m21_m10
         // nothing
     }
 
-    public BlockChainBuilder_m11_m21_m10 addBlockChain() {
+    public BlockChainBuilder_m12_m22_m23_m10 addBlockChain() {
         ObjectWrapper<BlockChainHelper> helper1 = new ObjectWrapper<BlockChainHelper>();
         _helper.addBlockChain(helper1);
-        ImplBlockChainBuilder_m21_m10 step1 = new ImplBlockChainBuilder_m21_m10(_helper, _returnValue);
-        ImplBlockChainBuilder_m11_m21_m10 step2 = new ImplBlockChainBuilder_m11_m21_m10(helper1 .get(), step1);
+        ImplBlockChainBuilder_m22_m23_m10 step1 = new ImplBlockChainBuilder_m22_m23_m10(_helper, _returnValue);
+        ImplBlockChainBuilder_m12_m22_m23_m10 step2 = new ImplBlockChainBuilder_m12_m22_m23_m10(helper1 .get(), step1);
          
         _transferInvocations(step2);
         return step2;
@@ -66,11 +66,20 @@ public class ImplBlockChainBuilder_m11_m21_m10
         return _returnValue;
     }
 
-    public BlockBuilder_m1_m2_m22_m9_m10 startBlock(String blockName) {
+    public BlockBuilder_m1_m2_m24_m9_m10 startBlock() {
+        _checkInvocations();
+        ObjectWrapper<BlockHelper> helper1 = new ObjectWrapper<BlockHelper>();
+        _helper.startBlock(helper1);
+        ImplBlockBuilder_m1_m2_m24_m9_m10 step1 = new ImplBlockBuilder_m1_m2_m24_m9_m10(helper1 .get(), _returnValue);
+         
+        return step1;
+    }
+
+    public BlockBuilder_m1_m2_m24_m9_m10 startBlock(String blockName) {
         _checkInvocations();
         ObjectWrapper<BlockHelper> helper1 = new ObjectWrapper<BlockHelper>();
         _helper.startBlock(blockName, helper1);
-        ImplBlockBuilder_m1_m2_m22_m9_m10 step1 = new ImplBlockBuilder_m1_m2_m22_m9_m10(helper1 .get(), _returnValue);
+        ImplBlockBuilder_m1_m2_m24_m9_m10 step1 = new ImplBlockBuilder_m1_m2_m24_m9_m10(helper1 .get(), _returnValue);
          
         return step1;
     }

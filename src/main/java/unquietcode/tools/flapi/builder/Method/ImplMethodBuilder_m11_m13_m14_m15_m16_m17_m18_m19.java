@@ -2,11 +2,7 @@
 package unquietcode.tools.flapi.builder.Method;
 
 import javax.annotation.Generated;
-import unquietcode.tools.flapi.builder.BlockChain.BlockChainBuilder_m11_m21_m10;
-import unquietcode.tools.flapi.builder.BlockChain.BlockChainHelper;
-import unquietcode.tools.flapi.builder.BlockChain.ImplBlockChainBuilder_m11_m21_m10;
 import unquietcode.tools.flapi.support.BuilderImplementation;
-import unquietcode.tools.flapi.support.ObjectWrapper;
 
 
 /**
@@ -17,18 +13,18 @@ import unquietcode.tools.flapi.support.ObjectWrapper;
  * Visit https://github.com/UnquietCode/Flapi for more information.
  * 
  * 
- * Generated on January 29, 2013 21:38:13 CST using version 0.3
+ * Generated on January 30, 2013 1:01:45 CST using version 0.3
  * 
  */
-@Generated(value = "unquietcode.tools.flapi", date = "January 29, 2013 21:38:13 CST", comments = "generated using Flapi, the fluent API generator for Java")
-public class ImplMethodBuilder_m11_m12_m13_m14_m15_m16_m17_m18
-    implements MethodBuilder_m11_m12_m13_m14_m15_m16_m17_m18, BuilderImplementation
+@Generated(value = "unquietcode.tools.flapi", date = "January 30, 2013 1:01:45 CST", comments = "generated using Flapi, the fluent API generator for Java")
+public class ImplMethodBuilder_m11_m13_m14_m15_m16_m17_m18_m19
+    implements MethodBuilder_m11_m13_m14_m15_m16_m17_m18_m19, BuilderImplementation
 {
 
     private final MethodHelper _helper;
     private final Object _returnValue;
 
-    public ImplMethodBuilder_m11_m12_m13_m14_m15_m16_m17_m18(MethodHelper helper, Object returnValue) {
+    public ImplMethodBuilder_m11_m13_m14_m15_m16_m17_m18_m19(MethodHelper helper, Object returnValue) {
         _helper = helper;
         _returnValue = returnValue;
     }
@@ -49,14 +45,10 @@ public class ImplMethodBuilder_m11_m12_m13_m14_m15_m16_m17_m18
         // nothing
     }
 
-    public BlockChainBuilder_m11_m21_m10 addBlockChain() {
-        ObjectWrapper<BlockChainHelper> helper1 = new ObjectWrapper<BlockChainHelper>();
-        _helper.addBlockChain(helper1);
-        ImplMethodBuilder_m12_m13_m14_m15_m16_m17_m18 step1 = new ImplMethodBuilder_m12_m13_m14_m15_m16_m17_m18(_helper, _returnValue);
-        ImplBlockChainBuilder_m11_m21_m10 step2 = new ImplBlockChainBuilder_m11_m21_m10(helper1 .get(), step1);
+    public MethodBuilder_m11_m13_m14_m15_m16_m17_m18_m19 addAlias(String methodSignature) {
+        _helper.addAlias(methodSignature);
          
-        _transferInvocations(step2);
-        return step2;
+        return this;
     }
 
     public Object any() {

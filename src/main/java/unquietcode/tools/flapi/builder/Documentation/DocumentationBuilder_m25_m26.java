@@ -16,19 +16,19 @@ import javax.annotation.Generated;
  * 
  */
 @Generated(value = "unquietcode.tools.flapi", date = "January 30, 2013 1:01:45 CST", comments = "generated using Flapi, the fluent API generator for Java")
-public interface DocumentationHelper {
+public interface DocumentationBuilder_m25_m26 <_ReturnType >{
 
 
     /**
      * add more content to the Javadocs
      * 
      */
-    void addContent(String content);
+    DocumentationBuilder_m25_m26 <_ReturnType> addContent(String content);
 
     /**
      * finish writing the documentation
      * 
      */
-    void finish();
+    _ReturnType finish();
 
 }

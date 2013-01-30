@@ -118,4 +118,9 @@ public class MethodHelperImpl implements MethodHelper {
 	public void markAsDeprecated(String reason) {
 		method.setDeprecated(reason);
 	}
+
+	@Override
+	public void addAlias(String methodSignature) {
+		// nothing
+	}
 }

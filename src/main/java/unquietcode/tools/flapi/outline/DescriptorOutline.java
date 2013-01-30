@@ -75,7 +75,7 @@ public class DescriptorOutline implements Outline {
 		// If the name is null, generate one.
 		if (block.getName() == null) {
 			MethodParser parsed = new MethodParser(block.getConstructor().getMethodSignature());
-			block.setName("Anonymous"+counter.getAndIncrement()+"_"+parsed.methodName);
+			block.setName("Anon"+counter.getAndIncrement()+"_"+parsed.methodName);
 		}
 
 		// recurse
