@@ -15,22 +15,20 @@ import unquietcode.tools.flapi.support.ObjectWrapper;
  * Visit https://github.com/UnquietCode/Flapi for more information.
  * 
  * 
- * Generated on January 30, 2013 1:01:45 CST using version 0.3
+ * Generated on February 02, 2013 12:18:51 CST using version 0.3
  * 
  */
-@Generated(value = "unquietcode.tools.flapi", date = "January 30, 2013 1:01:45 CST", comments = "generated using Flapi, the fluent API generator for Java")
+@Generated(value = "unquietcode.tools.flapi", date = "February 02, 2013 12:18:51 CST", comments = "generated using Flapi, the fluent API generator for Java")
 public interface MethodHelper {
 
 
-    void addAlias(String methodSignature);
-
     void addBlockChain(ObjectWrapper<BlockChainHelper> _helper1);
 
-    void any();
+    void any(int... groups);
 
     void atLeast(int num);
 
-    void atMost(int num);
+    void atMost(int num, int... groups);
 
     void between(int atLeast, int atMost);
 
@@ -52,5 +50,7 @@ public interface MethodHelper {
      * 
      */
     void withDocumentation(ObjectWrapper<DocumentationHelper> _helper1);
+
+    void withDocumentation(String documentation);
 
 }

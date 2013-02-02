@@ -20,11 +20,14 @@
 package unquietcode.tools.flapi.helpers;
 
 import unquietcode.tools.flapi.DescriptorBuilderException;
+import unquietcode.tools.flapi.MethodParser;
 import unquietcode.tools.flapi.builder.BlockChain.BlockChainHelper;
 import unquietcode.tools.flapi.builder.Documentation.DocumentationHelper;
 import unquietcode.tools.flapi.builder.Method.MethodHelper;
 import unquietcode.tools.flapi.outline.MethodOutline;
 import unquietcode.tools.flapi.support.ObjectWrapper;
+
+import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * @author Ben Fagin
@@ -43,9 +46,10 @@ public class MethodHelperImpl implements MethodHelper {
 	}
 
 	@Override
-	public void any() {
+	public void any(int...groups) {
 		method.setMinOccurrences(0);
 		method.setMaxOccurrences(-1);
+		setGroups(groups);
 	}
 
 	@Override
@@ -76,13 +80,14 @@ public class MethodHelperImpl implements MethodHelper {
 	}
 
 	@Override
-	public void atMost(int num) {
+	public void atMost(int num, int...groups) {
 		if (num <= 0) {
 			throw new DescriptorBuilderException("must have at least > 0");
 		}
 
 		method.setMinOccurrences(0);
 		method.setMaxOccurrences(num);
+		setGroups(groups);
 	}
 
 	@Override
@@ -115,12 +120,16 @@ public class MethodHelperImpl implements MethodHelper {
 	}
 
 	@Override
+	public void withDocumentation(String documentation) {
+		method.setDocumentation(documentation);
+	}
+
+	@Override
 	public void markAsDeprecated(String reason) {
 		method.setDeprecated(reason);
 	}
 
-	@Override
-	public void addAlias(String methodSignature) {
-		// nothing
+	private void setGroups(int[] groups) {
+		// TODO
 	}
 }
