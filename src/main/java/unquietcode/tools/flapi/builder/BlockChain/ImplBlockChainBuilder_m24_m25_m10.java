@@ -17,10 +17,10 @@ import unquietcode.tools.flapi.support.ObjectWrapper;
  * Visit https://github.com/UnquietCode/Flapi for more information.
  * 
  * 
- * Generated on February 02, 2013 12:47:50 CST using version 0.3
+ * Generated on February 02, 2013 13:11:40 CST using version 0.3
  * 
  */
-@Generated(value = "unquietcode.tools.flapi", date = "February 02, 2013 12:47:50 CST", comments = "generated using Flapi, the fluent API generator for Java")
+@Generated(value = "unquietcode.tools.flapi", date = "February 02, 2013 13:11:40 CST", comments = "generated using Flapi, the fluent API generator for Java")
 public class ImplBlockChainBuilder_m24_m25_m10
     implements BlockChainBuilder_m24_m25_m10, BuilderImplementation
 {
@@ -49,6 +49,10 @@ public class ImplBlockChainBuilder_m24_m25_m10
         // nothing
     }
 
+    /**
+     * add a reference to an existing block
+     * 
+     */
     public Object addBlockReference(String blockName) {
         _checkInvocations();
         _helper.addBlockReference(blockName);
@@ -56,6 +60,10 @@ public class ImplBlockChainBuilder_m24_m25_m10
         return _returnValue;
     }
 
+    /**
+     * create a new anonymous block (which cannot be referenced from anywhere)
+     * 
+     */
     public BlockBuilder_m1_m2_m26_m9_m10 startBlock() {
         _checkInvocations();
         ObjectWrapper<BlockHelper> helper1 = new ObjectWrapper<BlockHelper>();
@@ -65,6 +73,10 @@ public class ImplBlockChainBuilder_m24_m25_m10
         return step1;
     }
 
+    /**
+     * create a new block
+     * 
+     */
     public BlockBuilder_m1_m2_m26_m9_m10 startBlock(String blockName) {
         _checkInvocations();
         ObjectWrapper<BlockHelper> helper1 = new ObjectWrapper<BlockHelper>();

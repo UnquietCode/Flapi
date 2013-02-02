@@ -39,27 +39,19 @@ public class MainDescriptor {
 
 			// descriptor methods
 			.addMethod("setPackage(String packageName)")
-				.withDocumentation()
-					.addContent("set the root package name to use for the generated classes")
-				.finish()
+				.withDocumentation("set the root package name to use for the generated classes")
 			.exactly(1)
 
 			.addMethod("setDescriptorName(String descriptorName)")
-				.withDocumentation()
-					.addContent("set the name of the top level descriptor")
-				.finish()
+				.withDocumentation("set the name of the top level descriptor")
 			.exactly(1)
 
 			.addMethod("setStartingMethodName(String methodName)")
-				.withDocumentation()
-					.addContent("set the name of the generator's starting method (default is 'create')")
-				.finish()
+				.withDocumentation("set the name of the generator's starting method (default is 'create')")
 			.atMost(1)
 
 			.addMethod("setReturnType(Class returnType)")
-				.withDocumentation()
-					.addContent("set the return type for the top level descriptor (default is void)")
-				.finish()
+				.withDocumentation("set the return type for the top level descriptor (default is void)")
 			.atMost(1)
 
 			.addMethod("enableCondensedClassNames()")
@@ -71,16 +63,12 @@ public class MainDescriptor {
 			.atMost(1)
 
 			.addMethod("build()")
-				.withDocumentation()
-					.addContent("Finish work and build the descriptor. This should only be called once.")
-				.finish()
+				.withDocumentation("Finish work and build the descriptor. This should only be called once.")
 			.last(Descriptor.class)
 
 			// Method
 			.startBlock("Method", "addMethod(String methodSignature)")
-				.withDocumentation()
-					.addContent("Add a new method to the top level descriptor block.")
-				.finish()
+				.withDocumentation("Add a new method to the top level descriptor block.")
 			.any()
 
 				// @Deprecated marker
@@ -96,70 +84,128 @@ public class MainDescriptor {
 					.withDocumentation("Add javadoc style documentation to the method.")
 				.atMost(1, DOC_GROUP)
 					.addMethod("addContent(String content)")
-						.withDocumentation()
-							.addContent("add more content to the Javadocs")
-						.finish()
+						.withDocumentation("add more content to the Javadocs")
 					.any()
 					.addMethod("finish()")
-						//.withDocumentation("").finish()
-						.withDocumentation()
-							.addContent("finish writing the documentation")
-						.finish()
+						.withDocumentation("finish writing the documentation")
 					.last()
 				.endBlock()
 
-				.addMethod("withDocumentation(String documentation)").atMost(1, DOC_GROUP)
+				.addMethod("withDocumentation(String documentation)")
+					.withDocumentation("Add javadoc style documentation to the method.")
+				.atMost(1, DOC_GROUP)
 
 				// method quantities
-				.addMethod("exactly(int num)").last()
-				.addMethod("any()").last()
-				.addMethod("any(int group)").last()
-				.addMethod("last()").last()
-				.addMethod("last(Class returnType)").last()
-				.addMethod("atLeast(int num)").last()
-				.addMethod("atMost(int num)").last()
-				.addMethod("atMost(int num, int group)").last()
-				.addMethod("between(int atLeast, int atMost)").last()
+				.addMethod("exactly(int num)")
+					.withDocumentation("expect the method [X, X] times")
+				.last()
+
+				.addMethod("any()")
+					.withDocumentation("expect the method [0, inf) times")
+				.last()
+
+				.addMethod("any(int group)")
+					.withDocumentation("expect the method [0, inf) times, and assign a group number")
+				.last()
+
+				.addMethod("last()")
+					.withDocumentation("mark the method as terminal, exiting the block when called")
+				.last()
+
+				.addMethod("last(Class returnType)")
+					.withDocumentation()
+						.addContent("mark the method as terminal, returning an object of the given ")
+						.addContent("type when called")
+					.finish()
+				.last()
+
+				.addMethod("atLeast(int num)")
+					.withDocumentation("expect the method [X, inf) times")
+				.last()
+
+				.addMethod("atMost(int num)")
+					.withDocumentation("expect the method [0, X] times")
+				.last()
+
+				.addMethod("atMost(int num, int group)")
+					.withDocumentation("expect the method [0, X] times, and assign a group number")
+				.last()
+
+				.addMethod("between(int atLeast, int atMost)")
+					.withDocumentation("expect the method [atLeast, atMost] times")
+				.last()
 
 				// BlockChain
-				.startBlock("BlockChain", "addBlockChain()").atMost(1)
-					.addMethod("addBlockReference(String blockName)").last()
-					.addBlockReference("Block", "startBlock(String blockName)").last()
-					.addBlockReference("Block", "startBlock()").last()
-					.addBlockReference("BlockChain", "addBlockChain()").atMost(1)
+				.startBlock("BlockChain", "addBlockChain()")
+					.withDocumentation()
+						.addContent("Add a BlockChain, which is a block which must be passed through\n")
+						.addContent("before the current method returns.")
+					.finish()
+				.atMost(1)
+					.addMethod("addBlockReference(String blockName)")
+						.withDocumentation("add a reference to an existing block")
+					.last()
+
+					.addBlockReference("Block", "startBlock(String blockName)")
+						.withDocumentation("create a new block")
+					.last()
+
+					.addBlockReference("Block", "startBlock()")
+						.withDocumentation("create a new anonymous block (which cannot be referenced from anywhere)")
+					.last()
+
+					.addBlockReference("BlockChain", "addBlockChain()")
+						.withDocumentation("add an additional link to the chain, occurring before this one")
+					.atMost(1)
 				.endBlock()
 			.endBlock()
 
 			// Block
 			.startBlock("Block", "startBlock(String blockName, String methodSignature)")
+				.withDocumentation("Starts a new block.")
 				.addBlockChain()
 					.addBlockReference("Method")
 				.any()
 
 				.addMethod("addBlockReference(String blockName, String methodSignature)")
+					.withDocumentation("add a new method which proceeds to an existing block")
 					.addBlockChain().addBlockReference("Method")
 				.any()
 
 				.addBlockReference("Method", "addMethod(String methodSignature)")
+					.withDocumentation("add a new method to the block")
 				.any()
 
 				.addBlockReference("Block", "startBlock(String blockName, String methodSignature)")
+					.withDocumentation()
+						.addContent("Start a new block, nested inside the current one.\n")
+						.addContent("The block can be referenced from outside by using the designated name.")
+					.finish()
 					.addBlockChain().addBlockReference("Method")
 				.any()
 
 				.addBlockReference("Block", "startBlock(String methodSignature)")
-					.addBlockChain().addBlockReference("Method")
+					.withDocumentation()
+						.addContent("Start a new anonymous block, nested inside the current one.\n")
+						.addContent("The block cannot be referenced from outside, as it has no name.")
+					.finish()
+				.addBlockChain().addBlockReference("Method")
 				.any()
 
-				.addMethod("endBlock()").last()
+				.addMethod("endBlock()")
+					.withDocumentation("finish editing of the current block")
+				.last()
 			.endBlock()
 
-			// Block Reference (copied out of Block's use)
+			// Block Reference for the top level descriptor
 			.addMethod("addBlockReference(String blockName, String methodSignature)")
+				.withDocumentation("add a new method which proceeds to an existing block")
 				.addBlockChain().addBlockReference("Method")
 			.any()
 
+			// new blocks for the top level descriptor
 			.addBlockReference("Block", "startBlock(String methodSignature)")
+				.withDocumentation("Starts a new block.")
 				.addBlockChain().addBlockReference("Method")
 			.any()
 		.build();

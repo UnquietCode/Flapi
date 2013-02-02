@@ -22,10 +22,10 @@ import unquietcode.tools.flapi.support.ObjectWrapper;
  * Visit https://github.com/UnquietCode/Flapi for more information.
  * 
  * 
- * Generated on February 02, 2013 12:47:50 CST using version 0.3
+ * Generated on February 02, 2013 13:11:40 CST using version 0.3
  * 
  */
-@Generated(value = "unquietcode.tools.flapi", date = "February 02, 2013 12:47:50 CST", comments = "generated using Flapi, the fluent API generator for Java")
+@Generated(value = "unquietcode.tools.flapi", date = "February 02, 2013 13:11:40 CST", comments = "generated using Flapi, the fluent API generator for Java")
 public class ImplDescriptorBuilder_m1_m2_m3_m4_m6_m8_m9_m10
     implements DescriptorBuilder_m1_m2_m3_m4_m6_m8_m9_m10, BuilderImplementation
 {
@@ -64,6 +64,10 @@ public class ImplDescriptorBuilder_m1_m2_m3_m4_m6_m8_m9_m10
         }
     }
 
+    /**
+     * add a new method which proceeds to an existing block
+     * 
+     */
     public MethodBuilder_m11_m12_m13_m14_m15_m16_m17_m18_m19_m20_m21_m22_m23 addBlockReference(String blockName, String methodSignature) {
         ObjectWrapper<MethodHelper> helper1 = new ObjectWrapper<MethodHelper>();
         _helper.addBlockReference(blockName, methodSignature, helper1);
@@ -139,6 +143,10 @@ public class ImplDescriptorBuilder_m1_m2_m3_m4_m6_m8_m9_m10
         return step1;
     }
 
+    /**
+     * Starts a new block.
+     * 
+     */
     public MethodBuilder_m11_m12_m13_m14_m15_m16_m17_m18_m19_m20_m21_m22_m23 startBlock(String blockName, String methodSignature) {
         ObjectWrapper<MethodHelper> helper1 = new ObjectWrapper<MethodHelper>();
         ObjectWrapper<BlockHelper> helper2 = new ObjectWrapper<BlockHelper>();
@@ -149,6 +157,10 @@ public class ImplDescriptorBuilder_m1_m2_m3_m4_m6_m8_m9_m10
         return step2;
     }
 
+    /**
+     * Starts a new block.
+     * 
+     */
     public MethodBuilder_m11_m12_m13_m14_m15_m16_m17_m18_m19_m20_m21_m22_m23 startBlock(String methodSignature) {
         ObjectWrapper<MethodHelper> helper1 = new ObjectWrapper<MethodHelper>();
         ObjectWrapper<BlockHelper> helper2 = new ObjectWrapper<BlockHelper>();

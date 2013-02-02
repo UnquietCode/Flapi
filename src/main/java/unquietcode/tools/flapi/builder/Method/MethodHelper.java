@@ -15,31 +15,72 @@ import unquietcode.tools.flapi.support.ObjectWrapper;
  * Visit https://github.com/UnquietCode/Flapi for more information.
  * 
  * 
- * Generated on February 02, 2013 12:47:50 CST using version 0.3
+ * Generated on February 02, 2013 13:11:40 CST using version 0.3
  * 
  */
-@Generated(value = "unquietcode.tools.flapi", date = "February 02, 2013 12:47:50 CST", comments = "generated using Flapi, the fluent API generator for Java")
+@Generated(value = "unquietcode.tools.flapi", date = "February 02, 2013 13:11:40 CST", comments = "generated using Flapi, the fluent API generator for Java")
 public interface MethodHelper {
 
 
+    /**
+     * Add a BlockChain, which is a block which must be passed through
+     * before the current method returns.
+     * 
+     */
     void addBlockChain(ObjectWrapper<BlockChainHelper> _helper1);
 
+    /**
+     * expect the method [0, inf) times
+     * 
+     */
     void any();
 
+    /**
+     * expect the method [0, inf) times, and assign a group number
+     * 
+     */
     void any(int group);
 
+    /**
+     * expect the method [X, inf) times
+     * 
+     */
     void atLeast(int num);
 
+    /**
+     * expect the method [0, X] times
+     * 
+     */
     void atMost(int num);
 
+    /**
+     * expect the method [0, X] times, and assign a group number
+     * 
+     */
     void atMost(int num, int group);
 
+    /**
+     * expect the method [atLeast, atMost] times
+     * 
+     */
     void between(int atLeast, int atMost);
 
+    /**
+     * expect the method [X, X] times
+     * 
+     */
     void exactly(int num);
 
+    /**
+     * mark the method as terminal, exiting the block when called
+     * 
+     */
     void last();
 
+    /**
+     * mark the method as terminal, returning an object of the given type when called
+     * 
+     */
     void last(Class returnType);
 
     /**
@@ -50,11 +91,15 @@ public interface MethodHelper {
     void markAsDeprecated(String reason);
 
     /**
-     * 
+     * Add javadoc style documentation to the method.
      * 
      */
     void withDocumentation(ObjectWrapper<DocumentationHelper> _helper1);
 
+    /**
+     * Add javadoc style documentation to the method.
+     * 
+     */
     void withDocumentation(String documentation);
 
 }
