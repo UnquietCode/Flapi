@@ -22,10 +22,7 @@ package unquietcode.tools.flapi.graph;
 import unquietcode.tools.flapi.DescriptorBuilderException;
 import unquietcode.tools.flapi.generator.AbstractGenerator;
 import unquietcode.tools.flapi.graph.components.*;
-import unquietcode.tools.flapi.outline.BlockOutline;
-import unquietcode.tools.flapi.outline.BlockReference;
-import unquietcode.tools.flapi.outline.DescriptorOutline;
-import unquietcode.tools.flapi.outline.MethodOutline;
+import unquietcode.tools.flapi.outline.*;
 
 import java.util.*;
 
@@ -186,9 +183,10 @@ public class GraphBuilder {
 			transition = lateral;
 		}
 
-		transition.setMethodInfo(method);
+		transition.setMethodInfo(((MethodInfo) method).copy());
 		state.addTransitions(transition);
 
+		// state chain
 		for (BlockOutline chain : method.getBlockChain()) {
 			StateClass chainClass = convertBlock(chain);
 			transition.getStateChain().add(chainClass);
@@ -293,6 +291,18 @@ public class GraphBuilder {
 			MethodOutline m = method.copy();
 			m.setMaxOccurrences(m.getMaxOccurrences() - 1);
 			minusMethod.add(m);
+
+		// otherwise it stays removed, but also remove members of the same group
+		} else {
+			Integer currentGroup = method.getGroup();
+
+			if (currentGroup != null) {
+				for (MethodOutline otherMethod : new HashSet<MethodOutline>(minusMethod)) {
+					if (currentGroup.equals(otherMethod.getGroup())) {
+						minusMethod.remove(otherMethod);
+					}
+				}
+			}
 		}
 
 		return minusMethod;

@@ -1,16 +1,11 @@
 
-package unquietcode.tools.flapi.builder.Descriptor;
+package unquietcode.tools.flapi.builder.Block;
 
-import java.lang.reflect.Field;
 import javax.annotation.Generated;
-import unquietcode.tools.flapi.Descriptor;
-import unquietcode.tools.flapi.builder.Block.BlockHelper;
-import unquietcode.tools.flapi.builder.Block.ImplBlockBuilder_m1_m2_m26_m9_m10;
 import unquietcode.tools.flapi.builder.Method.ImplMethodBuilder_m11_m12_m13_m14_m15_m16_m17_m18_m19_m20_m21_m22_m23;
 import unquietcode.tools.flapi.builder.Method.MethodBuilder_m11_m12_m13_m14_m15_m16_m17_m18_m19_m20_m21_m22_m23;
 import unquietcode.tools.flapi.builder.Method.MethodHelper;
 import unquietcode.tools.flapi.support.BuilderImplementation;
-import unquietcode.tools.flapi.support.ExpectedInvocationsException;
 import unquietcode.tools.flapi.support.ObjectWrapper;
 
 
@@ -26,16 +21,14 @@ import unquietcode.tools.flapi.support.ObjectWrapper;
  * 
  */
 @Generated(value = "unquietcode.tools.flapi", date = "February 02, 2013 12:47:50 CST", comments = "generated using Flapi, the fluent API generator for Java")
-public class ImplDescriptorBuilder_m1_m2_m3_m5_m6_m9_m10
-    implements DescriptorBuilder_m1_m2_m3_m5_m6_m9_m10, BuilderImplementation
+public class ImplBlockBuilder_m1_m2_m26_m9_m10
+    implements BlockBuilder_m1_m2_m26_m9_m10, BuilderImplementation
 {
 
-    private final DescriptorHelper _helper;
+    private final BlockHelper _helper;
     private final Object _returnValue;
-    int ic_Descriptor_setDescriptorName$String_descriptorName = 1;
-    int ic_Descriptor_setPackage$String_packageName = 1;
 
-    public ImplDescriptorBuilder_m1_m2_m3_m5_m6_m9_m10(DescriptorHelper helper, Object returnValue) {
+    public ImplBlockBuilder_m1_m2_m26_m9_m10(BlockHelper helper, Object returnValue) {
         _helper = helper;
         _returnValue = returnValue;
     }
@@ -49,30 +42,11 @@ public class ImplDescriptorBuilder_m1_m2_m3_m5_m6_m9_m10
     }
 
     private void _transferInvocations(Object next) {
-        Class clazz = next.getClass();
-         
-        try {
-            Field field = clazz.getDeclaredField("ic_Descriptor_setDescriptorName$String_descriptorName");
-            field.setInt(next, ic_Descriptor_setDescriptorName$String_descriptorName);
-        } catch (Exception _x) {
-            // nothing
-        }
-         
-        try {
-            Field field = clazz.getDeclaredField("ic_Descriptor_setPackage$String_packageName");
-            field.setInt(next, ic_Descriptor_setPackage$String_packageName);
-        } catch (Exception _x) {
-            // nothing
-        }
+        // nothing
     }
 
     public void _checkInvocations() {
-        if (ic_Descriptor_setDescriptorName$String_descriptorName > 0) {
-            throw new ExpectedInvocationsException("Expected at least 1 invocations of method 'setDescriptorName(String descriptorName)'.");
-        }
-        if (ic_Descriptor_setPackage$String_packageName > 0) {
-            throw new ExpectedInvocationsException("Expected at least 1 invocations of method 'setPackage(String packageName)'.");
-        }
+        // nothing
     }
 
     public MethodBuilder_m11_m12_m13_m14_m15_m16_m17_m18_m19_m20_m21_m22_m23 addBlockReference(String blockName, String methodSignature) {
@@ -83,10 +57,6 @@ public class ImplDescriptorBuilder_m1_m2_m3_m5_m6_m9_m10
         return step1;
     }
 
-    /**
-     * Add a new method to the top level descriptor block.
-     * 
-     */
     public MethodBuilder_m11_m12_m13_m14_m15_m16_m17_m18_m19_m20_m21_m22_m23 addMethod(String methodSignature) {
         ObjectWrapper<MethodHelper> helper1 = new ObjectWrapper<MethodHelper>();
         _helper.addMethod(methodSignature, helper1);
@@ -95,46 +65,11 @@ public class ImplDescriptorBuilder_m1_m2_m3_m5_m6_m9_m10
         return step1;
     }
 
-    /**
-     * Finish work and build the descriptor. This should only be called once.
-     * 
-     */
-    public Descriptor build() {
-        BuilderImplementation cur = this;
-        while (cur!= null) {
-            cur._checkInvocations();
-            cur = cur._getParent();
-        }
+    public Object endBlock() {
+        _checkInvocations();
+        _helper.endBlock();
          
-        Descriptor intermediateResult = _helper.build();
-         
-        return intermediateResult;
-    }
-
-    /**
-     * set the name of the top level descriptor
-     * 
-     */
-    public DescriptorBuilder_m1_m2_m3_m6_m9_m10 setDescriptorName(String descriptorName) {
-        --ic_Descriptor_setDescriptorName$String_descriptorName;
-        _helper.setDescriptorName(descriptorName);
-        ImplDescriptorBuilder_m1_m2_m3_m6_m9_m10 step1 = new ImplDescriptorBuilder_m1_m2_m3_m6_m9_m10(_helper, _returnValue);
-         
-        _transferInvocations(step1);
-        return step1;
-    }
-
-    /**
-     * set the root package name to use for the generated classes
-     * 
-     */
-    public DescriptorBuilder_m1_m2_m3_m5_m9_m10 setPackage(String packageName) {
-        --ic_Descriptor_setPackage$String_packageName;
-        _helper.setPackage(packageName);
-        ImplDescriptorBuilder_m1_m2_m3_m5_m9_m10 step1 = new ImplDescriptorBuilder_m1_m2_m3_m5_m9_m10(_helper, _returnValue);
-         
-        _transferInvocations(step1);
-        return step1;
+        return _returnValue;
     }
 
     public MethodBuilder_m11_m12_m13_m14_m15_m16_m17_m18_m19_m20_m21_m22_m23 startBlock(String blockName, String methodSignature) {

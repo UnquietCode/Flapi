@@ -2,7 +2,6 @@
 package unquietcode.tools.flapi.builder.Method;
 
 import javax.annotation.Generated;
-import unquietcode.tools.flapi.builder.Documentation.DocumentationBuilder_m25_m26;
 
 
 /**
@@ -13,18 +12,22 @@ import unquietcode.tools.flapi.builder.Documentation.DocumentationBuilder_m25_m2
  * Visit https://github.com/UnquietCode/Flapi for more information.
  * 
  * 
- * Generated on February 02, 2013 12:18:51 CST using version 0.3
+ * Generated on February 02, 2013 12:47:50 CST using version 0.3
  * 
  */
-@Generated(value = "unquietcode.tools.flapi", date = "February 02, 2013 12:18:51 CST", comments = "generated using Flapi, the fluent API generator for Java")
+@Generated(value = "unquietcode.tools.flapi", date = "February 02, 2013 12:47:50 CST", comments = "generated using Flapi, the fluent API generator for Java")
 public interface MethodBuilder_m12_m13_m14_m15_m16_m17_m18_m19_m20 <_ReturnType >{
 
 
-    _ReturnType any(int... groups);
+    _ReturnType any();
+
+    _ReturnType any(int group);
 
     _ReturnType atLeast(int num);
 
-    _ReturnType atMost(int num, int... groups);
+    _ReturnType atMost(int num);
+
+    _ReturnType atMost(int num, int group);
 
     _ReturnType between(int atLeast, int atMost);
 
@@ -33,18 +36,5 @@ public interface MethodBuilder_m12_m13_m14_m15_m16_m17_m18_m19_m20 <_ReturnType 
     _ReturnType last();
 
     _ReturnType last(Class returnType);
-
-    /**
-     * Marks this method with a Deprecated annotation.
-     * Also adds a note to the Javadocs.
-     * 
-     */
-    MethodBuilder_m12_m13_m14_m15_m16_m17_m18_m20 <_ReturnType> markAsDeprecated(String reason);
-
-    /**
-     * Add javadoc style documentation to the method.
-     * 
-     */
-    DocumentationBuilder_m25_m26 <MethodBuilder_m12_m13_m14_m15_m16_m17_m18_m19 <_ReturnType>> withDocumentation();
 
 }

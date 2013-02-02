@@ -2,9 +2,9 @@
 package unquietcode.tools.flapi.builder.Method;
 
 import javax.annotation.Generated;
-import unquietcode.tools.flapi.builder.BlockChain.BlockChainBuilder_m11_m22_m23_m10;
-import unquietcode.tools.flapi.builder.BlockChain.BlockChainHelper;
-import unquietcode.tools.flapi.builder.BlockChain.ImplBlockChainBuilder_m11_m22_m23_m10;
+import unquietcode.tools.flapi.builder.Documentation.DocumentationBuilder_m27_m28;
+import unquietcode.tools.flapi.builder.Documentation.DocumentationHelper;
+import unquietcode.tools.flapi.builder.Documentation.ImplDocumentationBuilder_m27_m28;
 import unquietcode.tools.flapi.support.BuilderImplementation;
 import unquietcode.tools.flapi.support.ObjectWrapper;
 
@@ -17,18 +17,18 @@ import unquietcode.tools.flapi.support.ObjectWrapper;
  * Visit https://github.com/UnquietCode/Flapi for more information.
  * 
  * 
- * Generated on February 02, 2013 12:18:51 CST using version 0.3
+ * Generated on February 02, 2013 12:47:50 CST using version 0.3
  * 
  */
-@Generated(value = "unquietcode.tools.flapi", date = "February 02, 2013 12:18:51 CST", comments = "generated using Flapi, the fluent API generator for Java")
-public class ImplMethodBuilder_m11_m12_m13_m14_m15_m16_m17_m18_m21
-    implements MethodBuilder_m11_m12_m13_m14_m15_m16_m17_m18_m21, BuilderImplementation
+@Generated(value = "unquietcode.tools.flapi", date = "February 02, 2013 12:47:50 CST", comments = "generated using Flapi, the fluent API generator for Java")
+public class ImplMethodBuilder_m12_m13_m14_m15_m16_m17_m18_m19_m20_m22_m23
+    implements MethodBuilder_m12_m13_m14_m15_m16_m17_m18_m19_m20_m22_m23, BuilderImplementation
 {
 
     private final MethodHelper _helper;
     private final Object _returnValue;
 
-    public ImplMethodBuilder_m11_m12_m13_m14_m15_m16_m17_m18_m21(MethodHelper helper, Object returnValue) {
+    public ImplMethodBuilder_m12_m13_m14_m15_m16_m17_m18_m19_m20_m22_m23(MethodHelper helper, Object returnValue) {
         _helper = helper;
         _returnValue = returnValue;
     }
@@ -49,19 +49,16 @@ public class ImplMethodBuilder_m11_m12_m13_m14_m15_m16_m17_m18_m21
         // nothing
     }
 
-    public BlockChainBuilder_m11_m22_m23_m10 addBlockChain() {
-        ObjectWrapper<BlockChainHelper> helper1 = new ObjectWrapper<BlockChainHelper>();
-        _helper.addBlockChain(helper1);
-        ImplMethodBuilder_m12_m13_m14_m15_m16_m17_m18_m21 step1 = new ImplMethodBuilder_m12_m13_m14_m15_m16_m17_m18_m21(_helper, _returnValue);
-        ImplBlockChainBuilder_m11_m22_m23_m10 step2 = new ImplBlockChainBuilder_m11_m22_m23_m10(helper1 .get(), step1);
+    public Object any() {
+        _checkInvocations();
+        _helper.any();
          
-        _transferInvocations(step2);
-        return step2;
+        return _returnValue;
     }
 
-    public Object any(int... groups) {
+    public Object any(int group) {
         _checkInvocations();
-        _helper.any(groups);
+        _helper.any(group);
          
         return _returnValue;
     }
@@ -73,9 +70,16 @@ public class ImplMethodBuilder_m11_m12_m13_m14_m15_m16_m17_m18_m21
         return _returnValue;
     }
 
-    public Object atMost(int num, int... groups) {
+    public Object atMost(int num) {
         _checkInvocations();
-        _helper.atMost(num, groups);
+        _helper.atMost(num);
+         
+        return _returnValue;
+    }
+
+    public Object atMost(int num, int group) {
+        _checkInvocations();
+        _helper.atMost(num, group);
          
         return _returnValue;
     }
@@ -108,9 +112,23 @@ public class ImplMethodBuilder_m11_m12_m13_m14_m15_m16_m17_m18_m21
         return _returnValue;
     }
 
-    public MethodBuilder_m11_m12_m13_m14_m15_m16_m17_m18 withDocumentation(String documentation) {
+    /**
+     * 
+     * 
+     */
+    public DocumentationBuilder_m27_m28 withDocumentation() {
+        ObjectWrapper<DocumentationHelper> helper1 = new ObjectWrapper<DocumentationHelper>();
+        _helper.withDocumentation(helper1);
+        ImplMethodBuilder_m12_m13_m14_m15_m16_m17_m18_m19_m20 step1 = new ImplMethodBuilder_m12_m13_m14_m15_m16_m17_m18_m19_m20(_helper, _returnValue);
+        ImplDocumentationBuilder_m27_m28 step2 = new ImplDocumentationBuilder_m27_m28(helper1 .get(), step1);
+         
+        _transferInvocations(step2);
+        return step2;
+    }
+
+    public MethodBuilder_m12_m13_m14_m15_m16_m17_m18_m19_m20 withDocumentation(String documentation) {
         _helper.withDocumentation(documentation);
-        ImplMethodBuilder_m11_m12_m13_m14_m15_m16_m17_m18 step1 = new ImplMethodBuilder_m11_m12_m13_m14_m15_m16_m17_m18(_helper, _returnValue);
+        ImplMethodBuilder_m12_m13_m14_m15_m16_m17_m18_m19_m20 step1 = new ImplMethodBuilder_m12_m13_m14_m15_m16_m17_m18_m19_m20(_helper, _returnValue);
          
         _transferInvocations(step1);
         return step1;

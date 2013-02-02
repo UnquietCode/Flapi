@@ -83,10 +83,10 @@ public abstract class Transition implements Comparable<Transition> {
 	}
 
 	public abstract Transition copy();
+
 	protected void basicCopy(Transition copy) {
 		copy.methodInfo = this.methodInfo.copy();
 		copy.stateChain.addAll(this.stateChain);
-		copy.owner = this.owner;
 	}
 
 	public MethodImplementor methodImplementor() {

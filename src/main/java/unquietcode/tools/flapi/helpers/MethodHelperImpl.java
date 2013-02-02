@@ -46,10 +46,15 @@ public class MethodHelperImpl implements MethodHelper {
 	}
 
 	@Override
-	public void any(int...groups) {
+	public void any(int group) {
+		any();
+		setGroup(group);
+	}
+
+	@Override
+	public void any() {
 		method.setMinOccurrences(0);
 		method.setMaxOccurrences(-1);
-		setGroups(groups);
 	}
 
 	@Override
@@ -80,14 +85,19 @@ public class MethodHelperImpl implements MethodHelper {
 	}
 
 	@Override
-	public void atMost(int num, int...groups) {
+	public void atMost(int num, int group) {
+		atMost(num);
+		setGroup(group);
+	}
+
+	@Override
+	public void atMost(int num) {
 		if (num <= 0) {
 			throw new DescriptorBuilderException("must have at least > 0");
 		}
 
 		method.setMinOccurrences(0);
 		method.setMaxOccurrences(num);
-		setGroups(groups);
 	}
 
 	@Override
@@ -129,7 +139,7 @@ public class MethodHelperImpl implements MethodHelper {
 		method.setDeprecated(reason);
 	}
 
-	private void setGroups(int[] groups) {
-		// TODO
+	private void setGroup(int group) {
+		method.setGroup(group);
 	}
 }

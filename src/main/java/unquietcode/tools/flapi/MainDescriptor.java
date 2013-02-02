@@ -26,6 +26,7 @@ package unquietcode.tools.flapi;
  * The main descriptor for Flapi, used to generate other descriptors.
  */
 public class MainDescriptor {
+	private static final int DOC_GROUP = 1;
 
 	public static void main(String[] args) {
 		Descriptor builder = Flapi.builder()
@@ -92,31 +93,32 @@ public class MainDescriptor {
 
 				// Documentation
 				.startBlock("Documentation", "withDocumentation()")
-					.withDocumentation()
-						.addContent("Add javadoc style documentation to the method.")
-					.finish()
-
-					.addAlias("withDocumentation(String documentation)")
-				.atMost(1)
+					.withDocumentation("Add javadoc style documentation to the method.")
+				.atMost(1, DOC_GROUP)
 					.addMethod("addContent(String content)")
 						.withDocumentation()
 							.addContent("add more content to the Javadocs")
 						.finish()
 					.any()
 					.addMethod("finish()")
+						//.withDocumentation("").finish()
 						.withDocumentation()
 							.addContent("finish writing the documentation")
 						.finish()
 					.last()
 				.endBlock()
 
+				.addMethod("withDocumentation(String documentation)").atMost(1, DOC_GROUP)
+
 				// method quantities
 				.addMethod("exactly(int num)").last()
 				.addMethod("any()").last()
+				.addMethod("any(int group)").last()
 				.addMethod("last()").last()
 				.addMethod("last(Class returnType)").last()
 				.addMethod("atLeast(int num)").last()
 				.addMethod("atMost(int num)").last()
+				.addMethod("atMost(int num, int group)").last()
 				.addMethod("between(int atLeast, int atMost)").last()
 
 				// BlockChain
@@ -126,9 +128,6 @@ public class MainDescriptor {
 					.addBlockReference("Block", "startBlock()").last()
 					.addBlockReference("BlockChain", "addBlockChain()").atMost(1)
 				.endBlock()
-
-				// Method Aliases
-				.addMethod("addAlias(String methodSignature)").any()
 			.endBlock()
 
 			// Block
@@ -165,7 +164,6 @@ public class MainDescriptor {
 			.any()
 		.build();
 
-		//builder.writeToFolder(args[0]);
-		builder.writeToFolder("/Users/bfagin/Downloads/tmp");
+		builder.writeToFolder(args[0]);
 	}
 }
