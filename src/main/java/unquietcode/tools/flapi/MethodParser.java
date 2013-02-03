@@ -19,6 +19,7 @@
 
 package unquietcode.tools.flapi;
 
+import javax.lang.model.SourceVersion;
 import java.util.*;
 
 /**
@@ -31,6 +32,7 @@ public class MethodParser {
 	public final List<Pair<String, String>> params = new ArrayList<Pair<String, String>>();
 	public final String varargName;
 	public final String varargType;
+	public final String originalSignature;
 
 	// working
 	private char[] signature;
@@ -46,7 +48,8 @@ public class MethodParser {
 		}
 
 		methodSignature = methodSignature.trim();
-		signature = methodSignature.toCharArray();
+		originalSignature = methodSignature;
+		signature = originalSignature.toCharArray();
 		boolean seenVarargs = false;
 		String _varargType = null;
 		String _varargName = null;
@@ -68,7 +71,7 @@ public class MethodParser {
 		match(WS, -1);
 
 		// LPAREN
-		match(LP,1);
+		match(LP, 1);
 		match(WS, -1);
 
 		// parameters
@@ -85,7 +88,7 @@ public class MethodParser {
 
 			// VARARGS
 			try {
-				match(DOT,3);
+				match(DOT, 3);
 				match(WS, -1);
 				seenVarargs = true;
 			} catch (ParseException ex) {
@@ -124,6 +127,9 @@ public class MethodParser {
 		methodName = prefix + _methodName;
 		varargName = _varargName;
 		varargType = _varargType;
+
+		// clean up working set
+		signature = null;
 	}
 
 	private static Parameter parseParameter(String type, String name) {
@@ -246,6 +252,7 @@ public class MethodParser {
 
 		throw new ParseException(sb.toString());
 	}
+
 	private void throwUnexpectedCharException(Set<Character> chars) throws ParseException {
 		StringBuilder sb = new StringBuilder();
 		boolean first = true;
@@ -272,6 +279,33 @@ public class MethodParser {
 		throw new ParseException(sb.toString());
 	}
 
+	public void validate() throws ValidationException {
+		// check that method name is legitimate
+		if (!SourceVersion.isName(methodName)) {
+			throw new ValidationException(
+				"Invalid method name: '"+ originalSignature +"'."
+			);
+		}
+
+		// check that parameters are also valid names
+		for (Pair<String, String> param : params) {
+			if (!SourceVersion.isName(param.second)) {
+				throw new ValidationException(
+					"Invalid parameter name '"+param.second+"' in method '"+originalSignature+"'."
+				);
+			}
+		}
+
+		// check vararg name
+		if (varargName != null) {
+			if (!SourceVersion.isName(varargName)) {
+				throw new ValidationException(
+					"Invalid vararg parameter name '"+varargName+"' in method '"+originalSignature+"'."
+				);
+			}
+		}
+	}
+
 	public static class Parameter {
 		public final String type;
 		public final String name;
@@ -283,6 +317,13 @@ public class MethodParser {
 			this.typeParamters = Collections.unmodifiableList(new ArrayList<Parameter>(typeParamters));
 		}
 	}
+
+	public static class ValidationException extends Exception {
+		ValidationException(String message) {
+			super(message);
+		}
+	}
+
 
 	public static class ParseException extends RuntimeException {
 		ParseException(String message) {

@@ -44,6 +44,7 @@ public class DescriptorPreValidator {
 
 	public void validate() {
 		checkThatDescriptorMethodNameIsValid();
+		checkForInvalidMethodSignatures();
 		checkForNameCollisions();
 	}
 
@@ -74,14 +75,15 @@ public class DescriptorPreValidator {
 
 		// check method name collisions
 		for (MethodOutline method : block.getAllMethods()) {
-			MethodParser curParsed = new MethodParser(method.getMethodSignature());
+			String currentSignature = method.getMethodSignature();
+			MethodParser currentParsed = new MethodParser(currentSignature);
 
 			for (MethodOutline otherMethod : block.getAllMethods()) {
 				if (method == otherMethod) { continue; }
 				MethodParser otherParsed = new MethodParser(otherMethod.getMethodSignature());
 
-				if (curParsed.compilerEquivalent(otherParsed)) {
-					throw new DescriptorBuilderException("Two methods with the same signature: " + method.getMethodSignature());
+				if (currentParsed.compilerEquivalent(otherParsed)) {
+					throw new DescriptorBuilderException("Two methods with the same signature: " + currentSignature);
 				}
 			}
 		}
@@ -94,6 +96,40 @@ public class DescriptorPreValidator {
 				}
 
 				_checkForNameCollisions(chain, names);
+			}
+		}
+	}
+
+
+	private void checkForInvalidMethodSignatures() {
+		_checkForInvalidMethodSignatures(outline.selfBlock, new HashSet<String>());
+	}
+
+	private void _checkForInvalidMethodSignatures(BlockOutline block, Set<String> names) {
+		if (block instanceof BlockReference) {
+			return;
+		}
+
+		// check method signatures
+		for (MethodOutline method : block.getAllMethods()) {
+			try {
+				MethodParser parsed = new MethodParser(method.getMethodSignature());
+				parsed.validate();
+			} catch (MethodParser.ParseException ex) {
+				throw new DescriptorBuilderException(ex);
+			} catch (MethodParser.ValidationException ex) {
+				throw new DescriptorBuilderException(ex);
+			}
+		}
+
+		// recurse
+		for (MethodOutline method : block.getAllMethods()) {
+			for (BlockOutline chain : method.getBlockChain()) {
+				if (chain == block) {
+					continue;
+				}
+
+				_checkForInvalidMethodSignatures(chain, names);
 			}
 		}
 	}

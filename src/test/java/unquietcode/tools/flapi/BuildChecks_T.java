@@ -254,6 +254,33 @@ public class BuildChecks_T {
 	}
 
 	@Test(expected=DescriptorBuilderException.class)
+	public void invalidMethodName() {
+		DescriptorGenerator.create(new DescriptorHelperImpl())
+			.setPackage("something")
+			.setDescriptorName("Something")
+			.addMethod("2hot2handle()").last()
+		.build();
+	}
+
+	@Test(expected=DescriptorBuilderException.class)
+	public void methodNameIsKeyword() {
+		DescriptorGenerator.create(new DescriptorHelperImpl())
+			.setPackage("something")
+			.setDescriptorName("Something")
+			.addMethod("continue()").last()
+		.build();
+	}
+
+	@Test(expected=DescriptorBuilderException.class)
+	public void invalidParameterName() {
+		DescriptorGenerator.create(new DescriptorHelperImpl())
+			.setPackage("something")
+			.setDescriptorName("Something")
+			.addMethod("name(String inv#lid)").last()
+		.build();
+	}
+
+	@Test(expected=DescriptorBuilderException.class)
 	public void emptyDescriptorIsRejected() {
 		Flapi.builder()
 			.setPackage("something")
