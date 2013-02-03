@@ -98,6 +98,7 @@ public class GraphBuilder {
 			blocks.put(blockName, topLevel);
 		}
 
+		// create the base state from the required methods
 		Set<MethodOutline> blockRequiredMethods = block.getRequiredMethods();
 		StateClass baseState = getStateFromBlockAndMethods(block, blockRequiredMethods);
 		baseState.setName(blockName);

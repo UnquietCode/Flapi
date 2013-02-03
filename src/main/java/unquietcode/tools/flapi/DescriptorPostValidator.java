@@ -26,6 +26,7 @@ import unquietcode.tools.flapi.support.ObjectWrapper;
 
 import java.util.Collections;
 import java.util.IdentityHashMap;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -43,43 +44,46 @@ public class DescriptorPostValidator {
 	}
 
 	public void validate() {
-		checkForBlocksWithNoEnd(graph, Collections.newSetFromMap(new IdentityHashMap<StateClass, Boolean>()));
+		checkForBlocksWithNoEnd(graph, new IdentityHashMap<StateClass, Boolean>());
 	}
 
-	private void checkForBlocksWithNoEnd(StateClass state, final Set<StateClass> seen) {
-		if (seen.contains(state)) {
-			return;
-		} else {
-			seen.add(state);
-		}
-
+	private boolean checkForBlocksWithNoEnd(StateClass state, final Map<StateClass, Boolean> seen) {
+		final ObjectWrapper<Boolean> terminal = new ObjectWrapper<Boolean>(false);
 		final ObjectWrapper<Boolean> valid = new ObjectWrapper<Boolean>(false);
 
 		// check this state's transitions
 		for (Transition transition : state.getTransitions()) {
-			if (transition instanceof RecursiveTransition) {
-				continue;
-			}
-
 			transition.accept(new TransitionVisitor.$() {
 				public @Override void visit(TerminalTransition transition) {
-					valid.set(true);
+					terminal.set(true);
 				}
 
 				public @Override void visit(AscendingTransition transition) {
-					valid.set(true);
+					terminal.set(true);
 				}
 			});
 
-			// check every other transition to ensure that they can find a terminal
+			valid.set(valid.get() || terminal.get());
+		}
+
+		if (seen.containsKey(state)) {
+			return seen.get(state);
+		} else {
+			seen.put(state, terminal.get());
+		}
+
+		// check every other transition to ensure that they can find a terminal
+
+		for (Transition transition : state.getTransitions()) {
+			final TransitionType transitionType = transition.getType();
+
 			transition.acceptForTraversal(new GenericVisitor<StateClass>() {
 				public void visit(StateClass next) {
-					checkForBlocksWithNoEnd(next, seen);
+					boolean nextIsTerminal = checkForBlocksWithNoEnd(next, seen);
 
-					// If there is at least one transition, and there are no
-					// dead ends, then there must be at least one end,
-					// so if we reach here then it is valid.
-					valid.set(true);
+					if (transitionType != TransitionType.Recursive) {
+						valid.set(valid.get() || nextIsTerminal);
+					}
 				}
 			});
 		}
@@ -87,5 +91,7 @@ public class DescriptorPostValidator {
 		if (valid.get() != true) {
 			throw new DescriptorBuilderException("Encountered a block with no terminal method: " + state.getName());
 		}
+
+		return terminal.get();
 	}
 }

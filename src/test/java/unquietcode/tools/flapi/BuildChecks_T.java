@@ -191,6 +191,27 @@ public class BuildChecks_T {
 		.build();
 	}
 
+	@Test(expected=DescriptorBuilderException.class)
+	public void everyBlockHasALastMethod_recursive() {
+		DescriptorGenerator.create(new DescriptorHelperImpl())
+			.setPackage("unquietcode.something")
+			.setDescriptorName("Something")
+			.setStartingMethodName("create")
+
+			.startBlock("Block", "block()").any()
+				.addMethod("done()").last()
+
+				.startBlock("Nested1", "nested1()").any()
+					// no last method
+
+					.startBlock("Nested2", "nested2()").any()
+						.addMethod("done()").last()
+					.endBlock()
+				.endBlock()
+			.endBlock()
+		.build();
+	}
+
 	@Test
 	public void createMethodIsAValidName() {
 		String[] names = new String[]{"4four", "inv*lid", "", " ", "new"};
