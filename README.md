@@ -1,5 +1,9 @@
+#Flapi - A fluent API generator for Java
+[![Build Status](https://travis-ci.org/UnquietCode/Flapi.png?branch=master)](https://travis-ci.org/UnquietCode/Flapi)
+
 ## What is it?
-Flapi is a fluent API generator for Java. Fluent builders allow developers to more easily interact with your code, using a syntax more akin to natural language. See [these](http://www.unquietcode.com/blog/2011/programming/using-generics-to-build-fluent-apis-in-java) [articles](http://martinfowler.com/bliki/FluentInterface.html) for more information.
+Flapi is a code generation utility for creating fluent API in Java.
+Fluent builders allow developers to more easily interact with your code, using a syntax more akin to natural language. See [these](http://www.unquietcode.com/blog/2011/programming/using-generics-to-build-fluent-apis-in-java) [articles](http://martinfowler.com/bliki/FluentInterface.html) for more information.
 
 Flapi is now a stable release, with all of the important features implemented. Please help the project by testing and reporting bugs, either on GitHub or JIRA.
 
