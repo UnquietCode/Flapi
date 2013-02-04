@@ -12,11 +12,11 @@ import javax.annotation.Generated;
  * Visit https://github.com/UnquietCode/Flapi for more information.
  * 
  * 
- * Generated on February 02, 2013 13:11:40 CST using version 0.3
+ * Generated on February 04, 2013 10:10:17 CST using version 0.3
  * 
  */
-@Generated(value = "unquietcode.tools.flapi", date = "February 02, 2013 13:11:40 CST", comments = "generated using Flapi, the fluent API generator for Java")
-public interface MethodBuilder_m12_m13_m14_m15_m16_m17_m18_m19_m20_m21 <_ReturnType >{
+@Generated(value = "unquietcode.tools.flapi", date = "February 04, 2013 10:10:17 CST", comments = "generated using Flapi, the fluent API generator for Java")
+public interface MethodBuilder_m12_m13_m14_m15_m16_m17_m18_m19 <_ReturnType >{
 
 
     /**
@@ -24,12 +24,6 @@ public interface MethodBuilder_m12_m13_m14_m15_m16_m17_m18_m19_m20_m21 <_ReturnT
      * 
      */
     _ReturnType any();
-
-    /**
-     * expect the method [0, inf) times, and assign a group number
-     * 
-     */
-    _ReturnType any(int group);
 
     /**
      * expect the method [X, inf) times
@@ -72,12 +66,5 @@ public interface MethodBuilder_m12_m13_m14_m15_m16_m17_m18_m19_m20_m21 <_ReturnT
      * 
      */
     _ReturnType last(Class returnType);
-
-    /**
-     * Marks this method with a Deprecated annotation.
-     * Also adds a note to the Javadocs.
-     * 
-     */
-    MethodBuilder_m12_m13_m14_m15_m16_m17_m18_m19_m20 <_ReturnType> markAsDeprecated(String reason);
 
 }

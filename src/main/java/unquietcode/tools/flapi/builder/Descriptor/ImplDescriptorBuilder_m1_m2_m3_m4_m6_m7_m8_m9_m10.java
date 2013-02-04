@@ -5,9 +5,9 @@ import java.lang.reflect.Field;
 import javax.annotation.Generated;
 import unquietcode.tools.flapi.Descriptor;
 import unquietcode.tools.flapi.builder.Block.BlockHelper;
-import unquietcode.tools.flapi.builder.Block.ImplBlockBuilder_m1_m2_m26_m9_m10;
-import unquietcode.tools.flapi.builder.Method.ImplMethodBuilder_m11_m12_m13_m14_m15_m16_m17_m18_m19_m20_m21_m22_m23;
-import unquietcode.tools.flapi.builder.Method.MethodBuilder_m11_m12_m13_m14_m15_m16_m17_m18_m19_m20_m21_m22_m23;
+import unquietcode.tools.flapi.builder.Block.ImplBlockBuilder_m1_m2_m25_m9_m10;
+import unquietcode.tools.flapi.builder.Method.ImplMethodBuilder_m11_m12_m13_m14_m15_m16_m17_m18_m19_m20_m21_m22;
+import unquietcode.tools.flapi.builder.Method.MethodBuilder_m11_m12_m13_m14_m15_m16_m17_m18_m19_m20_m21_m22;
 import unquietcode.tools.flapi.builder.Method.MethodHelper;
 import unquietcode.tools.flapi.support.BuilderImplementation;
 import unquietcode.tools.flapi.support.ExpectedInvocationsException;
@@ -22,10 +22,10 @@ import unquietcode.tools.flapi.support.ObjectWrapper;
  * Visit https://github.com/UnquietCode/Flapi for more information.
  * 
  * 
- * Generated on February 02, 2013 13:11:40 CST using version 0.3
+ * Generated on February 04, 2013 10:10:17 CST using version 0.3
  * 
  */
-@Generated(value = "unquietcode.tools.flapi", date = "February 02, 2013 13:11:40 CST", comments = "generated using Flapi, the fluent API generator for Java")
+@Generated(value = "unquietcode.tools.flapi", date = "February 04, 2013 10:10:17 CST", comments = "generated using Flapi, the fluent API generator for Java")
 public class ImplDescriptorBuilder_m1_m2_m3_m4_m6_m7_m8_m9_m10
     implements DescriptorBuilder_m1_m2_m3_m4_m6_m7_m8_m9_m10, BuilderImplementation
 {
@@ -68,10 +68,10 @@ public class ImplDescriptorBuilder_m1_m2_m3_m4_m6_m7_m8_m9_m10
      * add a new method which proceeds to an existing block
      * 
      */
-    public MethodBuilder_m11_m12_m13_m14_m15_m16_m17_m18_m19_m20_m21_m22_m23 addBlockReference(String blockName, String methodSignature) {
+    public MethodBuilder_m11_m12_m13_m14_m15_m16_m17_m18_m19_m20_m21_m22 addBlockReference(String blockName, String methodSignature) {
         ObjectWrapper<MethodHelper> helper1 = new ObjectWrapper<MethodHelper>();
         _helper.addBlockReference(blockName, methodSignature, helper1);
-        ImplMethodBuilder_m11_m12_m13_m14_m15_m16_m17_m18_m19_m20_m21_m22_m23 step1 = new ImplMethodBuilder_m11_m12_m13_m14_m15_m16_m17_m18_m19_m20_m21_m22_m23(helper1 .get(), this);
+        ImplMethodBuilder_m11_m12_m13_m14_m15_m16_m17_m18_m19_m20_m21_m22 step1 = new ImplMethodBuilder_m11_m12_m13_m14_m15_m16_m17_m18_m19_m20_m21_m22(helper1 .get(), this);
          
         return step1;
     }
@@ -80,10 +80,10 @@ public class ImplDescriptorBuilder_m1_m2_m3_m4_m6_m7_m8_m9_m10
      * Add a new method to the top level descriptor block.
      * 
      */
-    public MethodBuilder_m11_m12_m13_m14_m15_m16_m17_m18_m19_m20_m21_m22_m23 addMethod(String methodSignature) {
+    public MethodBuilder_m11_m12_m13_m14_m15_m16_m17_m18_m19_m20_m21_m22 addMethod(String methodSignature) {
         ObjectWrapper<MethodHelper> helper1 = new ObjectWrapper<MethodHelper>();
         _helper.addMethod(methodSignature, helper1);
-        ImplMethodBuilder_m11_m12_m13_m14_m15_m16_m17_m18_m19_m20_m21_m22_m23 step1 = new ImplMethodBuilder_m11_m12_m13_m14_m15_m16_m17_m18_m19_m20_m21_m22_m23(helper1 .get(), this);
+        ImplMethodBuilder_m11_m12_m13_m14_m15_m16_m17_m18_m19_m20_m21_m22 step1 = new ImplMethodBuilder_m11_m12_m13_m14_m15_m16_m17_m18_m19_m20_m21_m22(helper1 .get(), this);
          
         return step1;
     }
@@ -159,12 +159,12 @@ public class ImplDescriptorBuilder_m1_m2_m3_m4_m6_m7_m8_m9_m10
      * Starts a new block.
      * 
      */
-    public MethodBuilder_m11_m12_m13_m14_m15_m16_m17_m18_m19_m20_m21_m22_m23 startBlock(String blockName, String methodSignature) {
+    public MethodBuilder_m11_m12_m13_m14_m15_m16_m17_m18_m19_m20_m21_m22 startBlock(String blockName, String methodSignature) {
         ObjectWrapper<MethodHelper> helper1 = new ObjectWrapper<MethodHelper>();
         ObjectWrapper<BlockHelper> helper2 = new ObjectWrapper<BlockHelper>();
         _helper.startBlock(blockName, methodSignature, helper1, helper2);
-        ImplBlockBuilder_m1_m2_m26_m9_m10 step1 = new ImplBlockBuilder_m1_m2_m26_m9_m10(helper2 .get(), this);
-        ImplMethodBuilder_m11_m12_m13_m14_m15_m16_m17_m18_m19_m20_m21_m22_m23 step2 = new ImplMethodBuilder_m11_m12_m13_m14_m15_m16_m17_m18_m19_m20_m21_m22_m23(helper1 .get(), step1);
+        ImplBlockBuilder_m1_m2_m25_m9_m10 step1 = new ImplBlockBuilder_m1_m2_m25_m9_m10(helper2 .get(), this);
+        ImplMethodBuilder_m11_m12_m13_m14_m15_m16_m17_m18_m19_m20_m21_m22 step2 = new ImplMethodBuilder_m11_m12_m13_m14_m15_m16_m17_m18_m19_m20_m21_m22(helper1 .get(), step1);
          
         return step2;
     }
@@ -173,12 +173,12 @@ public class ImplDescriptorBuilder_m1_m2_m3_m4_m6_m7_m8_m9_m10
      * Starts a new block.
      * 
      */
-    public MethodBuilder_m11_m12_m13_m14_m15_m16_m17_m18_m19_m20_m21_m22_m23 startBlock(String methodSignature) {
+    public MethodBuilder_m11_m12_m13_m14_m15_m16_m17_m18_m19_m20_m21_m22 startBlock(String methodSignature) {
         ObjectWrapper<MethodHelper> helper1 = new ObjectWrapper<MethodHelper>();
         ObjectWrapper<BlockHelper> helper2 = new ObjectWrapper<BlockHelper>();
         _helper.startBlock(methodSignature, helper1, helper2);
-        ImplBlockBuilder_m1_m2_m26_m9_m10 step1 = new ImplBlockBuilder_m1_m2_m26_m9_m10(helper2 .get(), this);
-        ImplMethodBuilder_m11_m12_m13_m14_m15_m16_m17_m18_m19_m20_m21_m22_m23 step2 = new ImplMethodBuilder_m11_m12_m13_m14_m15_m16_m17_m18_m19_m20_m21_m22_m23(helper1 .get(), step1);
+        ImplBlockBuilder_m1_m2_m25_m9_m10 step1 = new ImplBlockBuilder_m1_m2_m25_m9_m10(helper2 .get(), this);
+        ImplMethodBuilder_m11_m12_m13_m14_m15_m16_m17_m18_m19_m20_m21_m22 step2 = new ImplMethodBuilder_m11_m12_m13_m14_m15_m16_m17_m18_m19_m20_m21_m22(helper1 .get(), step1);
          
         return step2;
     }

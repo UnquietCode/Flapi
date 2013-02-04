@@ -46,12 +46,6 @@ public class MethodHelperImpl implements MethodHelper {
 	}
 
 	@Override
-	public void any(int group) {
-		any();
-		setGroup(group);
-	}
-
-	@Override
 	public void any() {
 		method.setMinOccurrences(0);
 		method.setMaxOccurrences(-1);

@@ -2,7 +2,7 @@
 package unquietcode.tools.flapi.builder.BlockChain;
 
 import javax.annotation.Generated;
-import unquietcode.tools.flapi.builder.Block.BlockBuilder_m1_m2_m26_m9_m10;
+import unquietcode.tools.flapi.builder.Block.BlockBuilder_m1_m2_m25_m9_m10;
 
 
 /**
@@ -13,11 +13,11 @@ import unquietcode.tools.flapi.builder.Block.BlockBuilder_m1_m2_m26_m9_m10;
  * Visit https://github.com/UnquietCode/Flapi for more information.
  * 
  * 
- * Generated on February 02, 2013 13:11:40 CST using version 0.3
+ * Generated on February 04, 2013 10:10:17 CST using version 0.3
  * 
  */
-@Generated(value = "unquietcode.tools.flapi", date = "February 02, 2013 13:11:40 CST", comments = "generated using Flapi, the fluent API generator for Java")
-public interface BlockChainBuilder_m24_m25_m10 <_ReturnType >{
+@Generated(value = "unquietcode.tools.flapi", date = "February 04, 2013 10:10:17 CST", comments = "generated using Flapi, the fluent API generator for Java")
+public interface BlockChainBuilder_m23_m24_m10 <_ReturnType >{
 
 
     /**
@@ -30,12 +30,12 @@ public interface BlockChainBuilder_m24_m25_m10 <_ReturnType >{
      * create a new anonymous block (which cannot be referenced from anywhere)
      * 
      */
-    BlockBuilder_m1_m2_m26_m9_m10 <_ReturnType> startBlock();
+    BlockBuilder_m1_m2_m25_m9_m10 <_ReturnType> startBlock();
 
     /**
      * create a new block
      * 
      */
-    BlockBuilder_m1_m2_m26_m9_m10 <_ReturnType> startBlock(String blockName);
+    BlockBuilder_m1_m2_m25_m9_m10 <_ReturnType> startBlock(String blockName);
 
 }

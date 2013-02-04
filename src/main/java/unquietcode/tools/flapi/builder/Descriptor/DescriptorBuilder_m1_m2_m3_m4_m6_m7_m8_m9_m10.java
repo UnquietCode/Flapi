@@ -3,8 +3,8 @@ package unquietcode.tools.flapi.builder.Descriptor;
 
 import javax.annotation.Generated;
 import unquietcode.tools.flapi.Descriptor;
-import unquietcode.tools.flapi.builder.Block.BlockBuilder_m1_m2_m26_m9_m10;
-import unquietcode.tools.flapi.builder.Method.MethodBuilder_m11_m12_m13_m14_m15_m16_m17_m18_m19_m20_m21_m22_m23;
+import unquietcode.tools.flapi.builder.Block.BlockBuilder_m1_m2_m25_m9_m10;
+import unquietcode.tools.flapi.builder.Method.MethodBuilder_m11_m12_m13_m14_m15_m16_m17_m18_m19_m20_m21_m22;
 
 
 /**
@@ -15,10 +15,10 @@ import unquietcode.tools.flapi.builder.Method.MethodBuilder_m11_m12_m13_m14_m15_
  * Visit https://github.com/UnquietCode/Flapi for more information.
  * 
  * 
- * Generated on February 02, 2013 13:11:40 CST using version 0.3
+ * Generated on February 04, 2013 10:10:17 CST using version 0.3
  * 
  */
-@Generated(value = "unquietcode.tools.flapi", date = "February 02, 2013 13:11:40 CST", comments = "generated using Flapi, the fluent API generator for Java")
+@Generated(value = "unquietcode.tools.flapi", date = "February 04, 2013 10:10:17 CST", comments = "generated using Flapi, the fluent API generator for Java")
 public interface DescriptorBuilder_m1_m2_m3_m4_m6_m7_m8_m9_m10 <_ReturnType >{
 
 
@@ -26,13 +26,13 @@ public interface DescriptorBuilder_m1_m2_m3_m4_m6_m7_m8_m9_m10 <_ReturnType >{
      * add a new method which proceeds to an existing block
      * 
      */
-    MethodBuilder_m11_m12_m13_m14_m15_m16_m17_m18_m19_m20_m21_m22_m23 <DescriptorBuilder_m1_m2_m3_m4_m6_m7_m8_m9_m10 <_ReturnType>> addBlockReference(String blockName, String methodSignature);
+    MethodBuilder_m11_m12_m13_m14_m15_m16_m17_m18_m19_m20_m21_m22 <DescriptorBuilder_m1_m2_m3_m4_m6_m7_m8_m9_m10 <_ReturnType>> addBlockReference(String blockName, String methodSignature);
 
     /**
      * Add a new method to the top level descriptor block.
      * 
      */
-    MethodBuilder_m11_m12_m13_m14_m15_m16_m17_m18_m19_m20_m21_m22_m23 <DescriptorBuilder_m1_m2_m3_m4_m6_m7_m8_m9_m10 <_ReturnType>> addMethod(String methodSignature);
+    MethodBuilder_m11_m12_m13_m14_m15_m16_m17_m18_m19_m20_m21_m22 <DescriptorBuilder_m1_m2_m3_m4_m6_m7_m8_m9_m10 <_ReturnType>> addMethod(String methodSignature);
 
     /**
      * Finish work and build the descriptor. This should only be called once.
@@ -70,12 +70,12 @@ public interface DescriptorBuilder_m1_m2_m3_m4_m6_m7_m8_m9_m10 <_ReturnType >{
      * Starts a new block.
      * 
      */
-    MethodBuilder_m11_m12_m13_m14_m15_m16_m17_m18_m19_m20_m21_m22_m23 <BlockBuilder_m1_m2_m26_m9_m10 <DescriptorBuilder_m1_m2_m3_m4_m6_m7_m8_m9_m10 <_ReturnType>>> startBlock(String blockName, String methodSignature);
+    MethodBuilder_m11_m12_m13_m14_m15_m16_m17_m18_m19_m20_m21_m22 <BlockBuilder_m1_m2_m25_m9_m10 <DescriptorBuilder_m1_m2_m3_m4_m6_m7_m8_m9_m10 <_ReturnType>>> startBlock(String blockName, String methodSignature);
 
     /**
      * Starts a new block.
      * 
      */
-    MethodBuilder_m11_m12_m13_m14_m15_m16_m17_m18_m19_m20_m21_m22_m23 <BlockBuilder_m1_m2_m26_m9_m10 <DescriptorBuilder_m1_m2_m3_m4_m6_m7_m8_m9_m10 <_ReturnType>>> startBlock(String methodSignature);
+    MethodBuilder_m11_m12_m13_m14_m15_m16_m17_m18_m19_m20_m21_m22 <BlockBuilder_m1_m2_m25_m9_m10 <DescriptorBuilder_m1_m2_m3_m4_m6_m7_m8_m9_m10 <_ReturnType>>> startBlock(String methodSignature);
 
 }

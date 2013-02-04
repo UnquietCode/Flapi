@@ -104,10 +104,6 @@ public class MainDescriptor {
 					.withDocumentation("expect the method [0, inf) times")
 				.last()
 
-				.addMethod("any(int group)")
-					.withDocumentation("expect the method [0, inf) times, and assign a group number")
-				.last()
-
 				.addMethod("last()")
 					.withDocumentation("mark the method as terminal, exiting the block when called")
 				.last()

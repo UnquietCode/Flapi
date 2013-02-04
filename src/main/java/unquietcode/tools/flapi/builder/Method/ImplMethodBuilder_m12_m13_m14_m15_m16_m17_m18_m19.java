@@ -2,11 +2,7 @@
 package unquietcode.tools.flapi.builder.Method;
 
 import javax.annotation.Generated;
-import unquietcode.tools.flapi.builder.Documentation.DocumentationBuilder_m27_m28;
-import unquietcode.tools.flapi.builder.Documentation.DocumentationHelper;
-import unquietcode.tools.flapi.builder.Documentation.ImplDocumentationBuilder_m27_m28;
 import unquietcode.tools.flapi.support.BuilderImplementation;
-import unquietcode.tools.flapi.support.ObjectWrapper;
 
 
 /**
@@ -17,18 +13,18 @@ import unquietcode.tools.flapi.support.ObjectWrapper;
  * Visit https://github.com/UnquietCode/Flapi for more information.
  * 
  * 
- * Generated on February 02, 2013 13:11:40 CST using version 0.3
+ * Generated on February 04, 2013 10:10:17 CST using version 0.3
  * 
  */
-@Generated(value = "unquietcode.tools.flapi", date = "February 02, 2013 13:11:40 CST", comments = "generated using Flapi, the fluent API generator for Java")
-public class ImplMethodBuilder_m12_m13_m14_m15_m16_m17_m18_m19_m20_m22_m23
-    implements MethodBuilder_m12_m13_m14_m15_m16_m17_m18_m19_m20_m22_m23, BuilderImplementation
+@Generated(value = "unquietcode.tools.flapi", date = "February 04, 2013 10:10:17 CST", comments = "generated using Flapi, the fluent API generator for Java")
+public class ImplMethodBuilder_m12_m13_m14_m15_m16_m17_m18_m19
+    implements MethodBuilder_m12_m13_m14_m15_m16_m17_m18_m19, BuilderImplementation
 {
 
     private final MethodHelper _helper;
     private final Object _returnValue;
 
-    public ImplMethodBuilder_m12_m13_m14_m15_m16_m17_m18_m19_m20_m22_m23(MethodHelper helper, Object returnValue) {
+    public ImplMethodBuilder_m12_m13_m14_m15_m16_m17_m18_m19(MethodHelper helper, Object returnValue) {
         _helper = helper;
         _returnValue = returnValue;
     }
@@ -56,17 +52,6 @@ public class ImplMethodBuilder_m12_m13_m14_m15_m16_m17_m18_m19_m20_m22_m23
     public Object any() {
         _checkInvocations();
         _helper.any();
-         
-        return _returnValue;
-    }
-
-    /**
-     * expect the method [0, inf) times, and assign a group number
-     * 
-     */
-    public Object any(int group) {
-        _checkInvocations();
-        _helper.any(group);
          
         return _returnValue;
     }
@@ -146,32 +131,6 @@ public class ImplMethodBuilder_m12_m13_m14_m15_m16_m17_m18_m19_m20_m22_m23
         _helper.last(returnType);
          
         return _returnValue;
-    }
-
-    /**
-     * Add javadoc style documentation to the method.
-     * 
-     */
-    public DocumentationBuilder_m27_m28 withDocumentation() {
-        ObjectWrapper<DocumentationHelper> helper1 = new ObjectWrapper<DocumentationHelper>();
-        _helper.withDocumentation(helper1);
-        ImplMethodBuilder_m12_m13_m14_m15_m16_m17_m18_m19_m20 step1 = new ImplMethodBuilder_m12_m13_m14_m15_m16_m17_m18_m19_m20(_helper, _returnValue);
-        ImplDocumentationBuilder_m27_m28 step2 = new ImplDocumentationBuilder_m27_m28(helper1 .get(), step1);
-         
-        _transferInvocations(step2);
-        return step2;
-    }
-
-    /**
-     * Add javadoc style documentation to the method.
-     * 
-     */
-    public MethodBuilder_m12_m13_m14_m15_m16_m17_m18_m19_m20 withDocumentation(String documentation) {
-        _helper.withDocumentation(documentation);
-        ImplMethodBuilder_m12_m13_m14_m15_m16_m17_m18_m19_m20 step1 = new ImplMethodBuilder_m12_m13_m14_m15_m16_m17_m18_m19_m20(_helper, _returnValue);
-         
-        _transferInvocations(step1);
-        return step1;
     }
 
 }

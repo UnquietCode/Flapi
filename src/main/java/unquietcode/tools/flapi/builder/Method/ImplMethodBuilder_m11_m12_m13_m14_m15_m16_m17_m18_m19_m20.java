@@ -2,9 +2,9 @@
 package unquietcode.tools.flapi.builder.Method;
 
 import javax.annotation.Generated;
-import unquietcode.tools.flapi.builder.BlockChain.BlockChainBuilder_m11_m24_m25_m10;
+import unquietcode.tools.flapi.builder.BlockChain.BlockChainBuilder_m11_m23_m24_m10;
 import unquietcode.tools.flapi.builder.BlockChain.BlockChainHelper;
-import unquietcode.tools.flapi.builder.BlockChain.ImplBlockChainBuilder_m11_m24_m25_m10;
+import unquietcode.tools.flapi.builder.BlockChain.ImplBlockChainBuilder_m11_m23_m24_m10;
 import unquietcode.tools.flapi.support.BuilderImplementation;
 import unquietcode.tools.flapi.support.ObjectWrapper;
 
@@ -17,10 +17,10 @@ import unquietcode.tools.flapi.support.ObjectWrapper;
  * Visit https://github.com/UnquietCode/Flapi for more information.
  * 
  * 
- * Generated on February 02, 2013 13:11:40 CST using version 0.3
+ * Generated on February 04, 2013 10:10:17 CST using version 0.3
  * 
  */
-@Generated(value = "unquietcode.tools.flapi", date = "February 02, 2013 13:11:40 CST", comments = "generated using Flapi, the fluent API generator for Java")
+@Generated(value = "unquietcode.tools.flapi", date = "February 04, 2013 10:10:17 CST", comments = "generated using Flapi, the fluent API generator for Java")
 public class ImplMethodBuilder_m11_m12_m13_m14_m15_m16_m17_m18_m19_m20
     implements MethodBuilder_m11_m12_m13_m14_m15_m16_m17_m18_m19_m20, BuilderImplementation
 {
@@ -54,11 +54,11 @@ public class ImplMethodBuilder_m11_m12_m13_m14_m15_m16_m17_m18_m19_m20
      * before the current method returns.
      * 
      */
-    public BlockChainBuilder_m11_m24_m25_m10 addBlockChain() {
+    public BlockChainBuilder_m11_m23_m24_m10 addBlockChain() {
         ObjectWrapper<BlockChainHelper> helper1 = new ObjectWrapper<BlockChainHelper>();
         _helper.addBlockChain(helper1);
         ImplMethodBuilder_m12_m13_m14_m15_m16_m17_m18_m19_m20 step1 = new ImplMethodBuilder_m12_m13_m14_m15_m16_m17_m18_m19_m20(_helper, _returnValue);
-        ImplBlockChainBuilder_m11_m24_m25_m10 step2 = new ImplBlockChainBuilder_m11_m24_m25_m10(helper1 .get(), step1);
+        ImplBlockChainBuilder_m11_m23_m24_m10 step2 = new ImplBlockChainBuilder_m11_m23_m24_m10(helper1 .get(), step1);
          
         _transferInvocations(step2);
         return step2;
@@ -71,17 +71,6 @@ public class ImplMethodBuilder_m11_m12_m13_m14_m15_m16_m17_m18_m19_m20
     public Object any() {
         _checkInvocations();
         _helper.any();
-         
-        return _returnValue;
-    }
-
-    /**
-     * expect the method [0, inf) times, and assign a group number
-     * 
-     */
-    public Object any(int group) {
-        _checkInvocations();
-        _helper.any(group);
          
         return _returnValue;
     }
@@ -161,6 +150,19 @@ public class ImplMethodBuilder_m11_m12_m13_m14_m15_m16_m17_m18_m19_m20
         _helper.last(returnType);
          
         return _returnValue;
+    }
+
+    /**
+     * Marks this method with a Deprecated annotation.
+     * Also adds a note to the Javadocs.
+     * 
+     */
+    public MethodBuilder_m11_m12_m13_m14_m15_m16_m17_m18_m19 markAsDeprecated(String reason) {
+        _helper.markAsDeprecated(reason);
+        ImplMethodBuilder_m11_m12_m13_m14_m15_m16_m17_m18_m19 step1 = new ImplMethodBuilder_m11_m12_m13_m14_m15_m16_m17_m18_m19(_helper, _returnValue);
+         
+        _transferInvocations(step1);
+        return step1;
     }
 
 }
