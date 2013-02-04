@@ -176,6 +176,13 @@ public class MethodParser_T {
 		assertEquals("parameter type", "param", parsed.params.get(0).second);
 	}
 
+	@Test(expected=MethodParser.ValidationException.class)
+	public void keywordsAreInvalid() throws Exception {
+		String methodSignature = "void continue(int x)";
+		MethodParser parsed = new MethodParser(methodSignature);
+		parsed.validate();
+	}
+
 	@Test
 	public void methodEqualityTests() {
 		// different parameter types
