@@ -48,6 +48,9 @@ A screencast has been posted to demonstrate some basic usage, and the main purpo
 ## [Examples](https://github.com/UnquietCode/Flapi/wiki/Examples)
 Many helpful examples are included on the wiki, corresponding to examples and tests in the src/test directory.
 
+## [Wiki](https://github.com/UnquietCode/Flapi/wiki)
+Some additional information is on the project's wiki.
+
 ## [Blog Post](http://www.unquietcode.com/blog/2012/software/introducing-flapi)
 The original blog post describing Flapi.
 
