@@ -41,7 +41,7 @@ A new example has been added,
 
 See the [Release Notes](https://github.com/UnquietCode/Flapi/wiki/v0_3) for the full details.
 
-## [Screencast](https://vimeo.com/58855907)
+## [Screencast](http://vimeo.com/58855907)
 A screencast has been posted to demonstrate some basic usage, and the main purpose of the tool.
 (Warning: it's my first attempt at screencasting.)
 
