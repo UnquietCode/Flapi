@@ -41,12 +41,15 @@ A new example has been added,
 
 See the [Release Notes](https://github.com/UnquietCode/Flapi/wiki/v0_3) for the full details.
 
-## Screencast
+## [Screencast](http://vimeo.com/58855907)
 A screencast has been posted to demonstrate some basic usage, and the main purpose of the tool.
 (Warning: it's my first attempt at screencasting.)
 
 ## [Examples](https://github.com/UnquietCode/Flapi/wiki/Examples)
 Many helpful examples are included on the wiki, corresponding to examples and tests in the src/test directory.
+
+## [Wiki](https://github.com/UnquietCode/Flapi/wiki)
+Some additional information is on the project's wiki.
 
 ## [Blog Post](http://www.unquietcode.com/blog/2012/software/introducing-flapi)
 The original blog post describing Flapi.
@@ -56,7 +59,7 @@ Use the [issue tracker](https://github.com/UnquietCode/Flapi/issues) to report p
 feature requests.
 
 ## Contributing
-Feel free to fork the project and fiddle around! Submit pull requests to improve the code.
+Feel free to fork the project and fiddle around! Submit pull requests to improve the code.  
 Create issues to help support the project. Ask questions. (Say hello.)
 
 Peace, love, and code.

@@ -46,7 +46,7 @@ This means that when one goes, so does the other. Use this in place of unnecessa
 The new documentation methods, for example, make use of this.
 
 ## Demonstration Video
-A screencast which attempts to explain the basic use of Flapi has been posted [here](vimeo.com/58855907).
+A screencast which attempts to explain the basic use of Flapi has been posted [here](http://vimeo.com/58855907).
 
 ## Resolved Issues
 
