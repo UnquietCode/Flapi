@@ -6,7 +6,7 @@ Initial beta release.
 
 ------------------------------------------------
 
-# Version 0.2
+v
 Notes also available at: https://github.com/UnquietCode/Flapi/wiki/v0_2
 JIRA: https://unquietcode.atlassian.net/secure/ReleaseNote.jspa?projectId=10160&version=10141
 
@@ -28,3 +28,51 @@ This version includes a few notable changes:
 	+ [FLAPI-56] - Incorporate existing examples into tests.
 
 ------------------------------------------------
+
+# Version 0.3
+Flapi 0.3 includes several bugfixes, as well as some new features.
+
+## Javadocs
+Documentation is now available using the `withDocumentation`. Because of this, javadocs have been added to the
+generated Flapi descriptor classes.
+
+## Deprecation
+Methods can now be marked as @Deprecated, which allows an API to be changed more incrementally.
+Use the `markAsDeprecated(..)` method on descriptor methods to enable this.
+
+## Method Grouping
+Methods which are marked `atMost(..)` can now be grouped together within the same block.
+This means that when one goes, so does the other. Use this in place of unnecessary anonymous blocks.
+The new documentation methods, for example, make use of this.
+
+## Demonstration Video
+A screencast which attempts to explain the basic use of Flapi has been posted [here](vimeo.com/58855907).
+
+## Resolved Issues
+
+### Bug
+    + [FLAPI-95] - Blocks with no methods should be rejected.
+    + [FLAPI-103] - Top level return types not working as expected.
+    + [FLAPI-105] - Failure to recognize two classes as different, resulting in compiler error.
+
+### Feature
+    + [FLAPI-49] - Add the ability to annotate builder methods as @Deprecated
+    + [FLAPI-57] - Allow users to add javadoc comments to interface methods.
+    + [FLAPI-102] - Support anonymous blocks.
+    + [FLAPI-111] - Support method grouping.
+
+### Improvement
+    + [FLAPI-20] - Divide the single 'monolithic' package into subpackages, one per block.
+    + [FLAPI-93] - Reject invalid method names in all descriptor methods.
+    + [FLAPI-108] - Avoid name collisions in anonymous blocks.
+    + [FLAPI-115] - Add Javadocs to Flapi builder methods, now that they are available.
+
+### Task
+    + [FLAPI-71] - Reorganize BlockGenerator file
+    + [FLAPI-104] - Integrate Travis-CI
+    + [FLAPI-106] - Create demo and screen share.
+    	+ Watch the video [here](vimeo.com/58855907)
+    * [FLAPI-123] - Add PipedProcess example to project.
+
+The full list of tasks and issues included in the release is available on the project's
+[JIRA](https://unquietcode.atlassian.net/secure/ReleaseNote.jspa?version=10142&styleName=Text&projectId=10160).
