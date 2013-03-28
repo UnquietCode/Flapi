@@ -74,6 +74,25 @@ public abstract class AbstractGenerator {
 		}
 	};
 
+	public static final TypeCreationStrategy WRAPPER_INTERFACE_STRATEGY = new TypeCreationStrategy() {
+		public @Override JDefinedClass createType(GeneratorContext ctx, StateClass state) {
+			String name = state.getName()+"Builder";
+			JDefinedClass parent = ctx.getOrCreateInterface(state.getName(), name);
+			JDefinedClass innerClass;
+
+			try {
+				innerClass = parent._interface("$");
+			} catch (JClassAlreadyExistsException ex) {
+				return ex.getExistingClass();
+			}
+
+			JDefinedClass builder = BUILDER_INTERFACE_STRATEGY.createType(ctx, state);
+			JTypeVar tv = innerClass.generify(Constants.RETURN_TYPE_NAME);
+			innerClass._extends(builder.narrow(tv));
+			return innerClass;
+		}
+	};
+
 	public static final TypeCreationStrategy NULL_STRATEGY = new TypeCreationStrategy() {
 		public @Override JDefinedClass createType(GeneratorContext ctx, StateClass state) {
 			return null;
@@ -131,6 +150,15 @@ public abstract class AbstractGenerator {
 			// try java.lang package
 			try {
 				Class c = Thread.currentThread().getContextClassLoader().loadClass("java.lang."+name);
+				clazz = ref(c);
+				break dance;
+			} catch (ClassNotFoundException ex) {
+				// nothing
+			}
+
+			// try java.util package
+			try {
+				Class c = Thread.currentThread().getContextClassLoader().loadClass("java.util."+name);
 				clazz = ref(c);
 				break dance;
 			} catch (ClassNotFoundException ex) {

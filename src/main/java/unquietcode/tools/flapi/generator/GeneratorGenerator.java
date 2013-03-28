@@ -1,5 +1,5 @@
 /*******************************************************************************
- Copyright 2012 Benjamin Fagin
+ Copyright 2013 Benjamin Fagin
 
      Licensed under the Apache License, Version 2.0 (the "License");
      you may not use this file except in compliance with the License.
@@ -35,10 +35,14 @@ public class GeneratorGenerator extends AbstractGenerator {
 	}
 
 	public JDefinedClass generate(StateClass topLevel, GeneratorOutline outline) {
-		JType returnType = BUILDER_INTERFACE_STRATEGY.createType(ctx, topLevel).narrow(ref(Void.class));
 		JDefinedClass returnValue = BUILDER_CLASS_STRATEGY.createType(ctx, topLevel);
 		JDefinedClass generator = GENERATOR_CLASS_STRATEGY.createType(ctx, topLevel);
 		JDefinedClass helper = HELPER_INTERFACE_STRATEGY.createType(ctx, topLevel);
+
+		// FLAPI-xxx subclass the return type for consistency between descriptor changes
+		JDefinedClass _returnType = WRAPPER_INTERFACE_STRATEGY.createType(ctx, topLevel);
+		returnValue._implements(_returnType);
+		JType returnType = _returnType.narrow(ref(Void.class));
 
 		// -- add the constructor methods --
 
@@ -49,7 +53,7 @@ public class GeneratorGenerator extends AbstractGenerator {
 		// check arguments
 
 		// if (helper == null)
-		//      throw new IllegalArgumentException("Helper cannot be null.");
+		//     throw new IllegalArgumentException("Helper cannot be null.");
 		//
 		JConditional _if = createMethod.body()._if(pHelper.eq(JExpr._null()));
 		_if._then()._throw(JExpr._new(ref(IllegalArgumentException.class)).arg("Helper cannot be null."));

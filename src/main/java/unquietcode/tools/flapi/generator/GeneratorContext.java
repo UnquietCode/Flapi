@@ -1,5 +1,5 @@
 /*******************************************************************************
- Copyright 2012 Benjamin Fagin
+ Copyright 2013 Benjamin Fagin
 
      Licensed under the Apache License, Version 2.0 (the "License");
      you may not use this file except in compliance with the License.
@@ -23,6 +23,7 @@ import com.sun.codemodel.*;
 import unquietcode.tools.flapi.*;
 import unquietcode.tools.flapi.graph.components.StateClass;
 import unquietcode.tools.flapi.graph.components.Transition;
+import unquietcode.tools.flapi.graph.components.TransitionType;
 
 import javax.annotation.Generated;
 import javax.lang.model.SourceVersion;
@@ -136,6 +137,11 @@ public class GeneratorContext {
 		name.append(prefix).append(state.getName()).append(suffix);
 
 		for (Transition transition : state.getTransitions()) {
+			// reduce noise by not utilizing all of the available names
+			if (transition.getType() == TransitionType.Recursive || transition.getType() == TransitionType.Terminal) {
+				continue;
+			}
+
 			MethodParser parsed = new MethodParser(transition.getMethodSignature());
 			String methodName = parsed.methodName;
 
