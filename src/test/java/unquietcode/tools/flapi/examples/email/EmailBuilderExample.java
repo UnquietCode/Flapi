@@ -3,7 +3,7 @@ package unquietcode.tools.flapi.examples.email;
 import org.junit.Test;
 import unquietcode.tools.flapi.Descriptor;
 import unquietcode.tools.flapi.Flapi;
-import unquietcode.tools.flapi.examples.email.builder.EmailGenerator;
+import unquietcode.tools.flapi.examples.email.builder.Email.EmailGenerator;
 
 /**
  * @author Benjamin Fagin
@@ -39,7 +39,7 @@ public class EmailBuilderExample {
 			.addRecipient("unclebob@unquietcode.com")
 			.subject("Has you seen my bucket?")
 			.body("Dear sir,\nI was wondering, have you seen my bucket? It is small, metallic, somewhat used, " +
-				  "and slightly smells of fish. Please let me know if you have or do ever see it.\n\nThanks!")
+				  "and slightly smells of fish. Please let me know if you have seen, or ever do see it.\n\nThanks!")
 		.send();
 	}
 

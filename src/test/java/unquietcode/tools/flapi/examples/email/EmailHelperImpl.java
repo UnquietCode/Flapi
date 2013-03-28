@@ -1,6 +1,6 @@
 package unquietcode.tools.flapi.examples.email;
 
-import unquietcode.tools.flapi.examples.email.builder.EmailHelper;
+import unquietcode.tools.flapi.examples.email.builder.Email.EmailHelper;
 
 import java.io.File;
 
