@@ -16,28 +16,22 @@ import unquietcode.tools.flapi.support.ObjectWrapper;
  * Visit https://github.com/UnquietCode/Flapi for more information.
  * 
  * 
- * Generated on February 04, 2013 10:10:17 CST using version 0.3
- * 
+ * Generated on April 09, 2013 20:26:31 PDT using version 0.4
  */
-@Generated(value = "unquietcode.tools.flapi", date = "February 04, 2013 10:10:17 CST", comments = "generated using Flapi, the fluent API generator for Java")
+@Generated(value = "unquietcode.tools.flapi", date = "April 09, 2013 20:26:31 PDT", comments = "generated using Flapi, the fluent API generator for Java")
 public interface DescriptorHelper {
-
-
     /**
      * add a new method which proceeds to an existing block
-     * 
      */
     void addBlockReference(String blockName, String methodSignature, ObjectWrapper<MethodHelper> _helper1);
 
     /**
      * Add a new method to the top level descriptor block.
-     * 
      */
     void addMethod(String methodSignature, ObjectWrapper<MethodHelper> _helper1);
 
     /**
      * Finish work and build the descriptor. This should only be called once.
-     * 
      */
     Descriptor build();
 
@@ -45,44 +39,36 @@ public interface DescriptorHelper {
      * Allow class names to be condensed, at the cost of no longer being
      * humanly readable. If your generated class names are too long to be
      * compiled, you will have to use this.
-     * 
      */
     void enableCondensedClassNames();
 
     /**
      * set the name of the top level descriptor
-     * 
      */
     void setDescriptorName(String descriptorName);
 
     /**
      * set the root package name to use for the generated classes
-     * 
      */
     void setPackage(String packageName);
 
     /**
      * set the return type for the top level descriptor (default is void)
-     * 
      */
     void setReturnType(Class returnType);
 
     /**
      * set the name of the generator's starting method (default is 'create')
-     * 
      */
     void setStartingMethodName(String methodName);
 
     /**
      * Starts a new block.
-     * 
      */
     void startBlock(String blockName, String methodSignature, ObjectWrapper<MethodHelper> _helper1, ObjectWrapper<BlockHelper> _helper2);
 
     /**
      * Starts a new block.
-     * 
      */
     void startBlock(String methodSignature, ObjectWrapper<MethodHelper> _helper1, ObjectWrapper<BlockHelper> _helper2);
-
 }

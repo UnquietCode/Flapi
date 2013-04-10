@@ -34,6 +34,7 @@ public class MethodOutline extends MethodInfo implements Outline {
 	private Class returnType;
 	private final List<BlockOutline> blockChain = new ArrayList<BlockOutline>();
 	private Integer group;
+	private Integer trigger;
 
 
 	public Class getReturnType() {
@@ -73,9 +74,17 @@ public class MethodOutline extends MethodInfo implements Outline {
 		this.group = group;
 	}
 
+	public Integer getTrigger() {
+		return trigger;
+	}
+
+	public void setTrigger(Integer trigger) {
+		this.trigger = trigger;
+	}
+
 	/*
-		A required method must be present on all interfaces.
-	 */
+			A required method must be present on all interfaces.
+		 */
 	public boolean isRequired() {
 		return getMaxOccurrences() == -1 || isTerminal;
 	}
@@ -83,10 +92,12 @@ public class MethodOutline extends MethodInfo implements Outline {
 	public MethodOutline copy()  {
 		MethodOutline clone = new MethodOutline();
 		super.copy(clone);
+
 		clone.isTerminal = isTerminal;
 		clone.blockChain.addAll(blockChain);
 		clone.returnType = returnType;
 		clone.group = group;
+		clone.trigger = trigger;
 
 		return clone;
 	}

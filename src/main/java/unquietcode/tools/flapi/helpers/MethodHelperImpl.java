@@ -20,7 +20,6 @@
 package unquietcode.tools.flapi.helpers;
 
 import unquietcode.tools.flapi.DescriptorBuilderException;
-import unquietcode.tools.flapi.MethodParser;
 import unquietcode.tools.flapi.builder.BlockChain.BlockChainHelper;
 import unquietcode.tools.flapi.builder.Documentation.DocumentationHelper;
 import unquietcode.tools.flapi.builder.Method.MethodHelper;
@@ -81,7 +80,7 @@ public class MethodHelperImpl implements MethodHelper {
 	@Override
 	public void atMost(int num, int group) {
 		atMost(num);
-		setGroup(group);
+		method.setGroup(group);
 	}
 
 	@Override
@@ -133,7 +132,8 @@ public class MethodHelperImpl implements MethodHelper {
 		method.setDeprecated(reason);
 	}
 
-	private void setGroup(int group) {
-		method.setGroup(group);
+	@Override
+	public void after(int group) {
+		method.setTrigger(group);
 	}
 }

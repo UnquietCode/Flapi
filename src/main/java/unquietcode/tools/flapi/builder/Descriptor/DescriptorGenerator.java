@@ -2,6 +2,7 @@
 package unquietcode.tools.flapi.builder.Descriptor;
 
 import javax.annotation.Generated;
+import unquietcode.tools.flapi.builder.Descriptor.DescriptorBuilder.$;
 
 
 /**
@@ -12,20 +13,16 @@ import javax.annotation.Generated;
  * Visit https://github.com/UnquietCode/Flapi for more information.
  * 
  * 
- * Generated on February 04, 2013 10:10:17 CST using version 0.3
- * 
+ * Generated on April 09, 2013 20:26:31 PDT using version 0.4
  */
-@Generated(value = "unquietcode.tools.flapi", date = "February 04, 2013 10:10:17 CST", comments = "generated using Flapi, the fluent API generator for Java")
+@Generated(value = "unquietcode.tools.flapi", date = "April 09, 2013 20:26:31 PDT", comments = "generated using Flapi, the fluent API generator for Java")
 public class DescriptorGenerator {
-
-
     @SuppressWarnings("unchecked")
-    public static DescriptorBuilder_m1_m2_m3_m4_m5_m6_m7_m8_m9_m10 <Void> create(DescriptorHelper helper) {
+    public static $<Void> create(DescriptorHelper helper) {
         if (helper == null) {
             throw new IllegalArgumentException("Helper cannot be null.");
         }
          
-        return new ImplDescriptorBuilder_m1_m2_m3_m4_m5_m6_m7_m8_m9_m10(helper, null);
+        return new ImplDescriptorBuilder_m1_m2_m3_m4_m5(helper, null);
     }
-
 }

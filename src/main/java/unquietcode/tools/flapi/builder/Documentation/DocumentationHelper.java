@@ -12,23 +12,17 @@ import javax.annotation.Generated;
  * Visit https://github.com/UnquietCode/Flapi for more information.
  * 
  * 
- * Generated on February 04, 2013 10:10:17 CST using version 0.3
- * 
+ * Generated on April 09, 2013 20:26:31 PDT using version 0.4
  */
-@Generated(value = "unquietcode.tools.flapi", date = "February 04, 2013 10:10:17 CST", comments = "generated using Flapi, the fluent API generator for Java")
+@Generated(value = "unquietcode.tools.flapi", date = "April 09, 2013 20:26:31 PDT", comments = "generated using Flapi, the fluent API generator for Java")
 public interface DocumentationHelper {
-
-
     /**
      * add more content to the Javadocs
-     * 
      */
     void addContent(String content);
 
     /**
      * finish writing the documentation
-     * 
      */
     void finish();
-
 }

@@ -131,6 +131,10 @@ public class MainDescriptor {
 					.withDocumentation("expect the method [atLeast, atMost] times")
 				.last()
 
+				.addMethod("after(int group)")
+					.withDocumentation("expose the method only after the specified group is finished")
+				.atMost(1)
+
 				// BlockChain
 				.startBlock("BlockChain", "addBlockChain()")
 					.withDocumentation()
