@@ -212,7 +212,7 @@ public class GeneratorContext {
 				.append("Visit ").append(Constants.PROJECT_URL).append(" for more information.\n")
 				.append("\n\n")
 				.append("Generated on ").append(dateFormat.format(generationDate))
-				.append(" using version ").append(Constants.PROJECT_VERSION).append("")
+				.append(" using version ").append(Constants.PROJECT_VERSION)
 			.toString();
 		}
 
