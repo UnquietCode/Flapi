@@ -24,10 +24,8 @@ import unquietcode.tools.flapi.graph.TransitionVisitor;
 import unquietcode.tools.flapi.graph.components.*;
 import unquietcode.tools.flapi.support.ObjectWrapper;
 
-import java.util.Collections;
 import java.util.IdentityHashMap;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * @author Ben Fagin
@@ -48,32 +46,31 @@ public class DescriptorPostValidator {
 	}
 
 	private boolean checkForBlocksWithNoEnd(StateClass state, final Map<StateClass, Boolean> seen) {
-		final ObjectWrapper<Boolean> terminal = new ObjectWrapper<Boolean>(false);
+		if (seen.containsKey(state)) { return seen.get(state); }
 		final ObjectWrapper<Boolean> valid = new ObjectWrapper<Boolean>(false);
+		final ObjectWrapper<Boolean> terminal = new ObjectWrapper<Boolean>(false);
 
 		// check this state's transitions
 		for (Transition transition : state.getTransitions()) {
 			transition.accept(new TransitionVisitor.$() {
-				public @Override void visit(TerminalTransition transition) {
+				public
+				@Override
+				void visit(TerminalTransition transition) {
 					terminal.set(true);
 				}
 
-				public @Override void visit(AscendingTransition transition) {
+				public
+				@Override
+				void visit(AscendingTransition transition) {
 					terminal.set(true);
 				}
 			});
-
-			valid.set(valid.get() || terminal.get());
 		}
 
-		if (seen.containsKey(state)) {
-			return seen.get(state);
-		} else {
-			seen.put(state, terminal.get());
-		}
+		valid.set(valid.get() || terminal.get());
+		seen.put(state, terminal.get());
 
 		// check every other transition to ensure that they can find a terminal
-
 		for (Transition transition : state.getTransitions()) {
 			final TransitionType transitionType = transition.getType();
 
@@ -88,10 +85,17 @@ public class DescriptorPostValidator {
 			});
 		}
 
-		if (valid.get() != true) {
+		// support implicit terminals
+		boolean hasImplicitTerminals = state.getBaseState() != null
+									 ? state.getBaseState().hasImplicitTerminal()
+									 : state.hasImplicitTerminal();
+		valid.set(valid.get() || hasImplicitTerminals);
+
+		if (!valid.get().equals(true)) {
 			throw new DescriptorBuilderException("Encountered a block with no terminal method: " + state.getName());
 		}
 
+		// return terminal because that's what we are really tracking
 		return terminal.get();
 	}
 }

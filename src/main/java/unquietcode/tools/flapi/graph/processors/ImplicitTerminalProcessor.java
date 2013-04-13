@@ -20,7 +20,10 @@
 package unquietcode.tools.flapi.graph.processors;
 
 import unquietcode.tools.flapi.graph.GenericVisitor;
-import unquietcode.tools.flapi.graph.components.*;
+import unquietcode.tools.flapi.graph.components.AscendingTransition;
+import unquietcode.tools.flapi.graph.components.LateralTransition;
+import unquietcode.tools.flapi.graph.components.StateClass;
+import unquietcode.tools.flapi.graph.components.Transition;
 
 import java.util.*;
 
@@ -47,6 +50,8 @@ public class ImplicitTerminalProcessor implements GenericVisitor<StateClass> {
 
 				if (replacement != null) {
 					replacements.put(transition, replacement);
+
+					state.getBaseState().setImplicitTerminal();
 				}
 			}
 
@@ -80,13 +85,7 @@ public class ImplicitTerminalProcessor implements GenericVisitor<StateClass> {
 		// At this point, we are looking at a transition which moves to a base
 		// state, with no methods, and so we change the transition to a terminal.
 
-		Transition replacement;
-		if (owner.isTopLevel()) {
-			replacement = new TerminalTransition(Void.class);
-		} else {
-			replacement = new AscendingTransition();
-		}
-
+		Transition replacement = new AscendingTransition();
 		replacement.setMethodInfo(transition.info().copy());
 		replacement.getStateChain().addAll(transition.getStateChain());
 

@@ -38,6 +38,8 @@ public class StateClass {
 	private StateClass base;
 	private String name;
 	private boolean isTopLevel = false;
+	private boolean hasImplicitTerminal = false;
+
 
 	public void setName(String name) {
 		this.name = name;
@@ -57,6 +59,14 @@ public class StateClass {
 
 	public void setIsTopLevel() {
 		isTopLevel = true;
+	}
+
+	public boolean hasImplicitTerminal() {
+		return hasImplicitTerminal;
+	}
+
+	public void setImplicitTerminal() {
+		hasImplicitTerminal = true;
 	}
 
 	// for debugging porpoises, mostly
