@@ -35,6 +35,8 @@ public class GraphBuilder {
 	private Map<String, StateClass> blocks = new HashMap<String, StateClass>();
 	private Map<String, StateClass> states = new HashMap<String, StateClass>();
 	private Map<BlockReference, BlockOutline> referenceMap = new IdentityHashMap<BlockReference, BlockOutline>();
+	private Set<MethodOutline> consumedTriggers
+		= Collections.newSetFromMap(new IdentityHashMap<MethodOutline, Boolean>());
 
 
 	public StateClass buildGraph(DescriptorOutline descriptor) {
@@ -86,6 +88,9 @@ public class GraphBuilder {
 	private StateClass convertBlock(BlockOutline block) {
 		StateClass topLevel;
 		String blockName = block.getName();
+		Set<MethodOutline> requiredMethods = block.getRequiredMethods();
+		Set<MethodOutline> dynamicMethods = block.getDynamicMethods();
+		Set<MethodOutline> triggeredMethods = block.getTriggeredMethods();
 
 		if (blocks.containsKey(block.getName())) {
 			return blocks.get(block.getName());
@@ -93,31 +98,43 @@ public class GraphBuilder {
 			BlockOutline resolved = referenceMap.get(block);
 			return convertBlock(resolved);
 		} else {
-			topLevel = getStateFromBlockAndMethods(block, block.getDynamicMethods());
+			topLevel = getStateFromBlockAndMethods(block, dynamicMethods);
 			topLevel.setIsTopLevel();
 			blocks.put(blockName, topLevel);
 		}
 
 		// create the base state from the required methods
-		Set<MethodOutline> blockRequiredMethods = block.getRequiredMethods();
-		StateClass baseState = getStateFromBlockAndMethods(block, blockRequiredMethods);
+		StateClass baseState = getStateFromBlockAndMethods(block, requiredMethods);
 		baseState.setName(blockName);
 
-		for (MethodOutline requiredMethod : blockRequiredMethods) {
-			addTransition(baseState, block, blockRequiredMethods, requiredMethod);
+		for (MethodOutline requiredMethod : requiredMethods) {
+			addTransition(baseState, block, requiredMethods, null, requiredMethod);
 		}
 
 		// create the sibling states
-		for (Set<MethodOutline> combination : makeCombinations(block.getDynamicMethods())) {
-			StateClass theState = getStateFromBlockAndMethods(block, combination);
+		Set<Set<MethodOutline>> workingSet = makeCombinations(dynamicMethods);
 
-			if (theState != baseState) {
-				theState.setBaseState(baseState);
+		while (!workingSet.isEmpty()) {
+			Set<Set<MethodOutline>> nextSet = new HashSet<Set<MethodOutline>>();
+
+			for (Set<MethodOutline> combination : workingSet) {
+				StateClass theState = getStateFromBlockAndMethods(block, combination);
+
+				if (theState != baseState) {
+					theState.setBaseState(baseState);
+				} else {
+					// there aren't any dynamic methods on the base state anyway
+					continue;
+				}
+
+				for (MethodOutline dynamicMethod : combination) {
+					Set<MethodOutline> next;
+					next = addTransition(theState, block, combination, triggeredMethods, dynamicMethod);
+					if (next != null) { nextSet.add(next); }
+				}
 			}
 
-			for (MethodOutline dynamicMethod : combination) {
-				addTransition(theState, block, combination, dynamicMethod);
-			}
+			workingSet = nextSet;
 		}
 
 		for (BlockOutline child : block.getBlocks()) {
@@ -154,13 +171,15 @@ public class GraphBuilder {
 		return state;
 	}
 
-	private void addTransition(
+	private Set<MethodOutline> addTransition(
 		StateClass state,
 		BlockOutline block,
 		Set<MethodOutline> combination,
+		Set<MethodOutline> triggered,
 		MethodOutline method
 	){
 		Transition transition;
+		Set<MethodOutline> retval = null;
 
 		if (method.isTerminal()) {
 			if (method.getReturnType() != null) {
@@ -177,11 +196,12 @@ public class GraphBuilder {
 		} else if (method.isRequired()) {
 			transition = new RecursiveTransition();
 		} else {
-			Set<MethodOutline> minusMethod = computeMinusMethod(combination, method);
-			StateClass next = getStateFromBlockAndMethods(block, minusMethod);
+			Set<MethodOutline> nextMethods = computeNextMethods(combination, triggered, method);
+			StateClass next = getStateFromBlockAndMethods(block, nextMethods);
 			LateralTransition lateral = new LateralTransition();
 			lateral.setSibling(next);
 			transition = lateral;
+			retval = nextMethods;
 		}
 
 		transition.setMethodInfo(((MethodInfo) method).copy());
@@ -192,6 +212,8 @@ public class GraphBuilder {
 			StateClass chainClass = convertBlock(chain);
 			transition.getStateChain().add(chainClass);
 		}
+
+		return retval;
 	}
 
 	/**
@@ -203,7 +225,7 @@ public class GraphBuilder {
 		Stack<Set<MethodOutline>> stack = new Stack<Set<MethodOutline>>();
 
 		// clone and push
-		Set<MethodOutline> cloned = new HashSet<MethodOutline>();
+		Set<MethodOutline> cloned = new TreeSet<MethodOutline>();
 		for (MethodOutline method : methods) {
 			cloned.add(method.copy());
 		}
@@ -214,7 +236,7 @@ public class GraphBuilder {
 			combinations.add(set);
 
 			for (MethodOutline method : set) {
-				Set<MethodOutline> next = new HashSet<MethodOutline>(set);
+				Set<MethodOutline> next = new TreeSet<MethodOutline>(set);
 				boolean changed = false;
 
 				// only remove if not required
@@ -242,8 +264,6 @@ public class GraphBuilder {
 			}
 		}
 
-		// always add the empty set
-		combinations.add(Collections.<MethodOutline>emptySet());
 		combinations = deduplicate(combinations);
 		return combinations;
 	}
@@ -274,38 +294,55 @@ public class GraphBuilder {
 	}
 
 	/*
-		For a single invocation, computes the 'next' method, which is the minus method.
-		This means that either the method is removed and then added back either with
-		a decremented value or not at all. Only works for dynamic methods.
+		Computes the set of next methods.
+			First decrements the method and removes it if dynamic (minus method).
+			Then adds any triggered methods.
 	 */
-	protected Set<MethodOutline> computeMinusMethod(Set<MethodOutline> allMethods, MethodOutline method) {
+	private Set<MethodOutline> computeNextMethods(
+		Set<MethodOutline> allMethods,
+		Set<MethodOutline> triggeredMethods,
+		MethodOutline method
+	){
 		if (method.isRequired()) {
-			return new HashSet<MethodOutline>(allMethods);
+			return new TreeSet<MethodOutline>(allMethods);
 		}
 
 		// compute minus method
-		Set<MethodOutline> minusMethod = new HashSet<MethodOutline>(allMethods);
-		minusMethod.remove(method);
+		Set<MethodOutline> nextMethods = new TreeSet<MethodOutline>(allMethods);
+		nextMethods.remove(method);
 
 		// only add back if it's not the last instance
 		if (method.getMaxOccurrences() > 1) {
 			MethodOutline m = method.copy();
 			m.setMaxOccurrences(m.getMaxOccurrences() - 1);
-			minusMethod.add(m);
+			nextMethods.add(m);
 
-		// otherwise it stays removed, but also remove members of the same group
+		// otherwise, make changes based on the outgoing group number
 		} else {
 			Integer currentGroup = method.getGroup();
 
 			if (currentGroup != null) {
-				for (MethodOutline otherMethod : new HashSet<MethodOutline>(minusMethod)) {
+
+				// remove methods linked by group
+				for (MethodOutline otherMethod : new HashSet<MethodOutline>(nextMethods)) {
 					if (currentGroup.equals(otherMethod.getGroup())) {
-						minusMethod.remove(otherMethod);
+						nextMethods.remove(otherMethod);
+					}
+				}
+
+				// add methods triggered by group
+				for (MethodOutline triggeredMethod : triggeredMethods) {
+					if (currentGroup.equals(triggeredMethod.getTrigger())) {
+						nextMethods.add(triggeredMethod.copy());
+
+						if (!consumedTriggers.contains(triggeredMethod)) {
+							consumedTriggers.add(triggeredMethod);
+						}
 					}
 				}
 			}
 		}
 
-		return minusMethod;
+		return nextMethods;
 	}
 }

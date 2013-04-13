@@ -36,7 +36,6 @@ public class MethodOutline extends MethodInfo implements Outline {
 	private Integer group;
 	private Integer trigger;
 
-
 	public Class getReturnType() {
 		return returnType;
 	}
@@ -83,10 +82,10 @@ public class MethodOutline extends MethodInfo implements Outline {
 	}
 
 	/*
-			A required method must be present on all interfaces.
-		 */
+		A required method must be present on all interfaces.
+	 */
 	public boolean isRequired() {
-		return getMaxOccurrences() == -1 || isTerminal;
+		return trigger == null && (getMaxOccurrences() == -1 || isTerminal);
 	}
 
 	public MethodOutline copy()  {
@@ -101,5 +100,4 @@ public class MethodOutline extends MethodInfo implements Outline {
 
 		return clone;
 	}
-
 }

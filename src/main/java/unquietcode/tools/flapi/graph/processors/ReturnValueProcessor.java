@@ -29,7 +29,9 @@ import unquietcode.tools.flapi.graph.components.*;
 import unquietcode.tools.flapi.support.ObjectWrapper;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
 
@@ -116,8 +118,8 @@ public class ReturnValueProcessor extends AbstractGenerator {
 
 
 	private JVar addHelperCall(Transition transition, JMethod method, List<JVar> helpers) {
-		// invoke the main helper
-		String helperMethodName = new MethodParser(transition.getMethodSignature()).methodName;
+		String methodSignature = transition.getMethodSignature();
+		String helperMethodName = new MethodParser(methodSignature).methodName;
 		JInvocation helperCall = makeHelperCall(method, helperMethodName);
 
 		// add the wrapped helpers as parameters
@@ -140,9 +142,16 @@ public class ReturnValueProcessor extends AbstractGenerator {
 			}
 		});
 
-		// add the helper method to the helper interface, only for the top level
-		if (transition.getOwner().isTopLevel()) {
+		// add the helper method to the helper interface
+		Set<String> seenHelperMethods = ctx.helperMethods.get(transition.getOwner().getName());
+		if (seenHelperMethods == null || !seenHelperMethods.contains(methodSignature)) {
 			addMethodsToHelper(transition, helperReturnType.get(), helpers);
+
+			if (seenHelperMethods == null) {
+				seenHelperMethods = new HashSet<String>();
+				ctx.helperMethods.put(transition.getOwner().getName(), seenHelperMethods);
+			}
+			seenHelperMethods.add(methodSignature);
 		}
 
 		// add the helper call to method body, capturing the results if necessary

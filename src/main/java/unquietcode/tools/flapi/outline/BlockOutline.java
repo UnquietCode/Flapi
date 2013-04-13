@@ -107,12 +107,24 @@ public class BlockOutline implements Outline {
 		Set<MethodOutline> dynamic = new TreeSet<MethodOutline>();
 
 		for (MethodOutline method : methods) {
-			if (!method.isRequired()) {
+			if (!method.isRequired() && method.getTrigger() == null) {
 				dynamic.add(method);
 			}
 		}
 
 		return dynamic;
+	}
+
+	public Set<MethodOutline> getTriggeredMethods() {
+		Set<MethodOutline> triggered = new TreeSet<MethodOutline>();
+
+		for (MethodOutline method : methods) {
+			if (!method.isRequired() && method.getTrigger() != null) {
+				triggered.add(method);
+			}
+		}
+
+		return triggered;
 	}
 
 	public Set<MethodOutline> getAllMethods() {

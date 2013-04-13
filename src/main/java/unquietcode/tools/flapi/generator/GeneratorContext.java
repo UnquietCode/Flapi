@@ -28,7 +28,10 @@ import unquietcode.tools.flapi.graph.components.TransitionType;
 import javax.annotation.Generated;
 import javax.lang.model.SourceVersion;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * @author Ben Fagin
@@ -38,6 +41,7 @@ public class GeneratorContext {
 	private static final SimpleDateFormat dateFormat = new SimpleDateFormat("MMMM dd, yyyy H:mm:ss z");
 
 	public final JCodeModel model = new JCodeModel();
+	public final Map<String, Set<String>> helperMethods = new HashMap<String, Set<String>>();
 	private final JPackage thePackage;
 	private final Map<String, JDefinedClass> interfaces = new HashMap<String, JDefinedClass>();
 	private final Map<String, JDefinedClass> classes = new HashMap<String, JDefinedClass>();

@@ -22,9 +22,6 @@ package unquietcode.tools.flapi.outline;
 
 import unquietcode.tools.flapi.MethodParser;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * @author Ben Fagin
  */
@@ -112,38 +109,5 @@ public class MethodInfo implements Comparable<MethodInfo> {
 	 */
 	public @Override int compareTo(MethodInfo other) {
 		return methodSignature.compareTo(other.methodSignature);
-	}
-
-	@Override
-	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
-
-		MethodInfo that = (MethodInfo) o;
-
-		if (isDeprecated != that.isDeprecated) return false;
-		if (deprecationReason != null ? !deprecationReason.equals(that.deprecationReason) : that.deprecationReason != null)
-			return false;
-		if (documentation != null ? !documentation.equals(that.documentation) : that.documentation != null)
-			return false;
-		if (maxOccurrences != null ? !maxOccurrences.equals(that.maxOccurrences) : that.maxOccurrences != null)
-			return false;
-		if (methodSignature != null ? !methodSignature.equals(that.methodSignature) : that.methodSignature != null)
-			return false;
-		if (minOccurrences != null ? !minOccurrences.equals(that.minOccurrences) : that.minOccurrences != null)
-			return false;
-
-		return true;
-	}
-
-	@Override
-	public int hashCode() {
-		int result = minOccurrences != null ? minOccurrences.hashCode() : 0;
-		result = 31 * result + (maxOccurrences != null ? maxOccurrences.hashCode() : 0);
-		result = 31 * result + (methodSignature != null ? methodSignature.hashCode() : 0);
-		result = 31 * result + (documentation != null ? documentation.hashCode() : 0);
-		result = 31 * result + (isDeprecated ? 1 : 0);
-		result = 31 * result + (deprecationReason != null ? deprecationReason.hashCode() : 0);
-		return result;
 	}
 }
