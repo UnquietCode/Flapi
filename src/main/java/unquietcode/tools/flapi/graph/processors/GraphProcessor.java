@@ -20,7 +20,6 @@
 package unquietcode.tools.flapi.graph.processors;
 
 import com.sun.codemodel.*;
-import unquietcode.tools.flapi.MethodParser;
 import unquietcode.tools.flapi.generator.AbstractGenerator;
 import unquietcode.tools.flapi.generator.GeneratorContext;
 import unquietcode.tools.flapi.generator.MethodImplementor;
@@ -87,7 +86,7 @@ public class GraphProcessor extends AbstractGenerator implements GenericVisitor<
 
 		// invocation tracking
 		if (mi.shouldTrackInvocations()) {
-			_method.body().directStatement("--ic_"+makeMethodKey(transition)+";");
+			_method.body().add(JExpr.predecr(JExpr.ref("ic_" + makeMethodKey(transition))));
 		}
 
 		// invocation check (done before helper call)
