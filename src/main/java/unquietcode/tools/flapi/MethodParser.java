@@ -337,25 +337,7 @@ public class MethodParser {
 			}
 
 			JavaType other = (JavaType) obj;
-
-			if (!typeName.equals(other.typeName)) {
-				return false;
-			}
-
-			if (typeParameters.size() != other.typeParameters.size()) {
-				return false;
-			}
-
-			for (int i=0; i < typeParameters.size(); ++i) {
-				JavaType thisType = typeParameters.get(i);
-				JavaType thatType = other.typeParameters.get(i);
-
-				if (!thisType.equals(thatType)) {
-					return false;
-				}
-			}
-
-			return true;
+			return typeName.equals(other.typeName);
 		}
 	}
 

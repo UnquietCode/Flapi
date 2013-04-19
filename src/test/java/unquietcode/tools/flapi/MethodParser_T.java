@@ -186,6 +186,7 @@ public class MethodParser_T {
 
 	@Test
 	public void methodEqualityTests() {
+
 		// different parameter types
 		assertFalse(
 			"expected unequal",
@@ -247,6 +248,14 @@ public class MethodParser_T {
 			"expected equal",
 			new MethodParser("void method(int a)")
 				.compilerEquivalent(new MethodParser("method(int a)")
+			)
+		);
+
+		// with generic erasure
+		assertTrue(
+			"expected equal",
+			new MethodParser("void method(List<String> list)")
+				.compilerEquivalent(new MethodParser("void method(List<Integer> list)")
 			)
 		);
 	}
