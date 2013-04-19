@@ -1,6 +1,7 @@
 package unquietcode.tools.flapi;
 
 import org.junit.Test;
+import unquietcode.tools.flapi.MethodParser.JavaType;
 
 import static org.junit.Assert.*;
 
@@ -15,12 +16,12 @@ public class MethodParser_T {
 		String methodSignature = "String doWork(String name)";
 		MethodParser parsed = new MethodParser(methodSignature);
 		
-		assertEquals("return type", "String", parsed.returnType);
+		assertEquals("return type", "String", parsed.returnType.typeName);
 		assertEquals("method name", "doWork", parsed.methodName);
 
 		assertEquals("one pair", 1, parsed.params.size());
-		Pair<String, String> pair = parsed.params.get(0);
-		assertEquals("param name", "String", pair.first);
+		Pair<JavaType, String> pair = parsed.params.get(0);
+		assertEquals("param name", "String", pair.first.typeName);
 		assertEquals("param name", "name", pair.second);
 	}
 	
@@ -29,12 +30,12 @@ public class MethodParser_T {
 		String methodSignature = "String doWork(String...names)";
 		MethodParser parsed = new MethodParser(methodSignature);
 	
-		assertEquals("return type", "String", parsed.returnType);
+		assertEquals("return type", "String", parsed.returnType.typeName);
 		assertEquals("method name", "doWork", parsed.methodName);
 
 		assertEquals("no pairs", 0, parsed.params.size());
 
-		assertEquals("one vararg type", "String", parsed.varargType);
+		assertEquals("one vararg type", "String", parsed.varargType.typeName);
 		assertEquals("one vararg name", "names", parsed.varargName);
 	}
 	
@@ -43,15 +44,15 @@ public class MethodParser_T {
 		String methodSignature = "String doWork(String greeting, String...names)";
 		MethodParser parsed = new MethodParser(methodSignature);
 
-		assertEquals("return type", "String", parsed.returnType);
+		assertEquals("return type", "String", parsed.returnType.typeName);
 		assertEquals("method name", "doWork", parsed.methodName);
 
 		assertEquals("one pair", 1, parsed.params.size());
-		Pair<String, String> pair = parsed.params.get(0);
-		assertEquals("param name", "String", pair.first);
+		Pair<JavaType, String> pair = parsed.params.get(0);
+		assertEquals("param name", "String", pair.first.typeName);
 		assertEquals("param name", "greeting", pair.second);
 
-		assertEquals("one vararg type", "String", parsed.varargType);
+		assertEquals("one vararg type", "String", parsed.varargType.typeName);
 		assertEquals("one vararg name", "names", parsed.varargName);
 	}
 
@@ -60,12 +61,12 @@ public class MethodParser_T {
 		String methodSignature = "void \n something  ( \tString\t  name)\n";
 		MethodParser parsed = new MethodParser(methodSignature);
 
-		assertEquals("return type", "void", parsed.returnType);
+		assertEquals("return type", "void", parsed.returnType.typeName);
 		assertEquals("method name", "something", parsed.methodName);
 
 		assertEquals("one pair", 1, parsed.params.size());
-		Pair<String, String> pair = parsed.params.get(0);
-		assertEquals("param name", "String", pair.first);
+		Pair<JavaType, String> pair = parsed.params.get(0);
+		assertEquals("param name", "String", pair.first.typeName);
 		assertEquals("param name", "name", pair.second);
 	}
 
@@ -79,7 +80,7 @@ public class MethodParser_T {
 	public void aFailedVararg() {
 		String methodSignature = "void debug(String message, Object...data)";
 		MethodParser parsed = new MethodParser(methodSignature);
-		assertEquals("Object", parsed.varargType);
+		assertEquals("Object", parsed.varargType.typeName);
 		assertEquals("data", parsed.varargName);
 	}
 
@@ -94,16 +95,16 @@ public class MethodParser_T {
 		String methodSignature = "between(int atLeast, int atMost, String somethingElse, java.lang.Boolean _paramX)";
 		MethodParser parsed = new MethodParser(methodSignature);
 
-		assertEquals(parsed.params.get(0).first, "int");
+		assertEquals(parsed.params.get(0).first.typeName, "int");
 		assertEquals(parsed.params.get(0).second, "atLeast");
 
-		assertEquals(parsed.params.get(1).first, "int");
+		assertEquals(parsed.params.get(1).first.typeName, "int");
 		assertEquals(parsed.params.get(1).second, "atMost");
 
-		assertEquals(parsed.params.get(2).first, "String");
+		assertEquals(parsed.params.get(2).first.typeName, "String");
 		assertEquals(parsed.params.get(2).second, "somethingElse");
 
-		assertEquals(parsed.params.get(3).first, "java.lang.Boolean");
+		assertEquals(parsed.params.get(3).first.typeName, "java.lang.Boolean");
 		assertEquals(parsed.params.get(3).second, "_paramX");
 	}
 
@@ -134,7 +135,7 @@ public class MethodParser_T {
 		MethodParser parsed = new MethodParser(methodSignature);
 
 		assertEquals("no params", 0, parsed.params.size());
-		assertEquals("type with type parameter", "List<String>", parsed.returnType);
+		assertEquals("type with type parameter", "List<String>", parsed.returnType.toString());
 	}
 
 	@Test
@@ -143,7 +144,7 @@ public class MethodParser_T {
 		MethodParser parsed = new MethodParser(methodSignature);
 
 		assertEquals("no params", 0, parsed.params.size());
-		assertEquals("type with type parameter", "Map<String,Integer>", parsed.returnType);
+		assertEquals("type with type parameter", "Map<String, Integer>", parsed.returnType.toString());
 	}
 
 	@Test
@@ -152,7 +153,7 @@ public class MethodParser_T {
 		MethodParser parsed = new MethodParser(methodSignature);
 
 		assertEquals("single param", 1, parsed.params.size());
-		assertEquals("parameter type", "List<String>", parsed.params.get(0).first);
+		assertEquals("parameter type", "List<String>", parsed.params.get(0).first.toString());
 		assertEquals("parameter type", "param", parsed.params.get(0).second);
 	}
 
@@ -162,7 +163,7 @@ public class MethodParser_T {
 		MethodParser parsed = new MethodParser(methodSignature);
 
 		assertEquals("single param", 1, parsed.params.size());
-		assertEquals("parameter type", "Map<String,Integer>", parsed.params.get(0).first);
+		assertEquals("parameter type", "Map<String, Integer>", parsed.params.get(0).first.toString());
 		assertEquals("parameter type", "param", parsed.params.get(0).second);
 	}
 
@@ -172,7 +173,7 @@ public class MethodParser_T {
 		MethodParser parsed = new MethodParser(methodSignature);
 
 		assertEquals("single param", 1, parsed.params.size());
-		assertEquals("parameter type", "Map<String,Set<String>>", parsed.params.get(0).first);
+		assertEquals("parameter type", "Map<String, Set<String>>", parsed.params.get(0).first.toString());
 		assertEquals("parameter type", "param", parsed.params.get(0).second);
 	}
 
@@ -238,6 +239,14 @@ public class MethodParser_T {
 			"expected unequal",
 			new MethodParser("void methodA(int p1)")
 				.compilerEquivalent(new MethodParser("void methodB(int p1)")
+			)
+		);
+
+		// with and without void
+		assertTrue(
+			"expected equal",
+			new MethodParser("void method(int a)")
+				.compilerEquivalent(new MethodParser("method(int a)")
 			)
 		);
 	}

@@ -20,8 +20,6 @@
 package unquietcode.tools.flapi.outline;
 
 
-import unquietcode.tools.flapi.MethodParser;
-
 /**
  * @author Ben Fagin
  */
@@ -77,11 +75,6 @@ public class MethodInfo implements Comparable<MethodInfo> {
 
 	public void setMethodSignature(String methodSignature) {
 		this.methodSignature = methodSignature.trim();
-	}
-
-	public String returnType() {
-		MethodParser parsed = new MethodParser(methodSignature);
-		return parsed.returnType;
 	}
 
 	public MethodInfo copy()  {

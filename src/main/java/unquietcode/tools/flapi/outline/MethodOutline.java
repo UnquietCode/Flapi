@@ -20,8 +20,6 @@
 package unquietcode.tools.flapi.outline;
 
 
-import unquietcode.tools.flapi.MethodParser;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -58,11 +56,6 @@ public class MethodOutline extends MethodInfo implements Outline {
 
 	public void isTerminal(boolean value) {
 		isTerminal = value;
-	}
-
-	public String returnType() {
-		MethodParser parsed = new MethodParser(getMethodSignature());
-		return parsed.returnType;
 	}
 
 	public Integer getGroup() {

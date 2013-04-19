@@ -39,9 +39,9 @@ public class GeneratorGenerator extends AbstractGenerator {
 		JDefinedClass generator = GENERATOR_CLASS_STRATEGY.createType(ctx, topLevel);
 		JDefinedClass helper = HELPER_INTERFACE_STRATEGY.createType(ctx, topLevel);
 
-		// FLAPI-xxx subclass the return type for consistency between descriptor changes
+		// FLAPI-126 subclass the return type for consistency between descriptor changes
 		JDefinedClass _returnType = WRAPPER_INTERFACE_STRATEGY.createType(ctx, topLevel);
-		returnValue._implements(_returnType);
+		returnValue._implements(_returnType.narrow(Object.class));
 		JType returnType = _returnType.narrow(ref(Void.class));
 
 		// -- add the constructor methods --
@@ -61,9 +61,12 @@ public class GeneratorGenerator extends AbstractGenerator {
 
 		// get base return value and return
 		createMethod.body()._return(
-			JExpr._new(returnValue)
-				.arg(pHelper)
-				.arg(JExpr._null())
+			JExpr.cast(_returnType,
+				JExpr._new(returnValue)
+					.arg(pHelper)
+					.arg(JExpr._null()
+				)
+			)
 		);
 
 		return generator;

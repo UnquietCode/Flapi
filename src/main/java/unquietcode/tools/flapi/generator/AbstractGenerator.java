@@ -21,7 +21,9 @@ package unquietcode.tools.flapi.generator;
 
 import com.sun.codemodel.*;
 import unquietcode.tools.flapi.Constants;
+import unquietcode.tools.flapi.DescriptorBuilderException;
 import unquietcode.tools.flapi.MethodParser;
+import unquietcode.tools.flapi.MethodParser.JavaType;
 import unquietcode.tools.flapi.Pair;
 import unquietcode.tools.flapi.graph.components.StateClass;
 import unquietcode.tools.flapi.graph.components.Transition;
@@ -116,27 +118,23 @@ public abstract class AbstractGenerator {
 		sb.append(parser.methodName).append("$");
 		boolean first = true;
 
-		for (Pair<String, String> param : parser.params) {
+		for (Pair<JavaType, String> param : parser.params) {
 			if (!first) { sb.append("$"); }
 			else { first = false; }
 
-			sb.append(param.first).append("_").append(param.second);
+			sb.append(param.first.typeName).append("_").append(param.second);
 		}
 
 		return sb.toString();
 	}
 
-
 	protected JClass ref(Class clazz) {
 		return ctx.model.ref(clazz);
 	}
 
-	protected JClass ref(String FQCN) {
-		return ctx.model.ref(FQCN);
-	}
-
-	protected JType getType(String name) {
-		JType clazz;
+	protected JType getType(JavaType type) {
+		JClass clazz;
+		String name = type.typeName;
 
 		dance: {
 			try {
@@ -165,8 +163,31 @@ public abstract class AbstractGenerator {
 				// nothing
 			}
 
-			// Maybe it's primitive, or just not visible. Let the code model decide.
-			clazz = ref(name);
+			// maybe it's a primitive
+			try {
+				JType primitive = ctx.model.parseType(name);
+
+				if (!type.typeParameters.isEmpty()) {
+					throw new DescriptorBuilderException("Primitive '"+primitive.name()+"' cannot have type parameters.");
+				}
+
+				return primitive;
+			} catch (ClassNotFoundException ex) {
+				// nothing
+			}
+
+			// Maybe it's just not visible. Let the code model decide.
+			clazz = ctx.model.ref(name);
+		}
+
+		for (JavaType tp : type.typeParameters) {
+			JType t = getType(tp);
+
+			if (t.isPrimitive()) {
+				throw new DescriptorBuilderException("Primitive '"+t.name()+"' cannot be used as a type parameter.");
+			}
+
+			clazz = clazz.narrow(t);
 		}
 
 		return clazz;
@@ -177,7 +198,7 @@ public abstract class AbstractGenerator {
 		JMethod m = _class.method(mods, returnType, parsed.methodName);
 
 		// regular params
-		for (Pair<String, String> entry : parsed.params) {
+		for (Pair<JavaType, String> entry : parsed.params) {
 			JType clazz = getType(entry.first);
 			m.param(clazz, entry.second);
 		}

@@ -28,10 +28,10 @@ import java.util.*;
  */
 public class MethodParser {
 	public final String methodName;
-	public final String returnType;
-	public final List<Pair<String, String>> params = new ArrayList<Pair<String, String>>();
+	public final JavaType returnType;
+	public final List<Pair<JavaType, String>> params = new ArrayList<Pair<JavaType, String>>();
 	public final String varargName;
-	public final String varargType;
+	public final JavaType varargType;
 	public final String originalSignature;
 
 	// working
@@ -51,9 +51,9 @@ public class MethodParser {
 		originalSignature = methodSignature;
 		signature = originalSignature.toCharArray();
 		boolean seenVarargs = false;
-		String _varargType = null;
+		JavaType _varargType = null;
 		String _varargName = null;
-		String _returnType;
+		JavaType _returnType;
 		String _methodName;
 
 		// RETURN TYPE
@@ -65,7 +65,7 @@ public class MethodParser {
 			_methodName = matchIdentifier();
 		} catch (ParseException ex) {
 			// means the type was the method name, which means no return type
-			_methodName = _returnType;
+			_methodName = _returnType.typeName;
 			_returnType = null;
 		}
 		match(WS, -1);
@@ -78,7 +78,7 @@ public class MethodParser {
 		while (true) {
 
 			// PARAMETER TYPE
-			String pType;
+			JavaType pType;
 			try {
 				pType = matchType();
 				match(WS, -1);
@@ -103,7 +103,7 @@ public class MethodParser {
 				_varargName = pName;
 				break;  // varargs are always last
 			} else {
-				params.add(new Pair<String, String>(pType, pName));
+				params.add(new Pair<JavaType, String>(pType, pName));
 			}
 
 			// COMMA
@@ -132,18 +132,10 @@ public class MethodParser {
 		signature = null;
 	}
 
-	private static Parameter parseParameter(String type, String name) {
-		if (type.contains("<")) {
-			// TODO FLAPI-28
-		}
-
-		return null;
-	}
-
 	private void checkForDuplicateParameters() {
 		Set<String> seen = new HashSet<String>();
 
-		for (Pair<String, String> param : params) {
+		for (Pair<JavaType, String> param : params) {
 			if (seen.contains(param.second)) {
 				throw new ParseException("Duplicate parameter name: '"+param.second+"'.");
 			} else {
@@ -152,32 +144,34 @@ public class MethodParser {
 		}
 	}
 
-	private String matchType() {
-		StringBuilder sb = new StringBuilder();
+	private JavaType matchType() {
+		String typeName;
+		List<JavaType> typeParameters = new ArrayList<JavaType>();
+
 		match(WS, -1);
-		sb.append(matchIdentifier());
+		typeName = matchIdentifier();
 		match(WS, -1);
 
 		if (peek(LB, 1)) {
-			sb.append(match(LB, 1));
+			match(LB, 1);
 			match(WS, -1);
 
 			while (true) {
-				sb.append(matchType());
+				typeParameters.add(matchType());
 				match(WS, -1);
 
 				if (peek(COMMA, 1)) {
-					sb.append(match(COMMA, 1));
+					match(COMMA, 1);
 					match(WS, -1);
 				} else {
 					break;
 				}
 			}
 
-			sb.append(match(RB, 1));
+			match(RB, 1);
 		}
 
-		return sb.toString();
+		return new JavaType(typeName, typeParameters);
 	}
 
 	private String matchIdentifier() {
@@ -288,7 +282,7 @@ public class MethodParser {
 		}
 
 		// check that parameters are also valid names
-		for (Pair<String, String> param : params) {
+		for (Pair<JavaType, String> param : params) {
 			if (!SourceVersion.isName(param.second)) {
 				throw new ValidationException(
 					"Invalid parameter name '"+param.second+"' in method '"+originalSignature+"'."
@@ -306,15 +300,62 @@ public class MethodParser {
 		}
 	}
 
-	public static class Parameter {
-		public final String type;
-		public final String name;
-		public final List<Parameter> typeParamters;
+	public static class JavaType {
+		public final String typeName;
+		public final List<JavaType> typeParameters;
 
-		public Parameter(String type, String name, List<Parameter> typeParamters) {
-			this.type = type;
-			this.name = name;
-			this.typeParamters = Collections.unmodifiableList(new ArrayList<Parameter>(typeParamters));
+		public JavaType(String typeName, List<JavaType> typeParameters) {
+			this.typeName = typeName;
+			this.typeParameters = Collections.unmodifiableList(typeParameters);
+		}
+
+		@Override
+		public String toString() {
+			StringBuilder sb = new StringBuilder();
+			sb.append(typeName);
+
+			if (!typeParameters.isEmpty()) {
+				sb.append("<");
+				boolean first = true;
+
+				for (JavaType typeParameter : typeParameters) {
+					if (!first) { sb.append(", "); }
+					else { first = false; }
+					sb.append(typeParameter);
+				}
+
+				sb.append(">");
+			}
+
+			return sb.toString();
+		}
+
+		@Override
+		public boolean equals(Object obj) {
+			if (!(obj instanceof JavaType)) {
+				return false;
+			}
+
+			JavaType other = (JavaType) obj;
+
+			if (!typeName.equals(other.typeName)) {
+				return false;
+			}
+
+			if (typeParameters.size() != other.typeParameters.size()) {
+				return false;
+			}
+
+			for (int i=0; i < typeParameters.size(); ++i) {
+				JavaType thisType = typeParameters.get(i);
+				JavaType thatType = other.typeParameters.get(i);
+
+				if (!thisType.equals(thatType)) {
+					return false;
+				}
+			}
+
+			return true;
 		}
 	}
 
@@ -374,15 +415,31 @@ public class MethodParser {
 		if (varargType != null && !varargType.equals(other.varargType)) { return false; }
 
 		for (int i=0; i < params.size(); ++i) {
-			Pair<String,String> p1 = params.get(i);
-			Pair<String,String> p2 = other.params.get(i);
+			Pair<JavaType,String> p1 = params.get(i);
+			Pair<JavaType,String> p2 = other.params.get(i);
 
 			if (!p1.first.equals(p2.first)) { return false; }
 		}
 
 		// and same return type
-		if (returnType == null && other.returnType != null) { return false; }
-		if (returnType != null && !returnType.equals(other.returnType)) { return false; }
+
+		if (returnType == null && other.returnType != null) {
+			if (!other.returnType.typeName.equals("void")) {
+				return false;
+			}
+		}
+
+		if (returnType != null && other.returnType == null) {
+			if (!returnType.typeName.equals("void")) {
+				return false;
+			}
+		}
+
+		if (returnType != null && other.returnType != null) {
+			if (!returnType.typeName.equals(other.returnType.typeName)) {
+				return false;
+			}
+		}
 
 		// otherwise, equal (probably)
 		return true;

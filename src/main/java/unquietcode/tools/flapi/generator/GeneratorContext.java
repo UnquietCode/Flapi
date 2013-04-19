@@ -21,6 +21,7 @@ package unquietcode.tools.flapi.generator;
 
 import com.sun.codemodel.*;
 import unquietcode.tools.flapi.*;
+import unquietcode.tools.flapi.MethodParser.JavaType;
 import unquietcode.tools.flapi.graph.components.StateClass;
 import unquietcode.tools.flapi.graph.components.Transition;
 import unquietcode.tools.flapi.graph.components.TransitionType;
@@ -151,8 +152,8 @@ public class GeneratorContext {
 
 			// create the special method+parameter 'hash' key
 			String krazyKey = methodName;
-			for (Pair<String, String> param : parsed.params) {
-				krazyKey += "|"+param.first;
+			for (Pair<JavaType, String> param : parsed.params) {
+				krazyKey += "|"+param.first.typeName;
 			}
 
 			// if this specific combo has been seen before, use the existing char

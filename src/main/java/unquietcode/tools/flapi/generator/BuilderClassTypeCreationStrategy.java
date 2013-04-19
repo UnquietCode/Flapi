@@ -60,7 +60,7 @@ public class BuilderClassTypeCreationStrategy implements TypeCreationStrategy {
 			JDefinedClass iHelper = HELPER_INTERFACE_STRATEGY.createType(ctx, state);
 			JClass builderType = ref(BuilderImplementation.class);
 
-			cBuilder._implements(iBuilder);
+			cBuilder._implements(iBuilder.narrow(Object.class));
 			cBuilder._implements(builderType);
 
 			JType returnType = ref(Object.class);
