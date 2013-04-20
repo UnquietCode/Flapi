@@ -23,6 +23,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 import unquietcode.tools.flapi.Descriptor;
 import unquietcode.tools.flapi.Flapi;
+import unquietcode.tools.flapi.examples.pipes.builder.Process.ProcessBuilder;
 import unquietcode.tools.flapi.examples.pipes.builder.Process.ProcessGenerator;
 
 import java.io.IOException;
@@ -75,7 +76,7 @@ public class PipedProcessExample {
 	@Test
 	@Ignore("this isn't platform independent")
 	public void usage() {
-		InputStream is = ProcessGenerator.begin(new ProcessHelperImpl())
+		InputStream is = newProcess()
 			.withProcess("echo")
 			.addArgument("hello world")
 
@@ -93,5 +94,9 @@ public class PipedProcessExample {
 				throw new RuntimeException(ex);
 			}
 		}
+	}
+
+	ProcessBuilder.$ newProcess() {
+		return ProcessGenerator.begin(new ProcessHelperImpl());
 	}
 }
