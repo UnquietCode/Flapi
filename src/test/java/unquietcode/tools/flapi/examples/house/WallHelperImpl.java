@@ -19,7 +19,8 @@
 
 package unquietcode.tools.flapi.examples.house;
 
-import unquietcode.tools.flapi.examples.house.builder.WallHelper;
+
+import unquietcode.tools.flapi.examples.house.builder.Wall.WallHelper;
 
 import java.awt.*;
 

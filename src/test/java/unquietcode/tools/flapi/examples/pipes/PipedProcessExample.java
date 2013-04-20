@@ -54,7 +54,8 @@ public class PipedProcessExample {
 	/*
 		Example which shows usage with the raw Java classes.
 	 */
-	//@Test
+	@Test
+	@Ignore("this isn't platform independent")
 	public void test() throws Exception {
 		Process p1 = Runtime.getRuntime().exec(new String[]{"echo", "hello world"});
 
@@ -72,7 +73,7 @@ public class PipedProcessExample {
 	}
 
 	@Test
-	@Ignore("this isn't platform independent yet")
+	@Ignore("this isn't platform independent")
 	public void usage() {
 		InputStream is = ProcessGenerator.begin(new ProcessHelperImpl())
 			.withProcess("echo")

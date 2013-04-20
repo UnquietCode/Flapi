@@ -2,9 +2,9 @@ package unquietcode.tools.flapi.examples.xhtml;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import unquietcode.tools.flapi.examples.xhtml.builder.ElementHelper;
-import unquietcode.tools.flapi.examples.xhtml.builder.XHTMLHelper;
-import unquietcode.tools.flapi.support.v0_2.ObjectWrapper;
+import unquietcode.tools.flapi.examples.xhtml.builder.Element.ElementHelper;
+import unquietcode.tools.flapi.examples.xhtml.builder.XHTML.XHTMLHelper;
+import unquietcode.tools.flapi.support.ObjectWrapper;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 

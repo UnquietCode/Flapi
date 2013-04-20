@@ -5,9 +5,9 @@ import org.junit.Test;
 import org.w3c.dom.Document;
 import unquietcode.tools.flapi.Descriptor;
 import unquietcode.tools.flapi.Flapi;
-import unquietcode.tools.flapi.examples.xhtml.builder.ElementBuilder_setValue;
-import unquietcode.tools.flapi.examples.xhtml.builder.XHTMLBuilder;
-import unquietcode.tools.flapi.examples.xhtml.builder.XHTMLGenerator;
+import unquietcode.tools.flapi.examples.xhtml.builder.Element.ElementBuilder_endElement_setValue;
+import unquietcode.tools.flapi.examples.xhtml.builder.XHTML.XHTMLBuilder;
+import unquietcode.tools.flapi.examples.xhtml.builder.XHTML.XHTMLGenerator;
 
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
@@ -68,7 +68,7 @@ public class XHTMLBuilderExample {
 	@Test
 	public void dividedUsage() {
 		Document doc;
-		ElementBuilder_setValue<XHTMLBuilder<Void>> movies
+		ElementBuilder_endElement_setValue<XHTMLBuilder<Void>> movies
 			= XHTMLGenerator.createDocument(new XHTMLHelperImpl())
 			.addComment("This is a list of movies in my library.")
 			.startElement("movies");

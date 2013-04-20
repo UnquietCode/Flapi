@@ -3,10 +3,10 @@ package unquietcode.tools.flapi.examples.calculator;
 import org.junit.Test;
 import unquietcode.tools.flapi.Descriptor;
 import unquietcode.tools.flapi.Flapi;
-import unquietcode.tools.flapi.examples.calculator.builder.CalculationBuilder;
-import unquietcode.tools.flapi.examples.calculator.builder.CalculatorBuilder;
-import unquietcode.tools.flapi.examples.calculator.builder.CalculatorGenerator;
-import unquietcode.tools.flapi.support.v0_2.ObjectWrapper;
+import unquietcode.tools.flapi.examples.calculator.builder.Calculation.CalculationBuilder;
+import unquietcode.tools.flapi.examples.calculator.builder.Calculator.CalculatorBuilder;
+import unquietcode.tools.flapi.examples.calculator.builder.Calculator.CalculatorGenerator;
+import unquietcode.tools.flapi.support.ObjectWrapper;
 
 import java.math.BigInteger;
 
@@ -56,7 +56,7 @@ public class CalculatorBuilderExample {
 
 	static class Calculator {
 		static CalculationBuilder<ObjectWrapper<BigInteger>> begin(int startingValue) {
-			CalculatorBuilder result = CalculatorGenerator.begin(new CalculatorHelperImpl());
+			CalculatorBuilder.$ result = CalculatorGenerator.begin(new CalculatorHelperImpl());
 
 			@SuppressWarnings("unchecked")
 			CalculationBuilder<ObjectWrapper<BigInteger>> started

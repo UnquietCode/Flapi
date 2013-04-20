@@ -22,8 +22,8 @@ package unquietcode.tools.flapi.examples.house;
 import org.junit.Test;
 import unquietcode.tools.flapi.Descriptor;
 import unquietcode.tools.flapi.Flapi;
-import unquietcode.tools.flapi.examples.house.builder.HouseBuilder;
-import unquietcode.tools.flapi.examples.house.builder.HouseGenerator;
+import unquietcode.tools.flapi.examples.house.builder.House.HouseBuilder;
+import unquietcode.tools.flapi.examples.house.builder.House.HouseGenerator;
 
 import java.awt.*;
 

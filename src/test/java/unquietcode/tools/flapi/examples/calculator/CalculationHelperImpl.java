@@ -1,7 +1,7 @@
 package unquietcode.tools.flapi.examples.calculator;
 
-import unquietcode.tools.flapi.examples.calculator.builder.CalculationHelper;
-import unquietcode.tools.flapi.support.v0_2.ObjectWrapper;
+import unquietcode.tools.flapi.examples.calculator.builder.Calculation.CalculationHelper;
+import unquietcode.tools.flapi.support.ObjectWrapper;
 
 import java.math.BigInteger;
 

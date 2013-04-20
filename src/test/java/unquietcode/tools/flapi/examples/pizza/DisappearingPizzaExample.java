@@ -3,7 +3,7 @@ package unquietcode.tools.flapi.examples.pizza;
 import org.junit.Test;
 import unquietcode.tools.flapi.Descriptor;
 import unquietcode.tools.flapi.Flapi;
-import unquietcode.tools.flapi.examples.pizza.builder.PizzaGenerator;
+import unquietcode.tools.flapi.examples.pizza.builder.Pizza.PizzaGenerator;
 
 import java.util.ArrayList;
 import java.util.List;

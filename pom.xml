@@ -167,6 +167,20 @@
 								</configuration>
 							</execution>
 							<execution>
+								<id>pipeBuilder</id>
+								<phase>generate-sources</phase>
+								<goals>
+									<goal>java</goal>
+								</goals>
+								<configuration>
+									<classpathScope>test</classpathScope>
+									<mainClass>unquietcode.tools.flapi.examples.pipes.PipedProcessExample</mainClass>
+									<arguments>
+										<arg>${project.basedir}/src/test/java</arg>
+									</arguments>
+								</configuration>
+							</execution>
+							<execution>
 								<id>pizzaBuilder</id>
 								<phase>generate-sources</phase>
 								<goals>

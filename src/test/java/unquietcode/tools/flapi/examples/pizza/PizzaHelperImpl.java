@@ -1,6 +1,7 @@
 package unquietcode.tools.flapi.examples.pizza;
 
-import unquietcode.tools.flapi.examples.pizza.builder.PizzaHelper;
+
+import unquietcode.tools.flapi.examples.pizza.builder.Pizza.PizzaHelper;
 
 /**
  * @author Ben Fagin
