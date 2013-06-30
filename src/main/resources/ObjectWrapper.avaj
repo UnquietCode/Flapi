@@ -42,7 +42,6 @@ public class ObjectWrapper<_Type> {
 	}
 
 	public @Override String toString() {
-		if (value == null) { return null; }
-		else { return value.toString(); }
+		return String.valueOf(value);
 	}
 }
