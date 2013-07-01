@@ -113,12 +113,19 @@ public class GraphBuilder {
 
 		// create the sibling states
 		Set<Set<MethodOutline>> workingSet = makeCombinations(dynamicMethods);
+		Set<StateClass> seen = Collections.newSetFromMap(new IdentityHashMap<StateClass, Boolean>());
 
 		while (!workingSet.isEmpty()) {
 			Set<Set<MethodOutline>> nextSet = new HashSet<Set<MethodOutline>>();
 
 			for (Set<MethodOutline> combination : workingSet) {
 				StateClass theState = getStateFromBlockAndMethods(block, combination);
+
+				if (seen.contains(theState)) {
+					continue;
+				} else {
+					seen.add(theState);
+				}
 
 				if (theState != baseState) {
 					theState.setBaseState(baseState);
