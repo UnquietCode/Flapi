@@ -27,21 +27,20 @@ import unquietcode.tools.flapi.MethodParser.JavaType;
 import unquietcode.tools.flapi.Pair;
 import unquietcode.tools.flapi.graph.components.StateClass;
 import unquietcode.tools.flapi.graph.components.Transition;
+import unquietcode.tools.flapi.support.BlockInvocationHandler;
 
 /**
  * @author Ben Fagin
  * @version 08-06-2012
  */
 public abstract class AbstractGenerator {
+	protected final GeneratorContext ctx;
+
 	protected AbstractGenerator(GeneratorContext ctx) {
 		this.ctx = ctx;
 	}
 
-	protected final GeneratorContext ctx;
-
 	// ------- type creation strategies ------- //
-
-	protected static final TypeCreationStrategy BUILDER_CLASS_STRATEGY = new BuilderClassTypeCreationStrategy();
 
 	protected static final TypeCreationStrategy BUILDER_INTERFACE_STRATEGY = new TypeCreationStrategy() {
 		public @Override JDefinedClass createType(GeneratorContext ctx, StateClass state) {
@@ -95,6 +94,30 @@ public abstract class AbstractGenerator {
 		}
 	};
 
+	public static final TypeCreationStrategy HANDLER_CLASS_STRATEGY = new TypeCreationStrategy() {
+		public @Override JDefinedClass createType(GeneratorContext ctx, StateClass state) {
+			String name = state.getName()+"BuilderHandler";
+
+			if (ctx.doesClassExist(name)) {
+				return ctx.getOrCreateClass(state.getName(), name);
+			}
+
+			JDefinedClass handler = ctx.getOrCreateClass(state.getName(), name);
+			handler._extends(BlockInvocationHandler.class);
+
+			JDefinedClass helper = HELPER_INTERFACE_STRATEGY.createType(ctx, state);
+			JFieldVar helperField = handler.field(JMod.PRIVATE + JMod.FINAL, helper, Constants.HELPER_VALUE_NAME);
+
+			JMethod constructor = handler.constructor(JMod.PUBLIC);
+			JVar pHelper = constructor.param(helper, "helper");
+			JVar pRetval = constructor.param(Object .class, "returnValue");
+			constructor.body().invoke("super").arg(pRetval);
+			constructor.body().add(helperField.assign(pHelper));
+
+			return handler;
+		}
+	};
+
 	public static final TypeCreationStrategy NULL_STRATEGY = new TypeCreationStrategy() {
 		public @Override JDefinedClass createType(GeneratorContext ctx, StateClass state) {
 			return null;
@@ -103,7 +126,7 @@ public abstract class AbstractGenerator {
 
 	// -------------------------------- //
 
-	protected String makeMethodKey(Transition transition) {
+	public static String makeMethodKey(Transition transition) {
 		StringBuilder sb = new StringBuilder();
 		sb.append(transition.getOwner().getName()).append("_")
 		  .append(makeMethodKey(transition.getMethodSignature()));
@@ -126,6 +149,16 @@ public abstract class AbstractGenerator {
 		}
 
 		return sb.toString();
+	}
+
+	public static JAnnotationUse findAnnotation(JMethod method, JClass type) {
+		for (JAnnotationUse annotationUse : method.annotations()) {
+			if (annotationUse.getAnnotationClass().compareTo(type) == 0) {
+				return annotationUse;
+			}
+		}
+
+		return null;
 	}
 
 	protected JClass ref(Class clazz) {
