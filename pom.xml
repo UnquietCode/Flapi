@@ -158,6 +158,39 @@
 				</plugins>
 			</build>
 		</profile>
+
+		<!-- regenerate everything -->
+		<profile>
+			<id>generateEverything</id>
+			<activation>
+				<property><name>generateEverything</name></property>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>exec-maven-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>descriptorBuilder</id>
+								<phase>generate-sources</phase>
+								<goals>
+									<goal>java</goal>
+								</goals>
+								<configuration>
+									<classpathScope>test</classpathScope>
+									<mainClass>unquietcode.tools.flapi.GenerateEverything</mainClass>
+									<arguments>
+										<arg>${project.basedir}/src/main/java</arg>
+										<arg>${project.basedir}/src/test/java</arg>
+									</arguments>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
 	</profiles>
 
 	<dependencies>
