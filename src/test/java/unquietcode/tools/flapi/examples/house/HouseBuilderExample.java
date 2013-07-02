@@ -55,12 +55,12 @@ public class HouseBuilderExample {
 		HouseBuilder<Void> houseBuilder = HouseGenerator.create(new HouseHelperImpl());
 
 		// using the builder
-		Wall wall1 = houseBuilder.addWall()
+		houseBuilder.addWall()
 			.setWidth(120.35)
 			.setColor(Color.RED)
 		;
 
-		Wall wall2 = houseBuilder.addWall()
+		houseBuilder.addWall()
 			.setColor(Color.BLACK)
 			.setWidth(87.45)
 		;

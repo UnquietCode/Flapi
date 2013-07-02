@@ -20,13 +20,20 @@
 package unquietcode.tools.flapi.graph.processors;
 
 import com.sun.codemodel.*;
+import unquietcode.tools.flapi.Constants;
 import unquietcode.tools.flapi.generator.AbstractGenerator;
 import unquietcode.tools.flapi.generator.GeneratorContext;
 import unquietcode.tools.flapi.generator.MethodImplementor;
 import unquietcode.tools.flapi.graph.GenericVisitor;
+import unquietcode.tools.flapi.graph.TransitionVisitor;
+import unquietcode.tools.flapi.graph.components.LateralTransition;
 import unquietcode.tools.flapi.graph.components.StateClass;
+import unquietcode.tools.flapi.graph.components.TerminalTransition;
 import unquietcode.tools.flapi.graph.components.Transition;
-import unquietcode.tools.flapi.support.BuilderImplementation;
+import unquietcode.tools.flapi.support.LateralHint;
+import unquietcode.tools.flapi.support.MethodInfo;
+import unquietcode.tools.flapi.support.ObjectWrapper;
+import unquietcode.tools.flapi.support.Tracked;
 
 import java.util.Collections;
 import java.util.IdentityHashMap;
@@ -61,60 +68,73 @@ public class GraphProcessor extends AbstractGenerator implements GenericVisitor<
 			// add methods to interface
 			ReturnTypeProcessor rt = new ReturnTypeProcessor(ctx);
 			JType returnType = rt.computeReturnType(transition);
-			addMethod(iBuilder, returnType, JMod.NONE, transition);
+			final JMethod _method = addMethod(iBuilder, returnType, JMod.NONE, transition);
+			MethodImplementor mi = transition.methodImplementor();
 
-			// add methods to class
-			addMethodToClass(state, transition);
+			JAnnotationArrayMember chain = _method.annotate(MethodInfo.class)
+				.param("checkInvocations", mi.shouldCheckInvocations())
+				.param("checkParentInvocations", mi.shouldCheckParentInvocations())
+				.param("type", transition.getType().ordinal())
+				.paramArray("chain")
+			;
+
+			transition.accept(new TransitionVisitor.$() {
+				public void visit(LateralTransition transition) {
+					if (!transition.getStateChain().isEmpty()) {
+						JDefinedClass next = BUILDER_INTERFACE_STRATEGY.createType(ctx, transition.getSibling());
+						_method.annotate(LateralHint.class).param("next", next);
+					}
+				}
+			});
+
+			for (StateClass sc : transition.getStateChain()) {
+				JDefinedClass type = BUILDER_INTERFACE_STRATEGY.createType(ctx, sc);
+				chain.param(type);
+			}
+
+			if (mi.shouldTrackInvocations()) {
+				_method.annotate(Tracked.class)
+					.param("atLeast", transition.info().getMinOccurrences())
+					.param("key", makeMethodKey(transition))
+				;
+			}
+
+			// add the helper method to helper interface
+			addHelperCall(transition);
 
 			// continue to the next states
 			transition.acceptForTraversal(this);
 		}
 	}
 
-	private void addMethodToClass(final StateClass currentState, Transition transition) {
-		final MethodImplementor mi = transition.methodImplementor();
-		JDefinedClass cBuilder = BUILDER_CLASS_STRATEGY.createType(ctx, currentState);
-		JExpression returnValue;
+	private void addHelperCall(Transition transition) {
+		if (ctx.helperMethods.seen(transition)) { return;}
 
-		// create the method on the class
-		ReturnTypeProcessor rtv = new ReturnTypeProcessor(ctx);
-		JType returnType = mi.shouldComputeActualReturnType()
-						 ? rtv.computeReturnType(transition).erasure()
-						 : ref(Object.class)
-		;
-		final JMethod _method = addMethod(cBuilder, returnType, JMod.PUBLIC, transition);
+		// get a return value if present
+		final ObjectWrapper<JType> helperReturnType = new ObjectWrapper<JType>();
 
-		// invocation tracking
-		if (mi.shouldTrackInvocations()) {
-			_method.body().add(JExpr.predecr(JExpr.ref("ic_" + makeMethodKey(transition))));
-		}
+		transition.accept(new TransitionVisitor.$() {
+			public @Override void visit(TerminalTransition transition) {
+				Class clazz = transition.getReturnType() == null ? Void.class : transition.getReturnType();
 
-		// invocation check (done before helper call)
-		if (mi.shouldCheckInvocations()) {
-			if (mi.shouldCheckParentInvocations()) {
-				JVar _cur = _method.body().decl(ref(BuilderImplementation.class), "cur", JExpr._this());
-				JWhileLoop _while = _method.body()._while(_cur.ne(JExpr._null()));
-				_while.body().add(_cur.invoke("_checkInvocations"));
-				_while.body().assign(_cur, _cur.invoke("_getParent"));
-				_method.body().directStatement(" ");
-			} else {
-				_method.body().invoke("_checkInvocations");
+				// Set the return type unless it's (V)oid, in which case as a convenience we
+				// set the return to (v)oid, which is also done on the *Helper interfaces.
+
+				if (!clazz.equals(Void.class)) {
+					helperReturnType.set(ctx.model.ref(clazz));
+				}
 			}
-		}
+		});
 
-		// return value work, including helper call
-		ReturnValueProcessor rvv = new ReturnValueProcessor(ctx);
-		returnValue = rvv.computeReturnValue(transition, _method);
-		_method.body().directStatement(" ");
+		// add the helper method to the helper interface
+		JType helperReturnType1 = helperReturnType.get();
+		JDefinedClass iHelper = HELPER_INTERFACE_STRATEGY.createType(ctx, transition.getOwner());
+		JType methodCallType = helperReturnType1 == null ? ctx.model.VOID : helperReturnType1;
+		JMethod _method = addMethod(iHelper, methodCallType, JMod.NONE, transition);
 
-		// invocation transfer
-		if (mi.shouldTransferInvocations()) {
-			_method.body().invoke("_transferInvocations").arg(returnValue);
-		}
-
-		// return call
-		if (returnValue != null && !ctx.model.VOID.equals(returnType)) {
-			_method.body()._return(returnValue);
+		for (int i=0; i < transition.getStateChain().size(); ++i) {
+			JDefinedClass type = HELPER_INTERFACE_STRATEGY.createType(ctx, transition.getStateChain().get(i));
+			_method.param(ref(ObjectWrapper.class).narrow(type), Constants.HELPER_VALUE_NAME+(i+1));
 		}
 	}
 }

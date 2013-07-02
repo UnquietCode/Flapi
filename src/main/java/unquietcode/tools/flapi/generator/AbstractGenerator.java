@@ -27,7 +27,6 @@ import unquietcode.tools.flapi.MethodParser.JavaType;
 import unquietcode.tools.flapi.Pair;
 import unquietcode.tools.flapi.graph.components.StateClass;
 import unquietcode.tools.flapi.graph.components.Transition;
-import unquietcode.tools.flapi.support.BlockInvocationHandler;
 
 /**
  * @author Ben Fagin
@@ -91,30 +90,6 @@ public abstract class AbstractGenerator {
 			JTypeVar tv = innerClass.generify(Constants.RETURN_TYPE_NAME);
 			innerClass._extends(builder.narrow(tv));
 			return innerClass;
-		}
-	};
-
-	public static final TypeCreationStrategy HANDLER_CLASS_STRATEGY = new TypeCreationStrategy() {
-		public @Override JDefinedClass createType(GeneratorContext ctx, StateClass state) {
-			String name = state.getName()+"BuilderHandler";
-
-			if (ctx.doesClassExist(name)) {
-				return ctx.getOrCreateClass(state.getName(), name);
-			}
-
-			JDefinedClass handler = ctx.getOrCreateClass(state.getName(), name);
-			handler._extends(BlockInvocationHandler.class);
-
-			JDefinedClass helper = HELPER_INTERFACE_STRATEGY.createType(ctx, state);
-			JFieldVar helperField = handler.field(JMod.PRIVATE + JMod.FINAL, helper, Constants.HELPER_VALUE_NAME);
-
-			JMethod constructor = handler.constructor(JMod.PUBLIC);
-			JVar pHelper = constructor.param(helper, "helper");
-			JVar pRetval = constructor.param(Object .class, "returnValue");
-			constructor.body().invoke("super").arg(pRetval);
-			constructor.body().add(helperField.assign(pHelper));
-
-			return handler;
 		}
 	};
 

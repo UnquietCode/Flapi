@@ -17,22 +17,19 @@
      Read the included LICENSE.TXT for more information.
  ******************************************************************************/
 
-package unquietcode.tools.flapi.graph.components;
+package unquietcode.tools.flapi.support;
+
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
  * @author Ben Fagin
- * @version 07-11-2012
+ * @version 2013-07-01
  */
-public enum TransitionType {
-	/*
-		For backwards compatibility, it is important that the
-		order of these does not change. Any new ones should be
-		created at the end, with the old ones deprecated and
-		left in place.
-	 */
-
-	Recursive,      // goes back to itself
-	Lateral,        // goes to a version of itself minus a method
-	Terminal,       // exits the graph
-	Ascending,      // moves upwards by 1 step
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.METHOD)
+public @interface LateralHint {
+	Class<?> next();
 }

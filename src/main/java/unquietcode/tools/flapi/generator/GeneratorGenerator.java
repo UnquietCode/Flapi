@@ -22,6 +22,7 @@ package unquietcode.tools.flapi.generator;
 import com.sun.codemodel.*;
 import unquietcode.tools.flapi.graph.components.StateClass;
 import unquietcode.tools.flapi.outline.GeneratorOutline;
+import unquietcode.tools.flapi.support.BlockInvocationHandler;
 
 
 /**
@@ -35,13 +36,11 @@ public class GeneratorGenerator extends AbstractGenerator {
 	}
 
 	public JDefinedClass generate(StateClass topLevel, GeneratorOutline outline) {
-		JDefinedClass returnValue = BUILDER_CLASS_STRATEGY.createType(ctx, topLevel);
 		JDefinedClass generator = GENERATOR_CLASS_STRATEGY.createType(ctx, topLevel);
 		JDefinedClass helper = HELPER_INTERFACE_STRATEGY.createType(ctx, topLevel);
 
 		// FLAPI-126 subclass the return type for consistency between descriptor changes
 		JDefinedClass _returnType = WRAPPER_INTERFACE_STRATEGY.createType(ctx, topLevel);
-		returnValue._implements(_returnType.narrow(Object.class));
 		JType returnType = _returnType.narrow(ref(Void.class));
 
 		// -- add the constructor methods --
@@ -61,12 +60,10 @@ public class GeneratorGenerator extends AbstractGenerator {
 
 		// get base return value and return
 		createMethod.body()._return(
-			JExpr.cast(_returnType,
-				JExpr._new(returnValue)
-					.arg(pHelper)
-					.arg(JExpr._null()
-				)
-			)
+			JExpr._new(ref(BlockInvocationHandler.class))
+				.arg(pHelper)
+				.arg(JExpr._null())
+			.invoke("_proxy").arg(_returnType.dotclass())
 		);
 
 		return generator;
