@@ -4,9 +4,9 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import unquietcode.tools.flapi.examples.xhtml.builder.Element.ElementHelper;
 import unquietcode.tools.flapi.examples.xhtml.builder.XHTML.XHTMLHelper;
-import unquietcode.tools.flapi.support.ObjectWrapper;
 
 import javax.xml.parsers.DocumentBuilderFactory;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  *
@@ -30,7 +30,7 @@ public class XHTMLHelperImpl implements XHTMLHelper {
 	}
 
 	@Override
-	public void startElement(String tagName, ObjectWrapper<ElementHelper> _helper1) {
+	public void startElement(String tagName, AtomicReference<ElementHelper> _helper1) {
 		Element element = document.createElement(tagName);
 		document.appendChild(element);
 		_helper1.set(new ElementHelperImpl(element));

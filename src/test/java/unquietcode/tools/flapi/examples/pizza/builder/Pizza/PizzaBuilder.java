@@ -2,6 +2,7 @@
 package unquietcode.tools.flapi.examples.pizza.builder.Pizza;
 
 import unquietcode.tools.flapi.examples.pizza.DisappearingPizzaExample.Pizza;
+import unquietcode.tools.flapi.support.MethodInfo;
 
 import javax.annotation.Generated;
 
@@ -14,10 +15,13 @@ import javax.annotation.Generated;
  * Visit https://github.com/UnquietCode/Flapi for more information.
  * 
  * 
- * Generated on April 19, 2013 18:33:15 PDT using version 0.4
+ * Generated on July 01, 2013 21:53:50 PDT using version 0.4
  */
-@Generated(value = "unquietcode.tools.flapi", date = "April 19, 2013 18:33:15 PDT", comments = "generated using Flapi, the fluent API generator for Java")
+@Generated(value = "unquietcode.tools.flapi", date = "July 01, 2013 21:53:50 PDT", comments = "generated using Flapi, the fluent API generator for Java")
 public interface PizzaBuilder<_ReturnType> {
+    @MethodInfo(checkInvocations = true, checkParentInvocations = true, type = 2, chain = {
+
+    })
     Pizza bake();
 
     public interface $<_ReturnType>

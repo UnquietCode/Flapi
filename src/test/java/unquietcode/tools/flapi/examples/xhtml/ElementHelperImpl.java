@@ -3,7 +3,8 @@ package unquietcode.tools.flapi.examples.xhtml;
 import org.w3c.dom.Comment;
 import org.w3c.dom.Element;
 import unquietcode.tools.flapi.examples.xhtml.builder.Element.ElementHelper;
-import unquietcode.tools.flapi.support.ObjectWrapper;
+
+import java.util.concurrent.atomic.AtomicReference;
 
 /*
  * @author Ben Fagin
@@ -22,7 +23,7 @@ public class ElementHelperImpl implements ElementHelper {
 	}
 
 	@Override
-	public void startElement(String tagName, ObjectWrapper<ElementHelper> _helper1) {
+	public void startElement(String tagName, AtomicReference<ElementHelper> _helper1) {
 		Element newElement = element.getOwnerDocument().createElement(tagName);
 		element.appendChild(newElement);
 		_helper1.set(new ElementHelperImpl(newElement));

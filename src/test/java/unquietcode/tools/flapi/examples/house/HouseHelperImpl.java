@@ -22,10 +22,10 @@ package unquietcode.tools.flapi.examples.house;
 
 import unquietcode.tools.flapi.examples.house.builder.House.HouseHelper;
 import unquietcode.tools.flapi.examples.house.builder.Wall.WallHelper;
-import unquietcode.tools.flapi.support.ObjectWrapper;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * @author Ben Fagin
@@ -49,7 +49,7 @@ public class HouseHelperImpl implements HouseHelper {
 	}
 
 	@Override
-	public Wall addWall(ObjectWrapper<WallHelper> _helper1) {
+	public Wall addWall(AtomicReference<WallHelper> _helper1) {
 		WallHelperImpl wallHelper = new WallHelperImpl();
 		_helper1.set(wallHelper);
 		walls.add(wallHelper.wall);

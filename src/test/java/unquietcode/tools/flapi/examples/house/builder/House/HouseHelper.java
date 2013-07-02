@@ -5,9 +5,9 @@ import unquietcode.tools.flapi.examples.house.AffordableHouse;
 import unquietcode.tools.flapi.examples.house.ExpensiveHouse;
 import unquietcode.tools.flapi.examples.house.Wall;
 import unquietcode.tools.flapi.examples.house.builder.Wall.WallHelper;
-import unquietcode.tools.flapi.support.ObjectWrapper;
 
 import javax.annotation.Generated;
+import java.util.concurrent.atomic.AtomicReference;
 
 
 /**
@@ -18,11 +18,11 @@ import javax.annotation.Generated;
  * Visit https://github.com/UnquietCode/Flapi for more information.
  * 
  * 
- * Generated on April 19, 2013 18:33:15 PDT using version 0.4
+ * Generated on July 01, 2013 21:53:50 PDT using version 0.4
  */
-@Generated(value = "unquietcode.tools.flapi", date = "April 19, 2013 18:33:15 PDT", comments = "generated using Flapi, the fluent API generator for Java")
+@Generated(value = "unquietcode.tools.flapi", date = "July 01, 2013 21:53:50 PDT", comments = "generated using Flapi, the fluent API generator for Java")
 public interface HouseHelper {
-    Wall addWall(ObjectWrapper<WallHelper> _helper1);
+    Wall addWall(AtomicReference<WallHelper> _helper1);
 
     AffordableHouse constructAffordableHouse();
 

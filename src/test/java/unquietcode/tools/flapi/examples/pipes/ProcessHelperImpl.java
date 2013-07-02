@@ -20,11 +20,11 @@
 package unquietcode.tools.flapi.examples.pipes;
 
 import unquietcode.tools.flapi.examples.pipes.builder.Process.ProcessHelper;
-import unquietcode.tools.flapi.support.ObjectWrapper;
 
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * @author Ben Fagin
@@ -62,7 +62,7 @@ public class ProcessHelperImpl implements ProcessHelper {
 	}
 
 	@Override
-	public void pipe(ObjectWrapper<ProcessHelper> _helper1) {
+	public void pipe(AtomicReference<ProcessHelper> _helper1) {
 		_helper1.set(new ProcessHelperImpl(processChain));
 	}
 

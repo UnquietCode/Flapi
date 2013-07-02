@@ -1,10 +1,9 @@
 
 package unquietcode.tools.flapi.examples.pipes.builder.Process;
 
-import unquietcode.tools.flapi.support.ObjectWrapper;
-
 import javax.annotation.Generated;
 import java.io.InputStream;
+import java.util.concurrent.atomic.AtomicReference;
 
 
 /**
@@ -15,15 +14,15 @@ import java.io.InputStream;
  * Visit https://github.com/UnquietCode/Flapi for more information.
  * 
  * 
- * Generated on April 19, 2013 18:33:15 PDT using version 0.4
+ * Generated on July 01, 2013 21:53:50 PDT using version 0.4
  */
-@Generated(value = "unquietcode.tools.flapi", date = "April 19, 2013 18:33:15 PDT", comments = "generated using Flapi, the fluent API generator for Java")
+@Generated(value = "unquietcode.tools.flapi", date = "July 01, 2013 21:53:50 PDT", comments = "generated using Flapi, the fluent API generator for Java")
 public interface ProcessHelper {
     void addArgument(String argument);
 
     void addArgument(String name, String value);
 
-    void pipe(ObjectWrapper<ProcessHelper> _helper1);
+    void pipe(AtomicReference<ProcessHelper> _helper1);
 
     InputStream run();
 

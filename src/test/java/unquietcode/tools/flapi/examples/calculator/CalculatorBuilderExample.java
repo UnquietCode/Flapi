@@ -6,9 +6,9 @@ import unquietcode.tools.flapi.Flapi;
 import unquietcode.tools.flapi.examples.calculator.builder.Calculation.CalculationBuilder;
 import unquietcode.tools.flapi.examples.calculator.builder.Calculator.CalculatorBuilder;
 import unquietcode.tools.flapi.examples.calculator.builder.Calculator.CalculatorGenerator;
-import unquietcode.tools.flapi.support.ObjectWrapper;
 
 import java.math.BigInteger;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * @author Ben Fagin
@@ -31,7 +31,7 @@ public class CalculatorBuilderExample {
 				.addMethod("mod(int value)").any()
 				.addMethod("abs()").any()
 
-				.addMethod("equals()").last(ObjectWrapper.class)
+				.addMethod("equals()").last(AtomicReference.class)
 			.endBlock()
 		.build();
 
@@ -40,7 +40,7 @@ public class CalculatorBuilderExample {
 
 	@Test
 	public void basicUsage() {
-		ObjectWrapper _result = CalculatorGenerator.begin(new CalculatorHelperImpl())
+		AtomicReference _result = CalculatorGenerator.begin(new CalculatorHelperImpl())
 			.$(0)
 			.plus(1)
 			.plus(1)
@@ -55,12 +55,12 @@ public class CalculatorBuilderExample {
 	// ------- - - ------- -------- -  --     -- - -   ---- - -   -   -----------
 
 	static class Calculator {
-		static CalculationBuilder<ObjectWrapper<BigInteger>> begin(int startingValue) {
+		static CalculationBuilder<AtomicReference<BigInteger>> begin(int startingValue) {
 			CalculatorBuilder.$ result = CalculatorGenerator.begin(new CalculatorHelperImpl());
 
 			@SuppressWarnings("unchecked")
-			CalculationBuilder<ObjectWrapper<BigInteger>> started
-				= (CalculationBuilder<ObjectWrapper<BigInteger>>) result.$(startingValue);
+			CalculationBuilder<AtomicReference<BigInteger>> started
+				= (CalculationBuilder<AtomicReference<BigInteger>>) result.$(startingValue);
 
 			return started;
 		}
@@ -68,7 +68,7 @@ public class CalculatorBuilderExample {
 
 	@Test
 	public void cleanedUpUsage() {
-		ObjectWrapper result = Calculator
+		AtomicReference result = Calculator
 		.begin(0)
 			.plus(1)
 			.plus(1)

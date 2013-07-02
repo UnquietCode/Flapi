@@ -2,6 +2,8 @@
 package unquietcode.tools.flapi.examples.email.builder.Email;
 
 import unquietcode.tools.flapi.examples.email.EmailMessage;
+import unquietcode.tools.flapi.support.MethodInfo;
+import unquietcode.tools.flapi.support.Tracked;
 
 import javax.annotation.Generated;
 import java.io.File;
@@ -15,18 +17,34 @@ import java.io.File;
  * Visit https://github.com/UnquietCode/Flapi for more information.
  * 
  * 
- * Generated on April 19, 2013 18:33:15 PDT using version 0.4
+ * Generated on July 01, 2013 21:53:50 PDT using version 0.4
  */
-@Generated(value = "unquietcode.tools.flapi", date = "April 19, 2013 18:33:15 PDT", comments = "generated using Flapi, the fluent API generator for Java")
+@Generated(value = "unquietcode.tools.flapi", date = "July 01, 2013 21:53:50 PDT", comments = "generated using Flapi, the fluent API generator for Java")
 public interface EmailBuilder<_ReturnType> {
+    @MethodInfo(checkInvocations = false, checkParentInvocations = false, type = 0, chain = {
+
+    })
     EmailBuilder<_ReturnType> addAttachment(File file);
 
+    @MethodInfo(checkInvocations = false, checkParentInvocations = false, type = 0, chain = {
+
+    })
     EmailBuilder<_ReturnType> addBCC(String emailAddress);
 
+    @MethodInfo(checkInvocations = false, checkParentInvocations = false, type = 0, chain = {
+
+    })
     EmailBuilder<_ReturnType> addCC(String emailAddress);
 
+    @MethodInfo(checkInvocations = false, checkParentInvocations = false, type = 0, chain = {
+
+    })
+    @Tracked(atLeast = 1, key = "Email_addRecipient$String_emailAddress")
     EmailBuilder<_ReturnType> addRecipient(String emailAddress);
 
+    @MethodInfo(checkInvocations = true, checkParentInvocations = true, type = 2, chain = {
+
+    })
     EmailMessage send();
 
     public interface $<_ReturnType>
