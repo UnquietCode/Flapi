@@ -108,84 +108,14 @@
 						<artifactId>exec-maven-plugin</artifactId>
 						<executions>
 							<execution>
-								<id>calculatorBuilder</id>
+								<id>examples</id>
 								<phase>generate-sources</phase>
 								<goals>
 									<goal>java</goal>
 								</goals>
 								<configuration>
 									<classpathScope>test</classpathScope>
-									<mainClass>unquietcode.tools.flapi.examples.calculator.CalculatorBuilderExample</mainClass>
-									<arguments>
-										<arg>${project.basedir}/src/test/java</arg>
-									</arguments>
-								</configuration>
-							</execution>
-							<execution>
-								<id>emailBuilder</id>
-								<phase>generate-sources</phase>
-								<goals>
-									<goal>java</goal>
-								</goals>
-								<configuration>
-									<classpathScope>test</classpathScope>
-									<mainClass>unquietcode.tools.flapi.examples.email.EmailBuilderExample</mainClass>
-									<arguments>
-										<arg>${project.basedir}/src/test/java</arg>
-									</arguments>
-								</configuration>
-							</execution>
-							<execution>
-								<id>houseBuilder</id>
-								<phase>generate-sources</phase>
-								<goals>
-									<goal>java</goal>
-								</goals>
-								<configuration>
-									<classpathScope>test</classpathScope>
-									<mainClass>unquietcode.tools.flapi.examples.house.HouseBuilderExample</mainClass>
-									<arguments>
-										<arg>${project.basedir}/src/test/java</arg>
-									</arguments>
-								</configuration>
-							</execution>
-							<execution>
-								<id>pipeBuilder</id>
-								<phase>generate-sources</phase>
-								<goals>
-									<goal>java</goal>
-								</goals>
-								<configuration>
-									<classpathScope>test</classpathScope>
-									<mainClass>unquietcode.tools.flapi.examples.pipes.PipedProcessExample</mainClass>
-									<arguments>
-										<arg>${project.basedir}/src/test/java</arg>
-									</arguments>
-								</configuration>
-							</execution>
-							<execution>
-								<id>pizzaBuilder</id>
-								<phase>generate-sources</phase>
-								<goals>
-									<goal>java</goal>
-								</goals>
-								<configuration>
-									<classpathScope>test</classpathScope>
-									<mainClass>unquietcode.tools.flapi.examples.pizza.DisappearingPizzaExample</mainClass>
-									<arguments>
-										<arg>${project.basedir}/src/test/java</arg>
-									</arguments>
-								</configuration>
-							</execution>
-							<execution>
-								<id>xhtmlBuilder</id>
-								<phase>generate-sources</phase>
-								<goals>
-									<goal>java</goal>
-								</goals>
-								<configuration>
-									<classpathScope>test</classpathScope>
-									<mainClass>unquietcode.tools.flapi.examples.xhtml.XHTMLBuilderExample</mainClass>
+									<mainClass>unquietcode.tools.flapi.examples.GenerateExamples</mainClass>
 									<arguments>
 										<arg>${project.basedir}/src/test/java</arg>
 									</arguments>
