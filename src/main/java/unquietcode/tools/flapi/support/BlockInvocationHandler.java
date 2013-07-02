@@ -111,6 +111,24 @@ public class BlockInvocationHandler implements InvocationHandler {
 			}
 		}
 
+		Object _returnValue = computeReturnValue(method, proxy, info, depth, helperMethod, result);
+
+		// unwrap helper results
+		for (int i=depth-1; i >= 0; --i) {
+			ObjectWrapper wrapper = (ObjectWrapper) newArgs[originalArgs.length+i];
+
+			if (wrapper.get() == null) {
+				throw new IllegalStateException("null helper provided for method "+method.getName());
+			}
+
+			BlockInvocationHandler handler = new BlockInvocationHandler(wrapper.get(), _returnValue);
+			_returnValue = handler._proxy(info.chain()[i]);
+		}
+
+		return _returnValue;
+	}
+
+	private Object computeReturnValue(Method method, Object proxy, MethodInfo info, int depth, Method helperMethod, Object result) {
 		Object _returnValue;
 
 		switch (info.type()) {
@@ -152,37 +170,31 @@ public class BlockInvocationHandler implements InvocationHandler {
 			default:
 				throw new IllegalStateException("internal error");
 		}
-
-		// unwrap helper results
-		for (int i=depth-1; i >= 0; --i) {
-			ObjectWrapper wrapper = (ObjectWrapper) newArgs[originalArgs.length+i];
-
-			if (wrapper.get() == null) {
-				throw new IllegalStateException("null helper provided for method "+method.getName());
-			}
-
-			BlockInvocationHandler handler = new BlockInvocationHandler(wrapper.get(), _returnValue);
-			_returnValue = handler._proxy(info.chain()[i]);
-		}
-
 		return _returnValue;
 	}
 
 	private void trackMethod(Method method) {
 		Tracked annotation = method.getAnnotation(Tracked.class);
 		if (annotation == null) { return; }
-
-		if (!trackedMethods.containsKey(annotation.key())) {
-			Counter counter = new Counter(annotation.atLeast());
-			trackedMethods.put(annotation.key(), new Pair<Counter, String>(counter, method.getName()));
-		}
-
 		trackedMethods.get(annotation.key()).one.decrementAndGet();
 	}
 
 	@SuppressWarnings("unchecked")
 	public final <T> T _proxy(Class<?> clazz) {
+		registerNewTrackedMethods(clazz);
 		return (T) Proxy.newProxyInstance(this.getClass().getClassLoader(), new Class[]{clazz}, this);
+	}
+
+	private void registerNewTrackedMethods(Class<?> clazz) {
+		for (Method method : clazz.getMethods()) {
+			Tracked annotation = method.getAnnotation(Tracked.class);
+			if (annotation == null) { continue; }
+
+			if (!trackedMethods.containsKey(annotation.key())) {
+				Counter counter = new Counter(annotation.atLeast());
+				trackedMethods.put(annotation.key(), new Pair<Counter, String>(counter, method.getName()));
+			}
+		}
 	}
 
 	protected final void _checkInvocations() {
