@@ -227,6 +227,11 @@
 
 	<dependencies>
 		<dependency>
+			<groupId>unquietcode.tools.flapi</groupId>
+			<artifactId>flapi-runtime</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
 			<groupId>unquietcode.tools.jcodemodel</groupId>
 			<artifactId>codemodel</artifactId>
 			<version>1.0</version>
