@@ -33,6 +33,6 @@ import java.lang.annotation.Target;
 public @interface MethodInfo {
 	boolean checkInvocations();
 	boolean checkParentInvocations();
-	int type();
+	TransitionType type();
 	Class<?>[] chain();
 }

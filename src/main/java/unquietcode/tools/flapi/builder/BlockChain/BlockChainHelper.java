@@ -15,9 +15,9 @@ import java.util.concurrent.atomic.AtomicReference;
  * Visit https://github.com/UnquietCode/Flapi for more information.
  * 
  * 
- * Generated on July 01, 2013 20:13:15 PDT using version 0.4
+ * Generated on July 01, 2013 22:50:06 PDT using version 0.4
  */
-@Generated(value = "unquietcode.tools.flapi", date = "July 01, 2013 20:13:15 PDT", comments = "generated using Flapi, the fluent API generator for Java")
+@Generated(value = "unquietcode.tools.flapi", date = "July 01, 2013 22:50:06 PDT", comments = "generated using Flapi, the fluent API generator for Java")
 public interface BlockChainHelper {
     /**
      * add an additional link to the chain, occurring before this one

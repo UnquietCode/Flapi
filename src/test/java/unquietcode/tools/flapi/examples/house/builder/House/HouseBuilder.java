@@ -6,6 +6,7 @@ import unquietcode.tools.flapi.examples.house.ExpensiveHouse;
 import unquietcode.tools.flapi.examples.house.Wall;
 import unquietcode.tools.flapi.examples.house.builder.Wall.WallBuilder_setColor_setWidth;
 import unquietcode.tools.flapi.support.MethodInfo;
+import unquietcode.tools.flapi.support.TransitionType;
 
 import javax.annotation.Generated;
 
@@ -18,21 +19,21 @@ import javax.annotation.Generated;
  * Visit https://github.com/UnquietCode/Flapi for more information.
  * 
  * 
- * Generated on July 01, 2013 21:53:50 PDT using version 0.4
+ * Generated on July 01, 2013 22:50:06 PDT using version 0.4
  */
-@Generated(value = "unquietcode.tools.flapi", date = "July 01, 2013 21:53:50 PDT", comments = "generated using Flapi, the fluent API generator for Java")
+@Generated(value = "unquietcode.tools.flapi", date = "July 01, 2013 22:50:06 PDT", comments = "generated using Flapi, the fluent API generator for Java")
 public interface HouseBuilder<_ReturnType> {
-    @MethodInfo(checkInvocations = true, checkParentInvocations = true, type = 2, chain = {
+    @MethodInfo(checkInvocations = true, checkParentInvocations = true, type = TransitionType.Terminal, chain = {
         WallBuilder_setColor_setWidth.class
     })
     WallBuilder_setColor_setWidth<Wall> addWall();
 
-    @MethodInfo(checkInvocations = true, checkParentInvocations = true, type = 2, chain = {
+    @MethodInfo(checkInvocations = true, checkParentInvocations = true, type = TransitionType.Terminal, chain = {
 
     })
     AffordableHouse constructAffordableHouse();
 
-    @MethodInfo(checkInvocations = true, checkParentInvocations = true, type = 2, chain = {
+    @MethodInfo(checkInvocations = true, checkParentInvocations = true, type = TransitionType.Terminal, chain = {
 
     })
     ExpensiveHouse constructExpensiveHouse();
