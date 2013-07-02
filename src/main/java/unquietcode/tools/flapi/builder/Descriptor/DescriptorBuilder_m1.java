@@ -18,14 +18,14 @@ import javax.annotation.Generated;
  * Visit https://github.com/UnquietCode/Flapi for more information.
  * 
  * 
- * Generated on July 01, 2013 22:50:06 PDT using version 0.4
+ * Generated on July 02, 2013 0:08:51 PDT using version 0.4
  */
-@Generated(value = "unquietcode.tools.flapi", date = "July 01, 2013 22:50:06 PDT", comments = "generated using Flapi, the fluent API generator for Java")
+@Generated(value = "unquietcode.tools.flapi", date = "July 02, 2013 0:08:51 PDT", comments = "generated using Flapi, the fluent API generator for Java")
 public interface DescriptorBuilder_m1 <_ReturnType> {
     /**
      * add a new method which proceeds to an existing block
      */
-    @MethodInfo(checkInvocations = false, checkParentInvocations = false, type = TransitionType.Recursive, chain = {
+    @MethodInfo(type = TransitionType.Recursive, chain = {
         MethodBuilder_m6_m7_m8_m9_m10_m11_m12_m13_m14_m15_m16_m17_m18 .class
     })
     MethodBuilder_m6_m7_m8_m9_m10_m11_m12_m13_m14_m15_m16_m17_m18 <DescriptorBuilder_m1 <_ReturnType>> addBlockReference(String blockName, String methodSignature);
@@ -33,7 +33,7 @@ public interface DescriptorBuilder_m1 <_ReturnType> {
     /**
      * Add a new method to the top level descriptor block.
      */
-    @MethodInfo(checkInvocations = false, checkParentInvocations = false, type = TransitionType.Recursive, chain = {
+    @MethodInfo(type = TransitionType.Recursive, chain = {
         MethodBuilder_m6_m7_m8_m9_m10_m11_m12_m13_m14_m15_m16_m17_m18 .class
     })
     MethodBuilder_m6_m7_m8_m9_m10_m11_m12_m13_m14_m15_m16_m17_m18 <DescriptorBuilder_m1 <_ReturnType>> addMethod(String methodSignature);
@@ -41,7 +41,7 @@ public interface DescriptorBuilder_m1 <_ReturnType> {
     /**
      * Finish work and build the descriptor. This should only be called once.
      */
-    @MethodInfo(checkInvocations = true, checkParentInvocations = true, type = TransitionType.Terminal, chain = {
+    @MethodInfo(type = TransitionType.Terminal, chain = {
 
     })
     Descriptor build();
@@ -51,7 +51,7 @@ public interface DescriptorBuilder_m1 <_ReturnType> {
      * humanly readable. If your generated class names are too long to be
      * compiled, you will have to use this.
      */
-    @MethodInfo(checkInvocations = false, checkParentInvocations = false, type = TransitionType.Lateral, chain = {
+    @MethodInfo(type = TransitionType.Lateral, chain = {
 
     })
     DescriptorBuilder<_ReturnType> enableCondensedClassNames();
@@ -59,7 +59,7 @@ public interface DescriptorBuilder_m1 <_ReturnType> {
     /**
      * Starts a new block.
      */
-    @MethodInfo(checkInvocations = false, checkParentInvocations = false, type = TransitionType.Recursive, chain = {
+    @MethodInfo(type = TransitionType.Recursive, chain = {
         MethodBuilder_m6_m7_m8_m9_m10_m11_m12_m13_m14_m15_m16_m17_m18 .class,
         BlockBuilder_m22 .class
     })
@@ -68,7 +68,7 @@ public interface DescriptorBuilder_m1 <_ReturnType> {
     /**
      * Starts a new block.
      */
-    @MethodInfo(checkInvocations = false, checkParentInvocations = false, type = TransitionType.Recursive, chain = {
+    @MethodInfo(type = TransitionType.Recursive, chain = {
         MethodBuilder_m6_m7_m8_m9_m10_m11_m12_m13_m14_m15_m16_m17_m18 .class,
         BlockBuilder_m22 .class
     })

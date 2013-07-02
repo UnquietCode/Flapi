@@ -17,31 +17,31 @@ import java.io.InputStream;
  * Visit https://github.com/UnquietCode/Flapi for more information.
  * 
  * 
- * Generated on July 01, 2013 22:50:06 PDT using version 0.4
+ * Generated on July 02, 2013 0:08:51 PDT using version 0.4
  */
-@Generated(value = "unquietcode.tools.flapi", date = "July 01, 2013 22:50:06 PDT", comments = "generated using Flapi, the fluent API generator for Java")
+@Generated(value = "unquietcode.tools.flapi", date = "July 02, 2013 0:08:51 PDT", comments = "generated using Flapi, the fluent API generator for Java")
 public interface ProcessBuilder_pipe_withProcess<_ReturnType> {
-    @MethodInfo(checkInvocations = false, checkParentInvocations = false, type = TransitionType.Recursive, chain = {
+    @MethodInfo(type = TransitionType.Recursive, chain = {
 
     })
     ProcessBuilder_pipe_withProcess<_ReturnType> addArgument(String argument);
 
-    @MethodInfo(checkInvocations = false, checkParentInvocations = false, type = TransitionType.Recursive, chain = {
+    @MethodInfo(type = TransitionType.Recursive, chain = {
 
     })
     ProcessBuilder_pipe_withProcess<_ReturnType> addArgument(String name, String value);
 
-    @MethodInfo(checkInvocations = true, checkParentInvocations = false, type = TransitionType.Ascending, chain = {
+    @MethodInfo(type = TransitionType.Ascending, chain = {
         ProcessBuilder_pipe_withProcess.class
     })
     ProcessBuilder_pipe_withProcess<_ReturnType> pipe();
 
-    @MethodInfo(checkInvocations = true, checkParentInvocations = true, type = TransitionType.Terminal, chain = {
+    @MethodInfo(type = TransitionType.Terminal, chain = {
 
     })
     InputStream run();
 
-    @MethodInfo(checkInvocations = false, checkParentInvocations = false, type = TransitionType.Lateral, chain = {
+    @MethodInfo(type = TransitionType.Lateral, chain = {
 
     })
     @Tracked(atLeast = 1, key = "Process_withProcess$String_name")
