@@ -27,6 +27,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * @author Ben Fagin
@@ -77,8 +78,8 @@ public class BlockInvocationHandler implements InvocationHandler {
 		Class[] newTypes = new Class[originalTypes.length+depth];
 
 		for (int i=0; i < depth; ++i) {
-			newArgs[originalArgs.length+i] = new ObjectWrapper();
-			newTypes[originalTypes.length+i] = ObjectWrapper.class;
+			newArgs[originalArgs.length+i] = new AtomicReference();
+			newTypes[originalTypes.length+i] = AtomicReference.class;
 		}
 
 		System.arraycopy(originalArgs, 0, newArgs, 0, originalArgs.length);
@@ -115,7 +116,7 @@ public class BlockInvocationHandler implements InvocationHandler {
 
 		// unwrap helper results
 		for (int i=depth-1; i >= 0; --i) {
-			ObjectWrapper wrapper = (ObjectWrapper) newArgs[originalArgs.length+i];
+			AtomicReference wrapper = (AtomicReference) newArgs[originalArgs.length+i];
 
 			if (wrapper.get() == null) {
 				throw new IllegalStateException("null helper provided for method "+method.getName());

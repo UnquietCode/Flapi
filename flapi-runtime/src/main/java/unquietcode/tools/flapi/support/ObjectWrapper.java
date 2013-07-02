@@ -23,6 +23,7 @@ package unquietcode.tools.flapi.support;
  *
  * It is what it says it is.
  */
+@Deprecated
 public class ObjectWrapper<_Type> {
 	private _Type value;
 

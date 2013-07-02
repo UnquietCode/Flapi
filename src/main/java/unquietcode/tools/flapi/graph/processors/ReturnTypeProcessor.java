@@ -6,10 +6,10 @@ import unquietcode.tools.flapi.generator.AbstractGenerator;
 import unquietcode.tools.flapi.generator.GeneratorContext;
 import unquietcode.tools.flapi.graph.TransitionVisitor;
 import unquietcode.tools.flapi.graph.components.*;
-import unquietcode.tools.flapi.support.ObjectWrapper;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 
 public class ReturnTypeProcessor extends AbstractGenerator {
@@ -23,7 +23,7 @@ public class ReturnTypeProcessor extends AbstractGenerator {
 		List<StateClass> sequentialStates = new ArrayList<StateClass>(transition.getStateChain());
 
 		// setup initial return value
-		final ObjectWrapper<JType> initialType = new ObjectWrapper<JType>();
+		final AtomicReference<JType> initialType = new AtomicReference<JType>();
 
 		transition.accept(new TransitionVisitor() {
 			@Override

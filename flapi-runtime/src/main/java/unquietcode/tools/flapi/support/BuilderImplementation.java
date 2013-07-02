@@ -24,6 +24,7 @@ package unquietcode.tools.flapi.support;
  * Unifying interface for all builder implementations, providing several
  * guarantees which are used within the generated logic.
  */
+@Deprecated
 public interface BuilderImplementation {
 	BuilderImplementation _getParent();
 	void _checkInvocations();

@@ -32,12 +32,12 @@ import unquietcode.tools.flapi.graph.components.TerminalTransition;
 import unquietcode.tools.flapi.graph.components.Transition;
 import unquietcode.tools.flapi.support.LateralHint;
 import unquietcode.tools.flapi.support.MethodInfo;
-import unquietcode.tools.flapi.support.ObjectWrapper;
 import unquietcode.tools.flapi.support.Tracked;
 
 import java.util.Collections;
 import java.util.IdentityHashMap;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicReference;
 
 
 public class GraphProcessor extends AbstractGenerator implements GenericVisitor<StateClass> {
@@ -111,7 +111,7 @@ public class GraphProcessor extends AbstractGenerator implements GenericVisitor<
 		if (ctx.helperMethods.seen(transition)) { return;}
 
 		// get a return value if present
-		final ObjectWrapper<JType> helperReturnType = new ObjectWrapper<JType>();
+		final AtomicReference<JType> helperReturnType = new AtomicReference<JType>();
 
 		transition.accept(new TransitionVisitor.$() {
 			public @Override void visit(TerminalTransition transition) {
@@ -134,7 +134,7 @@ public class GraphProcessor extends AbstractGenerator implements GenericVisitor<
 
 		for (int i=0; i < transition.getStateChain().size(); ++i) {
 			JDefinedClass type = HELPER_INTERFACE_STRATEGY.createType(ctx, transition.getStateChain().get(i));
-			_method.param(ref(ObjectWrapper.class).narrow(type), Constants.HELPER_VALUE_NAME+(i+1));
+			_method.param(ref(AtomicReference.class).narrow(type), Constants.HELPER_VALUE_NAME+(i+1));
 		}
 	}
 }

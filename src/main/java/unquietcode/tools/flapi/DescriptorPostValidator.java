@@ -22,10 +22,10 @@ package unquietcode.tools.flapi;
 import unquietcode.tools.flapi.graph.GenericVisitor;
 import unquietcode.tools.flapi.graph.TransitionVisitor;
 import unquietcode.tools.flapi.graph.components.*;
-import unquietcode.tools.flapi.support.ObjectWrapper;
 
 import java.util.IdentityHashMap;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * @author Ben Fagin
@@ -47,8 +47,8 @@ public class DescriptorPostValidator {
 
 	private boolean checkForBlocksWithNoEnd(StateClass state, final Map<StateClass, Boolean> seen) {
 		if (seen.containsKey(state)) { return seen.get(state); }
-		final ObjectWrapper<Boolean> valid = new ObjectWrapper<Boolean>(false);
-		final ObjectWrapper<Boolean> terminal = new ObjectWrapper<Boolean>(false);
+		final AtomicBoolean valid = new AtomicBoolean(false);
+		final AtomicBoolean terminal = new AtomicBoolean(false);
 
 		// check this state's transitions
 		for (Transition transition : state.getTransitions()) {
@@ -91,7 +91,7 @@ public class DescriptorPostValidator {
 									 : state.hasImplicitTerminal();
 		valid.set(valid.get() || hasImplicitTerminals);
 
-		if (!valid.get().equals(true)) {
+		if (!valid.get() == true) {
 			throw new DescriptorBuilderException("Encountered a block with no terminal method: " + state.getName());
 		}
 
