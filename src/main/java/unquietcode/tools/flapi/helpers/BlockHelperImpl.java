@@ -24,7 +24,8 @@ import unquietcode.tools.flapi.builder.Method.MethodHelper;
 import unquietcode.tools.flapi.outline.BlockOutline;
 import unquietcode.tools.flapi.outline.BlockReference;
 import unquietcode.tools.flapi.outline.MethodOutline;
-import unquietcode.tools.flapi.support.ObjectWrapper;
+
+import java.util.concurrent.atomic.AtomicReference;
 
 
 /**
@@ -39,21 +40,21 @@ public class BlockHelperImpl implements BlockHelper {
 	}
 
 	@Override
-	public void addMethod(String methodSignature, ObjectWrapper<MethodHelper> _helper1) {
+	public void addMethod(String methodSignature, AtomicReference<MethodHelper> _helper1) {
 		_addMethod(block, methodSignature, _helper1);
 	}
 
-	static void _addMethod(BlockOutline block, String methodSignature, ObjectWrapper<MethodHelper> _helper1) {
+	static void _addMethod(BlockOutline block, String methodSignature, AtomicReference<MethodHelper> _helper1) {
 		MethodOutline m = block.addMethod(methodSignature);
 		_helper1.set(new MethodHelperImpl(m));
 	}
 
 	@Override
-	public void startBlock(String blockName, String methodSignature, ObjectWrapper<MethodHelper> _helper1, ObjectWrapper<BlockHelper> _helper2) {
+	public void startBlock(String blockName, String methodSignature, AtomicReference<MethodHelper> _helper1, AtomicReference<BlockHelper> _helper2) {
 		_startBlock(block, blockName, methodSignature, _helper1, _helper2);
 	}
 
-	static void _startBlock(BlockOutline block, String blockName, String methodSignature, ObjectWrapper<MethodHelper> _helper1, ObjectWrapper<BlockHelper> _helper2) {
+	static void _startBlock(BlockOutline block, String blockName, String methodSignature, AtomicReference<MethodHelper> _helper1, AtomicReference<BlockHelper> _helper2) {
 		BlockOutline newBlock = block.addBlock(blockName);
 		MethodOutline blockMethod = block.addMethod(methodSignature);
 		blockMethod.getBlockChain().add(0, newBlock);
@@ -64,12 +65,12 @@ public class BlockHelperImpl implements BlockHelper {
 	}
 
 	@Override
-	public void startBlock(String methodSignature, ObjectWrapper<MethodHelper> _helper1, ObjectWrapper<BlockHelper> _helper2) {
+	public void startBlock(String methodSignature, AtomicReference<MethodHelper> _helper1, AtomicReference<BlockHelper> _helper2) {
 		_startBlock(block, null, methodSignature, _helper1, _helper2);
 	}
 
 	@Override
-	public void addBlockReference(String blockName, String methodSignature, ObjectWrapper<MethodHelper> _helper1) {
+	public void addBlockReference(String blockName, String methodSignature, AtomicReference<MethodHelper> _helper1) {
 		_addBlockReference(block, blockName, methodSignature, _helper1);
 	}
 
@@ -77,7 +78,7 @@ public class BlockHelperImpl implements BlockHelper {
 		BlockOutline block,
 		String blockName,
 		String methodSignature,
-		ObjectWrapper<MethodHelper> _helper1
+		AtomicReference<MethodHelper> _helper1
 	){
 		BlockReference blockReference = new BlockReference();
 		blockReference.setName(blockName);

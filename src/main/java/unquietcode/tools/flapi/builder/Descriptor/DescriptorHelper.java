@@ -1,11 +1,12 @@
 
 package unquietcode.tools.flapi.builder.Descriptor;
 
-import javax.annotation.Generated;
 import unquietcode.tools.flapi.Descriptor;
 import unquietcode.tools.flapi.builder.Block.BlockHelper;
 import unquietcode.tools.flapi.builder.Method.MethodHelper;
-import unquietcode.tools.flapi.support.ObjectWrapper;
+
+import javax.annotation.Generated;
+import java.util.concurrent.atomic.AtomicReference;
 
 
 /**
@@ -16,19 +17,19 @@ import unquietcode.tools.flapi.support.ObjectWrapper;
  * Visit https://github.com/UnquietCode/Flapi for more information.
  * 
  * 
- * Generated on April 09, 2013 20:26:31 PDT using version 0.4
+ * Generated on July 01, 2013 20:13:15 PDT using version 0.4
  */
-@Generated(value = "unquietcode.tools.flapi", date = "April 09, 2013 20:26:31 PDT", comments = "generated using Flapi, the fluent API generator for Java")
+@Generated(value = "unquietcode.tools.flapi", date = "July 01, 2013 20:13:15 PDT", comments = "generated using Flapi, the fluent API generator for Java")
 public interface DescriptorHelper {
     /**
      * add a new method which proceeds to an existing block
      */
-    void addBlockReference(String blockName, String methodSignature, ObjectWrapper<MethodHelper> _helper1);
+    void addBlockReference(String blockName, String methodSignature, AtomicReference<MethodHelper> _helper1);
 
     /**
      * Add a new method to the top level descriptor block.
      */
-    void addMethod(String methodSignature, ObjectWrapper<MethodHelper> _helper1);
+    void addMethod(String methodSignature, AtomicReference<MethodHelper> _helper1);
 
     /**
      * Finish work and build the descriptor. This should only be called once.
@@ -65,10 +66,10 @@ public interface DescriptorHelper {
     /**
      * Starts a new block.
      */
-    void startBlock(String blockName, String methodSignature, ObjectWrapper<MethodHelper> _helper1, ObjectWrapper<BlockHelper> _helper2);
+    void startBlock(String blockName, String methodSignature, AtomicReference<MethodHelper> _helper1, AtomicReference<BlockHelper> _helper2);
 
     /**
      * Starts a new block.
      */
-    void startBlock(String methodSignature, ObjectWrapper<MethodHelper> _helper1, ObjectWrapper<BlockHelper> _helper2);
+    void startBlock(String methodSignature, AtomicReference<MethodHelper> _helper1, AtomicReference<BlockHelper> _helper2);
 }

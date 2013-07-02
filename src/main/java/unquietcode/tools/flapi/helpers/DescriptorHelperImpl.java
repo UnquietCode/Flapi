@@ -24,7 +24,8 @@ import unquietcode.tools.flapi.builder.Block.BlockHelper;
 import unquietcode.tools.flapi.builder.Descriptor.DescriptorHelper;
 import unquietcode.tools.flapi.builder.Method.MethodHelper;
 import unquietcode.tools.flapi.outline.DescriptorOutline;
-import unquietcode.tools.flapi.support.ObjectWrapper;
+
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * @author Ben Fagin
@@ -66,7 +67,7 @@ public class DescriptorHelperImpl implements DescriptorHelper {
 	}
 
 	@Override
-	public void addBlockReference(String blockName, String methodSignature, ObjectWrapper<MethodHelper> _helper1) {
+	public void addBlockReference(String blockName, String methodSignature, AtomicReference<MethodHelper> _helper1) {
 		BlockHelperImpl._addBlockReference(outline.selfBlock, blockName, methodSignature, _helper1);
 	}
 
@@ -82,17 +83,17 @@ public class DescriptorHelperImpl implements DescriptorHelper {
 	}
 
 	@Override
-	public void addMethod(String methodSignature, ObjectWrapper<MethodHelper> _helper1) {
+	public void addMethod(String methodSignature, AtomicReference<MethodHelper> _helper1) {
 		BlockHelperImpl._addMethod(outline.selfBlock, methodSignature, _helper1);
 	}
 
 	@Override
-	public void startBlock(String blockName, String methodSignature, ObjectWrapper<MethodHelper> _helper1, ObjectWrapper<BlockHelper> _helper2) {
+	public void startBlock(String blockName, String methodSignature, AtomicReference<MethodHelper> _helper1, AtomicReference<BlockHelper> _helper2) {
 		BlockHelperImpl._startBlock(outline.selfBlock, blockName, methodSignature, _helper1, _helper2);
 	}
 
 	@Override
-	public void startBlock(String methodSignature, ObjectWrapper<MethodHelper> _helper1, ObjectWrapper<BlockHelper> _helper2) {
+	public void startBlock(String methodSignature, AtomicReference<MethodHelper> _helper1, AtomicReference<BlockHelper> _helper2) {
 		BlockHelperImpl._startBlock(outline.selfBlock, null, methodSignature, _helper1, _helper2);
 	}
 }

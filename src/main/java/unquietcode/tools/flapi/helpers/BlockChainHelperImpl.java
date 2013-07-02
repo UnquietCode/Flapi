@@ -19,12 +19,13 @@
 
 package unquietcode.tools.flapi.helpers;
 
-import unquietcode.tools.flapi.builder.BlockChain.BlockChainHelper;
 import unquietcode.tools.flapi.builder.Block.BlockHelper;
+import unquietcode.tools.flapi.builder.BlockChain.BlockChainHelper;
 import unquietcode.tools.flapi.outline.BlockOutline;
 import unquietcode.tools.flapi.outline.BlockReference;
 import unquietcode.tools.flapi.outline.MethodOutline;
-import unquietcode.tools.flapi.support.ObjectWrapper;
+
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * @author Ben Fagin
@@ -50,7 +51,7 @@ public class BlockChainHelperImpl implements BlockChainHelper {
 	}
 
 	@Override
-	public void startBlock(String blockName, ObjectWrapper<BlockHelper> _helper1) {
+	public void startBlock(String blockName, AtomicReference<BlockHelper> _helper1) {
 		BlockOutline innerBlock = new BlockOutline();
 		innerBlock.setName(blockName);
 		blockMethod.getBlockChain().add(0, innerBlock);
@@ -59,7 +60,7 @@ public class BlockChainHelperImpl implements BlockChainHelper {
 	}
 
 	@Override
-	public void startBlock(ObjectWrapper<BlockHelper> _helper1) {
+	public void startBlock(AtomicReference<BlockHelper> _helper1) {
 		BlockOutline anonymousBlock = new BlockOutline();
 		blockMethod.getBlockChain().add(0, anonymousBlock);
 
@@ -67,7 +68,7 @@ public class BlockChainHelperImpl implements BlockChainHelper {
 	}
 
 	@Override
-	public void addBlockChain(ObjectWrapper<BlockChainHelper> _helper1) {
+	public void addBlockChain(AtomicReference<BlockChainHelper> _helper1) {
 		_helper1.set(new BlockChainHelperImpl(blockMethod));
 	}
 }

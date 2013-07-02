@@ -1,8 +1,10 @@
 
 package unquietcode.tools.flapi.builder.BlockChain;
 
-import javax.annotation.Generated;
 import unquietcode.tools.flapi.builder.Block.BlockBuilder_m22;
+import unquietcode.tools.flapi.support.MethodInfo;
+
+import javax.annotation.Generated;
 
 
 /**
@@ -13,22 +15,31 @@ import unquietcode.tools.flapi.builder.Block.BlockBuilder_m22;
  * Visit https://github.com/UnquietCode/Flapi for more information.
  * 
  * 
- * Generated on April 09, 2013 20:26:31 PDT using version 0.4
+ * Generated on July 01, 2013 20:13:15 PDT using version 0.4
  */
-@Generated(value = "unquietcode.tools.flapi", date = "April 09, 2013 20:26:31 PDT", comments = "generated using Flapi, the fluent API generator for Java")
+@Generated(value = "unquietcode.tools.flapi", date = "July 01, 2013 20:13:15 PDT", comments = "generated using Flapi, the fluent API generator for Java")
 public interface BlockChainBuilder_m19_m20_m21 <_ReturnType> {
     /**
      * add a reference to an existing block
      */
+    @MethodInfo(checkInvocations = true, checkParentInvocations = false, type = 3, chain = {
+
+    })
     _ReturnType addBlockReference(String blockName);
 
     /**
      * create a new anonymous block (which cannot be referenced from anywhere)
      */
+    @MethodInfo(checkInvocations = true, checkParentInvocations = false, type = 3, chain = {
+        BlockBuilder_m22 .class
+    })
     BlockBuilder_m22 <_ReturnType> startBlock();
 
     /**
      * create a new block
      */
+    @MethodInfo(checkInvocations = true, checkParentInvocations = false, type = 3, chain = {
+        BlockBuilder_m22 .class
+    })
     BlockBuilder_m22 <_ReturnType> startBlock(String blockName);
 }

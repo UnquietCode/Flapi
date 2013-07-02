@@ -1,10 +1,11 @@
 
 package unquietcode.tools.flapi.builder.Method;
 
-import javax.annotation.Generated;
 import unquietcode.tools.flapi.builder.BlockChain.BlockChainHelper;
 import unquietcode.tools.flapi.builder.Documentation.DocumentationHelper;
-import unquietcode.tools.flapi.support.ObjectWrapper;
+
+import javax.annotation.Generated;
+import java.util.concurrent.atomic.AtomicReference;
 
 
 /**
@@ -15,15 +16,15 @@ import unquietcode.tools.flapi.support.ObjectWrapper;
  * Visit https://github.com/UnquietCode/Flapi for more information.
  * 
  * 
- * Generated on April 09, 2013 20:26:31 PDT using version 0.4
+ * Generated on July 01, 2013 20:13:15 PDT using version 0.4
  */
-@Generated(value = "unquietcode.tools.flapi", date = "April 09, 2013 20:26:31 PDT", comments = "generated using Flapi, the fluent API generator for Java")
+@Generated(value = "unquietcode.tools.flapi", date = "July 01, 2013 20:13:15 PDT", comments = "generated using Flapi, the fluent API generator for Java")
 public interface MethodHelper {
     /**
      * Add a BlockChain, which is a block which must be passed through
      * before the current method returns.
      */
-    void addBlockChain(ObjectWrapper<BlockChainHelper> _helper1);
+    void addBlockChain(AtomicReference<BlockChainHelper> _helper1);
 
     /**
      * expose the method only after the specified group is finished
@@ -79,7 +80,7 @@ public interface MethodHelper {
     /**
      * Add javadoc style documentation to the method.
      */
-    void withDocumentation(ObjectWrapper<DocumentationHelper> _helper1);
+    void withDocumentation(AtomicReference<DocumentationHelper> _helper1);
 
     /**
      * Add javadoc style documentation to the method.

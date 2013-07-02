@@ -1,9 +1,10 @@
 
 package unquietcode.tools.flapi.builder.BlockChain;
 
-import javax.annotation.Generated;
 import unquietcode.tools.flapi.builder.Block.BlockHelper;
-import unquietcode.tools.flapi.support.ObjectWrapper;
+
+import javax.annotation.Generated;
+import java.util.concurrent.atomic.AtomicReference;
 
 
 /**
@@ -14,14 +15,14 @@ import unquietcode.tools.flapi.support.ObjectWrapper;
  * Visit https://github.com/UnquietCode/Flapi for more information.
  * 
  * 
- * Generated on April 09, 2013 20:26:31 PDT using version 0.4
+ * Generated on July 01, 2013 20:13:15 PDT using version 0.4
  */
-@Generated(value = "unquietcode.tools.flapi", date = "April 09, 2013 20:26:31 PDT", comments = "generated using Flapi, the fluent API generator for Java")
+@Generated(value = "unquietcode.tools.flapi", date = "July 01, 2013 20:13:15 PDT", comments = "generated using Flapi, the fluent API generator for Java")
 public interface BlockChainHelper {
     /**
      * add an additional link to the chain, occurring before this one
      */
-    void addBlockChain(ObjectWrapper<BlockChainHelper> _helper1);
+    void addBlockChain(AtomicReference<BlockChainHelper> _helper1);
 
     /**
      * add a reference to an existing block
@@ -31,10 +32,10 @@ public interface BlockChainHelper {
     /**
      * create a new anonymous block (which cannot be referenced from anywhere)
      */
-    void startBlock(ObjectWrapper<BlockHelper> _helper1);
+    void startBlock(AtomicReference<BlockHelper> _helper1);
 
     /**
      * create a new block
      */
-    void startBlock(String blockName, ObjectWrapper<BlockHelper> _helper1);
+    void startBlock(String blockName, AtomicReference<BlockHelper> _helper1);
 }

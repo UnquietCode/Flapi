@@ -24,9 +24,8 @@ import unquietcode.tools.flapi.builder.BlockChain.BlockChainHelper;
 import unquietcode.tools.flapi.builder.Documentation.DocumentationHelper;
 import unquietcode.tools.flapi.builder.Method.MethodHelper;
 import unquietcode.tools.flapi.outline.MethodOutline;
-import unquietcode.tools.flapi.support.ObjectWrapper;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * @author Ben Fagin
@@ -112,12 +111,12 @@ public class MethodHelperImpl implements MethodHelper {
 	}
 
 	@Override
-	public void addBlockChain(ObjectWrapper<BlockChainHelper> _helper1) {
+	public void addBlockChain(AtomicReference<BlockChainHelper> _helper1) {
 		_helper1.set(new BlockChainHelperImpl(method));
 	}
 
 	@Override
-	public void withDocumentation(ObjectWrapper<DocumentationHelper> _helper1) {
+	public void withDocumentation(AtomicReference<DocumentationHelper> _helper1) {
 		DocumentationHelper helper = new DocumentationHelperImpl(method);
 		_helper1.set(helper);
 	}
