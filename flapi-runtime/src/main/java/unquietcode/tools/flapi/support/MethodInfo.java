@@ -31,8 +31,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
 public @interface MethodInfo {
-	boolean checkInvocations();
-	boolean checkParentInvocations();
 	TransitionType type();
 	Class<?>[] chain();
+	Class<?> next() default MethodInfo.class;
 }

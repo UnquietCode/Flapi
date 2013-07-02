@@ -19,7 +19,6 @@
 
 package unquietcode.tools.flapi.graph.components;
 
-import unquietcode.tools.flapi.generator.MethodImplementor;
 import unquietcode.tools.flapi.graph.GenericVisitor;
 import unquietcode.tools.flapi.graph.TransitionVisitor;
 import unquietcode.tools.flapi.outline.MethodInfo;
@@ -89,30 +88,4 @@ public abstract class Transition implements Comparable<Transition> {
 		copy.methodInfo = this.methodInfo.copy();
 		copy.stateChain.addAll(this.stateChain);
 	}
-
-	public MethodImplementor methodImplementor() {
-		return new MethodImplementor() {
-			public boolean shouldComputeActualReturnType() {
-				return !(type == TransitionType.Ascending && stateChain.isEmpty());
-			}
-
-			public boolean shouldTrackInvocations() {
-				return methodInfo.getMinOccurrences() > 0;
-			}
-
-			public boolean shouldCheckInvocations() {
-				return type == TransitionType.Terminal || type == TransitionType.Ascending;
-			}
-
-			public boolean shouldTransferInvocations() {
-				return type == TransitionType.Lateral;
-			}
-
-			public boolean shouldCheckParentInvocations() {
-				return type == TransitionType.Terminal;
-			}
-		};
-	}
-
-
 }

@@ -109,7 +109,7 @@
 						<executions>
 							<execution>
 								<id>examples</id>
-								<phase>generate-sources</phase>
+								<phase>install</phase>
 								<goals>
 									<goal>java</goal>
 								</goals>
@@ -141,7 +141,7 @@
 						<executions>
 							<execution>
 								<id>descriptorBuilder</id>
-								<phase>generate-sources</phase>
+								<phase>install</phase>
 								<goals>
 									<goal>java</goal>
 								</goals>
@@ -173,7 +173,7 @@
 						<executions>
 							<execution>
 								<id>descriptorBuilder</id>
-								<phase>generate-sources</phase>
+								<phase>install</phase>
 								<goals>
 									<goal>java</goal>
 								</goals>

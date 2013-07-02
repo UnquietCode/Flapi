@@ -23,7 +23,6 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -34,6 +33,9 @@ import java.util.concurrent.atomic.AtomicReference;
  * @version 2013-06-09
  *
  * {@link InvocationHandler} which backs a single Flapi block.
+ * Each handler keeps track of invocations to methods which require
+ * atLeast tracking. The other function is to maintain the return
+ * value for the preceding block, or an intermediate terminal value.
  */
 public class BlockInvocationHandler implements InvocationHandler {
 	private final Map<String, Pair<Counter, String>> trackedMethods = new HashMap<String, Pair<Counter, String>>();
@@ -47,24 +49,25 @@ public class BlockInvocationHandler implements InvocationHandler {
 
 	@Override
 	public final Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-		MethodInfo info = method.getAnnotation(MethodInfo.class);
-
 		if (args == null) { args = new Object[0]; }
-		Object[] newArgs = Arrays.copyOf(args, args.length + 1, Object[].class);
-		newArgs[newArgs.length-1] = null;
+		final MethodInfo info = method.getAnnotation(MethodInfo.class);
+		final boolean shouldCheckParentInvocations = info.type() == TransitionType.Terminal;
+		final boolean shouldCheckInvocations
+			= info.type() == TransitionType.Terminal || info.type() == TransitionType.Ascending;
 
 		// invocation tracking
 		trackMethod(method);
 
 		// invocation checks
-		if (info.checkInvocations()) {
-			if (info.checkParentInvocations()) {
+		if (shouldCheckInvocations) {
+			if (shouldCheckParentInvocations) {
 				_checkAllInvocations();
 			} else {
 				_checkInvocations();
 			}
 		}
 
+		// do the actual work
 		return invokeAndReturn(method, args, proxy, info);
 	}
 
@@ -129,44 +132,37 @@ public class BlockInvocationHandler implements InvocationHandler {
 	}
 
 	private Object computeReturnValue(Method method, Object proxy, MethodInfo info, int depth, Method helperMethod, Object result) {
-		Object _returnValue;
-
 		switch (info.type()) {
 			case Ascending: {
-				_returnValue = returnValue;
-			} break;
+				return returnValue;
+			}
 
 			case Lateral: {
 				if (depth > 0) {
-					LateralHint hint = method.getAnnotation(LateralHint.class);
-
-					if (hint == null) {
+					if (info.next() == MethodInfo.class) {
 						throw new IllegalStateException("internal error: missing type hint");
 					}
 
-					_returnValue = this._proxy(hint.next());
+					return this._proxy(info.next());
 				} else {
-					_returnValue = this._proxy(method.getReturnType());
+					return this._proxy(method.getReturnType());
 				}
-
-			} break;
+			}
 
 			case Recursive: {
-				_returnValue = proxy;
-			} break;
+				return proxy;
+			}
 
 			case Terminal: {
 				if (helperMethod.getReturnType().equals(void.class)) {
-					_returnValue = returnValue;
+					return returnValue;
 				} else {
-					_returnValue = result;
+					return result;
 				}
-
-			} break;
+			}
 
 			default: throw new IllegalStateException("internal error");
 		}
-		return _returnValue;
 	}
 
 	private void trackMethod(Method method) {

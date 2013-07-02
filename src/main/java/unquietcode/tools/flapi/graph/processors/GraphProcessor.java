@@ -1,5 +1,5 @@
 /*******************************************************************************
- Copyright 2012 Benjamin Fagin
+ Copyright 2013 Benjamin Fagin
 
      Licensed under the Apache License, Version 2.0 (the "License");
      you may not use this file except in compliance with the License.
@@ -23,14 +23,12 @@ import com.sun.codemodel.*;
 import unquietcode.tools.flapi.Constants;
 import unquietcode.tools.flapi.generator.AbstractGenerator;
 import unquietcode.tools.flapi.generator.GeneratorContext;
-import unquietcode.tools.flapi.generator.MethodImplementor;
 import unquietcode.tools.flapi.graph.GenericVisitor;
 import unquietcode.tools.flapi.graph.TransitionVisitor;
 import unquietcode.tools.flapi.graph.components.LateralTransition;
 import unquietcode.tools.flapi.graph.components.StateClass;
 import unquietcode.tools.flapi.graph.components.TerminalTransition;
 import unquietcode.tools.flapi.graph.components.Transition;
-import unquietcode.tools.flapi.support.LateralHint;
 import unquietcode.tools.flapi.support.MethodInfo;
 import unquietcode.tools.flapi.support.Tracked;
 
@@ -68,31 +66,30 @@ public class GraphProcessor extends AbstractGenerator implements GenericVisitor<
 			// add methods to interface
 			ReturnTypeProcessor rt = new ReturnTypeProcessor(ctx);
 			JType returnType = rt.computeReturnType(transition);
-			final JMethod _method = addMethod(iBuilder, returnType, JMod.NONE, transition);
-			MethodImplementor mi = transition.methodImplementor();
+			JMethod _method = addMethod(iBuilder, returnType, JMod.NONE, transition);
 
-			JAnnotationArrayMember chain = _method.annotate(MethodInfo.class)
-				.param("checkInvocations", mi.shouldCheckInvocations())
-				.param("checkParentInvocations", mi.shouldCheckParentInvocations())
-				.param("type", transition.getType())
-				.paramArray("chain")
-			;
+			final JAnnotationUse infoAnnotation = _method.annotate(MethodInfo.class);
+			infoAnnotation.param("type", transition.getType());
 
 			transition.accept(new TransitionVisitor.$() {
 				public void visit(LateralTransition transition) {
 					if (!transition.getStateChain().isEmpty()) {
 						JDefinedClass next = BUILDER_INTERFACE_STRATEGY.createType(ctx, transition.getSibling());
-						_method.annotate(LateralHint.class).param("next", next);
+						infoAnnotation.param("next", next);
 					}
 				}
 			});
+
+			// store the type information for the state chain
+			JAnnotationArrayMember chain = infoAnnotation.paramArray("chain");
 
 			for (StateClass sc : transition.getStateChain()) {
 				JDefinedClass type = BUILDER_INTERFACE_STRATEGY.createType(ctx, sc);
 				chain.param(type);
 			}
 
-			if (mi.shouldTrackInvocations()) {
+			// if it's an atLeast method, requiring tracking
+			if (transition.info().getMinOccurrences() > 0) {
 				_method.annotate(Tracked.class)
 					.param("atLeast", transition.info().getMinOccurrences())
 					.param("key", makeMethodKey(transition))
