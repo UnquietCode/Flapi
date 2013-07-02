@@ -23,6 +23,7 @@ import unquietcode.tools.flapi.generator.MethodImplementor;
 import unquietcode.tools.flapi.graph.GenericVisitor;
 import unquietcode.tools.flapi.graph.TransitionVisitor;
 import unquietcode.tools.flapi.outline.MethodInfo;
+import unquietcode.tools.flapi.support.TransitionType;
 
 import java.util.ArrayList;
 import java.util.List;

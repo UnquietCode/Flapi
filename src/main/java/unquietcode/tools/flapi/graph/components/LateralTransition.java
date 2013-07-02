@@ -21,6 +21,7 @@ package unquietcode.tools.flapi.graph.components;
 
 import unquietcode.tools.flapi.graph.GenericVisitor;
 import unquietcode.tools.flapi.graph.TransitionVisitor;
+import unquietcode.tools.flapi.support.TransitionType;
 
 /**
  * Lateral transitions represent a change from one state

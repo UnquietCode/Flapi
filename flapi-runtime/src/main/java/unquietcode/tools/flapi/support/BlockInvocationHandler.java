@@ -33,8 +33,7 @@ import java.util.concurrent.atomic.AtomicReference;
  * @author Ben Fagin
  * @version 2013-06-09
  *
- * This class will eventually have to be copied over or generated and put into support.
- * Some code will also be generated to call this code to properly construct the object.
+ * {@link InvocationHandler} which backs a single Flapi block.
  */
 public class BlockInvocationHandler implements InvocationHandler {
 	private final Map<String, Pair<Counter, String>> trackedMethods = new HashMap<String, Pair<Counter, String>>();
@@ -133,13 +132,11 @@ public class BlockInvocationHandler implements InvocationHandler {
 		Object _returnValue;
 
 		switch (info.type()) {
-			// Ascending
-			case  3 :
+			case Ascending: {
 				_returnValue = returnValue;
-				break;
+			} break;
 
-			// lateral
-			case  1 :
+			case Lateral: {
 				if (depth > 0) {
 					LateralHint hint = method.getAnnotation(LateralHint.class);
 
@@ -152,24 +149,22 @@ public class BlockInvocationHandler implements InvocationHandler {
 					_returnValue = this._proxy(method.getReturnType());
 				}
 
-				break;
+			} break;
 
-			// recursive
-			case  0 :
+			case Recursive: {
 				_returnValue = proxy;
-				break;
+			} break;
 
-			// terminal
-			case  2 :
+			case Terminal: {
 				if (helperMethod.getReturnType().equals(void.class)) {
 					_returnValue = returnValue;
 				} else {
 					_returnValue = result;
 				}
 
-				break;
-			default:
-				throw new IllegalStateException("internal error");
+			} break;
+
+			default: throw new IllegalStateException("internal error");
 		}
 		return _returnValue;
 	}

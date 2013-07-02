@@ -17,20 +17,13 @@
      Read the included LICENSE.TXT for more information.
  ******************************************************************************/
 
-package unquietcode.tools.flapi.graph.components;
+package unquietcode.tools.flapi.support;
 
 /**
  * @author Ben Fagin
  * @version 07-11-2012
  */
 public enum TransitionType {
-	/*
-		For backwards compatibility, it is important that the
-		order of these does not change. Any new ones should be
-		created at the end, with the old ones deprecated and
-		left in place.
-	 */
-
 	Recursive,      // goes back to itself
 	Lateral,        // goes to a version of itself minus a method
 	Terminal,       // exits the graph

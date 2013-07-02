@@ -74,7 +74,7 @@ public class GraphProcessor extends AbstractGenerator implements GenericVisitor<
 			JAnnotationArrayMember chain = _method.annotate(MethodInfo.class)
 				.param("checkInvocations", mi.shouldCheckInvocations())
 				.param("checkParentInvocations", mi.shouldCheckParentInvocations())
-				.param("type", transition.getType().ordinal())
+				.param("type", transition.getType())
 				.paramArray("chain")
 			;
 

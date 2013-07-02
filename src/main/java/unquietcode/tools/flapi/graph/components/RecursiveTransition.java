@@ -20,6 +20,7 @@
 package unquietcode.tools.flapi.graph.components;
 
 import unquietcode.tools.flapi.graph.TransitionVisitor;
+import unquietcode.tools.flapi.support.TransitionType;
 
 /**
  * @author Ben Fagin
