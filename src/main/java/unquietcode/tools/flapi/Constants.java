@@ -19,12 +19,6 @@
 
 package unquietcode.tools.flapi;
 
-import unquietcode.tools.flapi.support.BuilderImplementation;
-import unquietcode.tools.flapi.support.ExpectedInvocationsException;
-import unquietcode.tools.flapi.support.ObjectWrapper;
-
-import java.io.File;
-
 /**
  * @author Ben Fagin
  * @version 04-28-2012
@@ -38,18 +32,4 @@ public final class Constants {
 	public static final String PROJECT_VERSION = "0.4";     // TODO I hate this. Can we get it from the build?
 	public static final String RETURN_TYPE_NAME = "_ReturnType";
 	public static final String HELPER_VALUE_NAME = "_helper";
-
-	public static final String[] REQUIRED_FILES = {
-		BuilderImplementation.class.getSimpleName(),
-		ExpectedInvocationsException.class.getSimpleName(),
-		ObjectWrapper.class.getSimpleName()
-	};
-
-	public static String getSupportPath(File folder) {
-		String path = folder.getAbsolutePath();
-		path += File.separator;
-		path += "unquietcode"+File.separator+"tools"+File.separator+"flapi"+File.separator+"support"+File.separator;
-
-		return path;
-	}
 }

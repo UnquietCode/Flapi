@@ -23,8 +23,9 @@ import com.sun.codemodel.JCodeModel;
 import com.sun.codemodel.writer.FileCodeWriter;
 import com.sun.codemodel.writer.SingleStreamCodeWriter;
 
-import java.io.*;
-import java.util.Scanner;
+import java.io.File;
+import java.io.IOException;
+import java.io.OutputStream;
 
 /**
  * @author Ben Fagin
@@ -50,75 +51,6 @@ public class CodeWriter {
 			model.build(fileWriter);
 		} catch (Exception ex) {
 			throw new RuntimeException(ex);
-		}
-	}
-
-	public static void writeRequiredClasses(File folder) {
-		String path = Constants.getSupportPath(folder);
-		File dir = new File(path);
-
-		if (!dir.exists()) {
-			boolean create = dir.mkdirs();
-			if (!create) {
-				throw new DescriptorBuilderException("Unable create output directory '"+path+"'.");
-			}
-		}
-
-		for (String requiredFile : Constants.REQUIRED_FILES) {
-			String resourceName = requiredFile+".avaj";
-			String fileName = requiredFile+".java";   // get it? :)
-			copyFile(getResourceFile(resourceName), createFile(dir.getAbsolutePath(), fileName));
-		}
-	}
-
-	//---o---o---o---o---o---o---o---o---o---o---o---o---o---o---o---o---o---o---o---o---o---o---//
-
-	private static InputStream getResourceFile(String name) {
-		InputStream stream = CodeWriter.class.getClassLoader().getResourceAsStream(name);
-
-		if (stream == null) {
-			throw new DescriptorBuilderException("Cannot find file '"+name+"' (this is an internal error).");
-		}
-
-		return stream;
-	}
-
-	private static File createFile(String path, String name) {
-		File file = new File(path+File.separator+name);
-
-		if (file.exists()) {
-			if (!file.delete()) {
-				throw new DescriptorBuilderException("Could not remove old file '"+file.getAbsolutePath()+"'.");
-			}
-		}
-
-		boolean create;
-		try {
-			create = file.createNewFile();
-		} catch (IOException ex) {
-			throw new DescriptorBuilderException("Error creating file.", ex);
-		}
-
-		if (!create) {
-			throw new DescriptorBuilderException("Error creating file.");
-		}
-
-		return file;
-	}
-
-	private static void copyFile(InputStream sourceFile, File destFile) {
-		FileOutputStream destination = null;
-
-		try {
-			String data = new Scanner(sourceFile).useDelimiter("\\A").next();
-			destination = new FileOutputStream(destFile);
-			destination.write(data.getBytes());
-		} catch (Exception ex) {
-			throw new DescriptorBuilderException("Error while writing files.", ex);
-		} finally {
-			if (destination != null) {
-				try {destination.close();} catch (Exception ex) { /* nothing */ }
-			}
 		}
 	}
 }

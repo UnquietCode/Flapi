@@ -75,8 +75,14 @@ public class Descriptor {
 			throw new DescriptorBuilderException("Cannot write to folder '"+folder+"'.");
 		}
 
-		// write out the support classes
-		CodeWriter.writeRequiredClasses(f);
+		// write out the support classes, if instructed
+		if (Flapi.shouldOutputRuntime()) {
+			try {
+				ExtractRuntime.main(new String[]{folder});
+			} catch (Exception ex) {
+				throw new DescriptorBuilderException(ex);
+			}
+		}
 
 		// always do this last so we don't unnecessarily write files
 		CodeWriter.writeToDirectory(model, f);

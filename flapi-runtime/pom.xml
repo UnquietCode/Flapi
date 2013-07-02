@@ -13,4 +13,16 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
+
+	<build>
+		<resources>
+			<resource>
+				<directory>src/main/java/unquietcode/tools/flapi/support</directory>
+				<includes>
+					<include>*.java</include>
+				</includes>
+				<targetPath>sources</targetPath>
+			</resource>
+		</resources>
+	</build>
 </project>

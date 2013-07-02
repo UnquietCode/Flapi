@@ -33,7 +33,7 @@ import javax.lang.model.SourceVersion;
  */
 public class Flapi {
 	private static SourceVersion JDKVersion = SourceVersion.RELEASE_6;
-
+	private static boolean outputRuntime = false;
 
 	/**
 	 * Shortcut to build a new descriptor.
@@ -61,5 +61,13 @@ public class Flapi {
 	 */
 	public static SourceVersion getJDKVersion() {
 		return JDKVersion;
+	}
+
+	public static boolean shouldOutputRuntime() {
+		return outputRuntime;
+	}
+
+	public static void shouldOutputRuntime(boolean outputRuntime) {
+		Flapi.outputRuntime = outputRuntime;
 	}
 }
