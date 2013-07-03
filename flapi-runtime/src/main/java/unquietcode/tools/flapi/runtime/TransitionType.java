@@ -17,21 +17,15 @@
      Read the included LICENSE.TXT for more information.
  ******************************************************************************/
 
-package unquietcode.tools.flapi.support;
-
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+package unquietcode.tools.flapi.runtime;
 
 /**
  * @author Ben Fagin
- * @version 2013-06-30
+ * @version 07-11-2012
  */
-@Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.METHOD)
-public @interface MethodInfo {
-	TransitionType type();
-	Class<?>[] chain();
-	Class<?> next() default MethodInfo.class;
+public enum TransitionType {
+	Recursive,      // goes back to itself
+	Lateral,        // goes to a version of itself minus a method
+	Terminal,       // exits the graph
+	Ascending,      // moves upwards by 1 step
 }

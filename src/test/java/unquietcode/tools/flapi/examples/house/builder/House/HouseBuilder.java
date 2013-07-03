@@ -5,8 +5,8 @@ import unquietcode.tools.flapi.examples.house.AffordableHouse;
 import unquietcode.tools.flapi.examples.house.ExpensiveHouse;
 import unquietcode.tools.flapi.examples.house.Wall;
 import unquietcode.tools.flapi.examples.house.builder.Wall.WallBuilder_setColor_setWidth;
-import unquietcode.tools.flapi.support.MethodInfo;
-import unquietcode.tools.flapi.support.TransitionType;
+import unquietcode.tools.flapi.runtime.MethodInfo;
+import unquietcode.tools.flapi.runtime.TransitionType;
 
 import javax.annotation.Generated;
 

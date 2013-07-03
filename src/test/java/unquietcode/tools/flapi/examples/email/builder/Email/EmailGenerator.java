@@ -2,7 +2,7 @@
 package unquietcode.tools.flapi.examples.email.builder.Email;
 
 import unquietcode.tools.flapi.examples.email.builder.Email.EmailBuilder.$;
-import unquietcode.tools.flapi.support.BlockInvocationHandler;
+import unquietcode.tools.flapi.runtime.BlockInvocationHandler;
 
 import javax.annotation.Generated;
 

@@ -25,7 +25,7 @@ import unquietcode.tools.flapi.MethodParser.JavaType;
 import unquietcode.tools.flapi.graph.BlockMethodTracker;
 import unquietcode.tools.flapi.graph.components.StateClass;
 import unquietcode.tools.flapi.graph.components.Transition;
-import unquietcode.tools.flapi.support.TransitionType;
+import unquietcode.tools.flapi.runtime.TransitionType;
 
 import javax.annotation.Generated;
 import javax.lang.model.SourceVersion;

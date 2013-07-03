@@ -2,7 +2,7 @@
 package unquietcode.tools.flapi.examples.xhtml.builder.XHTML;
 
 import unquietcode.tools.flapi.examples.xhtml.builder.XHTML.XHTMLBuilder.$;
-import unquietcode.tools.flapi.support.BlockInvocationHandler;
+import unquietcode.tools.flapi.runtime.BlockInvocationHandler;
 
 import javax.annotation.Generated;
 

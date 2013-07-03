@@ -3,8 +3,8 @@ package unquietcode.tools.flapi.examples.xhtml.builder.XHTML;
 
 import org.w3c.dom.Document;
 import unquietcode.tools.flapi.examples.xhtml.builder.Element.ElementBuilder_endElement_setValue;
-import unquietcode.tools.flapi.support.MethodInfo;
-import unquietcode.tools.flapi.support.TransitionType;
+import unquietcode.tools.flapi.runtime.MethodInfo;
+import unquietcode.tools.flapi.runtime.TransitionType;
 
 import javax.annotation.Generated;
 

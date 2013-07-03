@@ -25,7 +25,7 @@ import unquietcode.tools.flapi.graph.components.AscendingTransition;
 import unquietcode.tools.flapi.graph.components.StateClass;
 import unquietcode.tools.flapi.graph.components.TerminalTransition;
 import unquietcode.tools.flapi.graph.components.Transition;
-import unquietcode.tools.flapi.support.TransitionType;
+import unquietcode.tools.flapi.runtime.TransitionType;
 
 import java.util.IdentityHashMap;
 import java.util.Map;

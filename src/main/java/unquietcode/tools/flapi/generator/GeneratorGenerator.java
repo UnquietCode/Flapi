@@ -22,8 +22,8 @@ package unquietcode.tools.flapi.generator;
 import com.sun.codemodel.*;
 import unquietcode.tools.flapi.graph.components.StateClass;
 import unquietcode.tools.flapi.outline.GeneratorOutline;
+import unquietcode.tools.flapi.runtime.BlockInvocationHandler;
 import unquietcode.tools.flapi.runtime.ExecutionListener;
-import unquietcode.tools.flapi.support.BlockInvocationHandler;
 
 
 /**
@@ -70,7 +70,7 @@ public class GeneratorGenerator extends AbstractGenerator {
 
 		// return handler._proxy($.class);
 		createMethod.body()._return(
-			handler.invoke("_proxy").arg(_returnType.dotclass())
+				handler.invoke("_proxy").arg(_returnType.dotclass())
 		);
 
 		return generator;

@@ -2,8 +2,8 @@
 package unquietcode.tools.flapi.builder.Descriptor;
 
 import unquietcode.tools.flapi.builder.Descriptor.DescriptorBuilder.$;
+import unquietcode.tools.flapi.runtime.BlockInvocationHandler;
 import unquietcode.tools.flapi.runtime.ExecutionListener;
-import unquietcode.tools.flapi.support.BlockInvocationHandler;
 
 import javax.annotation.Generated;
 

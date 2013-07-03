@@ -17,7 +17,7 @@
      Read the included LICENSE.TXT for more information.
  ******************************************************************************/
 
-package unquietcode.tools.flapi.support;
+package unquietcode.tools.flapi.runtime;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -26,11 +26,12 @@ import java.lang.annotation.Target;
 
 /**
  * @author Ben Fagin
- * @version 2013-06-09
+ * @version 2013-06-30
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
-public @interface Tracked {
-	int atLeast();
-	String key();
+public @interface MethodInfo {
+	TransitionType type();
+	Class<?>[] chain();
+	Class<?> next() default MethodInfo.class;
 }

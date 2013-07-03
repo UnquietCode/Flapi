@@ -2,8 +2,8 @@
 package unquietcode.tools.flapi.builder.Method;
 
 import unquietcode.tools.flapi.builder.Documentation.DocumentationBuilder_m23;
-import unquietcode.tools.flapi.support.MethodInfo;
-import unquietcode.tools.flapi.support.TransitionType;
+import unquietcode.tools.flapi.runtime.MethodInfo;
+import unquietcode.tools.flapi.runtime.TransitionType;
 
 import javax.annotation.Generated;
 

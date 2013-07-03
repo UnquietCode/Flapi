@@ -2,7 +2,7 @@
 package unquietcode.tools.flapi.examples.pipes.builder.Process;
 
 import unquietcode.tools.flapi.examples.pipes.builder.Process.ProcessBuilder.$;
-import unquietcode.tools.flapi.support.BlockInvocationHandler;
+import unquietcode.tools.flapi.runtime.BlockInvocationHandler;
 
 import javax.annotation.Generated;
 

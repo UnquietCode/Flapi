@@ -29,8 +29,8 @@ import unquietcode.tools.flapi.graph.components.LateralTransition;
 import unquietcode.tools.flapi.graph.components.StateClass;
 import unquietcode.tools.flapi.graph.components.TerminalTransition;
 import unquietcode.tools.flapi.graph.components.Transition;
-import unquietcode.tools.flapi.support.MethodInfo;
-import unquietcode.tools.flapi.support.Tracked;
+import unquietcode.tools.flapi.runtime.MethodInfo;
+import unquietcode.tools.flapi.runtime.Tracked;
 
 import java.util.Collections;
 import java.util.IdentityHashMap;

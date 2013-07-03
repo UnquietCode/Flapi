@@ -3,8 +3,8 @@ package unquietcode.tools.flapi.examples.pizza.builder.Pizza;
 
 import unquietcode.tools.flapi.examples.pizza.DisappearingPizzaExample.Pizza;
 import unquietcode.tools.flapi.examples.pizza.DisappearingPizzaExample.Topping;
-import unquietcode.tools.flapi.support.MethodInfo;
-import unquietcode.tools.flapi.support.TransitionType;
+import unquietcode.tools.flapi.runtime.MethodInfo;
+import unquietcode.tools.flapi.runtime.TransitionType;
 
 import javax.annotation.Generated;
 

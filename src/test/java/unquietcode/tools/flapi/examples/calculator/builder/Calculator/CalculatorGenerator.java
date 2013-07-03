@@ -2,7 +2,7 @@
 package unquietcode.tools.flapi.examples.calculator.builder.Calculator;
 
 import unquietcode.tools.flapi.examples.calculator.builder.Calculator.CalculatorBuilder.$;
-import unquietcode.tools.flapi.support.BlockInvocationHandler;
+import unquietcode.tools.flapi.runtime.BlockInvocationHandler;
 
 import javax.annotation.Generated;
 

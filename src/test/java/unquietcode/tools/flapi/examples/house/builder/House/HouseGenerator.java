@@ -2,7 +2,7 @@
 package unquietcode.tools.flapi.examples.house.builder.House;
 
 import unquietcode.tools.flapi.examples.house.builder.House.HouseBuilder.$;
-import unquietcode.tools.flapi.support.BlockInvocationHandler;
+import unquietcode.tools.flapi.runtime.BlockInvocationHandler;
 
 import javax.annotation.Generated;
 

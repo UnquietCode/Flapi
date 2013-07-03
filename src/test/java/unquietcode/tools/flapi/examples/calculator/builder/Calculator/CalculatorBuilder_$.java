@@ -2,8 +2,8 @@
 package unquietcode.tools.flapi.examples.calculator.builder.Calculator;
 
 import unquietcode.tools.flapi.examples.calculator.builder.Calculation.CalculationBuilder;
-import unquietcode.tools.flapi.support.MethodInfo;
-import unquietcode.tools.flapi.support.TransitionType;
+import unquietcode.tools.flapi.runtime.MethodInfo;
+import unquietcode.tools.flapi.runtime.TransitionType;
 
 import javax.annotation.Generated;
 

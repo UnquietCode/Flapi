@@ -2,9 +2,9 @@
 package unquietcode.tools.flapi.examples.email.builder.Email;
 
 import unquietcode.tools.flapi.examples.email.EmailMessage;
-import unquietcode.tools.flapi.support.MethodInfo;
-import unquietcode.tools.flapi.support.Tracked;
-import unquietcode.tools.flapi.support.TransitionType;
+import unquietcode.tools.flapi.runtime.MethodInfo;
+import unquietcode.tools.flapi.runtime.Tracked;
+import unquietcode.tools.flapi.runtime.TransitionType;
 
 import javax.annotation.Generated;
 import java.io.File;

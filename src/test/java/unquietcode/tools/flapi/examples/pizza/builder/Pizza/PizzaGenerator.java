@@ -2,7 +2,7 @@
 package unquietcode.tools.flapi.examples.pizza.builder.Pizza;
 
 import unquietcode.tools.flapi.examples.pizza.builder.Pizza.PizzaBuilder.$;
-import unquietcode.tools.flapi.support.BlockInvocationHandler;
+import unquietcode.tools.flapi.runtime.BlockInvocationHandler;
 
 import javax.annotation.Generated;
 

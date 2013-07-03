@@ -20,9 +20,6 @@
 package unquietcode.tools.flapi.runtime;
 
 import unquietcode.tools.flapi.support.ExpectedInvocationsException;
-import unquietcode.tools.flapi.support.MethodInfo;
-import unquietcode.tools.flapi.support.Tracked;
-import unquietcode.tools.flapi.support.TransitionType;
 
 import java.lang.reflect.Method;
 import java.util.HashMap;
