@@ -1,5 +1,5 @@
+before_install: cd flapi-parent
 language: java
-install: cd flapi-parent && mvn install -DskipTests=true
 jdk:
   - oraclejdk7
   - openjdk7
