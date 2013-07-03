@@ -22,7 +22,7 @@
 	<build>
 		<resources>
 			<resource>
-				<directory>src/main/java/unquietcode/tools/flapi/support</directory>
+				<directory>src/main/java/unquietcode/tools/flapi/runtime</directory>
 				<includes>
 					<include>*.java</include>
 				</includes>
