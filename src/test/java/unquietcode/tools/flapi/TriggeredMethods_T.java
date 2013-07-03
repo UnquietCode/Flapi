@@ -44,4 +44,17 @@ public class TriggeredMethods_T extends AbstractCompiledTest {
 		descriptor.writeToFolder(getTemporaryFolder());
 		testCompile();
 	}
+
+	@Test(expected = DescriptorBuilderException.class)
+	public void testTriggeringSameGroup() {
+		Descriptor descriptor = Flapi.builder()
+			.setDescriptorName("Something")
+			.setPackage("something")
+
+			.addMethod("triggered()").after(1).atMost(2, 1)
+			.addMethod("terminal()").last()
+		.build();
+
+		descriptor.writeToStream(BlackHoleStream.$);
+	}
 }

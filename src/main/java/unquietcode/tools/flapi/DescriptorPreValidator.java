@@ -25,8 +25,11 @@ import unquietcode.tools.flapi.outline.DescriptorOutline;
 import unquietcode.tools.flapi.outline.MethodOutline;
 
 import javax.lang.model.SourceVersion;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * @author Ben Fagin
@@ -46,6 +49,7 @@ public class DescriptorPreValidator {
 		checkThatDescriptorMethodNameIsValid();
 		checkForInvalidMethodSignatures();
 		checkForNameCollisions();
+		checkForUnmatchedGroups();
 	}
 
 	private void checkThatDescriptorMethodNameIsValid() {
@@ -100,12 +104,11 @@ public class DescriptorPreValidator {
 		}
 	}
 
-
 	private void checkForInvalidMethodSignatures() {
-		_checkForInvalidMethodSignatures(outline.selfBlock, new HashSet<String>());
+		_checkForInvalidMethodSignatures(outline.selfBlock);
 	}
 
-	private void _checkForInvalidMethodSignatures(BlockOutline block, Set<String> names) {
+	private void _checkForInvalidMethodSignatures(BlockOutline block) {
 		if (block instanceof BlockReference) {
 			return;
 		}
@@ -129,8 +132,61 @@ public class DescriptorPreValidator {
 					continue;
 				}
 
-				_checkForInvalidMethodSignatures(chain, names);
+				_checkForInvalidMethodSignatures(chain);
 			}
+		}
+	}
+
+	private void checkForUnmatchedGroups() {
+		_checkForUnmatchedGroups(outline.selfBlock);
+	}
+
+	private void _checkForUnmatchedGroups(BlockOutline block) {
+		if (block instanceof BlockReference) {
+			return;
+		}
+
+		Map<Integer, AtomicInteger> counts = new HashMap<Integer, AtomicInteger>();
+
+		// count all uses of a group
+		for (MethodOutline method : block.getAllMethods()) {
+			if (method.getGroup() != null && method.getGroup().equals(method.getTrigger())) {
+				throw new DescriptorBuilderException(String.format(
+					"Method '%s' is triggered after its own group!",
+					method.getMethodSignature()
+				));
+			}
+
+			tallyGroup(counts, method.getGroup());
+			tallyGroup(counts, method.getTrigger());
+		}
+
+		// find counts < 2, meaning no match
+		for (Map.Entry<Integer, AtomicInteger> count : counts.entrySet()) {
+			if (count.getValue().get() < 2) {
+				System.err.println("Block '"+block.getName()+"' has only one use of group "+count.getKey()+".");
+			}
+		}
+
+		// recurse
+		for (MethodOutline method : block.getAllMethods()) {
+			for (BlockOutline chain : method.getBlockChain()) {
+				if (chain == block) {
+					continue;
+				}
+
+				_checkForUnmatchedGroups(chain);
+			}
+		}
+	}
+
+	private static void tallyGroup(Map<Integer, AtomicInteger> counts, Integer group) {
+		if (group != null) {
+			if (!counts.containsKey(group)) {
+				counts.put(group, new AtomicInteger(0));
+			}
+
+			counts.get(group).incrementAndGet();
 		}
 	}
 }
