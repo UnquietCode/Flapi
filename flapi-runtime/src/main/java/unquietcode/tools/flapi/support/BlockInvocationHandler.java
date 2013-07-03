@@ -19,13 +19,17 @@
 
 package unquietcode.tools.flapi.support;
 
+import unquietcode.tools.flapi.runtime.ExecutionListener;
+import unquietcode.tools.flapi.runtime.TrackingExecutionListener;
+
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.IdentityHashMap;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
@@ -38,33 +42,47 @@ import java.util.concurrent.atomic.AtomicReference;
  * value for the preceding block, or an intermediate terminal value.
  */
 public class BlockInvocationHandler implements InvocationHandler {
-	private final Map<String, Pair<Counter, String>> trackedMethods = new HashMap<String, Pair<Counter, String>>();
+	private final Set<ExecutionListener> listeners;
+	private final TrackingExecutionListener trackingListener = new Tracker();
 	private final Object returnValue;
 	private final Object helper;
 
 	public BlockInvocationHandler(Object helper, Object returnValue) {
+		this(
+			helper, returnValue,
+			Collections.newSetFromMap(new IdentityHashMap<ExecutionListener, Boolean>())
+		);
+	}
+
+	private BlockInvocationHandler(
+		Object helper, Object returnValue,
+		Set<ExecutionListener> listeners
+	){
 		this.helper = helper;
 		this.returnValue = returnValue;
+		this.listeners = listeners;
+	}
+
+	public void addListeners(ExecutionListener...listeners) {
+		if (listeners != null) {
+			this.listeners.addAll(Arrays.asList(listeners));
+		}
+	}
+
+	public void addListeners(Set<ExecutionListener> listener) {
+		listeners.addAll(listener);
 	}
 
 	@Override
 	public final Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
 		if (args == null) { args = new Object[0]; }
-		final MethodInfo info = method.getAnnotation(MethodInfo.class);
-		final boolean shouldCheckParentInvocations = info.type() == TransitionType.Terminal;
-		final boolean shouldCheckInvocations
-			= info.type() == TransitionType.Terminal || info.type() == TransitionType.Ascending;
+		MethodInfo info = method.getAnnotation(MethodInfo.class);
 
-		// invocation tracking
-		trackMethod(method);
+		// atLeast tracking
+		trackingListener.next(method, args);
 
-		// invocation checks
-		if (shouldCheckInvocations) {
-			if (shouldCheckParentInvocations) {
-				_checkAllInvocations();
-			} else {
-				_checkInvocations();
-			}
+		for (ExecutionListener listener : listeners) {
+			listener.next(method, args);
 		}
 
 		// do the actual work
@@ -124,7 +142,9 @@ public class BlockInvocationHandler implements InvocationHandler {
 				throw new IllegalStateException("null helper provided for method "+method.getName());
 			}
 
-			BlockInvocationHandler handler = new BlockInvocationHandler(wrapper.get(), _returnValue);
+			BlockInvocationHandler handler
+				= new BlockInvocationHandler(wrapper.get(), _returnValue, listeners);
+
 			_returnValue = handler._proxy(info.chain()[i]);
 		}
 
@@ -165,72 +185,25 @@ public class BlockInvocationHandler implements InvocationHandler {
 		}
 	}
 
-	private void trackMethod(Method method) {
-		Tracked annotation = method.getAnnotation(Tracked.class);
-		if (annotation == null) { return; }
-		trackedMethods.get(annotation.key()).one.decrementAndGet();
-	}
-
 	@SuppressWarnings("unchecked")
 	public final <T> T _proxy(Class<?> clazz) {
-		registerNewTrackedMethods(clazz);
+		trackingListener.registerNewTrackedMethods(clazz);
 		return (T) Proxy.newProxyInstance(this.getClass().getClassLoader(), new Class[]{clazz}, this);
 	}
 
-	private void registerNewTrackedMethods(Class<?> clazz) {
-		for (Method method : clazz.getMethods()) {
-			Tracked annotation = method.getAnnotation(Tracked.class);
-			if (annotation == null) { continue; }
+	private class Tracker extends TrackingExecutionListener {
+		public @Override void checkAllInvocations() {
+			BlockInvocationHandler cur = BlockInvocationHandler.this;
 
-			if (!trackedMethods.containsKey(annotation.key())) {
-				Counter counter = new Counter(annotation.atLeast());
-				trackedMethods.put(annotation.key(), new Pair<Counter, String>(counter, method.getName()));
+			while (cur != null) {
+				cur.trackingListener.checkInvocations();
+
+				if (cur.returnValue != null && cur.returnValue instanceof BlockInvocationHandler) {
+					cur = (BlockInvocationHandler) cur.returnValue;
+				} else {
+					cur = null;
+				}
 			}
-		}
-	}
-
-	protected final void _checkInvocations() {
-		for (Map.Entry<String, Pair<Counter, String>> entry : trackedMethods.entrySet()) {
-			if (entry.getValue().one.get() > 0) {
-				throw new ExpectedInvocationsException(String.format(
-					"Expected at least %s invocations of method '%s'.",
-					entry.getValue().one.initial,
-					entry.getValue().two
-				));
-			}
-		}
-	}
-
-	protected final void _checkAllInvocations() {
-		BlockInvocationHandler cur = this;
-
-		while (cur != null) {
-			cur._checkInvocations();
-
-			if (cur.returnValue != null && cur.returnValue instanceof BlockInvocationHandler) {
-				cur = (BlockInvocationHandler) cur.returnValue;
-			} else {
-				cur = null;
-			}
-		}
-	}
-
-	private static class Pair<A, B> {
-		public final A one;
-		public final B two;
-
-		public Pair(A one, B two) {
-			this.one = one;
-			this.two = two;
-		}
-	}
-
-	private static class Counter extends AtomicInteger {
-		public final int initial;
-
-		public Counter(int initial) {
-			super(initial);
-			this.initial = initial;
 		}
 	}
 }

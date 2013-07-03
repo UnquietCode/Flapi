@@ -22,6 +22,7 @@ package unquietcode.tools.flapi;
 import unquietcode.tools.flapi.builder.Descriptor.DescriptorBuilder;
 import unquietcode.tools.flapi.builder.Descriptor.DescriptorGenerator;
 import unquietcode.tools.flapi.helpers.DescriptorHelperImpl;
+import unquietcode.tools.flapi.runtime.ExecutionListener;
 
 import javax.lang.model.SourceVersion;
 
@@ -35,11 +36,12 @@ public class Flapi {
 	private static SourceVersion JDKVersion = SourceVersion.RELEASE_6;
 	private static boolean outputRuntime = false;
 
+
 	/**
 	 * Shortcut to build a new descriptor.
 	 */
-	public static DescriptorBuilder.$<Void> builder() {
-		return DescriptorGenerator.create(new DescriptorHelperImpl());
+	public static DescriptorBuilder.$<Void> builder(ExecutionListener...listeners) {
+		return DescriptorGenerator.create(new DescriptorHelperImpl(), listeners);
 	}
 
 	/**

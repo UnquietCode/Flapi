@@ -22,6 +22,7 @@ package unquietcode.tools.flapi.generator;
 import com.sun.codemodel.*;
 import unquietcode.tools.flapi.graph.components.StateClass;
 import unquietcode.tools.flapi.outline.GeneratorOutline;
+import unquietcode.tools.flapi.runtime.ExecutionListener;
 import unquietcode.tools.flapi.support.BlockInvocationHandler;
 
 
@@ -43,13 +44,11 @@ public class GeneratorGenerator extends AbstractGenerator {
 		JDefinedClass _returnType = WRAPPER_INTERFACE_STRATEGY.createType(ctx, topLevel);
 		JType returnType = _returnType.narrow(ref(Void.class));
 
-		// -- add the constructor methods --
+		// -- add the constructor method --
 
 		JMethod createMethod = generator.method(JMod.PUBLIC+JMod.STATIC, returnType, outline.methodName);
-		createMethod.annotate(SuppressWarnings.class).param("value", "unchecked");
 		JVar pHelper = createMethod.param(helper, "helper");
-
-		// check arguments
+		JVar pListeners = createMethod.varParam(ExecutionListener.class, "listeners");
 
 		// if (helper == null)
 		//     throw new IllegalArgumentException("Helper cannot be null.");
@@ -58,12 +57,20 @@ public class GeneratorGenerator extends AbstractGenerator {
 		_if._then()._throw(JExpr._new(ref(IllegalArgumentException.class)).arg("Helper cannot be null."));
 		createMethod.body().directStatement(" ");
 
-		// get base return value and return
-		createMethod.body()._return(
+		// BlockInvocationHandler handler = new BlockInvocationHandler(helper, null);
+		JVar handler = createMethod.body().decl(ref(BlockInvocationHandler.class), "handler",
 			JExpr._new(ref(BlockInvocationHandler.class))
 				.arg(pHelper)
-				.arg(JExpr._null())
-			.invoke("_proxy").arg(_returnType.dotclass())
+				.arg(JExpr._null()
+			)
+		);
+
+		// handler.addListeners(listeners);
+		createMethod.body().invoke(handler, "addListeners").arg(pListeners);
+
+		// return handler._proxy($.class);
+		createMethod.body()._return(
+			handler.invoke("_proxy").arg(_returnType.dotclass())
 		);
 
 		return generator;
