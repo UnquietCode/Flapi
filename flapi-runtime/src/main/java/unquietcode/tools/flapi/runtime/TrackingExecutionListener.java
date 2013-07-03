@@ -30,9 +30,8 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @author Ben Fagin
  * @version 2013-07-02
  */
-public abstract class TrackingExecutionListener implements ExecutionListener {
+/* package */abstract class TrackingExecutionListener implements ExecutionListener {
 	private final Map<String, Pair<Counter, String>> trackedMethods = new HashMap<String, Pair<Counter, String>>();
-
 
 	@Override
 	public void next(Method method, Object[] args) {
@@ -104,5 +103,4 @@ public abstract class TrackingExecutionListener implements ExecutionListener {
 			this.initial = initial;
 		}
 	}
-
 }
