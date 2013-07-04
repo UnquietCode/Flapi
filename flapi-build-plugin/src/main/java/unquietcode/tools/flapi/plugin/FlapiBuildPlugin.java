@@ -212,6 +212,8 @@ public class FlapiBuildPlugin extends AbstractMojo {
 		List<String> options = new ArrayList<String>();
 		options.add("-classpath");
 		options.add(makeClasspath(classLoader));
+		options.add("-source");
+		options.add("6");
 
 		Iterable<? extends JavaFileObject> compilationUnits = getSourceFiles(descriptor);
 		JavaCompiler.CompilationTask task = compiler.getTask(null, fileManager, diagnostics, options, null, compilationUnits);
