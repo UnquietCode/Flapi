@@ -42,9 +42,15 @@ public class TestDescriptor {
 			.addMethod("body(String text)").atMost(1)
 			.addMethod("addAttachment(java.io.File file)").any()
 			.addMethod("send()").last(EmailMessage.class)
+
+			.startBlock("ABlock", "block()").any()
+				.addEnumSelector(TestEnum.class, "test()").any()
+				.addMethod("done()").last()
+			.endBlock()
 		.build();
 
 		return builder;
 	}
+
 
 }

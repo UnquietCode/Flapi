@@ -96,4 +96,9 @@ public class DescriptorHelperImpl implements DescriptorHelper {
 	public void startBlock(String methodSignature, AtomicReference<MethodHelper> _helper1, AtomicReference<BlockHelper> _helper2) {
 		BlockHelperImpl._startBlock(outline.selfBlock, null, methodSignature, _helper1, _helper2);
 	}
+
+	@Override
+	public void addEnumSelector(Class clazz, String methodSignature, AtomicReference<MethodHelper> _helper1) {
+		BlockHelperImpl._addEnumSelector(outline.selfBlock, clazz, methodSignature, _helper1);
+	}
 }

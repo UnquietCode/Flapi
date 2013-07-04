@@ -19,6 +19,7 @@
 
 package unquietcode.tools.flapi.helpers;
 
+import unquietcode.tools.flapi.DescriptorBuilderException;
 import unquietcode.tools.flapi.builder.Block.BlockHelper;
 import unquietcode.tools.flapi.builder.Method.MethodHelper;
 import unquietcode.tools.flapi.outline.BlockOutline;
@@ -88,6 +89,31 @@ public class BlockHelperImpl implements BlockHelper {
 		blockReference.setConstructor(blockMethod);
 
 		_helper1.set(new MethodHelperImpl(blockMethod));
+	}
+
+	@Override
+	public void addEnumSelector(Class clazz, String methodSignature, AtomicReference<MethodHelper> _helper1) {
+		_addEnumSelector(block, clazz, methodSignature, _helper1);
+	}
+
+	static void _addEnumSelector(BlockOutline block, Class clazz, String methodSignature, AtomicReference<MethodHelper> _helper1) {
+		if (clazz == null) {
+			throw new NullPointerException("addEnumSelector: class is null");
+		} else  if (!clazz.isEnum()) {
+			throw new DescriptorBuilderException("addEnumSelector: class must be an enum class");
+		}
+
+		AtomicReference<BlockHelper> blockHelper = new AtomicReference<BlockHelper>();
+		_startBlock(block, clazz.getSimpleName(), methodSignature, _helper1, blockHelper);
+
+		for (Object value : clazz.getEnumConstants()) {
+			String name = ((Enum) value).name();
+
+			// for every enum value, add a new terminal method
+			AtomicReference<MethodHelper> methodHelper = new AtomicReference<MethodHelper>();
+			blockHelper.get().addMethod(name+"()", methodHelper);
+			methodHelper.get().last();
+		}
 	}
 
 	@Override

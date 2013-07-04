@@ -192,20 +192,31 @@ public class MainDescriptor {
 				.addBlockChain().addBlockReference("Method")
 				.any()
 
+				.addMethod("addEnumSelector(Class clazz, String methodSignature)")
+					.withDocumentation("Adds an enum selector, by passing in an enum class.")
+					.addBlockChain().addBlockReference("Method")
+				.any()
+
 				.addMethod("endBlock()")
 					.withDocumentation("finish editing of the current block")
 				.last()
 			.endBlock()
 
-			// Block Reference for the top level descriptor
+			// Block Reference for the top level block
 			.addMethod("addBlockReference(String blockName, String methodSignature)")
 				.withDocumentation("add a new method which proceeds to an existing block")
 				.addBlockChain().addBlockReference("Method")
 			.any()
 
-			// new blocks for the top level descriptor
+			// new blocks for the top level block
 			.addBlockReference("Block", "startBlock(String methodSignature)")
 				.withDocumentation("Starts a new block.")
+				.addBlockChain().addBlockReference("Method")
+			.any()
+
+			// enum selector for the top level block
+			.addMethod("addEnumSelector(Class clazz, String methodSignature)")
+				.withDocumentation("Adds an enum selector, by passing in an enum class.")
 				.addBlockChain().addBlockReference("Method")
 			.any()
 		.build();

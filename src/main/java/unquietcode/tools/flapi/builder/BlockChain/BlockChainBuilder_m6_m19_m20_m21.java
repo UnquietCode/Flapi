@@ -16,9 +16,9 @@ import javax.annotation.Generated;
  * Visit https://github.com/UnquietCode/Flapi for more information.
  * 
  * 
- * Generated on July 02, 2013 0:08:51 PDT using version 0.4
+ * Generated on July 03, 2013 22:41:52 PDT using version 0.4
  */
-@Generated(value = "unquietcode.tools.flapi", date = "July 02, 2013 0:08:51 PDT", comments = "generated using Flapi, the fluent API generator for Java")
+@Generated(value = "unquietcode.tools.flapi", date = "July 03, 2013 22:41:52 PDT", comments = "generated using Flapi, the fluent API generator for Java")
 public interface BlockChainBuilder_m6_m19_m20_m21 <_ReturnType> {
     /**
      * add an additional link to the chain, occurring before this one
