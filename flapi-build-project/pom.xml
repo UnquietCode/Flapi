@@ -16,32 +16,28 @@
 	</properties>
 
 	<build>
+		<plugins>
 
-		<!-- Flapi plugin -->
-		<!--<pluginManagement>-->
-			<plugins>
-				<plugin>
-					<groupId>unquietcode.tools.flapi</groupId>
-					<artifactId>flapi-build-plugin</artifactId>
-					<version>${project.version}</version>
-					<executions>
-						<execution>
-							<goals>
-								<goal>generate</goal>
-							</goals>
-							<configuration>
-								<descriptorClass>${flapi.descriptor.class}</descriptorClass>
-								<descriptorMethod>${flapi.descriptor.method}</descriptorMethod>
-								<sourcesDirectory>${flapi.generated.sources}</sourcesDirectory>
-							</configuration>
-						</execution>
-					</executions>
-				</plugin>
-			<!--</plugins>-->
-		<!--</pluginManagement>-->
+			<!-- Flapi plugin -->
+			<plugin>
+				<groupId>unquietcode.tools.flapi</groupId>
+				<artifactId>flapi-build-plugin</artifactId>
+				<version>${project.version}</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+						<configuration>
+							<descriptorClass>${flapi.descriptor.class}</descriptorClass>
+							<descriptorMethod>${flapi.descriptor.method}</descriptorMethod>
+							<sourcesDirectory>${flapi.generated.sources}</sourcesDirectory>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
 
-		<!-- create a source jar at the end -->
-		<!--<plugins>-->
+			<!-- create a source jar at the end -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-source-plugin</artifactId>
