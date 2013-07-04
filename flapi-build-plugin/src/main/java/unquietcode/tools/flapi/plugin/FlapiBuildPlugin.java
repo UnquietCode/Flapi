@@ -85,7 +85,7 @@ public class FlapiBuildPlugin extends AbstractMojo {
 	 * The directory to which the generated sources
 	 * will be written.
 	 */
-	@Parameter(defaultValue="${project.build.directory}/generated-sources/flapi")
+	@Parameter(defaultValue="${project.build.directory}/generated-sources")
 	private String sourcesDirectory;
 
 	/**

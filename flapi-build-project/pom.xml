@@ -18,7 +18,7 @@
 	<build>
 
 		<!-- Flapi plugin -->
-		<pluginManagement>
+		<!--<pluginManagement>-->
 			<plugins>
 				<plugin>
 					<groupId>unquietcode.tools.flapi</groupId>
@@ -32,15 +32,16 @@
 							<configuration>
 								<descriptorClass>${flapi.descriptor.class}</descriptorClass>
 								<descriptorMethod>${flapi.descriptor.method}</descriptorMethod>
+								<sourcesDirectory>${flapi.generated.sources}</sourcesDirectory>
 							</configuration>
 						</execution>
 					</executions>
 				</plugin>
-			</plugins>
-		</pluginManagement>
+			<!--</plugins>-->
+		<!--</pluginManagement>-->
 
 		<!-- create a source jar at the end -->
-		<plugins>
+		<!--<plugins>-->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-source-plugin</artifactId>
