@@ -25,6 +25,8 @@ import unquietcode.tools.flapi.outline.DescriptorOutline;
 
 import java.io.File;
 import java.io.OutputStream;
+import java.util.Iterator;
+import java.util.Map;
 
 /**
  * @author Ben Fagin
@@ -86,5 +88,16 @@ public class Descriptor {
 
 		// always do this last so we don't unnecessarily write files
 		CodeWriter.writeToDirectory(model, f);
+	}
+
+	/**
+	 * Writes individual files to individual streams.
+	 * @param streams stream iterator, should always return another!
+	 */
+	public Map<String, OutputStream> writeToStreams(Iterator<OutputStream> streams) {
+		if (streams == null) {
+			throw new IllegalArgumentException("streams should not be null");
+		}
+		return CodeWriter.writeToStreams(model, streams);
 	}
 }

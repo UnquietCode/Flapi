@@ -20,12 +20,16 @@
 package unquietcode.tools.flapi;
 
 import com.sun.codemodel.JCodeModel;
+import com.sun.codemodel.JPackage;
 import com.sun.codemodel.writer.FileCodeWriter;
 import com.sun.codemodel.writer.SingleStreamCodeWriter;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 /**
  * @author Ben Fagin
@@ -52,5 +56,36 @@ public class CodeWriter {
 		} catch (Exception ex) {
 			throw new RuntimeException(ex);
 		}
+	}
+
+	public static Map<String, OutputStream> writeToStreams(JCodeModel model, final Iterator<OutputStream> streams) {
+		final Map<String,OutputStream> map = new HashMap<String, OutputStream>();
+
+		try {
+			model.build(new com.sun.codemodel.CodeWriter() {
+				public @Override OutputStream openBinary(JPackage pkg, String fileName) throws IOException {
+					String pkgName = pkg.name();
+
+					if (pkgName.length() != 0) {
+						pkgName += '.';
+					}
+
+					String fqcn = pkgName+fileName;
+					OutputStream stream = streams.next();
+					map.put(fqcn, stream);
+
+					return stream;
+				}
+
+				@Override
+				public void close() throws IOException {
+					// nothing
+				}
+			});
+		} catch (IOException ex) {
+			throw new DescriptorBuilderException(ex);
+		}
+
+		return map;
 	}
 }
