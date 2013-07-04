@@ -28,6 +28,8 @@ import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.annotations.ResolutionScope;
 import org.apache.maven.project.MavenProject;
 import unquietcode.tools.flapi.Descriptor;
+import unquietcode.tools.flapi.ExtractRuntime;
+import unquietcode.tools.flapi.plugin.compile.CharSequenceJavaFileObject;
 import unquietcode.tools.flapi.plugin.compile.ClassFileManager;
 
 import javax.tools.*;
@@ -37,7 +39,6 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.net.URI;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.*;
@@ -87,13 +88,24 @@ public class FlapiBuildPlugin extends AbstractMojo {
 	@Parameter(defaultValue="${project.build.directory}/generated-sources")
 	private String sourcesDirectory;
 
-
 	/**
 	 * If true, the runtime classes will be written
 	 * out alongside the generated classes.
 	 */
-	@Parameter
-	private boolean includeRuntime = false;
+	@Parameter(defaultValue="false")
+	private boolean includeRuntime;
+
+	/**
+	 * If true, the sources will be written.
+	 */
+	@Parameter(defaultValue="true")
+	private boolean writeSources;
+
+	/**
+	 * If true, the sources will be compiled and written.
+	 */
+	@Parameter(defaultValue="true")
+	private boolean writeClasses;
 
 
 	@Override
@@ -139,15 +151,22 @@ public class FlapiBuildPlugin extends AbstractMojo {
 		}
 
 		// compile and write out the classes
-		compile(descriptor, classLoader);
+		if (writeClasses) {
+			compileAndWriteClasses(descriptor, classLoader);
+
+			if (includeRuntime) {
+				ExtractRuntime.writeRequiredClasses(sourcesDirectory);
+			}
+		}
 
 		// write out the source files
-		new File(sourcesDirectory).mkdirs();
-		descriptor.writeToFolder(sourcesDirectory);
+		if (writeSources) {
+			new File(sourcesDirectory).mkdirs();
+			descriptor.writeToFolder(sourcesDirectory);
 
-		// optionally write out the runtime classes as well
-		if (includeRuntime) {
-			//ExtractRuntime.main(new String[]{outputDirectory});
+			if (includeRuntime) {
+				ExtractRuntime.writeRequiredSources(sourcesDirectory);
+			}
 		}
 	}
 
@@ -178,35 +197,22 @@ public class FlapiBuildPlugin extends AbstractMojo {
 			name = name.substring(0, name.length()-5); // removes .java
 
 			ByteArrayOutputStream stream = (ByteArrayOutputStream) entry.getValue();
-			JavaFileObject file = new JavaSourceFromString(name, stream.toString());
+			JavaFileObject file = new CharSequenceJavaFileObject(name, stream.toString());
 			files.add(file);
 		}
 
 		return files;
 	}
 
-	private ClassLoader compile(Descriptor descriptor, URLClassLoader classLoader) {
+	private ClassLoader compileAndWriteClasses(Descriptor descriptor, URLClassLoader classLoader) throws MojoExecutionException {
 		JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
 		DiagnosticCollector<JavaFileObject> diagnostics = new DiagnosticCollector<JavaFileObject>();
-//		StandardJavaFileManager fileManager
-//			= compiler.getStandardFileManager(diagnostics, Locale.getDefault(), Charset.defaultCharset());
-
 		JavaFileManager fileManager = new ClassFileManager(compiler.getStandardFileManager(null, null, null), classesDirectory);
-
-		StringBuilder buffer = new StringBuilder();
-		for (URL url : classLoader.getURLs()) {
-			buffer.append(new File(url.getPath()));
-			buffer.append(System.getProperty("path.separator"));
-		}
-		String classpath = buffer.toString();
-
 
 		List<String> options = new ArrayList<String>();
 		options.add("-classpath");
-		options.add(classpath);
+		options.add(makeClasspath(classLoader));
 
-
-		//Iterable<? extends JavaFileObject> compilationUnits = fileManager.getJavaFileObjectsFromFiles(sourceFiles);
 		Iterable<? extends JavaFileObject> compilationUnits = getSourceFiles(descriptor);
 		JavaCompiler.CompilationTask task = compiler.getTask(null, fileManager, diagnostics, options, null, compilationUnits);
 		task.call();
@@ -217,39 +223,36 @@ public class FlapiBuildPlugin extends AbstractMojo {
 			// nothing
 		}
 
-		StringBuilder errors = new StringBuilder();
+		boolean atLeastOneError = false;
+
 		for (Diagnostic<? extends JavaFileObject> error : diagnostics.getDiagnostics()) {
+
 			if (error.getKind() != Diagnostic.Kind.NOTE) {
-				errors.append("\n\n").append(error.getSource().getName())
-					  .append(" (").append(error.getLineNumber()).append(",").append(error.getColumnNumber()).append(")\n")
-					  .append(error.getMessage(Locale.getDefault()))
+				StringBuilder message = new StringBuilder()
+					.append(error.getSource().getName())
+					.append(" (").append(error.getLineNumber()).append(",").append(error.getColumnNumber()).append(")\n")
+					.append(error.getMessage(Locale.getDefault()))
 				;
+				getLog().warn(message.toString());
+				atLeastOneError = true;
 			}
 		}
 
-		if (errors.length() != 0) {
-			throw new RuntimeException("The compilation was completed with errors."+errors.toString()+"\n");
+		if (atLeastOneError) {
+			throw new MojoExecutionException("The compilation was completed with errors.");
 		}
-
 
 		return fileManager.getClassLoader(StandardLocation.CLASS_PATH);
-
 	}
 
-	//http://www.java2s.com/Code/Java/JDK-6/CompilingfromMemory.htm
-	private static class JavaSourceFromString extends SimpleJavaFileObject {
-		final String code;
+	private static String makeClasspath(URLClassLoader classLoader) {
+		StringBuilder buffer = new StringBuilder();
 
-		JavaSourceFromString(String name, String code) {
-			super(URI.create("string:///" + name.replace('.', '/') + Kind.SOURCE.extension),Kind.SOURCE);
-			this.code = code;
+		for (URL url : classLoader.getURLs()) {
+			buffer.append(new File(url.getPath()));
+			buffer.append(System.getProperty("path.separator"));
 		}
 
-		@Override
-		public CharSequence getCharContent(boolean ignoreEncodingErrors) {
-			return code;
-		}
+		return buffer.toString();
 	}
-
-
 }

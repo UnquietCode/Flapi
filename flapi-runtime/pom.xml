@@ -25,6 +25,7 @@
 				<directory>src/main/java/unquietcode/tools/flapi/runtime</directory>
 				<includes>
 					<include>*.java</include>
+					<include>*.class</include>
 				</includes>
 				<targetPath>sources</targetPath>
 			</resource>

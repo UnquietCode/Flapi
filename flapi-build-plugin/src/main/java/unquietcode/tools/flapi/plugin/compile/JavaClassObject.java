@@ -7,8 +7,11 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URI;
 
+/**
+ * Modified from code found at http://www.javablogging.com/dynamic-in-memory-compilation
+ * Many thanks to the author, Miron Sadziak.
+ */
 public class JavaClassObject extends SimpleJavaFileObject {
-
 	private final File file;
 
 
@@ -23,7 +26,7 @@ public class JavaClassObject extends SimpleJavaFileObject {
 	 */
 	public JavaClassObject(String name, Kind kind, File output) {
 		super(URI.create("string:///" + name.replace('.', '/')
-				+ kind.extension), kind);
+			+ kind.extension), kind);
 
 		this.file = output;
 	}

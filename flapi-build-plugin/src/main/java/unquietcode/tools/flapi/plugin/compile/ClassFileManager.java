@@ -7,8 +7,13 @@ import javax.tools.StandardJavaFileManager;
 import java.io.File;
 import java.io.IOException;
 
-public class ClassFileManager extends ForwardingJavaFileManager {
+/**
+ * Modified from code found at http://www.javablogging.com/dynamic-in-memory-compilation
+ * Many thanks to the author, Miron Sadziak.
+ */
+public class ClassFileManager extends ForwardingJavaFileManager<StandardJavaFileManager> {
 	private final String basePath;
+
 
 	/**
 	 * Will initialize the manager with the specified

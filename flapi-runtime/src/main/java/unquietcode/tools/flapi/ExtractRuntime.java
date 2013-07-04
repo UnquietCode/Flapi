@@ -44,11 +44,26 @@ public final class ExtractRuntime {
 			throw new RuntimeException("Usage: <outputPath>");
 		}
 
-		File out = new File(args[0]);
-		writeRequiredClasses(out);
+		writeRequiredSources(args[0]);
+	}
+
+	public static void writeRequiredSources(String folder) {
+		writeRequiredSources(new File(folder));
+	}
+
+	public static void writeRequiredSources(File folder) {
+		writeFiles(folder, true);
+	}
+
+	public static void writeRequiredClasses(String folder) {
+		writeRequiredClasses(new File(folder));
 	}
 
 	public static void writeRequiredClasses(File folder) {
+		writeFiles(folder, false);
+	}
+
+	private static void writeFiles(File folder, boolean useSources) {
 		String path = getSupportPath(folder);
 		File dir = new File(path);
 
@@ -59,12 +74,18 @@ public final class ExtractRuntime {
 			}
 		}
 
+		String extension = useSources ? ".java" : ".class";
+
 		try {
 			URL _sources = ExtractRuntime.class.getClassLoader().getResources("sources").nextElement();
 			File sources = new File(_sources.getFile());
 			File[] files = sources.listFiles();
 
 			for (File file : files) {
+				if (!file.getName().endsWith(extension)) {
+					continue;
+				}
+
 				InputStream stream = getResourceFile("sources/" + file.getName());
 				File destination = createFile(dir.getAbsolutePath(), file.getName());
 				copyFile(stream, destination);

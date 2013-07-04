@@ -3,6 +3,10 @@ package unquietcode.tools.flapi.plugin.compile;
 import javax.tools.SimpleJavaFileObject;
 import java.net.URI;
 
+/**
+ * Modified from code found at http://www.javablogging.com/dynamic-in-memory-compilation
+ * Many thanks to the author, Miron Sadziak.
+ */
 public class CharSequenceJavaFileObject extends SimpleJavaFileObject {
 
 	/**
@@ -22,7 +26,7 @@ public class CharSequenceJavaFileObject extends SimpleJavaFileObject {
 	 */
 	public CharSequenceJavaFileObject(String className,CharSequence content) {
 		super(URI.create("string:///" + className.replace('.', '/')
-				+ Kind.SOURCE.extension), Kind.SOURCE);
+			+ Kind.SOURCE.extension), Kind.SOURCE);
 		this.content = content;
 	}
 
@@ -31,8 +35,7 @@ public class CharSequenceJavaFileObject extends SimpleJavaFileObject {
 	 * the source code stored in variable "content"
 	 */
 	@Override
-	public CharSequence getCharContent(
-			boolean ignoreEncodingErrors) {
+	public CharSequence getCharContent(boolean ignoreEncodingErrors) {
 		return content;
 	}
 }
