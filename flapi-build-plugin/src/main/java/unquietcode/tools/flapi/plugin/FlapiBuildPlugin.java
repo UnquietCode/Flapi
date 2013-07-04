@@ -78,7 +78,15 @@ public class FlapiBuildPlugin extends AbstractMojo {
 	 * will be written.
 	 */
 	@Parameter(defaultValue="${project.build.outputDirectory}")
-	private String outputDirectory;
+	private String classesDirectory;
+
+	/**
+	 * The directory to which the generated sources
+	 * will be written.
+	 */
+	@Parameter(defaultValue="${project.build.directory}/generated-sources")
+	private String sourcesDirectory;
+
 
 	/**
 	 * If true, the runtime classes will be written
@@ -130,11 +138,12 @@ public class FlapiBuildPlugin extends AbstractMojo {
 			throw new MojoExecutionException("method returned null");
 		}
 
-		// compile our classes
+		// compile and write out the classes
 		compile(descriptor, classLoader);
 
-//		new File(outputDirectory).mkdirs();
-//		descriptor.writeToFolder(outputDirectory);
+		// write out the source files
+		new File(sourcesDirectory).mkdirs();
+		descriptor.writeToFolder(sourcesDirectory);
 
 		// optionally write out the runtime classes as well
 		if (includeRuntime) {
@@ -182,7 +191,7 @@ public class FlapiBuildPlugin extends AbstractMojo {
 //		StandardJavaFileManager fileManager
 //			= compiler.getStandardFileManager(diagnostics, Locale.getDefault(), Charset.defaultCharset());
 
-		JavaFileManager fileManager = new ClassFileManager(compiler.getStandardFileManager(null, null, null), outputDirectory);
+		JavaFileManager fileManager = new ClassFileManager(compiler.getStandardFileManager(null, null, null), classesDirectory);
 
 		StringBuilder buffer = new StringBuilder();
 		for (URL url : classLoader.getURLs()) {
