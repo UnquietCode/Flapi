@@ -85,7 +85,7 @@ public class FlapiBuildPlugin extends AbstractMojo {
 	 * The directory to which the generated sources
 	 * will be written.
 	 */
-	@Parameter(defaultValue="${project.build.directory}/generated-sources")
+	@Parameter(defaultValue="${project.build.directory}/generated-sources/flapi")
 	private String sourcesDirectory;
 
 	/**
@@ -104,7 +104,7 @@ public class FlapiBuildPlugin extends AbstractMojo {
 	/**
 	 * If true, the sources will be compiled and written.
 	 */
-	@Parameter(defaultValue="true")
+	@Parameter(defaultValue="false")
 	private boolean writeClasses;
 
 
@@ -138,7 +138,7 @@ public class FlapiBuildPlugin extends AbstractMojo {
 		// execute and get the descriptor
 		Descriptor descriptor;
 		try {
-			descriptor = (Descriptor) method.invoke(descriptorClass);
+			descriptor = (Descriptor) method.invoke(null);
 		} catch (IllegalAccessException ex) {
 			throw new MojoExecutionException("method not accessible", ex);
 		} catch (InvocationTargetException ex) {
@@ -152,10 +152,11 @@ public class FlapiBuildPlugin extends AbstractMojo {
 
 		// compile and write out the classes
 		if (writeClasses) {
+			new File(classesDirectory).mkdirs();
 			compileAndWriteClasses(descriptor, classLoader);
 
 			if (includeRuntime) {
-				ExtractRuntime.writeRequiredClasses(sourcesDirectory);
+				ExtractRuntime.writeRequiredClasses(classesDirectory);
 			}
 		}
 

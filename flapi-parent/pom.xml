@@ -93,6 +93,7 @@
 		<module>../flapi-runtime</module>
 		<module>../</module>
 		<module>../flapi-build-plugin</module>
+		<module>../flapi-build-project</module>
 		<module>../flapi-build-test-producer</module>
 		<module>../flapi-build-test-consumer</module>
 	</modules>
