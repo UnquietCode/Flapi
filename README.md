@@ -11,10 +11,8 @@ Flapi is now a stable release, with all of the important features implemented. P
 by testing and reporting bugs, either on GitHub or JIRA.
 
 ## [Getting Started](https://github.com/UnquietCode/Flapi/wiki/Getting-Started)
-You can grab the latest jar from [the repository](https://github.com/UnquietCode/Flapi/tree/master/lib)
-directly.
-
-Or, if you are using Maven you can also include the following repository and dependency in your POM file:
+If you are using Maven you can download and install to your local repo, or include the following repository
+and dependency in your POM file:
 ```
 <repositories>
   <repository>
