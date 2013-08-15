@@ -28,6 +28,7 @@ package unquietcode.tools.flapi;
 public class MainDescriptor {
 	private static final int DOC_GROUP = 1;
 
+
 	public static void main(String[] args) {
 		Descriptor builder = Flapi.builder()
 
@@ -138,25 +139,25 @@ public class MainDescriptor {
 				// BlockChain
 				.startBlock("BlockChain", "addBlockChain()")
 					.withDocumentation()
-						.addContent("Add a BlockChain, which is a block which must be passed through\n")
-						.addContent("before the current method returns.")
+						.addContent("Add a BlockChain, which is a sequence of blocks  which must be")
+						.addContent("passed through\n before the method returns.")
 					.finish()
 				.atMost(1)
 					.addMethod("addBlockReference(String blockName)")
 						.withDocumentation("add a reference to an existing block")
-					.last()
+					.any()
 
 					.addBlockReference("Block", "startBlock(String blockName)")
 						.withDocumentation("create a new block")
-					.last()
+					.any()
 
 					.addBlockReference("Block", "startBlock()")
 						.withDocumentation("create a new anonymous block (which cannot be referenced from anywhere)")
-					.last()
+					.any()
 
-					.addBlockReference("BlockChain", "addBlockChain()")
-						.withDocumentation("add an additional link to the chain, occurring before this one")
-					.atMost(1)
+					.addMethod("end()")
+						.withDocumentation("finish creating the block chain for this method")
+					.last()
 				.endBlock()
 			.endBlock()
 
@@ -165,11 +166,14 @@ public class MainDescriptor {
 				.withDocumentation("Starts a new block.")
 				.addBlockChain()
 					.addBlockReference("Method")
-				.any()
+				.end()
+			.any()
 
 				.addMethod("addBlockReference(String blockName, String methodSignature)")
 					.withDocumentation("add a new method which proceeds to an existing block")
-					.addBlockChain().addBlockReference("Method")
+					.addBlockChain()
+						.addBlockReference("Method")
+					.end()
 				.any()
 
 				.addBlockReference("Method", "addMethod(String methodSignature)")
@@ -181,7 +185,10 @@ public class MainDescriptor {
 						.addContent("Start a new block, nested inside the current one.\n")
 						.addContent("The block can be referenced from outside by using the designated name.")
 					.finish()
-					.addBlockChain().addBlockReference("Method")
+
+					.addBlockChain()
+						.addBlockReference("Method")
+					.end()
 				.any()
 
 				.addBlockReference("Block", "startBlock(String methodSignature)")
@@ -189,12 +196,17 @@ public class MainDescriptor {
 						.addContent("Start a new anonymous block, nested inside the current one.\n")
 						.addContent("The block cannot be referenced from outside, as it has no name.")
 					.finish()
-				.addBlockChain().addBlockReference("Method")
+
+					.addBlockChain()
+						.addBlockReference("Method")
+					.end()
 				.any()
 
 				.addMethod("addEnumSelector(Class clazz, String methodSignature)")
 					.withDocumentation("Adds an enum selector, by passing in an enum class.")
-					.addBlockChain().addBlockReference("Method")
+					.addBlockChain()
+						.addBlockReference("Method")
+					.end()
 				.any()
 
 				.addMethod("endBlock()")
@@ -205,22 +217,29 @@ public class MainDescriptor {
 			// Block Reference for the top level block
 			.addMethod("addBlockReference(String blockName, String methodSignature)")
 				.withDocumentation("add a new method which proceeds to an existing block")
-				.addBlockChain().addBlockReference("Method")
+				.addBlockChain()
+					.addBlockReference("Method")
+				.end()
 			.any()
 
-			// new blocks for the top level block
+			// anonymous blocks for the top level block
 			.addBlockReference("Block", "startBlock(String methodSignature)")
 				.withDocumentation("Starts a new block.")
-				.addBlockChain().addBlockReference("Method")
+				.addBlockChain()
+					.addBlockReference("Method")
+				.end()
 			.any()
 
 			// enum selector for the top level block
 			.addMethod("addEnumSelector(Class clazz, String methodSignature)")
 				.withDocumentation("Adds an enum selector, by passing in an enum class.")
-				.addBlockChain().addBlockReference("Method")
+				.addBlockChain()
+					.addBlockReference("Method")
+				.end()
 			.any()
 		.build();
 
-		builder.writeToFolder(args[0]);
+		builder.writeToFolder("/Users/bfagin/Documents/IdeaProjects/Flapi/src/main/java");
+		//builder.writeToFolder(args[0]);
 	}
 }
