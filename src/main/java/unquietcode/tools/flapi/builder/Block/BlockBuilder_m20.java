@@ -1,11 +1,8 @@
 
-package unquietcode.tools.flapi.builder.Descriptor;
+package unquietcode.tools.flapi.builder.Block;
 
-import unquietcode.tools.flapi.Descriptor;
-import unquietcode.tools.flapi.builder.Block.BlockBuilder_m20;
 import unquietcode.tools.flapi.builder.Method.MethodBuilder_m6_m7_m8_m9_m10_m11_m12_m13_m14_m15_m16_m17_m18;
 import unquietcode.tools.flapi.runtime.MethodInfo;
-import unquietcode.tools.flapi.runtime.Tracked;
 import unquietcode.tools.flapi.runtime.TransitionType;
 
 import javax.annotation.Generated;
@@ -22,14 +19,14 @@ import javax.annotation.Generated;
  * Generated on August 14, 2013 21:16:25 PDT using version 0.4
  */
 @Generated(value = "unquietcode.tools.flapi", date = "August 14, 2013 21:16:25 PDT", comments = "generated using Flapi, the fluent API generator for Java")
-public interface DescriptorBuilder_m3 <_ReturnType> {
+public interface BlockBuilder_m20 <_ReturnType> {
     /**
      * add a new method which proceeds to an existing block
      */
     @MethodInfo(type = TransitionType.Recursive, chain = {
         MethodBuilder_m6_m7_m8_m9_m10_m11_m12_m13_m14_m15_m16_m17_m18 .class
     })
-    MethodBuilder_m6_m7_m8_m9_m10_m11_m12_m13_m14_m15_m16_m17_m18 <DescriptorBuilder_m3 <_ReturnType>> addBlockReference(String blockName, String methodSignature);
+    MethodBuilder_m6_m7_m8_m9_m10_m11_m12_m13_m14_m15_m16_m17_m18 <BlockBuilder_m20 <_ReturnType>> addBlockReference(String blockName, String methodSignature);
 
     /**
      * Adds an enum selector, by passing in an enum class.
@@ -37,48 +34,41 @@ public interface DescriptorBuilder_m3 <_ReturnType> {
     @MethodInfo(type = TransitionType.Recursive, chain = {
         MethodBuilder_m6_m7_m8_m9_m10_m11_m12_m13_m14_m15_m16_m17_m18 .class
     })
-    MethodBuilder_m6_m7_m8_m9_m10_m11_m12_m13_m14_m15_m16_m17_m18 <DescriptorBuilder_m3 <_ReturnType>> addEnumSelector(Class clazz, String methodSignature);
+    MethodBuilder_m6_m7_m8_m9_m10_m11_m12_m13_m14_m15_m16_m17_m18 <BlockBuilder_m20 <_ReturnType>> addEnumSelector(Class clazz, String methodSignature);
 
     /**
-     * Add a new method to the top level descriptor block.
+     * add a new method to the block
      */
     @MethodInfo(type = TransitionType.Recursive, chain = {
         MethodBuilder_m6_m7_m8_m9_m10_m11_m12_m13_m14_m15_m16_m17_m18 .class
     })
-    MethodBuilder_m6_m7_m8_m9_m10_m11_m12_m13_m14_m15_m16_m17_m18 <DescriptorBuilder_m3 <_ReturnType>> addMethod(String methodSignature);
+    MethodBuilder_m6_m7_m8_m9_m10_m11_m12_m13_m14_m15_m16_m17_m18 <BlockBuilder_m20 <_ReturnType>> addMethod(String methodSignature);
 
     /**
-     * Finish work and build the descriptor. This should only be called once.
+     * finish editing of the current block
      */
-    @MethodInfo(type = TransitionType.Terminal, chain = {
+    @MethodInfo(type = TransitionType.Ascending, chain = {
 
     })
-    Descriptor build();
+    _ReturnType endBlock();
 
     /**
-     * set the root package name to use for the generated classes
-     */
-    @MethodInfo(type = TransitionType.Lateral, chain = {
-
-    })
-    @Tracked(atLeast = 1, key = "Descriptor_setPackage$String_packageName")
-    DescriptorBuilder<_ReturnType> setPackage(String packageName);
-
-    /**
-     * Starts a new block.
+     * Start a new block, nested inside the current one.
+     * The block can be referenced from outside by using the designated name.
      */
     @MethodInfo(type = TransitionType.Recursive, chain = {
         MethodBuilder_m6_m7_m8_m9_m10_m11_m12_m13_m14_m15_m16_m17_m18 .class,
         BlockBuilder_m20 .class
     })
-    MethodBuilder_m6_m7_m8_m9_m10_m11_m12_m13_m14_m15_m16_m17_m18 <BlockBuilder_m20 <DescriptorBuilder_m3 <_ReturnType>>> startBlock(String blockName, String methodSignature);
+    MethodBuilder_m6_m7_m8_m9_m10_m11_m12_m13_m14_m15_m16_m17_m18 <BlockBuilder_m20 <BlockBuilder_m20 <_ReturnType>>> startBlock(String blockName, String methodSignature);
 
     /**
-     * Starts a new block.
+     * Start a new anonymous block, nested inside the current one.
+     * The block cannot be referenced from outside, as it has no name.
      */
     @MethodInfo(type = TransitionType.Recursive, chain = {
         MethodBuilder_m6_m7_m8_m9_m10_m11_m12_m13_m14_m15_m16_m17_m18 .class,
         BlockBuilder_m20 .class
     })
-    MethodBuilder_m6_m7_m8_m9_m10_m11_m12_m13_m14_m15_m16_m17_m18 <BlockBuilder_m20 <DescriptorBuilder_m3 <_ReturnType>>> startBlock(String methodSignature);
+    MethodBuilder_m6_m7_m8_m9_m10_m11_m12_m13_m14_m15_m16_m17_m18 <BlockBuilder_m20 <BlockBuilder_m20 <_ReturnType>>> startBlock(String methodSignature);
 }

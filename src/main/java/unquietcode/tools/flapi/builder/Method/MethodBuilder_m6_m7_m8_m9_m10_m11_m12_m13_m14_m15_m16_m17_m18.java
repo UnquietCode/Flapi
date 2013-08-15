@@ -1,8 +1,8 @@
 
 package unquietcode.tools.flapi.builder.Method;
 
-import unquietcode.tools.flapi.builder.BlockChain.BlockChainBuilder_m6_m19_m20_m21;
-import unquietcode.tools.flapi.builder.Documentation.DocumentationBuilder_m23;
+import unquietcode.tools.flapi.builder.BlockChain.BlockChainBuilder_m19;
+import unquietcode.tools.flapi.builder.Documentation.DocumentationBuilder_m21;
 import unquietcode.tools.flapi.runtime.MethodInfo;
 import unquietcode.tools.flapi.runtime.TransitionType;
 
@@ -17,18 +17,18 @@ import javax.annotation.Generated;
  * Visit https://github.com/UnquietCode/Flapi for more information.
  * 
  * 
- * Generated on July 03, 2013 22:41:52 PDT using version 0.4
+ * Generated on August 14, 2013 21:16:25 PDT using version 0.4
  */
-@Generated(value = "unquietcode.tools.flapi", date = "July 03, 2013 22:41:52 PDT", comments = "generated using Flapi, the fluent API generator for Java")
+@Generated(value = "unquietcode.tools.flapi", date = "August 14, 2013 21:16:25 PDT", comments = "generated using Flapi, the fluent API generator for Java")
 public interface MethodBuilder_m6_m7_m8_m9_m10_m11_m12_m13_m14_m15_m16_m17_m18 <_ReturnType> {
     /**
-     * Add a BlockChain, which is a block which must be passed through
-     * before the current method returns.
+     * Add a BlockChain, which is a sequence of blocks  which must bepassed through
+     *  before the method returns.
      */
     @MethodInfo(type = TransitionType.Lateral, next = MethodBuilder_m7_m8_m9_m10_m11_m12_m13_m14_m15_m16_m17_m18 .class, chain = {
-        BlockChainBuilder_m6_m19_m20_m21 .class
+        BlockChainBuilder_m19 .class
     })
-    BlockChainBuilder_m6_m19_m20_m21 <MethodBuilder_m7_m8_m9_m10_m11_m12_m13_m14_m15_m16_m17_m18 <_ReturnType>> addBlockChain();
+    BlockChainBuilder_m19 <MethodBuilder_m7_m8_m9_m10_m11_m12_m13_m14_m15_m16_m17_m18 <_ReturnType>> addBlockChain();
 
     /**
      * expose the method only after the specified group is finished
@@ -115,9 +115,9 @@ public interface MethodBuilder_m6_m7_m8_m9_m10_m11_m12_m13_m14_m15_m16_m17_m18 <
      * Add javadoc style documentation to the method.
      */
     @MethodInfo(type = TransitionType.Lateral, next = MethodBuilder_m6_m7_m8_m9_m10_m11_m12_m13_m14_m15_m16 .class, chain = {
-        DocumentationBuilder_m23 .class
+        DocumentationBuilder_m21 .class
     })
-    DocumentationBuilder_m23 <MethodBuilder_m6_m7_m8_m9_m10_m11_m12_m13_m14_m15_m16 <_ReturnType>> withDocumentation();
+    DocumentationBuilder_m21 <MethodBuilder_m6_m7_m8_m9_m10_m11_m12_m13_m14_m15_m16 <_ReturnType>> withDocumentation();
 
     /**
      * Add javadoc style documentation to the method.

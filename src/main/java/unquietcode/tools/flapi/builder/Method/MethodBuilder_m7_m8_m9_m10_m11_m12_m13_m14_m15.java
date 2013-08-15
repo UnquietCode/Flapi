@@ -15,9 +15,9 @@ import javax.annotation.Generated;
  * Visit https://github.com/UnquietCode/Flapi for more information.
  * 
  * 
- * Generated on July 03, 2013 22:41:52 PDT using version 0.4
+ * Generated on August 14, 2013 21:16:25 PDT using version 0.4
  */
-@Generated(value = "unquietcode.tools.flapi", date = "July 03, 2013 22:41:52 PDT", comments = "generated using Flapi, the fluent API generator for Java")
+@Generated(value = "unquietcode.tools.flapi", date = "August 14, 2013 21:16:25 PDT", comments = "generated using Flapi, the fluent API generator for Java")
 public interface MethodBuilder_m7_m8_m9_m10_m11_m12_m13_m14_m15 <_ReturnType> {
     /**
      * expose the method only after the specified group is finished

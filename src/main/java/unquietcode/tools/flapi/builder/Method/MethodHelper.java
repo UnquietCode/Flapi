@@ -16,13 +16,13 @@ import java.util.concurrent.atomic.AtomicReference;
  * Visit https://github.com/UnquietCode/Flapi for more information.
  * 
  * 
- * Generated on July 03, 2013 22:41:52 PDT using version 0.4
+ * Generated on August 14, 2013 21:16:25 PDT using version 0.4
  */
-@Generated(value = "unquietcode.tools.flapi", date = "July 03, 2013 22:41:52 PDT", comments = "generated using Flapi, the fluent API generator for Java")
+@Generated(value = "unquietcode.tools.flapi", date = "August 14, 2013 21:16:25 PDT", comments = "generated using Flapi, the fluent API generator for Java")
 public interface MethodHelper {
     /**
-     * Add a BlockChain, which is a block which must be passed through
-     * before the current method returns.
+     * Add a BlockChain, which is a sequence of blocks  which must bepassed through
+     *  before the method returns.
      */
     void addBlockChain(AtomicReference<BlockChainHelper> _helper1);
 

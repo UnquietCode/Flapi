@@ -2,7 +2,7 @@
 package unquietcode.tools.flapi.builder.Descriptor;
 
 import unquietcode.tools.flapi.Descriptor;
-import unquietcode.tools.flapi.builder.Block.BlockBuilder_m22;
+import unquietcode.tools.flapi.builder.Block.BlockBuilder_m20;
 import unquietcode.tools.flapi.builder.Method.MethodBuilder_m6_m7_m8_m9_m10_m11_m12_m13_m14_m15_m16_m17_m18;
 import unquietcode.tools.flapi.runtime.MethodInfo;
 import unquietcode.tools.flapi.runtime.TransitionType;
@@ -18,9 +18,9 @@ import javax.annotation.Generated;
  * Visit https://github.com/UnquietCode/Flapi for more information.
  * 
  * 
- * Generated on July 03, 2013 22:41:52 PDT using version 0.4
+ * Generated on August 14, 2013 21:16:25 PDT using version 0.4
  */
-@Generated(value = "unquietcode.tools.flapi", date = "July 03, 2013 22:41:52 PDT", comments = "generated using Flapi, the fluent API generator for Java")
+@Generated(value = "unquietcode.tools.flapi", date = "August 14, 2013 21:16:25 PDT", comments = "generated using Flapi, the fluent API generator for Java")
 public interface DescriptorBuilder_m1_m4_m5 <_ReturnType> {
     /**
      * add a new method which proceeds to an existing block
@@ -85,16 +85,16 @@ public interface DescriptorBuilder_m1_m4_m5 <_ReturnType> {
      */
     @MethodInfo(type = TransitionType.Recursive, chain = {
         MethodBuilder_m6_m7_m8_m9_m10_m11_m12_m13_m14_m15_m16_m17_m18 .class,
-        BlockBuilder_m22 .class
+        BlockBuilder_m20 .class
     })
-    MethodBuilder_m6_m7_m8_m9_m10_m11_m12_m13_m14_m15_m16_m17_m18 <BlockBuilder_m22 <DescriptorBuilder_m1_m4_m5 <_ReturnType>>> startBlock(String blockName, String methodSignature);
+    MethodBuilder_m6_m7_m8_m9_m10_m11_m12_m13_m14_m15_m16_m17_m18 <BlockBuilder_m20 <DescriptorBuilder_m1_m4_m5 <_ReturnType>>> startBlock(String blockName, String methodSignature);
 
     /**
      * Starts a new block.
      */
     @MethodInfo(type = TransitionType.Recursive, chain = {
         MethodBuilder_m6_m7_m8_m9_m10_m11_m12_m13_m14_m15_m16_m17_m18 .class,
-        BlockBuilder_m22 .class
+        BlockBuilder_m20 .class
     })
-    MethodBuilder_m6_m7_m8_m9_m10_m11_m12_m13_m14_m15_m16_m17_m18 <BlockBuilder_m22 <DescriptorBuilder_m1_m4_m5 <_ReturnType>>> startBlock(String methodSignature);
+    MethodBuilder_m6_m7_m8_m9_m10_m11_m12_m13_m14_m15_m16_m17_m18 <BlockBuilder_m20 <DescriptorBuilder_m1_m4_m5 <_ReturnType>>> startBlock(String methodSignature);
 }
