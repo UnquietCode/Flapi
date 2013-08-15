@@ -19,9 +19,9 @@ import javax.annotation.Generated;
  * Visit https://github.com/UnquietCode/Flapi for more information.
  * 
  * 
- * Generated on August 14, 2013 21:16:25 PDT using version 0.4
+ * Generated on August 14, 2013 21:46:20 PDT using version 0.4
  */
-@Generated(value = "unquietcode.tools.flapi", date = "August 14, 2013 21:16:25 PDT", comments = "generated using Flapi, the fluent API generator for Java")
+@Generated(value = "unquietcode.tools.flapi", date = "August 14, 2013 21:46:20 PDT", comments = "generated using Flapi, the fluent API generator for Java")
 public interface DescriptorBuilder_m3 <_ReturnType> {
     /**
      * add a new method which proceeds to an existing block

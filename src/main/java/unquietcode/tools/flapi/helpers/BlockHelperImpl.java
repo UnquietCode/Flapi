@@ -58,7 +58,7 @@ public class BlockHelperImpl implements BlockHelper {
 	static void _startBlock(BlockOutline block, String blockName, String methodSignature, AtomicReference<MethodHelper> _helper1, AtomicReference<BlockHelper> _helper2) {
 		BlockOutline newBlock = block.addBlock(blockName);
 		MethodOutline blockMethod = block.addMethod(methodSignature);
-		blockMethod.getBlockChain().add(0, newBlock);
+		blockMethod.getBlockChain().add(newBlock);
 		newBlock.setConstructor(blockMethod);
 
 		_helper1.set(new MethodHelperImpl(blockMethod));
