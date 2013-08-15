@@ -78,8 +78,11 @@ public class BuildChecks_T {
 			.setDescriptorName("Something")
 			.setStartingMethodName("create")
 
-			.addMethod("hello1()").addBlockChain()
-				.startBlock("Hello").endBlock()
+			.addMethod("hello1()")
+				.addBlockChain()
+					.startBlock("Hello")
+					.endBlock()
+				.end()
 			.any()
 
 			.startBlock("Hello", "hello2()").any().endBlock()
@@ -93,10 +96,12 @@ public class BuildChecks_T {
 			.setDescriptorName("Something")
 			.setStartingMethodName("create")
 
-			.addMethod("hello1()").addBlockChain()
-				.startBlock("Hello")
-					.startBlock("Hello", "hello2()").any().endBlock()
-				.endBlock()
+			.addMethod("hello1()")
+				.addBlockChain()
+					.startBlock("Hello")
+						.startBlock("Hello", "hello2()").any().endBlock()
+					.endBlock()
+				.end()
 			.any()
 
 		.build();
@@ -122,7 +127,11 @@ public class BuildChecks_T {
 			.setStartingMethodName("create")
 
 			.startBlock("Hello", "void hello()").any().endBlock()
-			.addMethod("method()").addBlockChain().addBlockReference("Moo").any()
+			.addMethod("method()")
+				.addBlockChain()
+					.addBlockReference("Moo")
+				.end()
+			.any()
 		.build();
 	}
 
@@ -133,15 +142,20 @@ public class BuildChecks_T {
 			.setDescriptorName("Something")
 			.setStartingMethodName("create")
 
-			.addMethod("method()").addBlockChain()
-				.startBlock("Hello")
-					.addMethod("end()").last()
-				.endBlock()
+			.addMethod("method()")
+				.addBlockChain()
+					.startBlock("Hello")
+						.addMethod("end()").last()
+					.endBlock()
+				.end()
 			.last()
 
 			.startBlock("Goodbye", "void hello2()")
-				.addBlockChain().addBlockReference("Hello").any()
-					.addMethod("last()").last()
+				.addBlockChain()
+					.addBlockReference("Hello")
+				.end()
+			.any()
+				.addMethod("last()").last()
 				.endBlock()
 		.build();
 	}
@@ -154,13 +168,20 @@ public class BuildChecks_T {
 			.setStartingMethodName("create")
 
 			.startBlock("BlockA", "void hello1()")
-				.addBlockChain().addBlockReference("BlockA").last()
+				.addBlockChain()
+					.addBlockReference("BlockA")
+				.end()
+			.last()
 
 				.addMethod("something()").last()
 			.endBlock()
 
 			.startBlock("BlockB", "void hello2()").atMost(1)
-				.addMethod("void recurse()").addBlockChain().addBlockReference("BlockB").last()
+				.addMethod("void recurse()")
+					.addBlockChain()
+						.addBlockReference("BlockB")
+					.end()
+				.last()
 			.endBlock()
 		.build();
 	}
@@ -307,9 +328,11 @@ public class BuildChecks_T {
 			.setDescriptorName("Something")
 
 			.startBlock("anon1()")
-				.addBlockChain().startBlock("Anon2")
-					.addMethod("done()").last()
-				.endBlock()
+				.addBlockChain()
+					.startBlock("Anon2")
+						.addMethod("done()").last()
+					.endBlock()
+				.end()
 			.last()
 
 			.endBlock()

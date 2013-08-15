@@ -68,7 +68,7 @@ public class BlockChainHelperImpl implements BlockChainHelper {
 	}
 
 	@Override
-	public void addBlockChain(AtomicReference<BlockChainHelper> _helper1) {
-		_helper1.set(new BlockChainHelperImpl(blockMethod));
+	public void end() {
+		// nothing
 	}
 }

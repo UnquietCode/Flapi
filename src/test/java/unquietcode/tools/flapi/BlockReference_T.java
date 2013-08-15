@@ -65,8 +65,8 @@ public class BlockReference_T {
 			.startBlock("Two", "two()")
 				.addBlockChain()
 					.addBlockReference("One")
-				//.end()
-				.any()
+				.end()
+			.any()
 				.addMethod("exit()").last()
 			.endBlock()
 
