@@ -17,17 +17,18 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<source.package>unquietcode/tools/flapi/runtime</source.package>
 	</properties>
 
 	<build>
 		<resources>
 			<resource>
-				<directory>src/main/java/unquietcode/tools/flapi/runtime</directory>
+				<directory>src/main/java/${source.package}</directory>
 				<includes>
 					<include>*.java</include>
 					<include>*.class</include>
 				</includes>
-				<targetPath>sources</targetPath>
+				<targetPath>sources/${source.package}</targetPath>
 			</resource>
 		</resources>
 	</build>

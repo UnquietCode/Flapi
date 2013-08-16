@@ -19,6 +19,8 @@
 
 package unquietcode.tools.flapi;
 
+import unquietcode.tools.flapi.runtime.BlockInvocationHandler;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -31,6 +33,8 @@ import java.util.Scanner;
  * @version 2013-07-01
  */
 public final class ExtractRuntime {
+	private static final String SOURCE_PATH = "sources";
+
 
 	/**
 	 * Extracts the various runtime classes to the directory
@@ -64,29 +68,34 @@ public final class ExtractRuntime {
 	}
 
 	private static void writeFiles(File folder, boolean useSources) {
-		String path = getSupportPath(folder);
-		File dir = new File(path);
+		String writePath = getResourcePath(folder);
+		File dir = new File(writePath);
 
 		if (!dir.exists()) {
 			boolean create = dir.mkdirs();
 			if (!create) {
-				throw new RuntimeException("Unable create output directory '"+path+"'.");
+				throw new RuntimeException("Unable create output directory '"+writePath+"'.");
 			}
 		}
 
-		String extension = useSources ? ".java" : ".class";
+		final String extension = useSources ? ".java" : ".class";
+		final String prefix = useSources ? SOURCE_PATH+"/"+packagePath("/"): packagePath("/");
 
 		try {
-			URL _sources = ExtractRuntime.class.getClassLoader().getResources("sources").nextElement();
+			URL _sources = ExtractRuntime.class.getClassLoader().getResources(prefix).nextElement();
 			File sources = new File(_sources.getFile());
 			File[] files = sources.listFiles();
+
+			if (files == null) {
+				throw new RuntimeException("unable to read files");
+			}
 
 			for (File file : files) {
 				if (!file.getName().endsWith(extension)) {
 					continue;
 				}
 
-				InputStream stream = getResourceFile("sources/" + file.getName());
+				InputStream stream = getResourceFile(prefix+"/"+file.getName());
 				File destination = createFile(dir.getAbsolutePath(), file.getName());
 				copyFile(stream, destination);
 			}
@@ -95,12 +104,22 @@ public final class ExtractRuntime {
 		}
 	}
 
-	public static String getSupportPath(File folder) {
+	public static String getResourcePath(File folder) {
 		String path = folder.getAbsolutePath();
 		path += File.separator;
-		path += "unquietcode"+File.separator+"tools"+File.separator+"flapi"+File.separator+"support"+File.separator;
+		path += packagePath(File.separator)+File.separator;
 
 		return path;
+	}
+
+	private static String packagePath(String separator) {
+		StringBuilder sb = new StringBuilder();
+
+		for (String segment : BlockInvocationHandler.class.getPackage().getName().split("\\.")) {
+			sb.append(segment).append(separator);
+		}
+
+		return sb.toString().substring(0, sb.length()-1);
 	}
 
 	private static InputStream getResourceFile(String name) {

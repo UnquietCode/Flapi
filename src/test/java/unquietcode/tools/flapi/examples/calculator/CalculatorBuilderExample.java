@@ -68,8 +68,7 @@ public class CalculatorBuilderExample {
 
 	@Test
 	public void cleanedUpUsage() {
-		AtomicReference result = Calculator
-		.begin(0)
+		AtomicReference result = Calculator.begin(0)
 			.plus(1)
 			.plus(1)
 			.power(5)

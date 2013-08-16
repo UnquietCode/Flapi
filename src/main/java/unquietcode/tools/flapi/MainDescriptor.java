@@ -239,7 +239,6 @@ public class MainDescriptor {
 			.any()
 		.build();
 
-		builder.writeToFolder("/Users/bfagin/Documents/IdeaProjects/Flapi/src/main/java");
-		//builder.writeToFolder(args[0]);
+		builder.writeToFolder(args[0]);
 	}
 }
