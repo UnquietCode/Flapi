@@ -1,0 +1,1222 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Flapi.java</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <link rel="stylesheet" media="all" href="doc-style.css" />
+  <script src="doc-filelist.js"></script>
+  <script>
+    var relativeDir = "", thisFile = "Users/bfagin/Documents/Code Projects/Flapi/docs//Flapi.java", defaultSidebar = true;
+  </script>
+  <script src="doc-script.js"></script>
+</head>
+<body>
+  <div id="sidebar_wrapper">
+    <div id="sidebar_switch">
+      <span class="tree">Files</span>
+      <span class="headings">Headings</span>
+    </div>
+    <div id="tree"></div>
+    <div id="headings">
+      <div class="heading h1">
+        <a href="#flapi">Flapi</a>
+      </div>
+      <div class="heading h3">
+        <a href="#a%20fluent%20api%20generator%20for%20java">A fluent API generator for Java</a>
+      </div>
+      <div class="heading h3">
+        <a href="#at%20build%20time">At Build Time</a>
+      </div>
+      <div class="heading h3">
+        <a href="#at%20run%20time">At Run Time</a>
+      </div>
+      <div class="heading h2">
+        <a href="#descriptors">Descriptors</a>
+      </div>
+      <div class="heading h3">
+        <a href="#descriptorbuilder%20methods">DescriptorBuilder Methods</a>
+      </div>
+      <div class="heading h3">
+        <a href="#descriptor%20methods">Descriptor Methods</a>
+      </div>
+      <div class="heading h2">
+        <a href="#blocks">Blocks</a>
+      </div>
+      <div class="heading h3">
+        <a href="#blockbuilder%20methods">BlockBuilder Methods</a>
+      </div>
+      <div class="heading h3">
+        <a href="#block%20methods">Block Methods</a>
+      </div>
+      <div class="heading h3">
+        <a href="#enum%20selectors">Enum Selectors</a>
+      </div>
+      <div class="heading h3">
+        <a href="#block%20references">Block References</a>
+      </div>
+      <div class="heading h2">
+        <a href="#methods">Methods</a>
+      </div>
+      <div class="heading h3">
+        <a href="#methodbuilder%20methods">MethodBuilder Methods</a>
+      </div>
+      <div class="heading h3">
+        <a href="#method%20quantifiers">Method Quantifiers</a>
+      </div>
+      <div class="heading h3">
+        <a href="#method%20groups">Method Groups</a>
+      </div>
+      <div class="heading h3">
+        <a href="#block%20chains">Block Chains</a>
+      </div>
+      <div class="heading h3">
+        <a href="#method%20documentation">Method Documentation</a>
+      </div>
+      <div class="heading h2">
+        <a href="#thanks!">Thanks!</a>
+      </div>
+    </div>
+  </div>
+  <div id="sidebar-toggle"></div>
+  <div id="container"><div class="background highlight"></div>
+<table cellpadding="0" cellspacing="0">
+  <tbody>
+      <tr>
+        <td class="docs"><div class="dox">
+  <div class="summary">
+<div class="pilwrap" id="flapi">
+  <h1>
+    <a href="#flapi" name="flapi" class="pilcrow">&#182;</a>
+    Flapi
+  </h1>
+</div>
+
+
+
+<div class="pilwrap" id="a%20fluent%20api%20generator%20for%20java">
+  <h3>
+    <a href="#a%20fluent%20api%20generator%20for%20java" name="a%20fluent%20api%20generator%20for%20java" class="pilcrow">&#182;</a>
+    <em>A fluent API generator for Java</em>
+  </h3>
+</div>
+
+  </div>
+  <div class="body">
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs"><div class="dox">
+  <div class="summary"><p>Flapi is a Java DSL for generating fluent API's built on method chaining.
+Using the tool, you can create your own DSL's in Java, supporting
+practices like Language Oriented Programming and enabling higher-order
+abstractions in your projects. And because they are type safe, any
+reasonable code autocomplete should be able to provide you with instant
+coding hints as you type. Method docs are also available, and most IDE's
+can display these for you.  </p>
+  </div>
+  <div class="body">
+<div class="pilwrap" id="at%20build%20time">
+  <h3>
+    <a href="#at%20build%20time" name="at%20build%20time" class="pilcrow">&#182;</a>
+    At Build Time
+  </h3>
+</div>
+
+
+<p>In general, the user must first define a <code>Descriptor</code> which details how
+the API should operate. Once constructed, the descriptor is then used to
+generate a set of Java source files. These files are comprised of a few
+runtime classes and generated interfaces. The generated sources should
+be included in your project, perhaps as a module dependency. (This project
+also contains a maven plugin which allows you to regenerate your sources
+on the fly. See more <a href="https://github.com/UnquietCode/Flapi/wiki">here</a>).</p>
+
+
+<div class="pilwrap" id="at%20run%20time">
+  <h3>
+    <a href="#at%20run%20time" name="at%20run%20time" class="pilcrow">&#182;</a>
+    At Run Time
+  </h3>
+</div>
+
+
+<p>When a new instance of your builder is constructed, a single JDK dynamic
+proxy object is configured. Starting with the top-level type, each method
+in your fluent API is invoked by the user on this proxy, which in turn
+calls the relevant methods your API's runtime implementation. (more on
+this later)</p>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+
+<span class="n">EmailGenerator</span><span class="o">.</span><span class="na">compose</span><span class="o">(</span><span class="k">new</span> <span class="n">EmailHelperImpl</span><span class="o">())</span>
+    <span class="o">.</span><span class="na">sender</span><span class="o">(</span><span class="s">&quot;HAL9000@gmail.com&quot;</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">addRecipient</span><span class="o">(</span><span class="s">&quot;dave@unquietcode.com&quot;</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">subject</span><span class="o">(</span><span class="s">&quot;Just what do you think you&#39;re doing, Dave?&quot;</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">body</span><span class="o">(</span><span class="s">&quot;I know that you and Frank were planning to disconnect me, &quot;</span> <span class="o">+</span>
+          <span class="s">&quot;and I&#39;m afraid that&#39;s something I cannot allow to happen...&quot;</span><span class="o">)</span>
+<span class="o">.</span><span class="na">send</span><span class="o">();</span>
+
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs"><div class="dox">
+  <div class="summary">
+<div class="pilwrap" id="descriptors">
+  <h2>
+    <a href="#descriptors" name="descriptors" class="pilcrow">&#182;</a>
+    Descriptors
+  </h2>
+</div>
+
+  </div>
+  <div class="body"><p>The top level object in Flapi is the <code>Descriptor</code>. This contains all of the
+information needed to generate the source code. You can start creating a
+new Descriptor using <code>Flapi.builder()</code>...<code>.build()</code>, making sure to call
+all of the required methods in between. After the call to build you will
+have a descriptor which is ready to be generated.</p>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+
+<span class="n">Descriptor</span> <span class="n">builder</span> <span class="o">=</span> <span class="n">Flapi</span><span class="o">.</span><span class="na">builder</span><span class="o">()</span>
+  <span class="o">.</span><span class="na">setPackage</span><span class="o">(</span><span class="s">&quot;unquietcode.tools.flapi.examples.email.builder&quot;</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">setStartingMethodName</span><span class="o">(</span><span class="s">&quot;compose&quot;</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">setDescriptorName</span><span class="o">(</span><span class="s">&quot;Email&quot;</span><span class="o">)</span>
+
+  <span class="o">.</span><span class="na">addMethod</span><span class="o">(</span><span class="s">&quot;subject(String subject)&quot;</span><span class="o">).</span><span class="na">atMost</span><span class="o">(</span><span class="mi">1</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">addMethod</span><span class="o">(</span><span class="s">&quot;addRecipient(String emailAddress)&quot;</span><span class="o">).</span><span class="na">atLeast</span><span class="o">(</span><span class="mi">1</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">addMethod</span><span class="o">(</span><span class="s">&quot;sender(String emailAddress)&quot;</span><span class="o">).</span><span class="na">exactly</span><span class="o">(</span><span class="mi">1</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">addMethod</span><span class="o">(</span><span class="s">&quot;body(String text)&quot;</span><span class="o">).</span><span class="na">atMost</span><span class="o">(</span><span class="mi">1</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">addMethod</span><span class="o">(</span><span class="s">&quot;send()&quot;</span><span class="o">).</span><span class="na">last</span><span class="o">(</span><span class="n">EmailMessage</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+<span class="o">.</span><span class="na">build</span><span class="o">();</span>
+
+<span class="n">builder</span><span class="o">.</span><span class="na">writeToStream</span><span class="o">(</span><span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">);</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs"><div class="dox">
+  <div class="summary">
+<div class="pilwrap" id="descriptorbuilder%20methods">
+  <h3>
+    <a href="#descriptorbuilder%20methods" name="descriptorbuilder%20methods" class="pilcrow">&#182;</a>
+    DescriptorBuilder Methods
+  </h3>
+</div>
+
+  </div>
+  <div class="body"><p>Of the methods which you can call while constructing a new
+<code>Descriptor</code> object, some are required in order to have a valid
+descriptor in the end. In general, Flapi will throw an exception if
+it detects an inconsistency. Where possible, the API has been made
+"self-driving" and intuitive via autocomplete and javadocs. </p>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-5" id="section-5">&#182;</a>
+</div>
+<p>Start building a new Descriptor.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="n">Descriptor</span> <span class="n">descriptor</span> <span class="o">=</span> <span class="n">Flapi</span><span class="o">.</span><span class="na">builder</span><span class="o">()</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-6" id="section-6">&#182;</a>
+</div>
+<p>Set the package for all generated classes. (<strong>required</strong>)</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="o">.</span><span class="na">setPackage</span><span class="o">(</span><span class="n">String</span> <span class="n">package</span><span class="o">)</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-7" id="section-7">&#182;</a>
+</div>
+<p>Set the starting method name. (optional, default is <code>create()</code>)</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="o">.</span><span class="na">setStartingMethodName</span><span class="o">(</span><span class="n">String</span> <span class="n">name</span><span class="o">)</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-8" id="section-8">&#182;</a>
+</div>
+<p>Set the name of the descriptor. These will yield names like
+<code>ZapBuilder</code> and <code>ZapGeneartor</code> in the generated classes. (<strong>required</strong>)</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="o">.</span><span class="na">setDescriptorName</span><span class="o">(</span><span class="n">String</span> <span class="n">descriptor</span><span class="o">)</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-9" id="section-9">&#182;</a>
+</div>
+<p>Set the return type for the entire descriptor. (optional,
+default is <code>void</code>)</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="o">.</span><span class="na">setReturnType</span><span class="o">(</span><span class="n">Class</span> <span class="n">class</span><span class="o">)</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-10" id="section-10">&#182;</a>
+</div>
+<p>Generate class names which are condensed at the expense of
+being mangled and not as readable by a human. This is
+useful if you have a complicated descriptor which creates
+class names too long to be compiled.  (optional)</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="o">.</span><span class="na">enableCondensedClassNames</span><span class="o">()</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-11" id="section-11">&#182;</a>
+</div>
+<p>Complete the finished descriptor, returning a new 
+<code>Descriptor</code> object. (<strong>required</strong>)</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="o">.</span><span class="na">build</span><span class="o">()</span>
+
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs"><div class="dox">
+  <div class="summary">
+<div class="pilwrap" id="descriptor%20methods">
+  <h3>
+    <a href="#descriptor%20methods" name="descriptor%20methods" class="pilcrow">&#182;</a>
+    Descriptor Methods
+  </h3>
+</div>
+
+  </div>
+  <div class="body"><p>After you finish creating a new <code>Descriptor</code>, there are a
+few methods which can be called on it in order to
+generate the source files and write them to a stream
+or directory.</p>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-13" id="section-13">&#182;</a>
+</div>
+<p>Write the generated source code to a stream.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="o">.</span><span class="na">writeToStream</span><span class="o">(</span><span class="n">OutputStream</span> <span class="n">stream</span><span class="o">);</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-14" id="section-14">&#182;</a>
+</div>
+<p>Write the generated source code to a directory.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="o">.</span><span class="na">writeToFolder</span><span class="o">(</span><span class="n">String</span> <span class="n">folder</span><span class="o">);</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-15" id="section-15">&#182;</a>
+</div>
+<p>Write each individual file to a different stream.
+The iterator should provide a potentially unlimited
+number of streams for use.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="o">.</span><span class="na">writeToStreams</span><span class="o">(</span><span class="n">Iterator</span><span class="o">&lt;</span><span class="n">OutputStream</span><span class="o">&gt;</span> <span class="n">streams</span><span class="o">)</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs"><div class="dox">
+  <div class="summary">
+<div class="pilwrap" id="blocks">
+  <h2>
+    <a href="#blocks" name="blocks" class="pilcrow">&#182;</a>
+    Blocks
+  </h2>
+</div>
+
+  </div>
+  <div class="body"><p>Blocks are the basic unit of state in Flapi, and correlate with the
+interfaces generated for your API. As a user invokes methods on your
+builder, they are transitioned from state to state by way of Java's
+type system. </p>
+
+<p>You can define blocks at the <code>Descriptor</code> level, or nested inside
+each other. Similarly, when using the builder at runtime you are
+moving in to and out of blocks, by way of Java's type system, until
+you finally 'escape' the top block or a value is returned from the
+current block.</p>
+
+<p>A new block is defined by calling the <code>startBlock(...)</code> method,
+passing in the method signature and the optional name. This
+returns a <code>MethodBuilder</code> object which allows you to customize
+the invocation in the parent block. Methods will be discussed in
+just a moment.</p>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+
+<span class="o">.</span><span class="na">startBlock</span><span class="o">(</span><span class="s">&quot;SomeBlock&quot;</span><span class="o">,</span> <span class="s">&quot;beginSomething()&quot;</span><span class="o">).</span><span class="na">any</span><span class="o">()</span>
+    <span class="o">.</span><span class="na">addMethod</span><span class="o">(</span><span class="s">&quot;someMethod()&quot;</span><span class="o">).</span><span class="na">last</span><span class="o">()</span>
+    <span class="o">.</span><span class="na">addMethod</span><span class="o">(</span><span class="s">&quot;someOtherMethod(java.io.File file)&quot;</span><span class="o">).</span><span class="na">last</span><span class="o">()</span>
+
+    <span class="o">.</span><span class="na">startBlock</span><span class="o">(</span><span class="s">&quot;Nested&quot;</span><span class="o">,</span> <span class="s">&quot;nestedBlock()&quot;</span><span class="o">).</span><span class="na">last</span><span class="o">()</span>
+        <span class="o">.</span><span class="na">addMethod</span><span class="o">(</span><span class="s">&quot;anotherMethod(String string)&quot;</span><span class="o">).</span><span class="na">atMost</span><span class="o">(</span><span class="mi">1</span><span class="o">)</span>
+        <span class="o">.</span><span class="na">addMethod</span><span class="o">(</span><span class="s">&quot;finish()&quot;</span><span class="o">).</span><span class="na">last</span><span class="o">()</span>
+    <span class="o">.</span><span class="na">endBlock</span><span class="o">()</span>
+<span class="o">.</span><span class="na">endBlock</span><span class="o">()</span>
+
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs"><div class="dox">
+  <div class="summary">
+<div class="pilwrap" id="blockbuilder%20methods">
+  <h3>
+    <a href="#blockbuilder%20methods" name="blockbuilder%20methods" class="pilcrow">&#182;</a>
+    BlockBuilder Methods
+  </h3>
+</div>
+
+  </div>
+  <div class="body"><p>A block consists is started with <code>startBlock(...)</code> and must
+end with a call to <code>endBlock()</code>. This is due to an important
+disadvantage of method chaining: it's impossible to know
+when the user is 'done' without an explicit method call.</p>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-18" id="section-18">&#182;</a>
+</div>
+<p>Start a new block. This can be called either from the top level
+descriptor (which is actually just a special kind of block) or
+from within an existing block.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="o">.</span><span class="na">startBlock</span><span class="o">(</span><span class="n">String</span> <span class="n">blockName</span><span class="o">,</span> <span class="n">String</span> <span class="n">methodSignature</span><span class="o">)</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-19" id="section-19">&#182;</a>
+</div>
+<p>Start a new anonymous block. The names of these blocks will be
+generated, and so they cannot be referenced.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="o">.</span><span class="na">startBlock</span><span class="o">(</span><span class="n">String</span> <span class="n">methodSignature</span><span class="o">)</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-20" id="section-20">&#182;</a>
+</div>
+<p>end the current block (<strong>required</strong>)</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="o">.</span><span class="na">endBlock</span><span class="o">()</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs"><div class="dox">
+  <div class="summary">
+<div class="pilwrap" id="block%20methods">
+  <h3>
+    <a href="#block%20methods" name="block%20methods" class="pilcrow">&#182;</a>
+    Block Methods
+  </h3>
+</div>
+
+  </div>
+  <div class="body"><p>A block is comprised of methods, and these roughly correspond
+to the methods found in the generated interfaces. There should
+be at least one method in every block which is marked as a
+terminal method (via <code>last(...)</code>). There is one exception to
+this rule, which is when all of your methods are disappearing
+(via <code>atMost(...)</code>). In that case, a warning is printed and
+the last method available in each state is marked as terminal.</p>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-22" id="section-22">&#182;</a>
+</div>
+<p>Add a new method to the block. If no return type is provided
+then <code>void</code> is inferred.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="o">.</span><span class="na">addMethod</span><span class="o">(</span><span class="s">&quot;someMethod()&quot;</span><span class="o">).</span><span class="na">any</span><span class="o">()</span>
+<span class="o">.</span><span class="na">addMethod</span><span class="o">(</span><span class="s">&quot;String someOtherMethod()&quot;</span><span class="o">).</span><span class="na">atLeast</span><span class="o">(</span><span class="mi">1</span><span class="o">)</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-23" id="section-23">&#182;</a>
+</div>
+<p>Method parameters which are within the <code>java.lang</code> and <code>java.util</code> package are inferred.
+Other types must be fully qualified.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="o">.</span><span class="na">addMethod</span><span class="o">(</span><span class="s">&quot;someMethod(String name)&quot;</span><span class="o">).</span><span class="na">any</span><span class="o">()</span>
+<span class="o">.</span><span class="na">addMethod</span><span class="o">(</span><span class="s">&quot;someOtherMethod(java.io.File file)&quot;</span><span class="o">).</span><span class="na">atMost</span><span class="o">(</span><span class="mi">1</span><span class="o">)</span>
+
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs"><div class="dox">
+  <div class="summary">
+<div class="pilwrap" id="enum%20selectors">
+  <h3>
+    <a href="#enum%20selectors" name="enum%20selectors" class="pilcrow">&#182;</a>
+    Enum Selectors
+  </h3>
+</div>
+
+  </div>
+  <div class="body"><p>Enum Selectors take an enum with a series of values and fans them
+out into block with methods of the same name. This avoids importing
+enums while still making use of them.  </p>
+
+<p>In the example, the method <code>test()</code> will be added to the current
+block, the use of which looks like this:</p>
+
+
+<div class="highlight"><pre><code><span class="o">.</span><span class="na">test</span><span class="o">().</span><span class="na">One</span><span class="o">()</span>
+<span class="o">.</span><span class="na">test</span><span class="o">().</span><span class="na">TWO</span><span class="o">()</span>
+<span class="o">.</span><span class="na">test</span><span class="o">().</span><span class="na">three</span><span class="o">()</span>
+</code></pre></div>
+
+
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+
+<span class="kd">public</span> <span class="kd">enum</span> <span class="n">TestEnum</span> <span class="o">{</span>
+    <span class="n">One</span><span class="o">,</span> <span class="n">TWO</span><span class="o">,</span> <span class="n">three</span>
+<span class="o">}</span>
+ 
+<span class="o">.</span><span class="na">addEnumSelector</span><span class="o">(</span><span class="n">TestEnum</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="s">&quot;test()&quot;</span><span class="o">).</span><span class="na">any</span><span class="o">()</span>
+
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-25" id="section-25">&#182;</a>
+</div>
+<p>Add a method which starts a new block whose methods are
+comprised of every enum in the provided enum class.
+Returns a <code>MethodBuilder</code> which can be used to configure
+the method's invocation in the parent block.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="o">.</span><span class="na">addEnumSelector</span><span class="o">(</span><span class="n">Class</span> <span class="n">enumClass</span><span class="o">,</span> <span class="n">String</span> <span class="n">methodSignature</span><span class="o">).</span><span class="na">any</span><span class="o">()</span>
+
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs"><div class="dox">
+  <div class="summary">
+<div class="pilwrap" id="block%20references">
+  <h3>
+    <a href="#block%20references" name="block%20references" class="pilcrow">&#182;</a>
+    Block References
+  </h3>
+</div>
+
+  </div>
+  <div class="body"><p>It is possible to make use of an already declared block by
+using a 'block reference'. This allows you to add a method which
+returns the block type without having to redefine it in your
+descriptor. (This technique can also be used recursively to
+return a new instance of the current block.)</p>
+
+<p>When a block is declared, a name can be provided which uniquely
+identifies it within the scope of your descriptor. A block can
+also be declared anonymously, in which case it cannot be
+referenced.</p>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-27" id="section-27">&#182;</a>
+</div>
+<p>Add a method which starts a new block, but by referencing it
+instead of defining it. Returns a <code>MethodBuilder</code> to
+configure the call.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="o">.</span><span class="na">addBlockReference</span><span class="o">(</span><span class="n">String</span> <span class="n">blockName</span><span class="o">,</span> <span class="n">String</span> <span class="n">methodSignature</span><span class="o">)</span>
+
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs"><div class="dox">
+  <div class="summary">
+<div class="pilwrap" id="methods">
+  <h2>
+    <a href="#methods" name="methods" class="pilcrow">&#182;</a>
+    Methods
+  </h2>
+</div>
+
+  </div>
+  <div class="body"><p>Methods in Flapi roughly correspond to the methods in your
+generated interfaces. Methods have rules which define how many
+times they can be called, when they become visible or invisible,
+etc. In Flapi a method becomes <em>invisible</em> when it has been
+called the maximum number of times, or if another method
+in the same group causes it to disappear. Similarly, trigger
+methods allow a method to become <em>visible</em> only after another 
+method is called.</p>
+
+<p>'visible' here means listed as a method in an interface which
+the user of our descriptor will interact with. If a user
+attempts to invoke a method which is invisible, the method will
+not be a member of the  current class and a compile error
+will occur! When using autocomplete it is very clear that the
+method is no longer available to be called.</p>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+
+<span class="o">.</span><span class="na">addMethod</span><span class="o">(</span><span class="s">&quot;unlimited()&quot;</span><span class="o">).</span><span class="na">any</span><span class="o">()</span>
+
+<span class="o">.</span><span class="na">addMethod</span><span class="o">(</span><span class="s">&quot;once()&quot;</span><span class="o">).</span><span class="na">atMost</span><span class="o">(</span><span class="mi">1</span><span class="o">)</span>
+
+<span class="o">.</span><span class="na">addMethod</span><span class="o">(</span><span class="s">&quot;terminal()&quot;</span><span class="o">).</span><span class="na">last</span><span class="o">()</span>
+
+<span class="o">.</span><span class="na">addMethod</span><span class="o">(</span><span class="s">&quot;terminalWithValue()&quot;</span><span class="o">).</span><span class="na">last</span><span class="o">(</span><span class="n">Integer</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs"><div class="dox">
+  <div class="summary">
+<div class="pilwrap" id="methodbuilder%20methods">
+  <h3>
+    <a href="#methodbuilder%20methods" name="methodbuilder%20methods" class="pilcrow">&#182;</a>
+    MethodBuilder Methods
+  </h3>
+</div>
+
+  </div>
+  <div class="body"><p>A descriptor method is defined with a preset number of times
+which it can be, or should be, invoked. Setting the <em>quantifier</em>
+for a method is one way to adjust its behavior. A method may
+be marked <code>any()</code>, <code>atMost(...)</code>, <code>atLeast(...)</code>,
+<code>between(...)</code>, <code>exactly(...)</code>, or <code>last(...)</code>. Each of these
+are terminal methods in the <code>MethodBuilder</code> classes, making
+them effectively required.</p>
+
+<p><strong>Every block must have at least one terminal method</strong>, and
+this can be set via <code>last(...)</code>. This states that the
+method should exit the current block, either by returning
+a value (if a return type is provided on the method or
+the block), returning the parent block, or returning
+<code>void</code> if no return type is available.</p>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs"><div class="dox">
+  <div class="summary">
+<div class="pilwrap" id="method%20quantifiers">
+  <h3>
+    <a href="#method%20quantifiers" name="method%20quantifiers" class="pilcrow">&#182;</a>
+    Method Quantifiers
+  </h3>
+</div>
+
+  </div>
+  <div class="body">
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-31" id="section-31">&#182;</a>
+</div>
+<p>Specifies that the method can be called at most <em>x</em> times.
+After that amount, the method will no longer be available
+to be called.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="o">.</span><span class="na">atMost</span><span class="o">(</span><span class="kt">int</span> <span class="n">x</span><span class="o">)</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-32" id="section-32">&#182;</a>
+</div>
+<p>The method must be called at least <em>x</em> times.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="o">.</span><span class="na">atLeast</span><span class="o">(</span><span class="kt">int</span> <span class="n">x</span><span class="o">)</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-33" id="section-33">&#182;</a>
+</div>
+<p>The method must be called between <em>x</em> and <em>y</em> times.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="o">.</span><span class="na">between</span><span class="o">(</span><span class="kt">int</span> <span class="n">x</span><span class="o">,</span> <span class="kt">int</span> <span class="n">y</span><span class="o">)</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-34" id="section-34">&#182;</a>
+</div>
+<p>The method must be called exactly <em>x</em> times.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="o">.</span><span class="na">exactly</span><span class="o">(</span><span class="kt">int</span> <span class="n">x</span><span class="o">)</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-35" id="section-35">&#182;</a>
+</div>
+<p>The method can be called any number of times.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="o">.</span><span class="na">any</span><span class="o">()</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-36" id="section-36">&#182;</a>
+</div>
+<p>The method can be called once, and will return
+the block's return type after being called. Every
+block should have a last method so that there is
+a way to exit it (think of a state machine stuck
+in an infinite loop).</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="o">.</span><span class="na">last</span><span class="o">()</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-37" id="section-37">&#182;</a>
+</div>
+<p>The method, in addition to being last, will also
+return the specified type. This overrides any
+return type set for the block.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="o">.</span><span class="na">last</span><span class="o">(</span><span class="n">Class</span> <span class="n">class</span><span class="o">)</span>
+
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs"><div class="dox">
+  <div class="summary">
+<div class="pilwrap" id="method%20groups">
+  <h3>
+    <a href="#method%20groups" name="method%20groups" class="pilcrow">&#182;</a>
+    Method Groups
+  </h3>
+</div>
+
+  </div>
+  <div class="body"><p>Methods can be grouped together, and this causes
+them to influence each others' behaviors. Using
+groups allows for complicated "A xor B" types of
+workflows.</p>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-39" id="section-39">&#182;</a>
+</div>
+<p>Members of the same group will become invisible
+as soon as the first member of the group does so.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="o">.</span><span class="na">atMost</span><span class="o">(</span><span class="kt">int</span> <span class="n">x</span><span class="o">,</span> <span class="kt">int</span> <span class="n">group</span><span class="o">)</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-40" id="section-40">&#182;</a>
+</div>
+<p>The method will only become visible after at
+least one member of the group has been called.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="o">.</span><span class="na">after</span><span class="o">(</span><span class="kt">int</span> <span class="n">group</span><span class="o">)</span>
+
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs"><div class="dox">
+  <div class="summary">
+<div class="pilwrap" id="block%20chains">
+  <h3>
+    <a href="#block%20chains" name="block%20chains" class="pilcrow">&#182;</a>
+    Block Chains
+  </h3>
+</div>
+
+  </div>
+  <div class="body"><p>Sometimes you want a method to pass through a series
+of blocks before returning. This can be accomplished
+by adding a Block Chain to any method. The chain may
+contain any number of block references, named blocks,
+and anonymous blocks.</p>
+
+<p>Before the target of any method is reached (be it the current
+block, a new block, the parent block, or a terminal value),
+it first passes through its block chain, which is empty by
+default. The order in which the chain is defined in the
+builder is the same as what the user will experience later
+when interacting with your API.</p>
+
+<div class='highlight'><pre><code language=''>Block chains are NOT preserved when you reference an
+existing block. That is, the block chain is part of
+the method invocation which returns the block, not
+the block itself.
+</code></pre></div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+
+<span class="o">.</span><span class="na">addMethod</span><span class="o">(</span><span class="s">&quot;method()&quot;</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">addBlockChain</span><span class="o">()</span>
+        <span class="o">.</span><span class="na">addBlockReference</span><span class="o">(</span><span class="s">&quot;SomeBlock&quot;</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">end</span><span class="o">()</span>
+<span class="o">.</span><span class="na">any</span><span class="o">()</span>
+
+<span class="o">.</span><span class="na">startBlock</span><span class="o">(</span><span class="s">&quot;block()&quot;</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">addBlockChain</span><span class="o">()</span>
+        <span class="o">.</span><span class="na">addBlockReference</span><span class="o">(</span><span class="s">&quot;SomeBlock&quot;</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">end</span><span class="o">()</span>
+<span class="o">.</span><span class="na">any</span><span class="o">()</span>
+    <span class="o">.</span><span class="na">addMethod</span><span class="o">(</span><span class="s">&quot;done()&quot;</span><span class="o">).</span><span class="na">last</span><span class="o">()</span>
+<span class="o">.</span><span class="na">endBlock</span><span class="o">()</span>
+
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-42" id="section-42">&#182;</a>
+</div>
+<p>Add a block chain to the method. Returns a <code>BlockChainBuilder</code>
+which can be used to define the sequence.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="o">.</span><span class="na">addBlockChain</span><span class="o">()</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-43" id="section-43">&#182;</a>
+</div>
+<p>reference an existing block</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="o">.</span><span class="na">addBlockReference</span><span class="o">(</span><span class="n">String</span> <span class="n">blockName</span><span class="o">)</span>
+    
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-44" id="section-44">&#182;</a>
+</div>
+<p>new named block</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="o">.</span><span class="na">startBlock</span><span class="o">(</span><span class="n">String</span> <span class="n">blockName</span><span class="o">)</span>
+        <span class="o">...</span>
+    <span class="o">.</span><span class="na">endBlock</span><span class="o">()</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-45" id="section-45">&#182;</a>
+</div>
+<p>new anonymous block</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="o">.</span><span class="na">startBlock</span><span class="o">()</span>
+        <span class="o">...</span>
+    <span class="o">.</span><span class="na">endBlock</span><span class="o">()</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-46" id="section-46">&#182;</a>
+</div>
+<p>finish defining the block chain</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="o">.</span><span class="na">end</span><span class="o">()</span>
+
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs"><div class="dox">
+  <div class="summary">
+<div class="pilwrap" id="method%20documentation">
+  <h3>
+    <a href="#method%20documentation" name="method%20documentation" class="pilcrow">&#182;</a>
+    Method Documentation
+  </h3>
+</div>
+
+  </div>
+  <div class="body"><p>When declaring a method, it is possible to specify a
+documentation string to include on the method in the
+generated interfaces. Users will be able to look up
+the documentation in their IDE for these methods. As
+well, it is possible to run the generated source 
+through the javadocs tool to generate API docs.</p>
+
+<p>The documentation methods are available on the
+<code>MethodBuilder</code> class, and allow for either a single
+line or a multi-line declaration. It is also possible
+to mark a method with the <code>@Deprecated</code> annotation.</p>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+
+<span class="o">.</span><span class="na">addMethod</span><span class="o">(</span><span class="s">&quot;someMethod()&quot;</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">withDocumentation</span><span class="o">(</span><span class="s">&quot;Single line of documentation.&quot;</span><span class="o">)</span>
+<span class="o">.</span><span class="na">last</span><span class="o">()</span>
+
+<span class="o">.</span><span class="na">addMethod</span><span class="o">(</span><span class="s">&quot;someOtherMethod()&quot;</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">withDocumentation</span><span class="o">()</span>
+        <span class="o">.</span><span class="na">addContent</span><span class="o">(</span><span class="s">&quot;First line.&quot;</span><span class="o">)</span>
+        <span class="o">.</span><span class="na">addContent</span><span class="o">(</span><span class="s">&quot;Second line.&quot;</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">finish</span><span class="o">()</span>
+<span class="o">.</span><span class="na">last</span><span class="o">()</span>
+
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-48" id="section-48">&#182;</a>
+</div>
+<p>Add a single line of documentation to the method.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="o">.</span><span class="na">withDocumentation</span><span class="o">(</span><span class="n">String</span> <span class="n">text</span><span class="o">)</span>
+
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-49" id="section-49">&#182;</a>
+</div>
+<p>Add multiple lines of documentation to the method.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="o">.</span><span class="na">withDocumentation</span><span class="o">()</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-50" id="section-50">&#182;</a>
+</div>
+<p>Add another line of content.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="o">.</span><span class="na">addContent</span><span class="o">(</span><span class="n">String</span> <span class="n">text</span><span class="o">)</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-51" id="section-51">&#182;</a>
+</div>
+<p>Finish defining the documentation.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="o">.</span><span class="na">finish</span><span class="o">()</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-52" id="section-52">&#182;</a>
+</div>
+<p>Marks the method as <code>@Deprecated</code>. Also adds
+a <code>@deprecated</code> tag to the javadocs.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="o">.</span><span class="na">markAsDeprecated</span><span class="o">(</span><span class="n">String</span> <span class="n">reason</span><span class="o">)</span>
+
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs"><div class="dox">
+  <div class="summary">
+<div class="pilwrap" id="thanks!">
+  <h2>
+    <a href="#thanks!" name="thanks!" class="pilcrow">&#182;</a>
+    Thanks!
+  </h2>
+</div>
+
+
+<p>Visit the project <a href="https://github.com/UnquietCode/Flapi">on GitHub</a>
+for more information.</p>
+  </div>
+  <div class="body">
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+</pre></div>
+        </td>
+      </tr>
+  </tbody>
+</table>
+  </div>
+</body>
+</html>
