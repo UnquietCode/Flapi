@@ -147,6 +147,11 @@ public class GeneratorContext {
 				continue;
 			}
 
+			// also skip Ascending when it's leading nowhere
+			if (transition.getType() == TransitionType.Ascending && transition.getOwner().isTopLevel()) {
+				continue;
+			}
+
 			MethodParser parsed = new MethodParser(transition.getMethodSignature());
 			String methodName = parsed.methodName;
 
