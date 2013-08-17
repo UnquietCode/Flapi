@@ -19,14 +19,10 @@
 
 package unquietcode.tools.flapi;
 
-import unquietcode.tools.flapi.runtime.BlockInvocationHandler;
-
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.net.URL;
-import java.util.Scanner;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 /**
  * @author Ben Fagin
@@ -68,54 +64,105 @@ public final class ExtractRuntime {
 	}
 
 	private static void writeFiles(File folder, boolean useSources) {
-		String writePath = getResourcePath(folder);
-		File dir = new File(writePath);
+		Class[] roots = {
+			unquietcode.tools.flapi.runtime.PackageMarker.class
+		};
 
-		if (!dir.exists()) {
-			boolean create = dir.mkdirs();
+		for (Class root : roots) {
+			writeFiles(folder, root, useSources);
+		}
+	}
+
+	private static void writeFiles(File folder, Class packageMarker, boolean useSources) {
+		String writePath = getResourcePath(packageMarker, folder);
+		File outputDirectory = new File(writePath);
+
+		if (!outputDirectory.exists()) {
+			boolean create = outputDirectory.mkdirs();
 			if (!create) {
 				throw new RuntimeException("Unable create output directory '"+writePath+"'.");
 			}
 		}
 
 		final String extension = useSources ? ".java" : ".class";
-		final String prefix = useSources ? SOURCE_PATH+"/"+packagePath("/"): packagePath("/");
-
+		final String prefix = useSources
+							? SOURCE_PATH+"/"+packagePath(packageMarker, "/")
+							: packagePath(packageMarker, "/");
 		try {
-			URL _sources = ExtractRuntime.class.getClassLoader().getResources(prefix).nextElement();
-			File sources = new File(_sources.getFile());
-			File[] files = sources.listFiles();
+			URL _sources = Thread.currentThread().getContextClassLoader().getResources(prefix).nextElement();
+			String sources = _sources.getFile();
 
-			if (files == null) {
-				throw new RuntimeException("unable to read files");
-			}
-
-			for (File file : files) {
-				if (!file.getName().endsWith(extension)) {
-					continue;
-				}
-
-				InputStream stream = getResourceFile(prefix+"/"+file.getName());
-				File destination = createFile(dir.getAbsolutePath(), file.getName());
-				copyFile(stream, destination);
+			if (sources.startsWith("file:") && sources.contains("!")) {
+				String jarPath = sources.split("!")[0];
+				handleJarFile(jarPath, prefix, extension, outputDirectory);
+			} else {
+				handleFileSystem(sources, extension, outputDirectory);
 			}
 		} catch (IOException ex) {
 			throw new RuntimeException(ex);
 		}
 	}
 
-	public static String getResourcePath(File folder) {
+	private static void writeFile(File outputDirectory, String path, InputStream stream) {
+		File destination = createFile(outputDirectory.getAbsolutePath(), path);
+		copyFile(stream, destination);
+	}
+
+	private static void handleFileSystem(String folderPath, String extension, File outputDirectory)
+		throws IOException
+	{
+		File[] files = new File(folderPath).listFiles();
+
+		if (files == null) {
+			throw new RuntimeException("could not read from path "+folderPath);
+		}
+
+		for (File file : files) {
+			final String name = file.getName();
+
+			if (!name.endsWith(extension)) {
+				continue;
+			}
+
+			writeFile(outputDirectory, name, new FileInputStream(file));
+		}
+	}
+
+	private static void handleJarFile(String jarPath, String prefix, String extension, File outputDirectory)
+		throws IOException
+	{
+		URL jar = new URL(jarPath);
+		ZipInputStream zip = new ZipInputStream(jar.openStream());
+		ZipEntry entry;
+
+		while ((entry = zip.getNextEntry()) != null) {
+			final String name = entry.getName();
+
+			if (!name.endsWith(extension)) {
+				continue;
+			}
+
+			if (!name.startsWith(prefix)) {
+				continue;
+			}
+
+			String resourceName = name.substring(prefix.length());
+			writeFile(outputDirectory, resourceName, getResourceFile(name));
+		}
+	}
+
+	public static String getResourcePath(Class marker, File folder) {
 		String path = folder.getAbsolutePath();
 		path += File.separator;
-		path += packagePath(File.separator)+File.separator;
+		path += packagePath(marker, File.separator)+File.separator;
 
 		return path;
 	}
 
-	private static String packagePath(String separator) {
+	private static String packagePath(Class marker, String separator) {
 		StringBuilder sb = new StringBuilder();
 
-		for (String segment : BlockInvocationHandler.class.getPackage().getName().split("\\.")) {
+		for (String segment : marker.getPackage().getName().split("\\.")) {
 			sb.append(segment).append(separator);
 		}
 
@@ -123,7 +170,7 @@ public final class ExtractRuntime {
 	}
 
 	private static InputStream getResourceFile(String name) {
-		InputStream stream = ExtractRuntime.class.getClassLoader().getResourceAsStream(name);
+		InputStream stream = Thread.currentThread().getContextClassLoader().getResourceAsStream(name);
 
 		if (stream == null) {
 			throw new RuntimeException("Cannot find file '"+name+"' (this is an internal error).");
@@ -155,13 +202,17 @@ public final class ExtractRuntime {
 		return file;
 	}
 
-	private static void copyFile(InputStream sourceFile, File destFile) {
+	private static void copyFile(InputStream source, File destFile) {
 		FileOutputStream destination = null;
 
 		try {
-			String data = new Scanner(sourceFile).useDelimiter("\\A").next();
 			destination = new FileOutputStream(destFile);
-			destination.write(data.getBytes());
+			int read;
+			byte[] buffer = new byte[512];
+
+			while ((read = source.read(buffer)) > 0) {
+				destination.write(buffer, 0, read);
+			}
 		} catch (Exception ex) {
 			throw new RuntimeException("Error while writing files.", ex);
 		} finally {

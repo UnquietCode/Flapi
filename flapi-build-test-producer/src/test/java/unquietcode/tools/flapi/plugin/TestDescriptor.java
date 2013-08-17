@@ -20,6 +20,7 @@
 package unquietcode.tools.flapi.plugin;
 
 import unquietcode.tools.flapi.Descriptor;
+import unquietcode.tools.flapi.DescriptorMaker;
 import unquietcode.tools.flapi.Flapi;
 
 /**
@@ -28,9 +29,9 @@ import unquietcode.tools.flapi.Flapi;
  *
  * A test which builds an 'email builder' descriptor.
  */
-public class TestDescriptor {
+public class TestDescriptor implements DescriptorMaker {
 
-	public static Descriptor descriptor() {
+	public Descriptor descriptor() {
 		Descriptor builder = Flapi.builder()
 			.setPackage("unquietcode.tools.flapi.plugin.test.builder")
 			.setStartingMethodName("compose")
@@ -51,6 +52,4 @@ public class TestDescriptor {
 
 		return builder;
 	}
-
-
 }

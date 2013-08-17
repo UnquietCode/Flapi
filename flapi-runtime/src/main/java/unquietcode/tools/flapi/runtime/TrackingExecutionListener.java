@@ -19,8 +19,6 @@
 
 package unquietcode.tools.flapi.runtime;
 
-import unquietcode.tools.flapi.support.ExpectedInvocationsException;
-
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;

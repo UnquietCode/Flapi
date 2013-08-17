@@ -28,6 +28,7 @@ import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.annotations.ResolutionScope;
 import org.apache.maven.project.MavenProject;
 import unquietcode.tools.flapi.Descriptor;
+import unquietcode.tools.flapi.DescriptorMaker;
 import unquietcode.tools.flapi.ExtractRuntime;
 import unquietcode.tools.flapi.plugin.compile.CharSequenceJavaFileObject;
 import unquietcode.tools.flapi.plugin.compile.ClassFileManager;
@@ -53,8 +54,8 @@ import java.util.*;
  */
 @Mojo(
 	name="generate",
-	defaultPhase=LifecyclePhase.PROCESS_CLASSES,
-	requiresDependencyResolution=ResolutionScope.COMPILE
+	defaultPhase=LifecyclePhase.PROCESS_TEST_CLASSES,
+	requiresDependencyResolution=ResolutionScope.TEST
 )
 public class FlapiBuildPlugin extends AbstractMojo {
 
@@ -66,13 +67,6 @@ public class FlapiBuildPlugin extends AbstractMojo {
 	 */
 	@Parameter(required=true)
 	private String descriptorClass;
-
-	/**
-	 * The name of the method, which should be
-	 * return type 'Descriptor' with no parameters.
-	 */
-	@Parameter(required=true)
-	private String descriptorMethod;
 
 	/**
 	 * The directory to which the generated classes
@@ -92,7 +86,7 @@ public class FlapiBuildPlugin extends AbstractMojo {
 	 * If true, the runtime classes will be written
 	 * out alongside the generated classes.
 	 */
-	@Parameter(defaultValue="false")
+	@Parameter(defaultValue="true")
 	private boolean includeRuntime;
 
 	/**
@@ -104,13 +98,14 @@ public class FlapiBuildPlugin extends AbstractMojo {
 	/**
 	 * If true, the sources will be compiled and written.
 	 */
-	@Parameter(defaultValue="false")
+	@Parameter(defaultValue="true")
 	private boolean writeClasses;
 
 
 	@Override
 	public void execute() throws MojoExecutionException, MojoFailureException {
 		Method method;
+		DescriptorMaker descriptorMaker;
 
 		// instantiate the class
 		URLClassLoader classLoader;
@@ -123,22 +118,29 @@ public class FlapiBuildPlugin extends AbstractMojo {
 			throw new MojoExecutionException("could not load class", ex);
 		}
 
+		// ensure that it implements the interface
+		if (!DescriptorMaker.class.isAssignableFrom(_descriptorClass)) {
+			throw new MojoExecutionException("object must implement the DescriptorMaker interface");
+		}
+
 		// lookup the method
 		try {
-			method = _descriptorClass.getMethod(descriptorMethod);
+			method = _descriptorClass.getMethod("descriptor");
 		} catch (NoSuchMethodException ex) {
 			throw new MojoExecutionException("method cannot be found", ex);
 		}
 
-		// ensure that it returns a Descriptor
-		if (!Descriptor.class.isAssignableFrom(method.getReturnType())) {
-			throw new MojoExecutionException("method must return a Descriptor object");
+		// instantiate the object
+		try {
+			descriptorMaker = (DescriptorMaker) _descriptorClass.newInstance();
+		} catch (Exception ex) {
+			throw new MojoExecutionException("could not instantiate DescriptorMaker object", ex);
 		}
 
 		// execute and get the descriptor
 		Descriptor descriptor;
 		try {
-			descriptor = (Descriptor) method.invoke(null);
+			descriptor = (Descriptor) method.invoke(descriptorMaker);
 		} catch (IllegalAccessException ex) {
 			throw new MojoExecutionException("method not accessible", ex);
 		} catch (InvocationTargetException ex) {
@@ -174,7 +176,7 @@ public class FlapiBuildPlugin extends AbstractMojo {
 	private URLClassLoader getCompiledClassloader() throws Exception {
 		List<URL> urls = new ArrayList<URL>();
 
-		for (Object object : project.getCompileClasspathElements()) {
+		for (Object object : project.getTestClasspathElements()) {
 			String path = (String) object;
 			System.out.println(path);
 			urls.add(new File(path).toURI().toURL());
@@ -213,6 +215,10 @@ public class FlapiBuildPlugin extends AbstractMojo {
 		List<String> options = new ArrayList<String>();
 		options.add("-classpath");
 		options.add(makeClasspath(classLoader));
+		options.add("-source");
+		options.add("1.6");
+		options.add("-target");
+		options.add("1.6");
 
 		Iterable<? extends JavaFileObject> compilationUnits = getSourceFiles(descriptor);
 		JavaCompiler.CompilationTask task = compiler.getTask(null, fileManager, diagnostics, options, null, compilationUnits);

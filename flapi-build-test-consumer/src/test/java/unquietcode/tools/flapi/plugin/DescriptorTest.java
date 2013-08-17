@@ -34,7 +34,6 @@ import java.util.concurrent.atomic.AtomicReference;
  */
 public class DescriptorTest {
 
-
 	@Test
 	public void usage() {
 		EmailMessage message = EmailGenerator.compose(helper)
