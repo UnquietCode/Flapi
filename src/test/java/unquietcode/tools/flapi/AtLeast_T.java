@@ -1,5 +1,5 @@
 /*******************************************************************************
- Copyright 2012 Benjamin Fagin
+ Copyright 2013 Benjamin Fagin
 
      Licensed under the Apache License, Version 2.0 (the "License");
      you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@ package unquietcode.tools.flapi;
 import org.junit.Test;
 import unquietcode.tools.flapi.builder.Descriptor.DescriptorGenerator;
 import unquietcode.tools.flapi.helpers.DescriptorHelperImpl;
-import unquietcode.tools.flapi.support.ExpectedInvocationsException;
+import unquietcode.tools.flapi.runtime.ExpectedInvocationsException;
 
 /**
  * @author Ben Fagin
