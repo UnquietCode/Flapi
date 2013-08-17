@@ -3,6 +3,7 @@ package unquietcode.tools.flapi.examples.calculator.builder.Calculator;
 
 import unquietcode.tools.flapi.examples.calculator.builder.Calculator.CalculatorBuilder.$;
 import unquietcode.tools.flapi.runtime.BlockInvocationHandler;
+import unquietcode.tools.flapi.runtime.ExecutionListener;
 
 import javax.annotation.Generated;
 
@@ -15,16 +16,17 @@ import javax.annotation.Generated;
  * Visit https://github.com/UnquietCode/Flapi for more information.
  * 
  * 
- * Generated on July 02, 2013 0:08:51 PDT using version 0.4
+ * Generated on August 17, 2013 14:55:04 PDT using version 0.4
  */
-@Generated(value = "unquietcode.tools.flapi", date = "July 02, 2013 0:08:51 PDT", comments = "generated using Flapi, the fluent API generator for Java")
+@Generated(value = "unquietcode.tools.flapi", date = "August 17, 2013 14:55:04 PDT", comments = "generated using Flapi, the fluent API generator for Java")
 public class CalculatorGenerator {
-    @SuppressWarnings("unchecked")
-    public static $<Void> begin(CalculatorHelper helper) {
+    public static $<Void> begin(CalculatorHelper helper, ExecutionListener... listeners) {
         if (helper == null) {
             throw new IllegalArgumentException("Helper cannot be null.");
         }
          
-        return new BlockInvocationHandler(helper, null)._proxy($.class);
+        BlockInvocationHandler handler = new BlockInvocationHandler(helper, null);
+        handler.addListeners(listeners);
+        return handler._proxy($.class);
     }
 }

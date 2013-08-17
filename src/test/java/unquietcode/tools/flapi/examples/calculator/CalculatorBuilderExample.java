@@ -31,7 +31,7 @@ public class CalculatorBuilderExample {
 				.addMethod("mod(int value)").any()
 				.addMethod("abs()").any()
 
-				.addMethod("equals()").last(AtomicReference.class)
+				.addMethod("equals()").last(Result.class)
 			.endBlock()
 		.build();
 
@@ -40,7 +40,7 @@ public class CalculatorBuilderExample {
 
 	@Test
 	public void basicUsage() {
-		AtomicReference _result = CalculatorGenerator.begin(new CalculatorHelperImpl())
+		Result _result = CalculatorGenerator.begin(new CalculatorHelperImpl())
 			.$(0)
 			.plus(1)
 			.plus(1)
@@ -48,11 +48,13 @@ public class CalculatorBuilderExample {
 			.divide(2)
 		.equals();
 
-		BigInteger result = (BigInteger) _result.get();
+		BigInteger result = _result.get();
 		System.out.println(result);
 	}
 
 	// ------- - - ------- -------- -  --     -- - -   ---- - -   -   -----------
+
+	public static class Result extends AtomicReference<BigInteger> { }
 
 	static class Calculator {
 		static CalculationBuilder<AtomicReference<BigInteger>> begin(int startingValue) {

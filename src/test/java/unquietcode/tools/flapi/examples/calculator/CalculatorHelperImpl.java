@@ -11,7 +11,7 @@ import java.util.concurrent.atomic.AtomicReference;
  * @version 05-12-2012
  */
 public class CalculatorHelperImpl implements CalculatorHelper {
-	private final AtomicReference<BigInteger> value = new AtomicReference<BigInteger>();
+	private final CalculatorBuilderExample.Result value = new CalculatorBuilderExample.Result();
 
 	CalculatorHelperImpl() { }
 

@@ -1,11 +1,11 @@
 
 package unquietcode.tools.flapi.examples.calculator.builder.Calculation;
 
+import unquietcode.tools.flapi.examples.calculator.CalculatorBuilderExample.Result;
 import unquietcode.tools.flapi.runtime.MethodInfo;
 import unquietcode.tools.flapi.runtime.TransitionType;
 
 import javax.annotation.Generated;
-import java.util.concurrent.atomic.AtomicReference;
 
 
 /**
@@ -16,47 +16,31 @@ import java.util.concurrent.atomic.AtomicReference;
  * Visit https://github.com/UnquietCode/Flapi for more information.
  * 
  * 
- * Generated on July 02, 2013 0:08:51 PDT using version 0.4
+ * Generated on August 17, 2013 14:55:04 PDT using version 0.4
  */
-@Generated(value = "unquietcode.tools.flapi", date = "July 02, 2013 0:08:51 PDT", comments = "generated using Flapi, the fluent API generator for Java")
+@Generated(value = "unquietcode.tools.flapi", date = "August 17, 2013 14:55:04 PDT", comments = "generated using Flapi, the fluent API generator for Java")
 public interface CalculationBuilder<_ReturnType> {
-    @MethodInfo(type = TransitionType.Recursive, chain = {
-
-    })
+    @MethodInfo(type = TransitionType.Recursive)
     CalculationBuilder<_ReturnType> abs();
 
-    @MethodInfo(type = TransitionType.Recursive, chain = {
-
-    })
+    @MethodInfo(type = TransitionType.Recursive)
     CalculationBuilder<_ReturnType> divide(int value);
 
-    @MethodInfo(type = TransitionType.Terminal, chain = {
+    @MethodInfo(type = TransitionType.Terminal)
+    Result equals();
 
-    })
-    AtomicReference equals();
-
-    @MethodInfo(type = TransitionType.Recursive, chain = {
-
-    })
+    @MethodInfo(type = TransitionType.Recursive)
     CalculationBuilder<_ReturnType> minus(int value);
 
-    @MethodInfo(type = TransitionType.Recursive, chain = {
-
-    })
+    @MethodInfo(type = TransitionType.Recursive)
     CalculationBuilder<_ReturnType> mod(int value);
 
-    @MethodInfo(type = TransitionType.Recursive, chain = {
-
-    })
+    @MethodInfo(type = TransitionType.Recursive)
     CalculationBuilder<_ReturnType> plus(int value);
 
-    @MethodInfo(type = TransitionType.Recursive, chain = {
-
-    })
+    @MethodInfo(type = TransitionType.Recursive)
     CalculationBuilder<_ReturnType> power(int value);
 
-    @MethodInfo(type = TransitionType.Recursive, chain = {
-
-    })
+    @MethodInfo(type = TransitionType.Recursive)
     CalculationBuilder<_ReturnType> times(int value);
 }

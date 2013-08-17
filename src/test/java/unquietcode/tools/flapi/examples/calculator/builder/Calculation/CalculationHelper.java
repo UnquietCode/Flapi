@@ -1,8 +1,9 @@
 
 package unquietcode.tools.flapi.examples.calculator.builder.Calculation;
 
+import unquietcode.tools.flapi.examples.calculator.CalculatorBuilderExample.Result;
+
 import javax.annotation.Generated;
-import java.util.concurrent.atomic.AtomicReference;
 
 
 /**
@@ -13,15 +14,15 @@ import java.util.concurrent.atomic.AtomicReference;
  * Visit https://github.com/UnquietCode/Flapi for more information.
  * 
  * 
- * Generated on July 02, 2013 0:08:51 PDT using version 0.4
+ * Generated on August 17, 2013 14:55:04 PDT using version 0.4
  */
-@Generated(value = "unquietcode.tools.flapi", date = "July 02, 2013 0:08:51 PDT", comments = "generated using Flapi, the fluent API generator for Java")
+@Generated(value = "unquietcode.tools.flapi", date = "August 17, 2013 14:55:04 PDT", comments = "generated using Flapi, the fluent API generator for Java")
 public interface CalculationHelper {
     void abs();
 
     void divide(int value);
 
-    AtomicReference equals();
+    Result equals();
 
     void minus(int value);
 
