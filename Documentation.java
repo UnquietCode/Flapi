@@ -1,22 +1,3 @@
-/*******************************************************************************
- Copyright 2013 Benjamin Fagin
-
-     Licensed under the Apache License, Version 2.0 (the "License");
-     you may not use this file except in compliance with the License.
-     You may obtain a copy of the License at
-
-         http://www.apache.org/licenses/LICENSE-2.0
-
-     Unless required by applicable law or agreed to in writing, software
-     distributed under the License is distributed on an "AS IS" BASIS,
-     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-     See the License for the specific language governing permissions and
-     limitations under the License.
-
-
-     Read the included LICENSE.TXT for more information.
- ******************************************************************************/
-
 // # Flapi
 // ### _A fluent API generator for Java_
 
@@ -38,7 +19,7 @@
  * runtime classes and generated interfaces. The generated sources should
  * be included in your project, perhaps as a module dependency. (This project
  * also contains a maven plugin which allows you to regenerate your sources
- * on the fly. See more [here](https://github.com/UnquietCode/Flapi/wiki)).
+ * on the fly. See more [here](https://github.com/UnquietCode/Flapi/wiki/Maven-Build-Plugin)).
  *
  *
  * ### At Run Time
@@ -154,12 +135,10 @@ Descriptor descriptor = Flapi.builder()
  * moving in to and out of blocks, by way of Java's type system, until
  * you finally 'escape' the top block or a value is returned from the
  * current block.
- * 
- * A new block is defined by calling the `startBlock(...)` method,
- * passing in the method signature and the optional name. This
- * returns a `MethodBuilder` object which allows you to customize
- * the invocation in the parent block. Methods will be discussed in
- * just a moment.
+ *
+ * A block is comprised of methods, and these roughly correspond
+ * to the methods found in the generated interfaces. Methods will
+ * be discussed in just a moment.
  */
 
 .startBlock("SomeBlock", "beginSomething()").any()
@@ -176,10 +155,13 @@ Descriptor descriptor = Flapi.builder()
 /**
  * ### BlockBuilder Methods
  *
- * A block consists is started with `startBlock(...)` and must
- * end with a call to `endBlock()`. This is due to an important
- * disadvantage of method chaining: it's impossible to know
- * when the user is 'done' without an explicit method call.
+ * A new block is started with `startBlock(...)` and must
+ * end with a call to `endBlock()`. There should
+ * be at least one method in every block which is marked as a
+ * terminal method (via `last(...)`). There is one exception to
+ * this rule, which is when all of your methods are disappearing
+ * (via `atMost(...)`). In that case, a warning is printed and
+ * the last method available in each state is marked as terminal.
  */
 
 // Start a new block. This can be called either from the top level
@@ -191,20 +173,9 @@ Descriptor descriptor = Flapi.builder()
 // generated, and so they cannot be referenced.
 .startBlock(String methodSignature)
 
-// end the current block (**required**)
+// End the current block. Returns a `MethodBuilder` to
+// configure the invocation in the parent. (**required**)
 .endBlock()
-
-/**
- * ### Block Methods
- * 
- * A block is comprised of methods, and these roughly correspond
- * to the methods found in the generated interfaces. There should
- * be at least one method in every block which is marked as a
- * terminal method (via `last(...)`). There is one exception to
- * this rule, which is when all of your methods are disappearing
- * (via `atMost(...)`). In that case, a warning is printed and
- * the last method available in each state is marked as terminal.
- */
 
 // Add a new method to the block. If no return type is provided
 // then `void` is inferred.
