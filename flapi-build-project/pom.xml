@@ -27,10 +27,13 @@
 	<artifactId>build-project</artifactId>
 	<version>0.4-SNAPSHOT</version>
 	<packaging>pom</packaging>
+	<name>Flapi Build Project</name>
 
 	<properties>
 		<flapi.generated.sources>${project.build.directory}/generated-sources/flapi</flapi.generated.sources>
+		<flapi.includeRuntime>false</flapi.includeRuntime>
 		<flapi.descriptor.class>change.me</flapi.descriptor.class>
+		<flapi.version>0.4-SNAPSHOT</flapi.version>
 	</properties>
 
 	<profiles>
@@ -38,7 +41,7 @@
 			<id>normal</id>
 			<activation>
 				<property>
-					<name>!installOnly</name>
+					<name>!flapi.build.installOnly</name>
 				</property>
 			</activation>
 			<build>
@@ -48,7 +51,7 @@
 					<plugin>
 						<groupId>unquietcode.tools.flapi</groupId>
 						<artifactId>flapi-build-plugin</artifactId>
-						<version>${project.version}</version>
+						<version>${flapi.version}</version>
 						<executions>
 							<execution>
 								<goals>
@@ -57,6 +60,7 @@
 								<configuration>
 									<descriptorClass>${flapi.descriptor.class}</descriptorClass>
 									<sourcesDirectory>${flapi.generated.sources}</sourcesDirectory>
+									<includeRuntime>${flapi.includeRuntime}</includeRuntime>
 								</configuration>
 							</execution>
 						</executions>

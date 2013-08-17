@@ -36,6 +36,7 @@
 
 	<properties>
 		<flapi.descriptor.class>unquietcode.tools.flapi.plugin.TestDescriptor</flapi.descriptor.class>
+		<flapi.includeRuntime>true</flapi.includeRuntime>
 	</properties>
 
 	<build>
