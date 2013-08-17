@@ -46,9 +46,6 @@
         <a href="#blockbuilder%20methods">BlockBuilder Methods</a>
       </div>
       <div class="heading h3">
-        <a href="#block%20methods">Block Methods</a>
-      </div>
-      <div class="heading h3">
         <a href="#enum%20selectors">Enum Selectors</a>
       </div>
       <div class="heading h3">
@@ -128,7 +125,7 @@ generate a set of Java source files. These files are comprised of a few
 runtime classes and generated interfaces. The generated sources should
 be included in your project, perhaps as a module dependency. (This project
 also contains a maven plugin which allows you to regenerate your sources
-on the fly. See more <a href="https://github.com/UnquietCode/Flapi/wiki">here</a>).</p>
+on the fly. See more <a href="https://github.com/UnquietCode/Flapi/wiki/Maven-Build-Plugin">here</a>).</p>
 
 
 <div class="pilwrap" id="at%20run%20time">
@@ -421,11 +418,9 @@ moving in to and out of blocks, by way of Java's type system, until
 you finally 'escape' the top block or a value is returned from the
 current block.</p>
 
-<p>A new block is defined by calling the <code>startBlock(...)</code> method,
-passing in the method signature and the optional name. This
-returns a <code>MethodBuilder</code> object which allows you to customize
-the invocation in the parent block. Methods will be discussed in
-just a moment.</p>
+<p>A block is comprised of methods, and these roughly correspond
+to the methods found in the generated interfaces. Methods will
+be discussed in just a moment.</p>
   </div>
 </div>
         </td>
@@ -457,10 +452,13 @@ just a moment.</p>
 </div>
 
   </div>
-  <div class="body"><p>A block consists is started with <code>startBlock(...)</code> and must
-end with a call to <code>endBlock()</code>. This is due to an important
-disadvantage of method chaining: it's impossible to know
-when the user is 'done' without an explicit method call.</p>
+  <div class="body"><p>A new block is started with <code>startBlock(...)</code> and must
+end with a call to <code>endBlock()</code>. There should
+be at least one method in every block which is marked as a
+terminal method (via <code>last(...)</code>). There is one exception to
+this rule, which is when all of your methods are disappearing
+(via <code>atMost(...)</code>). In that case, a warning is printed and
+the last method available in each state is marked as terminal.</p>
   </div>
 </div>
         </td>
@@ -506,7 +504,8 @@ generated, and so they cannot be referenced.</p>
 <div class="pilwrap">
   <a class="pilcrow" href="#section-20" id="section-20">&#182;</a>
 </div>
-<p>end the current block (<strong>required</strong>)</p>
+<p>End the current block. Returns a <code>MethodBuilder</code> to
+configure the invocation in the parent. (<strong>required</strong>)</p>
         </td>
         <td class="code highlight"><div class="highlight"><pre>
 <span class="o">.</span><span class="na">endBlock</span><span class="o">()</span>
@@ -516,36 +515,9 @@ generated, and so they cannot be referenced.</p>
         </td>
       </tr>
       <tr>
-        <td class="docs"><div class="dox">
-  <div class="summary">
-<div class="pilwrap" id="block%20methods">
-  <h3>
-    <a href="#block%20methods" name="block%20methods" class="pilcrow">&#182;</a>
-    Block Methods
-  </h3>
-</div>
-
-  </div>
-  <div class="body"><p>A block is comprised of methods, and these roughly correspond
-to the methods found in the generated interfaces. There should
-be at least one method in every block which is marked as a
-terminal method (via <code>last(...)</code>). There is one exception to
-this rule, which is when all of your methods are disappearing
-(via <code>atMost(...)</code>). In that case, a warning is printed and
-the last method available in each state is marked as terminal.</p>
-  </div>
-</div>
-        </td>
-        <td class="code highlight"><div class="highlight"><pre>
-
-
-</pre></div>
-        </td>
-      </tr>
-      <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-22" id="section-22">&#182;</a>
+  <a class="pilcrow" href="#section-21" id="section-21">&#182;</a>
 </div>
 <p>Add a new method to the block. If no return type is provided
 then <code>void</code> is inferred.</p>
@@ -561,7 +533,7 @@ then <code>void</code> is inferred.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-23" id="section-23">&#182;</a>
+  <a class="pilcrow" href="#section-22" id="section-22">&#182;</a>
 </div>
 <p>Method parameters which are within the <code>java.lang</code> and <code>java.util</code> package are inferred.
 Other types must be fully qualified.</p>
@@ -619,7 +591,7 @@ block, the use of which looks like this:</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-25" id="section-25">&#182;</a>
+  <a class="pilcrow" href="#section-24" id="section-24">&#182;</a>
 </div>
 <p>Add a method which starts a new block whose methods are
 comprised of every enum in the provided enum class.
@@ -667,7 +639,7 @@ referenced.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-27" id="section-27">&#182;</a>
+  <a class="pilcrow" href="#section-26" id="section-26">&#182;</a>
 </div>
 <p>Add a method which starts a new block, but by referencing it
 instead of defining it. Returns a <code>MethodBuilder</code> to
@@ -784,7 +756,7 @@ the block), returning the parent block, or returning
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-31" id="section-31">&#182;</a>
+  <a class="pilcrow" href="#section-30" id="section-30">&#182;</a>
 </div>
 <p>Specifies that the method can be called at most <em>x</em> times.
 After that amount, the method will no longer be available
@@ -800,7 +772,7 @@ to be called.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-32" id="section-32">&#182;</a>
+  <a class="pilcrow" href="#section-31" id="section-31">&#182;</a>
 </div>
 <p>The method must be called at least <em>x</em> times.</p>
         </td>
@@ -814,7 +786,7 @@ to be called.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-33" id="section-33">&#182;</a>
+  <a class="pilcrow" href="#section-32" id="section-32">&#182;</a>
 </div>
 <p>The method must be called between <em>x</em> and <em>y</em> times.</p>
         </td>
@@ -828,7 +800,7 @@ to be called.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-34" id="section-34">&#182;</a>
+  <a class="pilcrow" href="#section-33" id="section-33">&#182;</a>
 </div>
 <p>The method must be called exactly <em>x</em> times.</p>
         </td>
@@ -842,7 +814,7 @@ to be called.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-35" id="section-35">&#182;</a>
+  <a class="pilcrow" href="#section-34" id="section-34">&#182;</a>
 </div>
 <p>The method can be called any number of times.</p>
         </td>
@@ -856,7 +828,7 @@ to be called.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-36" id="section-36">&#182;</a>
+  <a class="pilcrow" href="#section-35" id="section-35">&#182;</a>
 </div>
 <p>The method can be called once, and will return
 the block's return type after being called. Every
@@ -874,7 +846,7 @@ in an infinite loop).</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-37" id="section-37">&#182;</a>
+  <a class="pilcrow" href="#section-36" id="section-36">&#182;</a>
 </div>
 <p>The method, in addition to being last, will also
 return the specified type. This overrides any
@@ -915,7 +887,7 @@ workflows.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-39" id="section-39">&#182;</a>
+  <a class="pilcrow" href="#section-38" id="section-38">&#182;</a>
 </div>
 <p>Members of the same group will become invisible
 as soon as the first member of the group does so.</p>
@@ -930,7 +902,7 @@ as soon as the first member of the group does so.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-40" id="section-40">&#182;</a>
+  <a class="pilcrow" href="#section-39" id="section-39">&#182;</a>
 </div>
 <p>The method will only become visible after at
 least one member of the group has been called.</p>
@@ -999,7 +971,7 @@ the block itself.
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-42" id="section-42">&#182;</a>
+  <a class="pilcrow" href="#section-41" id="section-41">&#182;</a>
 </div>
 <p>Add a block chain to the method. Returns a <code>BlockChainBuilder</code>
 which can be used to define the sequence.</p>
@@ -1014,7 +986,7 @@ which can be used to define the sequence.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-43" id="section-43">&#182;</a>
+  <a class="pilcrow" href="#section-42" id="section-42">&#182;</a>
 </div>
 <p>reference an existing block</p>
         </td>
@@ -1028,7 +1000,7 @@ which can be used to define the sequence.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-44" id="section-44">&#182;</a>
+  <a class="pilcrow" href="#section-43" id="section-43">&#182;</a>
 </div>
 <p>new named block</p>
         </td>
@@ -1044,7 +1016,7 @@ which can be used to define the sequence.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-45" id="section-45">&#182;</a>
+  <a class="pilcrow" href="#section-44" id="section-44">&#182;</a>
 </div>
 <p>new anonymous block</p>
         </td>
@@ -1060,7 +1032,7 @@ which can be used to define the sequence.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-46" id="section-46">&#182;</a>
+  <a class="pilcrow" href="#section-45" id="section-45">&#182;</a>
 </div>
 <p>finish defining the block chain</p>
         </td>
@@ -1118,7 +1090,7 @@ to mark a method with the <code>@Deprecated</code> annotation.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-48" id="section-48">&#182;</a>
+  <a class="pilcrow" href="#section-47" id="section-47">&#182;</a>
 </div>
 <p>Add a single line of documentation to the method.</p>
         </td>
@@ -1133,7 +1105,7 @@ to mark a method with the <code>@Deprecated</code> annotation.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-49" id="section-49">&#182;</a>
+  <a class="pilcrow" href="#section-48" id="section-48">&#182;</a>
 </div>
 <p>Add multiple lines of documentation to the method.</p>
         </td>
@@ -1147,7 +1119,7 @@ to mark a method with the <code>@Deprecated</code> annotation.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-50" id="section-50">&#182;</a>
+  <a class="pilcrow" href="#section-49" id="section-49">&#182;</a>
 </div>
 <p>Add another line of content.</p>
         </td>
@@ -1161,7 +1133,7 @@ to mark a method with the <code>@Deprecated</code> annotation.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-51" id="section-51">&#182;</a>
+  <a class="pilcrow" href="#section-50" id="section-50">&#182;</a>
 </div>
 <p>Finish defining the documentation.</p>
         </td>
@@ -1175,7 +1147,7 @@ to mark a method with the <code>@Deprecated</code> annotation.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-52" id="section-52">&#182;</a>
+  <a class="pilcrow" href="#section-51" id="section-51">&#182;</a>
 </div>
 <p>Marks the method as <code>@Deprecated</code>. Also adds
 a <code>@deprecated</code> tag to the javadocs.</p>
