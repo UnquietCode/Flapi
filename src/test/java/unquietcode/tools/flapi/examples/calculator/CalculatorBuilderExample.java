@@ -59,12 +59,9 @@ public class CalculatorBuilderExample {
 	static class Calculator {
 		static CalculationBuilder<AtomicReference<BigInteger>> begin(int startingValue) {
 			CalculatorBuilder.$ result = CalculatorGenerator.begin(new CalculatorHelperImpl());
+			CalculationBuilder builder = result.$(startingValue);
 
-			@SuppressWarnings("unchecked")
-			CalculationBuilder<AtomicReference<BigInteger>> started
-				= (CalculationBuilder<AtomicReference<BigInteger>>) result.$(startingValue);
-
-			return started;
+			return builder;
 		}
 	}
 
