@@ -81,11 +81,13 @@ public class GraphProcessor extends AbstractGenerator implements GenericVisitor<
 			});
 
 			// store the type information for the state chain
-			JAnnotationArrayMember chain = infoAnnotation.paramArray("chain");
+			if (!transition.getStateChain().isEmpty()) {
+				JAnnotationArrayMember chain = infoAnnotation.paramArray("chain");
 
-			for (StateClass sc : transition.getStateChain()) {
-				JDefinedClass type = BUILDER_INTERFACE_STRATEGY.createType(ctx, sc);
-				chain.param(type);
+				for (StateClass sc : transition.getStateChain()) {
+					JDefinedClass type = BUILDER_INTERFACE_STRATEGY.createType(ctx, sc);
+					chain.param(type);
+				}
 			}
 
 			// if it's an atLeast method, requiring tracking

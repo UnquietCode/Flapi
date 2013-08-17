@@ -32,6 +32,6 @@ import java.lang.annotation.Target;
 @Target(ElementType.METHOD)
 public @interface MethodInfo {
 	TransitionType type();
-	Class<?>[] chain();
+	Class<?>[] chain() default {};
 	Class<?> next() default MethodInfo.class;
 }
