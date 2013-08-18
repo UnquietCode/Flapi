@@ -1,31 +1,98 @@
-# Version 0.1
-Notes also available at: https://github.com/UnquietCode/Flapi/wiki/v0_1
-JIRA: https://unquietcode.atlassian.net/secure/ReleaseNote.jspa?projectId=10160&version=10140
+# Version 0.4
+Flapi 0.4 includes several bugfixes, as well as a bunch of new features. This release is larger than the
+rest, and has been a long time coming.
 
-Initial beta release.
 
-------------------------------------------------
+### No more *Impl classes!
+The biggest change is moving from the generated implementation classes to a single JDK proxy. This means
+that only the interfaces need to be generated for your API. A single, shared runtime is provided, and
+can even be included with the generated source.
 
-v
-Notes also available at: https://github.com/UnquietCode/Flapi/wiki/v0_2
-JIRA: https://unquietcode.atlassian.net/secure/ReleaseNote.jspa?projectId=10160&version=10141
+### Triggered Methods
+It is now possible to specify that a method should be 'triggered' to appear by another method. Just use
+`after(...)` on the method you want to trigger, and tie it via the group number to another method in
+the block.
 
-Stable beta release. There are still some features to be added.
-This version includes a few notable changes:
+### Generics Support
+Where parameters can be specified, generics are now supported. (Sorry, no wildcards or bounded types
+just yet.)
 
-+ StateClass rearchitecture [FLAPI-83]
-+ common interface for implementation classes [FLAPI-67]
-+ intermediate values, descriptor value, etc. [FLAPI-50]
-+ implicit terminals [FLAPI-37]
-+ more javadocs [FLAPI-7]
-+ Remove runtime dependencies on the tool. [FLAPI-47] [FLAPI-70]
-+ Change 'once' to 'exactly'. [FLAPI-48]
-+ [FLAPI-55] - Utilize the @Generated annotation
-+ boolean configuration methods no longer require a parameter [FLAPI-59]
-+ loaded into maven repo
-+ test improvements
-	+ [FLAPI-25] - Create a test harness to test known cases of compilation failures.
-	+ [FLAPI-56] - Incorporate existing examples into tests.
+### Enum Selectors
+A list of enum values can be turned into a single method which fans out to those values. No need to
+import the enum at all when using the generated builder!
+
+### $ Wrapper
+The top level interface in every block now has an alias, `$`. This class extends from the top level
+and is nested inside of it. Classes which need to know this class previously needed to change with
+every build. Now the naming can be consistent across generations of your descriptor. (Feature
+suggested by Jiri Jetmar. Thanks!)
+
+### Builder Partitioning
+The generated classes are now broken up into individual packages for each block.
+
+### Switch From CodeModel to JCodeModel
+The CodeModel library has been replaced with a custom fork called
+[JCodeModel](https://github.com/UnquietCode/JCodeModel). This version fixes some bugs and adds
+support for features required by Flapi's code generation components.
+
+### flapi-runtime
+A new runtime jar is available. It is suggested that you include it as a runtime dependency of
+your API, however the older style of generating the runtime classes alongside your builder is
+still supported.
+
+### Maven Plugin
+A maven plugin is available to support building API jars from descriptors on-the-fly at build time.
+This greatly simplifies things, allowing you to define a module for your builder API which can
+be consumed by your build or shared with others. See the [wiki page](Maven-Build-Plugin) for more
+information.
+
+### BREAKING CHANGE - Switched From ObjectWrapper to AtomicReference
+Previously, *Helper interfaces made use of a custom `ObjectWrapper` class to provide new instances.
+This has been replaced with the JDK `AtomicReference` class. While an annoying change, one of the
+goals of this project is to require as few additional classes to function as possible. Removing
+this was an easy win, and fortunately the change in your code is slight, typically just the
+import statement.
+
+### BREAKING CHANGE - New BlockChainBuilder API
+When creating block chains via `addBlockChain()`, the returned `BlockChainBuilder` object's API
+has changed. Instead of creating a chain by prepending C to B to A, it is now possible to declare
+them as a flat list of A, B, C. This is facilitated by the addition of a `end()` method, which
+is required to finish constructing the block chain. Again, change is hard but the project is
+still in the 0._x_ development stage, and sometimes these changes are required.
+
+### New Documentation
+A brand new documentation page is available at
+[http://unquietcode.github.io/Flapi](http://unquietcode.github.io/Flapi). Check it out!
+
+
+## Resolved Issues
+
+### Bug
+    + [FLAPI-28] - Add parsing of type parameters in MethodParser
+    + [FLAPI-127] - Builder names are too verbose.
+
+### Feature
+    + [FLAPI-126] - Create a wrapper interface to buffer against changes between generations.
+    + [FLAPI-128] - Support for triggered methods.
+    + [FLAPI-129] - Replace generated implementation classes with a single dynamic proxy.
+    + [FLAPI-144] - Maven build plugins
+    + [FLAPI-145] - Support typed enum selectors.
+
+### Improvement
+    + [FLAPI-22] - Provide trace logging.
+    + [FLAPI-23] - builder package partitioning
+    + [FLAPI-130] - Switch to custom JCodeModel.
+    + [FLAPI-140] - Remove ObjectWrapper in favor of JDK AtomicReference
+    + [FLAPI-143] - Introduce a flapi-runtime module for the support classes.
+    + [FLAPI-149] - Change BlockChain API
+
+### Task
+    + [FLAPI-42] - Enable parameterized types within Flapi methods.
+    + [FLAPI-124] - Add java.util to class search path.
+    + [FLAPI-139] - Create two-column documentation of Flapi features.
+
+The full list of tasks and issues included in the release is available on the project's
+[JIRA](https://unquietcode.atlassian.net/secure/ReleaseNote.jspa?projectId=10160&version=10640).
 
 ------------------------------------------------
 
@@ -76,3 +143,34 @@ A screencast which attempts to explain the basic use of Flapi has been posted [h
 
 The full list of tasks and issues included in the release is available on the project's
 [JIRA](https://unquietcode.atlassian.net/secure/ReleaseNote.jspa?version=10142&styleName=Text&projectId=10160).
+
+------------------------------------------------
+
+# Version 0.2
+Notes also available at: https://github.com/UnquietCode/Flapi/wiki/v0_2
+JIRA: https://unquietcode.atlassian.net/secure/ReleaseNote.jspa?projectId=10160&version=10141
+
+Stable beta release. There are still some features to be added.
+This version includes a few notable changes:
+
++ StateClass rearchitecture [FLAPI-83]
++ common interface for implementation classes [FLAPI-67]
++ intermediate values, descriptor value, etc. [FLAPI-50]
++ implicit terminals [FLAPI-37]
++ more javadocs [FLAPI-7]
++ Remove runtime dependencies on the tool. [FLAPI-47] [FLAPI-70]
++ Change 'once' to 'exactly'. [FLAPI-48]
++ [FLAPI-55] - Utilize the @Generated annotation
++ boolean configuration methods no longer require a parameter [FLAPI-59]
++ loaded into maven repo
++ test improvements
+	+ [FLAPI-25] - Create a test harness to test known cases of compilation failures.
+	+ [FLAPI-56] - Incorporate existing examples into tests.
+
+------------------------------------------------
+
+# Version 0.1
+Notes also available at: https://github.com/UnquietCode/Flapi/wiki/v0_1
+JIRA: https://unquietcode.atlassian.net/secure/ReleaseNote.jspa?projectId=10160&version=10140
+
+Initial beta release.
