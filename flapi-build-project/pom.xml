@@ -18,6 +18,22 @@
 		<flapi.version>0.5-SNAPSHOT</flapi.version>
 	</properties>
 
+	<repositories>
+		<repository>
+			<id>uqc</id>
+			<name>UnquietCode Repository</name>
+			<url>http://www.unquietcode.com/maven/releases</url>
+		</repository>
+	</repositories>
+
+	<pluginRepositories>
+		<pluginRepository>
+			<id>uqc</id>
+			<name>UnquietCode Repository</name>
+			<url>http://www.unquietcode.com/maven/releases</url>
+		</pluginRepository>
+	</pluginRepositories>
+
 	<profiles>
 		<profile>
 			<id>normal</id>
