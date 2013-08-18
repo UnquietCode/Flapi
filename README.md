@@ -33,7 +33,7 @@ In a test, define your `Descriptor` object and output the generated source code.
 [Pizza Builder](https://github.com/UnquietCode/Flapi/wiki/Pizza-Builder-Example)
 example is a simple descriptor you can start with.)
 
-### [Documentation](unquietcode.github.io/Flapi)
+### [Documentation](http://unquietcode.github.io/Flapi)
 Please visit the documentation page for a tour of Flapi's features and
 how to use them. (generated using the very nice tool [docker](https://github.com/jbt/docker))
 
