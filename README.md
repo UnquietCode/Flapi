@@ -1,16 +1,14 @@
-#Flapi - A fluent API generator for Java
+# Flapi - A fluent API generator for Java (v0.4)
 [![Build Status](https://travis-ci.org/UnquietCode/Flapi.png?branch=master)](https://travis-ci.org/UnquietCode/Flapi)
 
-## What is it?
-Flapi is a code generation utility for creating fluent API in Java.
-Fluent builders allow developers to more easily interact with your code, using a syntax more akin to natural language.
+### What is it?
+Flapi is a code generation library for creating fluent API's in Java.
+Fluent builders allow developers to more easily interact with your code, using a syntax
+more akin to natural language.
 See [these](http://www.unquietcode.com/blog/2011/programming/using-generics-to-build-fluent-apis-in-java)
 [articles](http://martinfowler.com/bliki/FluentInterface.html) for more information.
 
-Flapi is now a stable release, with all of the important features implemented. Please help the project
-by testing and reporting bugs, either on GitHub or JIRA.
-
-## [Getting Started](https://github.com/UnquietCode/Flapi/wiki/Getting-Started)
+### [Getting Started](https://github.com/UnquietCode/Flapi/wiki/Getting-Started)
 If you are using Maven (or gradle, or Ivy) you can download and install to your local repo, or include the following
 repository and dependency in your POM file:
 ```
@@ -27,39 +25,44 @@ repository and dependency in your POM file:
 <dependency>
   <groupId>unquietcode.tools.flapi</groupId>
   <artifactId>flapi</artifactId>
-  <version>0.3</version>
+  <version>0.4</version>
+  <scope>test</scope>
 </dependency>
 ```
+In a test, define your `Descriptor` object and output the generated source code. (The
+[Pizza Builder](https://github.com/UnquietCode/Flapi/wiki/Pizza-Builder-Example)
+example is a simple descriptor you can start with.)
 
-## What's New?
-Version 0.3 is out and includes bugfixes new features, and some small improvements.
+### [Documentation](unquietcode.github.io/Flapi)
+Please visit the documentation page for a tour of Flapi's features and
+how to use them. (generated using the very nice tool [docker](https://github.com/jbt/docker))
 
-A new example has been added,
-[PipedProcessExample](https://github.com/UnquietCode/Flapi/tree/master/src/test/java/unquietcode/tools/flapi/examples/pipes)
+### [Examples](https://github.com/UnquietCode/Flapi/wiki/Examples)
+Many helpful examples are included on the wiki, corresponding to examples and tests in the src/test directory.
 
-See the [Release Notes](https://github.com/UnquietCode/Flapi/wiki/v0_3) for the full details.
-
-## [Screencast](http://vimeo.com/58855907)
+### [Screencast](http://vimeo.com/58855907)
 A screencast has been posted to demonstrate some basic usage, and the main purpose of the tool.
 (Warning: it's my first attempt at screencasting.)
 
-## [Examples](https://github.com/UnquietCode/Flapi/wiki/Examples)
-Many helpful examples are included on the wiki, corresponding to examples and tests in the src/test directory.
-
-## [Wiki](https://github.com/UnquietCode/Flapi/wiki)
-Some additional information is on the project's wiki.
-
-## [Blog Post](http://www.unquietcode.com/blog/2012/software/introducing-flapi)
+### [Blog Post](http://www.unquietcode.com/blog/2012/software/introducing-flapi)
 The original blog post describing Flapi.
 
-## Problems?
+### What's the project's status?
+Version 0.4 has been released, and includes new features and new build tools. The runtime, along with
+some generated builders, are currently running in production code.
+See the [Release Notes](https://github.com/UnquietCode/Flapi/wiki/Version-0.4) for the full details.
+
+### Problems?
 Use the [issue tracker](https://github.com/UnquietCode/Flapi/issues) to report problems encountered or new
 feature requests.
 
-## Contributing
+### Contributing
 Feel free to fork the project and fiddle around! Submit pull requests to improve the code.  
 Create issues to help support the project. Ask questions. (Say hello.)
 
-Peace, love, and code.
+### License
+Flapi is provided under the ASL 2.0 license.
 
-# Thanks!
+## Thanks!
+
+Peace, love, and code.
