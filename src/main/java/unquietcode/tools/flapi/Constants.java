@@ -29,7 +29,7 @@ public final class Constants {
 	private Constants() { }
 
 	public static final String PROJECT_URL = "https://github.com/UnquietCode/Flapi";
-	public static final String PROJECT_VERSION = "0.4";     // TODO I hate this. Can we get it from the build?
+	public static final String PROJECT_VERSION = "0.5";     // TODO I hate this. Can we get it from the build?
 	public static final String RETURN_TYPE_NAME = "_ReturnType";
 	public static final String HELPER_VALUE_NAME = "_helper";
 }
