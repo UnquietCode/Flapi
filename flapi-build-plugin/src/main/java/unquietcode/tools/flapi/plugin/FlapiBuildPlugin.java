@@ -64,9 +64,17 @@ public class FlapiBuildPlugin extends AbstractMojo {
 
 	/**
 	 * The class which contains the target method.
+	 * @deprecated use the comma separated descriptorClasses
 	 */
-	@Parameter(required=true)
+	@Deprecated
+	@Parameter(required=false)
 	private String descriptorClass;
+
+	/**
+	 * The comma separated list of {@link DescriptorMaker} classes.
+	 */
+	@Parameter(required=false)
+	private String descriptorClasses;
 
 	/**
 	 * The directory to which the generated classes
@@ -104,14 +112,36 @@ public class FlapiBuildPlugin extends AbstractMojo {
 
 	@Override
 	public void execute() throws MojoExecutionException, MojoFailureException {
-		Method method;
-		DescriptorMaker descriptorMaker;
+		if (descriptorClasses == null) {
+			descriptorClasses = "";
+		}
 
 		// bail if this is a bogus build
-		if ("change.me".equals(descriptorClass)) {
+		if ("change.me".equals(descriptorClass) || "change.me".equals(descriptorClasses)) {
 			getLog().warn("No descriptor class was specified.");
 			return;
 		}
+
+		// TODO remove this legacy support and the deprecated property
+		if (descriptorClass != null && !descriptorClass.trim().isEmpty()) {
+			descriptorClasses = descriptorClass + ", " + descriptorClasses;
+			getLog().warn("'flapi.descriptor.class' is deprecated, please use 'flapi.descriptor.classes'");
+		}
+
+		for (String descriptorClass : descriptorClasses.split(",")) {
+			descriptorClass = descriptorClass.trim();
+
+			if (descriptorClass.isEmpty()) {
+				continue;
+			}
+
+			execute(descriptorClass);
+		}
+	}
+
+	private void execute(String descriptorClass) throws MojoExecutionException, MojoFailureException {
+		Method method;
+		DescriptorMaker descriptorMaker;
 
 		// instantiate the class
 		URLClassLoader classLoader;
