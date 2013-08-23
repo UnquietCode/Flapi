@@ -107,6 +107,12 @@ public class FlapiBuildPlugin extends AbstractMojo {
 		Method method;
 		DescriptorMaker descriptorMaker;
 
+		// bail if this is a bogus build
+		if ("change.me".equals(descriptorClass)) {
+			getLog().warn("No descriptor class was specified.");
+			return;
+		}
+
 		// instantiate the class
 		URLClassLoader classLoader;
 		Class<?> _descriptorClass;
