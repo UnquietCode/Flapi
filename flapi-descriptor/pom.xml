@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>unquietcode.tools.flapi</groupId>
+		<artifactId>build-project</artifactId>
+		<version>0.5-SNAPSHOT</version>
+		<relativePath>../flapi-build-project</relativePath>
+	</parent>
+
+	<groupId>unquietcode.tools.flapi</groupId>
+	<artifactId>flapi-builder</artifactId>
+	<version>0.5-SNAPSHOT</version>
+	<packaging>jar</packaging>
+
+	<name>Flapi's Descriptor Builder</name>
+
+	<properties>
+		<flapi.descriptor.class>unquietcode.tools.flapi.builder.MainDescriptor</flapi.descriptor.class>
+		<flapi.includeRuntime>false</flapi.includeRuntime>
+		<flapi.version>0.4</flapi.version>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>unquietcode.tools.flapi</groupId>
+			<artifactId>flapi</artifactId>
+			<version>${flapi.version}</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+</project>

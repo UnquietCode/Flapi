@@ -86,7 +86,18 @@
 		</plugins>
 	</build>
 
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>junit</groupId>
+				<artifactId>junit</artifactId>
+				<version>4.11</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
 	<modules>
+		<module>../flapi-descriptor</module>
 		<module>../flapi-runtime</module>
 		<module>../</module>
 		<module>../flapi-build-plugin</module>

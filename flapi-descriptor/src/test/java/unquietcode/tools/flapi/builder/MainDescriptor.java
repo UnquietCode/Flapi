@@ -17,7 +17,11 @@
      Read the included LICENSE.TXT for more information.
  ******************************************************************************/
 
-package unquietcode.tools.flapi;
+package unquietcode.tools.flapi.builder;
+
+import unquietcode.tools.flapi.Descriptor;
+import unquietcode.tools.flapi.DescriptorMaker;
+import unquietcode.tools.flapi.Flapi;
 
 /**
  * @author Benjamin Fagin
@@ -25,11 +29,12 @@ package unquietcode.tools.flapi;
  *
  * The main descriptor for Flapi, used to generate other descriptors.
  */
-public class MainDescriptor {
+public class MainDescriptor implements DescriptorMaker {
 	private static final int DOC_GROUP = 1;
 
 
-	public static void main(String[] args) {
+	@Override
+	public Descriptor descriptor() {
 		Descriptor builder = Flapi.builder()
 
 			// descriptor configuration
@@ -115,6 +120,13 @@ public class MainDescriptor {
 						.addContent("type when called")
 					.finish()
 				.last()
+
+//				.addMethod("last(String returnType)")
+//					.withDocumentation()
+//						.addContent("Mark the method as terminal, returning an object of the given ")
+//						.addContent("type when called. The type is specified as a FQCN.")
+//					.finish()
+//				.last()
 
 				.addMethod("atLeast(int num)")
 					.withDocumentation("expect the method [X, inf) times")
@@ -239,6 +251,6 @@ public class MainDescriptor {
 			.any()
 		.build();
 
-		builder.writeToFolder(args[0]);
+		return builder;
 	}
 }

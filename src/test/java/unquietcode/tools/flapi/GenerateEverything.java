@@ -28,13 +28,12 @@ import unquietcode.tools.flapi.examples.GenerateExamples;
 public final class GenerateEverything {
 
 	/*
-		Regenerates the examples, plus the main descriptor.
+		Regenerates the examples.
 	 */
 	public static void main(String[] args) {
 		String[] mainPath = new String[]{args[0]};
 		String[] examplePath = new String[]{args[1]};
 
 		GenerateExamples.main(examplePath);
-		MainDescriptor.main(mainPath);
 	}
 }
