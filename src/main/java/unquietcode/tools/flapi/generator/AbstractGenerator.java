@@ -81,7 +81,7 @@ public abstract class AbstractGenerator {
 			JDefinedClass innerClass;
 
 			try {
-				innerClass = parent._interface("$");
+				innerClass = parent._interface("Start");
 			} catch (JClassAlreadyExistsException ex) {
 				return ex.getExistingClass();
 			}

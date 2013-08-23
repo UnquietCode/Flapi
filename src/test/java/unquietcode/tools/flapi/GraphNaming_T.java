@@ -75,7 +75,7 @@ public class GraphNaming_T {
 
 		GeneratorContext ctx = new GeneratorContext("");
 		String name = ctx.getGeneratedName("", "", sc1);
-		assertEquals("expected the same name", "State_method_method$A", name);
+		assertEquals("expected the same name", "State_2method_2method_1A", name);
 	}
 }
 

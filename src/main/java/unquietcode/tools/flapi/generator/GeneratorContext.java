@@ -174,7 +174,7 @@ public class GeneratorContext {
 					characterGen = nameToGenerator.get(methodName);
 					methodSuffix = characterGen.getAndIncrement();
 				} else {
-					characterGen = new CharacterGenerator("$");
+					characterGen = new CharacterGenerator("_1");
 					nameToGenerator.put(methodName, characterGen);
 					methodSuffix = "";  // don't label the first one because generally it's the only one
 				}
@@ -183,7 +183,7 @@ public class GeneratorContext {
 				hashToSuffix.put(krazyKey, methodSuffix);
 			}
 
-			name.append("_");
+			name.append("_2");
 
 			if (condenseNames) {
 				if (nameMap.containsKey(methodName)) {
@@ -198,7 +198,7 @@ public class GeneratorContext {
 			}
 
 			if (transition.info().getMaxOccurrences() > 1) {
-				name.append("$").append(transition.info().getMaxOccurrences());
+				name.append("_3").append(transition.info().getMaxOccurrences());
 			}
 		}
 
