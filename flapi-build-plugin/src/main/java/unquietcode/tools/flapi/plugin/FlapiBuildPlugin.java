@@ -63,7 +63,7 @@ public class FlapiBuildPlugin extends AbstractMojo {
 	private MavenProject project;
 
 	/**
-	 * The class which contains the target method.
+	 * (deprecated) The class which contains the target method.
 	 * @deprecated use the comma separated descriptorClasses
 	 */
 	@Deprecated
@@ -116,17 +116,13 @@ public class FlapiBuildPlugin extends AbstractMojo {
 			descriptorClasses = "";
 		}
 
-		// bail if this is a bogus build
-		if ("change.me".equals(descriptorClass) || "change.me".equals(descriptorClasses)) {
-			getLog().warn("No descriptor class was specified.");
-			return;
-		}
-
 		// TODO remove this legacy support and the deprecated property
 		if (descriptorClass != null && !descriptorClass.trim().isEmpty()) {
 			descriptorClasses = descriptorClass + ", " + descriptorClasses;
 			getLog().warn("'flapi.descriptor.class' is deprecated, please use 'flapi.descriptor.classes'");
 		}
+
+		boolean atLeastOne = false;
 
 		for (String descriptorClass : descriptorClasses.split(",")) {
 			descriptorClass = descriptorClass.trim();
@@ -135,7 +131,17 @@ public class FlapiBuildPlugin extends AbstractMojo {
 				continue;
 			}
 
+			if (descriptorClass.trim().equals("change.me")) {
+				continue;
+			}
+
+			getLog().info("processing descriptor "+descriptorClass);
 			execute(descriptorClass);
+			atLeastOne = true;
+		}
+
+		if (!atLeastOne) {
+			getLog().warn("No descriptor classes were specified.");
 		}
 	}
 

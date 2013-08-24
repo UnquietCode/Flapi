@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
@@ -17,7 +16,7 @@
 		<flapi.includeRuntime>false</flapi.includeRuntime>
 		<flapi.version>0.5-SNAPSHOT</flapi.version>
 
-		<!-- DEPRECATED: --> <flapi.descriptor.class/>
+		<!-- DEPRECATED! --> <flapi.descriptor.class/>
 
 		<flapi.descriptor.classes>change.me</flapi.descriptor.classes>
 	</properties>
@@ -38,114 +37,104 @@
 		</pluginRepository>
 	</pluginRepositories>
 
-	<profiles>
-		<profile>
-			<id>normal</id>
-			<activation>
-				<property>
-					<name>!flapi.build.installOnly</name>
-				</property>
-			</activation>
-			<build>
-				<plugins>
+	<build>
+		<plugins>
 
-					<!-- Flapi plugin -->
-					<plugin>
-						<groupId>unquietcode.tools.flapi</groupId>
-						<artifactId>flapi-build-plugin</artifactId>
-						<version>${flapi.version}</version>
-						<executions>
-							<execution>
-								<goals>
-									<goal>generate</goal>
-								</goals>
-								<configuration>
-									<descriptorClass>${flapi.descriptor.class}</descriptorClass>
-									<descriptorClasses>${flapi.descriptor.classes}</descriptorClasses>
-									<sourcesDirectory>${flapi.generated.sources}</sourcesDirectory>
-									<includeRuntime>${flapi.includeRuntime}</includeRuntime>
-								</configuration>
-							</execution>
-						</executions>
-					</plugin>
-
-					<!-- specify the default compiler settings -->
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-compiler-plugin</artifactId>
-						<version>2.5.1</version>
+			<!-- Flapi plugin -->
+			<plugin>
+				<groupId>unquietcode.tools.flapi</groupId>
+				<artifactId>flapi-build-plugin</artifactId>
+				<version>${flapi.version}</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>generate</goal>
+						</goals>
 						<configuration>
-							<source>1.6</source>
-							<target>1.6</target>
+							<descriptorClass>${flapi.descriptor.class}</descriptorClass>
+							<descriptorClasses>${flapi.descriptor.classes}</descriptorClasses>
+							<sourcesDirectory>${flapi.generated.sources}</sourcesDirectory>
+							<includeRuntime>${flapi.includeRuntime}</includeRuntime>
 						</configuration>
-					</plugin>
+					</execution>
+				</executions>
+			</plugin>
 
-					<!-- create a source jar at the end -->
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-source-plugin</artifactId>
-						<version>2.1.2</version>
-						<executions>
-							<execution>
-								<goals>
-									<goal>jar</goal>
-								</goals>
-								<phase>prepare-package</phase>
-							</execution>
-						</executions>
-					</plugin>
+			<!-- specify the default compiler settings -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>2.5.1</version>
+				<configuration>
+					<source>1.6</source>
+					<target>1.6</target>
+				</configuration>
+			</plugin>
 
-					<!-- create a javadoc jar at the end -->
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-javadoc-plugin</artifactId>
-						<version>2.9.1</version>
-						<executions>
-							<execution>
-								<goals>
-									<goal>jar</goal>
-								</goals>
-								<phase>prepare-package</phase>
-							</execution>
-						</executions>
+			<!-- create a source jar at the end -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<version>2.1.2</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+						<phase>prepare-package</phase>
+					</execution>
+				</executions>
+			</plugin>
+
+			<!-- create a javadoc jar at the end -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>2.9.1</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+						<phase>prepare-package</phase>
+					</execution>
+				</executions>
+				<configuration>
+					<additionalDependencies>
+						<additionalDependency>
+							<groupId>unquietcode.tools.flapi</groupId>
+							<artifactId>flapi-runtime</artifactId>
+							<version>${flapi.version}</version>
+						</additionalDependency>
+						<additionalDependency>
+							<groupId>unquietcode.tools.flapi</groupId>
+							<artifactId>flapi</artifactId>
+							<version>${flapi.version}</version>
+						</additionalDependency>
+					</additionalDependencies>
+				</configuration>
+			</plugin>
+
+			<!-- add generated sources directory -->
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>build-helper-maven-plugin</artifactId>
+				<version>1.7</version>
+				<executions>
+					<execution>
+						<id>add-sources</id>
+						<goals>
+							<goal>add-source</goal>
+						</goals>
+						<phase>generate-test-sources</phase>
 						<configuration>
-							<additionalDependencies>
-								<additionalDependency>
-									<groupId>unquietcode.tools.flapi</groupId>
-									<artifactId>flapi-runtime</artifactId>
-									<version>${flapi.version}</version>
-								</additionalDependency>
-								<additionalDependency>
-									<groupId>unquietcode.tools.flapi</groupId>
-									<artifactId>flapi</artifactId>
-									<version>${flapi.version}</version>
-								</additionalDependency>
-							</additionalDependencies>
+							<sources>
+								<source>${flapi.generated.sources}</source>
+							</sources>
 						</configuration>
-					</plugin>
-
-					<!-- add generated sources directory -->
-					<plugin>
-						<groupId>org.codehaus.mojo</groupId>
-						<artifactId>build-helper-maven-plugin</artifactId>
-						<version>1.7</version>
-						<executions>
-							<execution>
-								<id>add-sources</id>
-								<goals>
-									<goal>add-source</goal>
-								</goals>
-								<phase>generate-test-sources</phase>
-								<configuration>
-									<sources>
-										<source>${flapi.generated.sources}</source>
-									</sources>
-								</configuration>
-							</execution>
-						</executions>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-	</profiles>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
 </project>
