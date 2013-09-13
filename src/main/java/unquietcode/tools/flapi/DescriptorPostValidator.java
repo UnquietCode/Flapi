@@ -1,5 +1,5 @@
 /*******************************************************************************
- Copyright 2012 Benjamin Fagin
+ Copyright 2013 Benjamin Fagin
 
      Licensed under the Apache License, Version 2.0 (the "License");
      you may not use this file except in compliance with the License.
@@ -47,6 +47,7 @@ public class DescriptorPostValidator {
 
 	public void validate() {
 		checkForBlocksWithNoEnd(graph, new IdentityHashMap<StateClass, Boolean>());
+		checkForBlocksWithNoEnd(graph, new IdentityHashMap<StateClass, Boolean>());
 	}
 
 	private boolean checkForBlocksWithNoEnd(StateClass state, final Map<StateClass, Boolean> seen) {
@@ -57,15 +58,80 @@ public class DescriptorPostValidator {
 		// check this state's transitions
 		for (Transition transition : state.getTransitions()) {
 			transition.accept(new TransitionVisitor.$() {
-				public
-				@Override
-				void visit(TerminalTransition transition) {
+				public @Override void visit(TerminalTransition transition) {
+					handle(transition);
+				}
+
+				public @Override void visit(AscendingTransition transition) {
+					handle(transition);
+				}
+
+				void handle(Transition transition) {
+
+					// check for infinite loops
+					for (StateClass step : transition.getStateChain()) {
+						if (step.isLateral(transition.getOwner())) {
+							String msg = String.format(
+								"Infinite loop detected between blocks '%s' and '%s'.",
+								transition.getOwner().getName(),
+								step.getName()
+							);
+
+							throw new DescriptorBuilderException(msg);
+						}
+					}
+
+					terminal.set(true);
+				}
+			});
+		}
+
+		valid.set(valid.get() || terminal.get());
+		seen.put(state, terminal.get());
+
+		// check every other transition to ensure that they can find a terminal
+		for (Transition transition : state.getTransitions()) {
+			final TransitionType transitionType = transition.getType();
+
+			transition.acceptForTraversal(new GenericVisitor<StateClass>() {
+				public void visit(StateClass next) {
+					boolean nextIsTerminal = checkForBlocksWithNoEnd(next, seen);
+
+					if (transitionType != TransitionType.Recursive) {
+						valid.set(valid.get() || nextIsTerminal);
+					}
+				}
+			});
+		}
+
+		// support implicit terminals
+		boolean hasImplicitTerminals = state.getBaseState() != null
+									 ? state.getBaseState().hasImplicitTerminal()
+									 : state.hasImplicitTerminal();
+		valid.set(valid.get() || hasImplicitTerminals);
+
+		if (!valid.get() == true) {
+			throw new DescriptorBuilderException("Encountered a block with no terminal method: " + state.getName());
+		}
+
+		// return terminal because that's what we are really tracking
+		return terminal.get();
+	}
+
+	// occurs when every terminal transition for a block
+	private boolean checkForInfiniteLoops(StateClass state, final Map<StateClass, Boolean> seen) {
+		if (seen.containsKey(state)) { return seen.get(state); }
+		final AtomicBoolean valid = new AtomicBoolean(false);
+		final AtomicBoolean terminal = new AtomicBoolean(false);
+
+		// check this state's transitions
+		for (Transition transition : state.getTransitions()) {
+			transition.accept(new TransitionVisitor.$() {
+				public @Override void visit(TerminalTransition transition) {
 					terminal.set(true);
 				}
 
-				public
-				@Override
-				void visit(AscendingTransition transition) {
+				public @Override void visit(AscendingTransition transition) {
 					terminal.set(true);
 				}
 			});

@@ -323,7 +323,7 @@ public class BuildChecks_T {
 
 	@Test(expected=DescriptorBuilderException.class)
 	public void emptyBlockWithBlockChainIsRejected() {
-		Descriptor descriptor = Flapi.builder()
+		Flapi.builder()
 			.setPackage("something")
 			.setDescriptorName("Something")
 
@@ -335,6 +335,58 @@ public class BuildChecks_T {
 				.end()
 			.last()
 
+			.endBlock()
+		.build();
+	}
+
+	@Test(expected=DescriptorBuilderException.class)
+	public void infiniteLoopForSingleStateChain() {
+		Flapi.builder()
+			.setPackage("unquietcode.tools.flapi.test.infinite")
+			.setDescriptorName("Looping")
+
+			.startBlock("BlockA", "blockA()").last()
+				.addBlockReference("BlockA", "blockARef()").last()
+			.endBlock()
+		.build();
+	}
+
+	@Test(expected=DescriptorBuilderException.class)
+	public void infiniteLoopForMultipleStateChain_1() {
+		Flapi.builder()
+			.setPackage("unquietcode.tools.flapi.test.infinite")
+			.setDescriptorName("Looping")
+
+			.startBlock("BlockA", "blockA()").any()
+				.addMethod("nothing()").last()
+			.endBlock()
+
+			.startBlock("BlockB", "blockB()").last()
+				.addBlockReference("BlockA", "blockARef()")
+					.addBlockChain()
+						.addBlockReference("BlockB")
+					.end()
+				.last()
+			.endBlock()
+		.build();
+	}
+
+	@Test(expected=DescriptorBuilderException.class)
+	public void infiniteLoopForMultipleStateChain_2() {
+		Flapi.builder()
+			.setPackage("unquietcode.tools.flapi.test.infinite")
+			.setDescriptorName("Looping")
+
+			.startBlock("BlockA", "blockA()").any()
+				.addMethod("nothing()").last()
+			.endBlock()
+
+			.startBlock("BlockB", "blockB()").last()
+				.addBlockReference("BlockB", "blockBRef()")
+					.addBlockChain()
+						.addBlockReference("BlockA")
+					.end()
+				.last()
 			.endBlock()
 		.build();
 	}

@@ -25,7 +25,7 @@ public class ReturnTypeProcessor extends AbstractGenerator {
 		// setup initial return value
 		final AtomicReference<JType> initialType = new AtomicReference<JType>();
 
-		transition.accept(new TransitionVisitor() {
+		transition.accept(new TransitionVisitor.$() {
 			@Override
 			public void visit(AscendingTransition transition) {
 				JClass sc = BUILDER_NARROWED_INTERFACE_STRATEGY.createType(ctx, transition.getOwner());

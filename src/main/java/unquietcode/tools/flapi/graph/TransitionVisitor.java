@@ -19,16 +19,14 @@
 
 package unquietcode.tools.flapi.graph;
 
-import unquietcode.tools.flapi.graph.components.AscendingTransition;
-import unquietcode.tools.flapi.graph.components.LateralTransition;
-import unquietcode.tools.flapi.graph.components.RecursiveTransition;
-import unquietcode.tools.flapi.graph.components.TerminalTransition;
+import unquietcode.tools.flapi.graph.components.*;
 
 /**
  * @author Ben Fagin
  * @version 08-16-2012
  */
 public interface TransitionVisitor {
+	void visit(Transition transition);
 	void visit(AscendingTransition transition);
 	void visit(LateralTransition transition);
 	void visit(RecursiveTransition transition);
@@ -39,6 +37,10 @@ public interface TransitionVisitor {
 	 * the {@link unquietcode.tools.flapi.graph.TransitionVisitor} interface methods.
 	 */
 	public abstract static class $ implements TransitionVisitor {
+		public @Override void visit(Transition transition) {
+			// nothing
+		}
+
 		public @Override void visit(AscendingTransition transition) {
 			// nothing
 		}

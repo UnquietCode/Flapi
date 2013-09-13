@@ -25,6 +25,7 @@ import unquietcode.tools.flapi.helpers.DescriptorHelperImpl;
 import unquietcode.tools.flapi.runtime.ExecutionListener;
 
 import javax.lang.model.SourceVersion;
+import java.util.regex.Pattern;
 
 /**
  * @author Ben Fagin
@@ -72,4 +73,32 @@ public class Flapi {
 	public static void shouldOutputRuntime(boolean outputRuntime) {
 		Flapi.outputRuntime = outputRuntime;
 	}
+
+	/*package*/ static boolean not(boolean condition) {
+		return !condition;
+	}
+
+	// a regex library for java built with Flapi?
+	// docs and everything
+	// .anyCharacter()
+	// .anyWhiteSpace()
+
+	private static final Pattern PATTERN = Pattern.compile("(\\{(\\s*)})*");
+
+//	/*package*/ static String format(String pattern, Object...data) {
+//		Matcher matcher = PATTERN.matcher(pattern);
+//		StringBuffer sb = new StringBuffer();
+//		int cur = 0;
+//
+//		while (matcher.find()) {
+//			if (cur >= data.length) {
+//				throw new RuntimeException("not enough data");
+//			}
+//
+//			matcher.appendReplacement(sb, data[cur++].toString());
+//		}
+//
+//		matcher.appendTail(sb);
+//		return sb.toString();
+//	}
 }
