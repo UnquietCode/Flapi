@@ -20,6 +20,7 @@
 package unquietcode.tools.flapi;
 
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 import unquietcode.tools.flapi.builder.Descriptor.DescriptorGenerator;
 import unquietcode.tools.flapi.helpers.DescriptorHelperImpl;
@@ -167,21 +168,13 @@ public class BuildChecks_T {
 			.setDescriptorName("Something")
 			.setStartingMethodName("create")
 
-			.startBlock("BlockA", "void hello1()")
-				.addBlockChain()
-					.addBlockReference("BlockA")
-				.end()
-			.last()
-
-				.addMethod("something()").last()
-			.endBlock()
-
 			.startBlock("BlockB", "void hello2()").atMost(1)
 				.addMethod("void recurse()")
 					.addBlockChain()
 						.addBlockReference("BlockB")
 					.end()
 				.last()
+				.addMethod("escape()").last()
 			.endBlock()
 		.build();
 	}
@@ -339,6 +332,25 @@ public class BuildChecks_T {
 		.build();
 	}
 
+	@Ignore
+	@Test(expected=DescriptorBuilderException.class)
+	public void infiniteLoop() {
+		Flapi.builder()
+			.setPackage("unquietcode.something")
+			.setDescriptorName("Something")
+			.setStartingMethodName("create")
+
+			.startBlock("BlockA", "void hello()").atMost(1)
+				.addMethod("void recurse()")
+					.addBlockChain()
+						.addBlockReference("BlockA")
+					.end()
+				.last()
+			.endBlock()
+		.build();
+	}
+
+	@Ignore
 	@Test(expected=DescriptorBuilderException.class)
 	public void infiniteLoopForSingleStateChain() {
 		Flapi.builder()
@@ -351,6 +363,7 @@ public class BuildChecks_T {
 		.build();
 	}
 
+	@Ignore
 	@Test(expected=DescriptorBuilderException.class)
 	public void infiniteLoopForMultipleStateChain_1() {
 		Flapi.builder()
@@ -371,6 +384,7 @@ public class BuildChecks_T {
 		.build();
 	}
 
+	@Ignore
 	@Test(expected=DescriptorBuilderException.class)
 	public void infiniteLoopForMultipleStateChain_2() {
 		Flapi.builder()

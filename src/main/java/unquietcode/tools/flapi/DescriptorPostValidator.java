@@ -71,13 +71,7 @@ public class DescriptorPostValidator {
 					// check for infinite loops
 					for (StateClass step : transition.getStateChain()) {
 						if (step.isLateral(transition.getOwner())) {
-							String msg = String.format(
-								"Infinite loop detected between blocks '%s' and '%s'.",
-								transition.getOwner().getName(),
-								step.getName()
-							);
-
-							throw new DescriptorBuilderException(msg);
+							//return;
 						}
 					}
 
