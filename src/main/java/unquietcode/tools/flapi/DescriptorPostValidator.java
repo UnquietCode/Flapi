@@ -54,6 +54,7 @@ public class DescriptorPostValidator {
 		if (seen.containsKey(state)) { return seen.get(state); }
 		final AtomicBoolean valid = new AtomicBoolean(false);
 		final AtomicBoolean terminal = new AtomicBoolean(false);
+		final AtomicBoolean recursive = new AtomicBoolean(false);
 
 		// check this state's transitions
 		for (Transition transition : state.getTransitions()) {
@@ -67,11 +68,17 @@ public class DescriptorPostValidator {
 				}
 
 				void handle(Transition transition) {
-
 					// check for infinite loops
+
+					// for every state in the state chain
 					for (StateClass step : transition.getStateChain()) {
+
+						// if it is parallel to us, then it's recursive
 						if (step.isLateral(transition.getOwner())) {
-							//return;
+							recursive.set(true);
+
+							// return before declaring officially terminal
+							return;
 						}
 					}
 
@@ -80,7 +87,14 @@ public class DescriptorPostValidator {
 			});
 		}
 
-		valid.set(valid.get() || terminal.get());
+		// If there was a good method, AND it's recursive, no sweat,
+		// but if there was ONLY a recursive method, then that's an
+		// indication of an infinite loop.
+		if (terminal.get() == false && recursive.get() == true) {
+			throw new DescriptorBuilderException("Infinite loop detected for block '"+state.getName()+"'.");
+		}
+
+		valid.set(terminal.get());
 		seen.put(state, terminal.get());
 
 		// check every other transition to ensure that they can find a terminal
