@@ -104,12 +104,7 @@ public class GraphBuilder {
 		}
 
 		// create the base state from the required methods
-		StateClass baseState = getStateFromBlockAndMethods(block, requiredMethods);
-		baseState.setName(blockName);
-
-		for (MethodOutline requiredMethod : requiredMethods) {
-			addTransition(baseState, block, requiredMethods, null, requiredMethod);
-		}
+		final Object baseIdentifier = new Object();
 
 		// create the sibling states
 		Set<Set<MethodOutline>> workingSet = makeCombinations(dynamicMethods);
@@ -127,17 +122,19 @@ public class GraphBuilder {
 					seen.add(theState);
 				}
 
-				if (theState != baseState) {
-					theState.setBaseState(baseState);
-				} else {
-					// there aren't any dynamic methods on the base state anyway
-					continue;
+				theState.setName(blockName);
+				theState.setBaseState(baseIdentifier);
+
+				// add required methods
+				for (MethodOutline requiredMethod : requiredMethods) {
+					addTransition(theState, block, requiredMethods, null, requiredMethods, requiredMethod);
 				}
 
+				// add dynamic methods
 				for (MethodOutline dynamicMethod : combination) {
 					Set<MethodOutline> next;
-					next = addTransition(theState, block, combination, triggeredMethods, dynamicMethod);
-					if (next != null) { nextSet.add(next); }
+					next = addTransition(theState, block, combination, triggeredMethods, requiredMethods, dynamicMethod);
+					nextSet.add(next);
 				}
 			}
 
@@ -145,7 +142,7 @@ public class GraphBuilder {
 		}
 
 		for (BlockOutline child : block.getBlocks()) {
-			StateClass childState = convertBlock(child);
+			convertBlock(child);
 		}
 
 		return topLevel;
@@ -182,12 +179,14 @@ public class GraphBuilder {
 		BlockOutline block,
 		Set<MethodOutline> combination,
 		Set<MethodOutline> triggered,
+		Set<MethodOutline> required,
 		MethodOutline method
 	){
 		Transition transition;
-		Set<MethodOutline> retval = null;
+		Set<MethodOutline> nextMethods = computeNextMethods(combination, triggered, method);
+		boolean implicitTerminalWorthy = nextMethods.isEmpty() && required.isEmpty();
 
-		if (method.isTerminal()) {
+		if (method.isTerminal() || implicitTerminalWorthy) {
 			if (method.getReturnType() != null) {
 				TerminalTransition terminal = new TerminalTransition();
 				terminal.setReturnType(method.getReturnType());
@@ -202,12 +201,10 @@ public class GraphBuilder {
 		} else if (method.isRequired()) {
 			transition = new RecursiveTransition();
 		} else {
-			Set<MethodOutline> nextMethods = computeNextMethods(combination, triggered, method);
 			StateClass next = getStateFromBlockAndMethods(block, nextMethods);
 			LateralTransition lateral = new LateralTransition();
 			lateral.setSibling(next);
 			transition = lateral;
-			retval = nextMethods;
 		}
 
 		transition.setMethodInfo(((MethodInfo) method).copy());
@@ -219,7 +216,7 @@ public class GraphBuilder {
 			transition.getStateChain().add(chainClass);
 		}
 
-		return retval;
+		return nextMethods;
 	}
 
 	/**
@@ -309,41 +306,39 @@ public class GraphBuilder {
 		Set<MethodOutline> triggeredMethods,
 		MethodOutline method
 	){
-		if (method.isRequired()) {
-			return new TreeSet<MethodOutline>(allMethods);
-		}
-
 		// compute minus method
 		Set<MethodOutline> nextMethods = new TreeSet<MethodOutline>(allMethods);
-		nextMethods.remove(method);
+
+		// remove if not required
+		if (!method.isRequired()) {
+			nextMethods.remove(method);
+		}
 
 		// only add back if it's not the last instance
 		if (method.getMaxOccurrences() > 1) {
 			MethodOutline m = method.copy();
 			m.setMaxOccurrences(m.getMaxOccurrences() - 1);
 			nextMethods.add(m);
+		}
 
-		// otherwise, make changes based on the outgoing group number
-		} else {
-			Integer currentGroup = method.getGroup();
+		// make changes based on the outgoing group number
+		Integer currentGroup = method.getGroup();
+		if (currentGroup != null) {
 
-			if (currentGroup != null) {
-
-				// remove methods linked by group
-				for (MethodOutline otherMethod : new HashSet<MethodOutline>(nextMethods)) {
-					if (currentGroup.equals(otherMethod.getGroup())) {
-						nextMethods.remove(otherMethod);
-					}
+			// remove methods linked by group
+			for (MethodOutline otherMethod : new HashSet<MethodOutline>(nextMethods)) {
+				if (currentGroup.equals(otherMethod.getGroup())) {
+					nextMethods.remove(otherMethod);
 				}
+			}
 
-				// add methods triggered by group
-				for (MethodOutline triggeredMethod : triggeredMethods) {
-					if (currentGroup.equals(triggeredMethod.getTrigger())) {
-						nextMethods.add(triggeredMethod.copy());
+			// add methods triggered by group
+			for (MethodOutline triggeredMethod : triggeredMethods) {
+				if (currentGroup.equals(triggeredMethod.getTrigger())) {
+					nextMethods.add(triggeredMethod.copy());
 
-						if (!consumedTriggers.contains(triggeredMethod)) {
-							consumedTriggers.add(triggeredMethod);
-						}
+					if (!consumedTriggers.contains(triggeredMethod)) {
+						consumedTriggers.add(triggeredMethod);
 					}
 				}
 			}

@@ -25,7 +25,6 @@ import unquietcode.tools.flapi.DescriptorPreValidator;
 import unquietcode.tools.flapi.graph.GraphBuilder;
 import unquietcode.tools.flapi.graph.components.StateClass;
 import unquietcode.tools.flapi.graph.processors.GraphProcessor;
-import unquietcode.tools.flapi.graph.processors.ImplicitTerminalProcessor;
 import unquietcode.tools.flapi.outline.DescriptorOutline;
 
 /**
@@ -52,10 +51,6 @@ public class DescriptorGenerator extends AbstractGenerator {
 		// convert to graph
 		GraphBuilder converter = new GraphBuilder();
 		StateClass graph = converter.buildGraph(outline);
-
-		// find implicit terminals and rewire them
-		ImplicitTerminalProcessor implicitTerminalProcessor = new ImplicitTerminalProcessor();
-		implicitTerminalProcessor.visit(graph);
 
 		// post-graph validation
 		DescriptorPostValidator postValidator = new DescriptorPostValidator(graph);

@@ -320,13 +320,26 @@ public class BuildChecks_T {
 			.setDescriptorName("Something")
 			.setStartingMethodName("create")
 
-			.startBlock("BlockB", "void hello2()").atMost(1)
+			.startBlock("BlockB", "void hello()").last()
 				.addMethod("void recurse()")
 					.addBlockChain()
 						.addBlockReference("BlockB")
 					.end()
 				.last()
 				.addMethod("escape()").last()
+			.endBlock()
+		.build();
+	}
+
+	@Test
+	public void implicitTerminal() {
+		Flapi.builder()
+			.setPackage("unquietcode.something")
+			.setDescriptorName("Something")
+			.setStartingMethodName("create")
+
+			.startBlock("BlockB", "void hello()").atMost(1)
+				.addMethod("end()").last()
 			.endBlock()
 		.build();
 	}

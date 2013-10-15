@@ -21,11 +21,9 @@ package unquietcode.tools.flapi.graph.components;
 
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
-import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
 
 /**
@@ -34,10 +32,9 @@ import static com.google.common.base.Preconditions.checkState;
  */
 public class StateClass {
 	protected Set<Transition> transitions = new HashSet<Transition>();
-	private StateClass base;
+	private Object baseState;
 	private String name;
 	private boolean isTopLevel = false;
-	private boolean hasImplicitTerminal = false;
 
 
 	public void setName(String name) {
@@ -45,10 +42,6 @@ public class StateClass {
 	}
 
 	public String getName() {
-		if (base != null) {
-			return base.getName();
-		}
-
 		return name;
 	}
 
@@ -60,13 +53,6 @@ public class StateClass {
 		isTopLevel = true;
 	}
 
-	public boolean hasImplicitTerminal() {
-		return hasImplicitTerminal;
-	}
-
-	public void setImplicitTerminal() {
-		hasImplicitTerminal = true;
-	}
 
 	// for debugging porpoises, mostly
 	@Override
@@ -80,36 +66,17 @@ public class StateClass {
 	}
 
 	public TreeSet<Transition> getTransitions() {
-		TreeSet<Transition> retval = new TreeSet<Transition>(transitions);
-
-		if (base != null) {
-			for (Transition transition : base.transitions) {
-				Transition t = transition.copy();
-				t.setOwner(this);
-				retval.add(t);
-
-				// replace any instances of the base state with ourselves
-				List<StateClass> stateChain = t.getStateChain();
-				for (int i=0; i < stateChain.size(); ++i) {
-					StateClass state = stateChain.get(i);
-					if (state == base) {
-						stateChain.set(i, this);
-					}
-				}
-			}
-		}
-
-		return retval;
+		return new TreeSet<Transition>(transitions);
 	}
 
-	public void replaceTransition(Transition theOldOne, Transition theNewOne) {
-		checkNotNull(theOldOne);
-		checkNotNull(theNewOne);
-		checkState(transitions.contains(theOldOne), "the transition to replace was not found");
-
-		transitions.remove(theOldOne);
-		addTransitions(theNewOne);
-	}
+//	public void replaceTransition(Transition theOldOne, Transition theNewOne) {
+//		checkNotNull(theOldOne);
+//		checkNotNull(theNewOne);
+//		checkState(transitions.contains(theOldOne), "the transition to replace was not found");
+//
+//		transitions.remove(theOldOne);
+//		addTransitions(theNewOne);
+//	}
 
 	public final void addTransitions(Transition...transitions) {
 		for (Transition transition : transitions) {
@@ -119,19 +86,17 @@ public class StateClass {
 		}
 	}
 
-	public final StateClass getBaseState() {
-		return base;
+	public final Object getBaseState() {
+		return baseState;
 	}
 
-	public final void setBaseState(StateClass base) {
-		this.base = base;
+	public final void setBaseState(Object base) {
+		this.baseState = base;
 	}
 
 	public boolean isLateral(StateClass other) {
-		return this == other                                   // true of we're the same object
-			|| this == other.getBaseState()                    // true if we're the base state
-			|| this.getBaseState() == other                    // true if it's our base state
-			|| this.getBaseState() == other.getBaseState()     // true if we share the same base state
+		return this == other                                // true of we're the same object
+			|| this.getBaseState() == other.getBaseState()  // true if we share the same base state
 		;
 	}
 }
