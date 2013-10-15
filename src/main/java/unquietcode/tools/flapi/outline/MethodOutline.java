@@ -29,16 +29,16 @@ import java.util.List;
  */
 public class MethodOutline extends MethodInfo implements Outline {
 	private boolean isTerminal = false;
-	private Class returnType;
+	private String returnType;
 	private final List<BlockOutline> blockChain = new ArrayList<BlockOutline>();
 	private Integer group;
 	private Integer trigger;
 
-	public Class getReturnType() {
+	public String getReturnType() {
 		return returnType;
 	}
 
-	public void setReturnType(Class returnType) {
+	public void setReturnType(String returnType) {
 		this.returnType = returnType;
 	}
 

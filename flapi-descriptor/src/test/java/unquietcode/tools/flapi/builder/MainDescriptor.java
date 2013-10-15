@@ -31,6 +31,7 @@ import unquietcode.tools.flapi.Flapi;
  */
 public class MainDescriptor implements DescriptorMaker {
 	private static final int DOC_GROUP = 1;
+	private static final int RETURN_TYPE_GROUP = 2;
 
 
 	@Override
@@ -58,7 +59,11 @@ public class MainDescriptor implements DescriptorMaker {
 
 			.addMethod("setReturnType(Class returnType)")
 				.withDocumentation("set the return type for the top level descriptor (default is void)")
-			.atMost(1)
+			.atMost(1, RETURN_TYPE_GROUP)
+
+			.addMethod("setReturnType(String returnType)")
+				.withDocumentation("set the return type for the top level descriptor (default is void)")
+			.atMost(1, RETURN_TYPE_GROUP)
 
 			.addMethod("enableCondensedClassNames()")
 				.withDocumentation()
@@ -121,12 +126,12 @@ public class MainDescriptor implements DescriptorMaker {
 					.finish()
 				.last()
 
-//				.addMethod("last(String returnType)")
-//					.withDocumentation()
-//						.addContent("Mark the method as terminal, returning an object of the given ")
-//						.addContent("type when called. The type is specified as a FQCN.")
-//					.finish()
-//				.last()
+				.addMethod("last(String returnType)")
+					.withDocumentation()
+						.addContent("Mark the method as terminal, returning an object of the given ")
+						.addContent("type when called. The type is specified as a FQCN.")
+					.finish()
+				.last()
 
 				.addMethod("atLeast(int num)")
 					.withDocumentation("expect the method [X, inf) times")

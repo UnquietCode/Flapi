@@ -114,12 +114,14 @@ public class GraphProcessor extends AbstractGenerator implements GenericVisitor<
 
 		transition.accept(new TransitionVisitor.$() {
 			public @Override void visit(TerminalTransition transition) {
-				Class clazz = transition.getReturnType() == null ? Void.class : transition.getReturnType();
+				String clazz = transition.getReturnType() == null
+						     ? Void.class.getName()
+							 : transition.getReturnType();
 
 				// Set the return type unless it's (V)oid, in which case as a convenience we
 				// set the return to (v)oid, which is also done on the *Helper interfaces.
 
-				if (!clazz.equals(Void.class)) {
+				if (!clazz.equals(Void.class.getName())) {
 					helperReturnType.set(ctx.model.ref(clazz));
 				}
 			}

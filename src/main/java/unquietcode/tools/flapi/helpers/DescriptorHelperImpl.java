@@ -39,7 +39,6 @@ public class DescriptorHelperImpl implements DescriptorHelper {
 		if (descriptorName == null || descriptorName.trim().isEmpty()) {
 			throw new IllegalArgumentException("Name cannot be empty.");
 		}
-
 		outline.setDescriptorName(descriptorName);
 	}
 
@@ -48,7 +47,14 @@ public class DescriptorHelperImpl implements DescriptorHelper {
 		if (returnType == null) {
 			throw new IllegalArgumentException("Return type cannot be null.");
 		}
+		setReturnType(returnType.getName());
+	}
 
+	@Override
+	public void setReturnType(String returnType) {
+		if (returnType == null) {
+			throw new IllegalArgumentException("Return type cannot be null.");
+		}
 		outline.selfBlock.setReturnType(returnType);
 	}
 
@@ -57,7 +63,6 @@ public class DescriptorHelperImpl implements DescriptorHelper {
 		if (methodName == null || methodName.trim().isEmpty()) {
 			throw new IllegalArgumentException("Name cannot be empty.");
 		}
-
 		outline.setCreateMethod(methodName);
 	}
 

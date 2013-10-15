@@ -91,6 +91,10 @@ Descriptor descriptor = Flapi.builder()
 // default is `void`)
 .setReturnType(Class class)
 
+// As above, except the type can be specified without
+// creating a compile-time dependency on the class.
+.setReturnType(String class)
+
 // Generate class names which are condensed at the expense of
 // being mangled and not as readable by a human. This is
 // useful if you have a complicated descriptor which creates
@@ -320,6 +324,10 @@ public enum TestEnum {
 // return the specified type. This overrides any
 // return type set for the block.
 .last(Class class)
+
+// As above, except the type can be specified without
+// creating a compile-time dependency on the class.
+.last(String class)
 
 
 /**

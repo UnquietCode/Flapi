@@ -27,22 +27,22 @@ import unquietcode.tools.flapi.runtime.TransitionType;
  * @version 08-15-2012
  */
 public class TerminalTransition extends Transition {
-	Class returnType;
+	String returnType;
 
 	public TerminalTransition() {
 		super(TransitionType.Terminal);
 	}
 
-	public TerminalTransition(Class returnType) {
+	public TerminalTransition(String returnType) {
 		this();
 		this.returnType = returnType;
 	}
 
-	public Class getReturnType() {
+	public String getReturnType() {
 		return returnType;
 	}
 
-	public void setReturnType(Class returnType) {
+	public void setReturnType(String returnType) {
 		this.returnType = returnType;
 	}
 

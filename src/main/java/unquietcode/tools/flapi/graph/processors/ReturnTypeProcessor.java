@@ -44,9 +44,11 @@ public class ReturnTypeProcessor extends AbstractGenerator {
 
 			@Override
 			public void visit(TerminalTransition transition) {
-				Class clazz = transition.getReturnType() == null ? Void.class : transition.getReturnType();
+				String clazz = transition.getReturnType() == null
+							 ? Void.class.getName()
+							 : transition.getReturnType();
 
-				if (!clazz.equals(Void.class) || !transition.getStateChain().isEmpty()) {
+				if (!clazz.equals(Void.class.getName()) || !transition.getStateChain().isEmpty()) {
 					initialType.set(ctx.model.ref(clazz));
 				} else {
 					initialType.set(ctx.model.VOID);

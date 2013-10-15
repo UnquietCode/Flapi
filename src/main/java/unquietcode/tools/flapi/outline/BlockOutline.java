@@ -27,7 +27,7 @@ import java.util.*;
  */
 public class BlockOutline implements Outline {
 	private String name;
-	private Class returnType = null;
+	private String returnType = null;
 
 	// nested blocks
 	private final List<BlockOutline> blocks = new ArrayList<BlockOutline>();
@@ -47,11 +47,11 @@ public class BlockOutline implements Outline {
 
 	public BlockOutline() { }
 
-	public Class getReturnType() {
+	public String getReturnType() {
 		return constructor != null ? constructor.getReturnType() : returnType;
 	}
 
-	public void setReturnType(Class returnType) {
+	public void setReturnType(String returnType) {
 		this.returnType = returnType;
 	}
 

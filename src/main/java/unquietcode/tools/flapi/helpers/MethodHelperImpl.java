@@ -62,6 +62,15 @@ public class MethodHelperImpl implements MethodHelper {
 			throw new DescriptorBuilderException("Intermediate return type cannot be null.");
 		}
 
+		last(returnType.getName());
+	}
+
+	@Override
+	public void last(String returnType) {
+		if (returnType == null) {
+			throw new DescriptorBuilderException("Intermediate return type cannot be null.");
+		}
+
 		last();
 		method.setReturnType(returnType);
 	}
