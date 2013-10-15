@@ -146,7 +146,6 @@ public class GraphBuilder {
 
 		for (BlockOutline child : block.getBlocks()) {
 			StateClass childState = convertBlock(child);
-			childState.setParentState(topLevel);
 		}
 
 		return topLevel;

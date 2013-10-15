@@ -34,7 +34,6 @@ import static com.google.common.base.Preconditions.checkState;
  */
 public class StateClass {
 	protected Set<Transition> transitions = new HashSet<Transition>();
-	private StateClass parent;
 	private StateClass base;
 	private String name;
 	private boolean isTopLevel = false;
@@ -126,14 +125,6 @@ public class StateClass {
 
 	public final void setBaseState(StateClass base) {
 		this.base = base;
-	}
-
-	public final void setParentState(StateClass parent) {
-		this.parent = parent;
-	}
-
-	public final StateClass getParentState() {
-		return parent;
 	}
 
 	public boolean isLateral(StateClass other) {
