@@ -19,6 +19,7 @@
 
 package unquietcode.tools.flapi;
 
+import org.junit.After;
 import org.junit.Rule;
 import org.junit.rules.TemporaryFolder;
 
@@ -42,6 +43,13 @@ public abstract class AbstractCompiledTest {
 	@Rule
 	public TemporaryFolder temp = new TemporaryFolder();
 
+	@After
+	public void cleanup() {
+		for (File file : temp.getRoot().listFiles()) {
+			recursiveDelete(file);
+		}
+	}
+
 	protected void testCompile() {
 		List<File> sourceFiles = new ArrayList<File>();
 		getFiles(temp.getRoot(), sourceFiles);
@@ -53,6 +61,16 @@ public abstract class AbstractCompiledTest {
 	}
 
 	// - - --  ---------  - - --   -------- - -   - ----- -- ----------  -- ---
+
+	private void recursiveDelete(File directory) {
+		for (File file : directory.listFiles()) {
+			if (file.isDirectory()) {
+				recursiveDelete(file);
+			} else {
+				file.delete();
+			}
+		}
+	}
 
 	private void getFiles(File file, List<File> files) {
 		if (file.isFile() && file.getName().endsWith(".java")) {
