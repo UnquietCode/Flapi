@@ -45,8 +45,6 @@ public class CodeWriter {
 		} catch (IOException ex) {
 			throw new RuntimeException(ex);
 		}
-
-		System.out.println(stream.toString());
 	}
 
 	public static void writeToDirectory(JCodeModel model, File directory) {
