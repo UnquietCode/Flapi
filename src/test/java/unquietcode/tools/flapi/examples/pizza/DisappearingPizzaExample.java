@@ -2,6 +2,7 @@ package unquietcode.tools.flapi.examples.pizza;
 
 import org.junit.Test;
 import unquietcode.tools.flapi.Descriptor;
+import unquietcode.tools.flapi.DescriptorMaker;
 import unquietcode.tools.flapi.Flapi;
 import unquietcode.tools.flapi.examples.pizza.builder.Pizza.PizzaGenerator;
 
@@ -14,10 +15,11 @@ import java.util.List;
  *
  * Descriptor example which shows the use of restricted methods.
  */
-public class DisappearingPizzaExample {
+public class DisappearingPizzaExample implements DescriptorMaker {
 
-	public static void main(String[] args) {
-		Descriptor builder = Flapi.builder()
+	@Override
+	public Descriptor descriptor() {
+		return Flapi.builder()
 			.setPackage("unquietcode.tools.flapi.examples.pizza.builder")
 			.setStartingMethodName("makePizza")
 			.setDescriptorName("Pizza")
@@ -27,8 +29,6 @@ public class DisappearingPizzaExample {
 			.addMethod("addTopping(unquietcode.tools.flapi.examples.pizza.DisappearingPizzaExample.Topping topping)").atMost(3)
 			.addMethod("bake()").last(Pizza.class)
 		.build();
-
-		builder.writeToFolder(args[0]);
 	}
 
 	@Test

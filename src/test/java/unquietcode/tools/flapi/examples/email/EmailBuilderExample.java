@@ -2,6 +2,7 @@ package unquietcode.tools.flapi.examples.email;
 
 import org.junit.Test;
 import unquietcode.tools.flapi.Descriptor;
+import unquietcode.tools.flapi.DescriptorMaker;
 import unquietcode.tools.flapi.Flapi;
 import unquietcode.tools.flapi.examples.email.builder.Email.EmailGenerator;
 
@@ -11,10 +12,11 @@ import unquietcode.tools.flapi.examples.email.builder.Email.EmailGenerator;
  *
  * A test which builds an 'email builder' descriptor.
  */
-public class EmailBuilderExample {
+public class EmailBuilderExample implements DescriptorMaker {
 
-	public static void main(String[] args) {
-		Descriptor builder = Flapi.builder()
+	@Override
+	public Descriptor descriptor() {
+		return Flapi.builder()
 			.setPackage("unquietcode.tools.flapi.examples.email.builder")
 			.setStartingMethodName("compose")
 			.setDescriptorName("Email")
@@ -28,8 +30,6 @@ public class EmailBuilderExample {
 			.addMethod("addAttachment(java.io.File file)").any()
 			.addMethod("send()").last(EmailMessage.class)
 		.build();
-
-		builder.writeToFolder(args[0]);
 	}
 
 	@Test

@@ -21,6 +21,7 @@ package unquietcode.tools.flapi.examples.house;
 
 import org.junit.Test;
 import unquietcode.tools.flapi.Descriptor;
+import unquietcode.tools.flapi.DescriptorMaker;
 import unquietcode.tools.flapi.Flapi;
 import unquietcode.tools.flapi.examples.house.builder.House.HouseBuilder;
 import unquietcode.tools.flapi.examples.house.builder.House.HouseGenerator;
@@ -31,10 +32,11 @@ import java.awt.*;
  * @author Ben Fagin
  * @version 05-28-2012
  */
-public class HouseBuilderExample {
+public class HouseBuilderExample implements DescriptorMaker {
 
-	public static void main(String[] args) {
-		Descriptor descriptor = Flapi.builder()
+	@Override
+	public Descriptor descriptor() {
+		return Flapi.builder()
 			.setDescriptorName("House")
 			.setPackage("unquietcode.tools.flapi.examples.house.builder")
 
@@ -46,8 +48,6 @@ public class HouseBuilderExample {
 			.addMethod("constructExpensiveHouse()").last(ExpensiveHouse.class)
 			.addMethod("constructAffordableHouse()").last(AffordableHouse.class)
 		.build();
-
-		descriptor.writeToFolder(args[0]);
 	}
 
 	@Test

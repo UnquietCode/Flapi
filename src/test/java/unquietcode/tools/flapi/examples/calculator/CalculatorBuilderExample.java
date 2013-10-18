@@ -2,6 +2,7 @@ package unquietcode.tools.flapi.examples.calculator;
 
 import org.junit.Test;
 import unquietcode.tools.flapi.Descriptor;
+import unquietcode.tools.flapi.DescriptorMaker;
 import unquietcode.tools.flapi.Flapi;
 import unquietcode.tools.flapi.examples.calculator.builder.Calculation.CalculationBuilder;
 import unquietcode.tools.flapi.examples.calculator.builder.Calculator.CalculatorBuilder;
@@ -14,10 +15,11 @@ import java.util.concurrent.atomic.AtomicReference;
  * @author Ben Fagin
  * @version 05-11-2012
  */
-public class CalculatorBuilderExample {
+public class CalculatorBuilderExample implements DescriptorMaker {
 
-	public static void main(String[] args) {
-		Descriptor descriptor = Flapi.builder()
+	@Override
+	public Descriptor descriptor() {
+		return Flapi.builder()
 			.setDescriptorName("Calculator")
 			.setPackage("unquietcode.tools.flapi.examples.calculator.builder")
 			.setStartingMethodName("begin")
@@ -34,8 +36,6 @@ public class CalculatorBuilderExample {
 				.addMethod("equals()").last(Result.class)
 			.endBlock()
 		.build();
-
-		descriptor.writeToFolder(args[0]);
 	}
 
 	@Test

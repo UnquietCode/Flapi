@@ -22,6 +22,7 @@ package unquietcode.tools.flapi.examples.pipes;
 import org.junit.Ignore;
 import org.junit.Test;
 import unquietcode.tools.flapi.Descriptor;
+import unquietcode.tools.flapi.DescriptorMaker;
 import unquietcode.tools.flapi.Flapi;
 import unquietcode.tools.flapi.examples.pipes.builder.Process.ProcessBuilder;
 import unquietcode.tools.flapi.examples.pipes.builder.Process.ProcessGenerator;
@@ -33,10 +34,11 @@ import java.io.InputStream;
  * @author Ben Fagin
  * @version 02-05-2013
  */
-public class PipedProcessExample {
+public class PipedProcessExample implements DescriptorMaker {
 
-	public static void main(String[] args) {
-		Descriptor descriptor = Flapi.builder()
+	@Override
+	public Descriptor descriptor() {
+		return Flapi.builder()
 			.setDescriptorName("Process")
 			.setPackage("unquietcode.tools.flapi.examples.pipes.builder")
 			.setStartingMethodName("begin")
@@ -48,8 +50,6 @@ public class PipedProcessExample {
 			.addBlockReference("Process", "pipe()").last()
 			.addMethod("run()").last(InputStream.class)
 		.build();
-
-		descriptor.writeToFolder(args[0]);
 	}
 
 	/*

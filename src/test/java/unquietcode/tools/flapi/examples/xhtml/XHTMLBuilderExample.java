@@ -4,6 +4,7 @@ import com.sun.org.apache.xml.internal.serializer.OutputPropertiesFactory;
 import org.junit.Test;
 import org.w3c.dom.Document;
 import unquietcode.tools.flapi.Descriptor;
+import unquietcode.tools.flapi.DescriptorMaker;
 import unquietcode.tools.flapi.Flapi;
 import unquietcode.tools.flapi.examples.xhtml.builder.Element.ElementBuilder_endElement_setValue;
 import unquietcode.tools.flapi.examples.xhtml.builder.XHTML.XHTMLBuilder;
@@ -23,10 +24,11 @@ import java.util.List;
  *
  * An example which builds an XHTML builder descriptor.
  */
-public class XHTMLBuilderExample {
+public class XHTMLBuilderExample implements DescriptorMaker {
 
-	public static void main(String[] args) {
-		Descriptor builder = Flapi.builder()
+	@Override
+	public Descriptor descriptor() {
+		return Flapi.builder()
 			.setPackage("unquietcode.tools.flapi.examples.xhtml.builder")
 			.setStartingMethodName("createDocument")
 			.setDescriptorName("XHTML")
@@ -42,8 +44,6 @@ public class XHTMLBuilderExample {
 				.addBlockReference("Element", "startElement(String tagName)").any()
 			.endBlock()
 		.build();
-
-		builder.writeToFolder(args[0]);
 	}
 
 	@Test

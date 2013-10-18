@@ -19,6 +19,8 @@
 
 package unquietcode.tools.flapi.examples;
 
+import org.junit.Test;
+import unquietcode.tools.flapi.AbstractCompiledTest;
 import unquietcode.tools.flapi.Descriptor;
 import unquietcode.tools.flapi.DescriptorMaker;
 import unquietcode.tools.flapi.examples.calculator.CalculatorBuilderExample;
@@ -30,24 +32,44 @@ import unquietcode.tools.flapi.examples.xhtml.XHTMLBuilderExample;
 
 /**
  * @author Ben Fagin
- * @version 2013-07-01
+ * @version 2013-10-18
  */
-public final class GenerateExamples {
+public class ExamplesTest extends AbstractCompiledTest {
 
-	private static void generate(DescriptorMaker provider, String[] args) {
+	private void test(DescriptorMaker provider) {
 		Descriptor descriptor = provider.descriptor();
-		descriptor.writeToFolder(args[0]);
+		descriptor.writeToFolder(getTemporaryFolder());
+		testCompile();
 	}
 
-	/*
-		Regenerates all of the examples.
-	 */
-	public static void main(String[] args) {
-		generate(new CalculatorBuilderExample(), args);
-		generate(new EmailBuilderExample(), args);
-		generate(new HouseBuilderExample(), args);
-		generate(new PipedProcessExample(), args);
-		generate(new DisappearingPizzaExample(), args);
-		generate(new XHTMLBuilderExample(), args);
+
+	@Test
+	public void CalculatorBuilder() {
+		test(new CalculatorBuilderExample());
+	}
+
+	@Test
+	public void EmailBuilder() {
+		test(new EmailBuilderExample());
+	}
+
+	@Test
+	public void HouseBuilder() {
+		test(new HouseBuilderExample());
+	}
+
+	@Test
+	public void PipedProcess() {
+		test(new PipedProcessExample());
+	}
+
+	@Test
+	public void PizzaBuilder() {
+		test(new DisappearingPizzaExample());
+	}
+
+	@Test
+	public void XHTMLBuilder() {
+		test(new XHTMLBuilderExample());
 	}
 }
