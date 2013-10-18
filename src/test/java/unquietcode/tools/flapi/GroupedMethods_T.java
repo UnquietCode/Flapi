@@ -23,56 +23,29 @@ import org.junit.Test;
 
 /**
  * @author Ben Fagin
- * @version 04-10-2013
  */
-public class TriggeredMethods_T extends AbstractCompiledTest {
+public class GroupedMethods_T extends AbstractCompiledTest {
 
 	@Test
-	public void testBasicTriggeredMethod() {
+	public void testGroupedAnyMethod() {
 		Descriptor descriptor = Flapi.builder()
 			.setDescriptorName("Something")
 			.setPackage("something")
 
-			.addMethod("dynamic()").atMost(1)
-			.addMethod("dynamicWithGroup()").atMost(1, 1)
-			.addMethod("triggered()").after(1).atLeast(1)
+			.addMethod("regular()").any()
 			.addMethod("terminal()").last()
-		.build();
 
-		// TODO this should be easy to test with the invoker
+			.addMethod("required1()").any(1)
+			.addMethod("optional1()").atMost(2, 1)
+
+			.addMethod("required2A()").any(2)
+			.addMethod("required2B()").any(2)
+		.build();
 
 		descriptor.writeToFolder(getTemporaryFolder());
 		testCompile();
-	}
 
-	@Test
-	public void testTriggeredAnyMethod() {
-		Descriptor descriptor = Flapi.builder()
-			.setDescriptorName("Something")
-			.setPackage("something")
-
-			.addMethod("required()").any()
-			.addMethod("requiredWithGroup()").any(1)
-			.addMethod("triggered()").after(1).atMost(1)
-			.addMethod("terminal()").last()
-		.build();
-
-		descriptor.writeToFolder(getTemporaryFolder());
-
-		addTestClassMethod("Test", loadResource("TriggeredTest1.avaj"));
-		testCompile();
-	}
-
-	@Test(expected=DescriptorBuilderException.class)
-	public void testTriggeringSameGroup() {
-		Descriptor descriptor = Flapi.builder()
-			.setDescriptorName("Something")
-			.setPackage("something")
-
-			.addMethod("triggered()").after(1).atMost(2, 1)
-			.addMethod("terminal()").last()
-		.build();
-
-		descriptor.writeToStream(BlackHoleStream.$);
+		testCompile("GroupedTest1.avaj");
+		testCompile("GroupedTest2.avaj");
 	}
 }

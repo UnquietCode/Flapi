@@ -1,0 +1,26 @@
+// two required methods competing with each other
+
+something.Something.SomethingGenerator.create(null)
+	.required2A()
+
+	// gone
+	<< .required2B() >>
+
+	.required2A()
+	.required2A()
+	.required2A()
+
+.terminal();
+
+
+something.Something.SomethingGenerator.create(null)
+	.required2B()
+
+	// gone
+    << .required2A() >>
+
+	.required2B()
+	.required2B()
+	.regular()
+
+.terminal();

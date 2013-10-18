@@ -142,8 +142,9 @@ public class GeneratorContext {
 		name.append(prefix).append(state.getName()).append(suffix);
 
 		for (Transition transition : state.getTransitions()) {
+
 			// reduce noise by not utilizing all of the available names
-			if (transition.getType() == TransitionType.Recursive || transition.getType() == TransitionType.Terminal) {
+			if (transition.getType() == TransitionType.Terminal) {
 				continue;
 			}
 
@@ -200,6 +201,8 @@ public class GeneratorContext {
 			if (transition.info().getMaxOccurrences() > 1) {
 				name.append("_3").append(transition.info().getMaxOccurrences());
 			}
+
+			name.append("_4").append(transition.info().didTrigger() ? "t" : "f");
 		}
 
 		return name.toString();

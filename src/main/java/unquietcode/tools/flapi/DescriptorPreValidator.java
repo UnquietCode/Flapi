@@ -152,7 +152,7 @@ public class DescriptorPreValidator {
 		for (MethodOutline method : block.getAllMethods()) {
 			if (method.getGroup() != null && method.getGroup().equals(method.getTrigger())) {
 				throw new DescriptorBuilderException(String.format(
-					"Method '%s' is triggered after its own group!",
+					"Method '%s' is triggered by its own group!",
 					method.getMethodSignature()
 				));
 			}

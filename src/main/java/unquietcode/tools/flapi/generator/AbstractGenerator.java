@@ -101,31 +101,6 @@ public abstract class AbstractGenerator {
 
 	// -------------------------------- //
 
-	public static String makeMethodKey(Transition transition) {
-		StringBuilder sb = new StringBuilder();
-		sb.append(transition.getOwner().getName()).append("_")
-		  .append(makeMethodKey(transition.getMethodSignature()));
-
-		return sb.toString();
-	}
-
-	public static String makeMethodKey(String methodSignature) {
-		StringBuilder sb = new StringBuilder();
-		MethodParser parser = new MethodParser(methodSignature);
-
-		sb.append(parser.methodName).append("$");
-		boolean first = true;
-
-		for (Pair<JavaType, String> param : parser.params) {
-			if (!first) { sb.append("$"); }
-			else { first = false; }
-
-			sb.append(param.first.typeName).append("_").append(param.second);
-		}
-
-		return sb.toString();
-	}
-
 	public static JAnnotationUse findAnnotation(JMethod method, JClass type) {
 		for (JAnnotationUse annotationUse : method.annotations()) {
 			if (annotationUse.getAnnotationClass().compareTo(type) == 0) {

@@ -1,0 +1,39 @@
+// optional and then required
+
+something.Something.SomethingGenerator.create(null)
+	.regular()
+	.regular()
+
+	.optional1()
+
+	// it's gone
+	<< .required1() >>
+
+	// still one left...
+	.optional1()
+
+	// now it's gone
+	<< .optional1() >>
+
+	// still got these though
+	.regular()
+	.regular()
+
+.terminal();
+
+
+// required and then optional
+
+something.Something.SomethingGenerator.create(null)
+	.required1()
+
+	// gone
+	<< .optional1() >>
+
+	// the any one is still around though
+	.required1()
+	.required1()
+	.regular()
+	.regular()
+
+.terminal();

@@ -92,9 +92,12 @@ public class GraphProcessor extends AbstractGenerator implements GenericVisitor<
 
 			// if it's an atLeast method, requiring tracking
 			if (transition.info().getMinOccurrences() > 0) {
+				String key = transition.info().keyString();
+				key = key.substring(0, key.length()-2); // removes the t/f triggered portion
+
 				_method.annotate(Tracked.class)
 					.param("atLeast", transition.info().getMinOccurrences())
-					.param("key", makeMethodKey(transition))
+					.param("key", key)
 				;
 			}
 

@@ -67,8 +67,8 @@ public class DescriptorPostValidator {
 					handle(transition);
 				}
 
+				// check for infinite loops
 				void handle(Transition transition) {
-					// check for infinite loops
 
 					// for every state in the state chain
 					for (StateClass step : transition.getStateChain()) {

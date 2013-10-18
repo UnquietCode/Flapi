@@ -20,6 +20,9 @@
 package unquietcode.tools.flapi.outline;
 
 
+import unquietcode.tools.flapi.MethodParser;
+import unquietcode.tools.flapi.Pair;
+
 /**
  * @author Ben Fagin
  */
@@ -30,6 +33,7 @@ public class MethodInfo implements Comparable<MethodInfo> {
 	private String documentation;
 	private boolean isDeprecated = false;
 	private String deprecationReason;
+	private boolean didTrigger = false;
 
 
 	public Integer getMinOccurrences() {
@@ -77,6 +81,14 @@ public class MethodInfo implements Comparable<MethodInfo> {
 		this.methodSignature = methodSignature.trim();
 	}
 
+	public boolean didTrigger() {
+		return didTrigger;
+	}
+
+	public void setTriggered() {
+		didTrigger = true;
+	}
+
 	public MethodInfo copy()  {
 		MethodInfo clone = new MethodInfo();
 		copy(clone);
@@ -90,6 +102,7 @@ public class MethodInfo implements Comparable<MethodInfo> {
 		other.documentation = documentation;
 		other.isDeprecated = isDeprecated;
 		other.deprecationReason = deprecationReason;
+		other.didTrigger = didTrigger;
 	}
 
 	@Override
@@ -101,6 +114,24 @@ public class MethodInfo implements Comparable<MethodInfo> {
 		Used by sorted collections to provide consistent ordering.
 	 */
 	public @Override int compareTo(MethodInfo other) {
-		return methodSignature.compareTo(other.methodSignature);
+		return keyString().compareTo(other.keyString());
+	}
+
+	public String keyString() {
+		StringBuilder sb = new StringBuilder();
+		MethodParser parser = new MethodParser(methodSignature);
+
+		sb.append(parser.methodName).append("$");
+		boolean first = true;
+
+		for (Pair<MethodParser.JavaType, String> param : parser.params) {
+			if (!first) { sb.append("$"); }
+			else { first = false; }
+
+			sb.append(param.first.typeName).append("_").append(param.second);
+		}
+
+		sb.append("$").append(didTrigger ? "t" : "f");
+		return sb.toString();
 	}
 }

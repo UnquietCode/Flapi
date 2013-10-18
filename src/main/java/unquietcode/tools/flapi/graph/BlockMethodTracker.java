@@ -19,7 +19,6 @@
 
 package unquietcode.tools.flapi.graph;
 
-import unquietcode.tools.flapi.generator.AbstractGenerator;
 import unquietcode.tools.flapi.graph.components.Transition;
 
 import java.util.HashMap;
@@ -46,7 +45,7 @@ public class BlockMethodTracker {
 	public boolean seen(Transition transition) {
 		String name = transition.getOwner().getName();
 		String key = transition.getMethodSignature();
-		if (useMethodKey) { key = AbstractGenerator.makeMethodKey(key); }
+		if (useMethodKey) { key = transition.info().keyString(); }
 
 		Set<String> methods = seenMethods.get(name);
 

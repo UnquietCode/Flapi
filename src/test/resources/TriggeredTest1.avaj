@@ -1,0 +1,31 @@
+something.Something.SomethingGenerator.create(null)
+
+	// not yet
+	// .triggered()
+
+	// any of these
+	.required()
+	.required()
+	.required()
+
+	// the trigger...
+	.requiredWithGroup()
+
+	// what's up!
+	.triggered()
+
+	// but not a second time
+	//.triggered()
+
+	// still any number of these
+	.required()
+	.required()
+
+	// these too, and they should not reset
+	.requiredWithGroup()
+	.requiredWithGroup()
+
+	// but this should NOT work
+	// .triggered()
+
+.terminal();

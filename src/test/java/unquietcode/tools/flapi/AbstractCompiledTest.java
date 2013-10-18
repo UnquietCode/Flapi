@@ -20,16 +20,22 @@
 package unquietcode.tools.flapi;
 
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.rules.TemporaryFolder;
 
 import javax.tools.*;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * @author Ben Fagin
@@ -45,8 +51,47 @@ public abstract class AbstractCompiledTest {
 
 	@After
 	public void cleanup() {
-		for (File file : temp.getRoot().listFiles()) {
+		File[] files = temp.getRoot().listFiles();
+		if (files == null) { return; }
+
+		for (File file : files) {
 			recursiveDelete(file);
+		}
+	}
+
+	protected String loadResource(String fileName) {
+		InputStream is = getClass().getClassLoader().getResourceAsStream(fileName);
+
+		if (is == null) {
+			throw new RuntimeException("Could not locate resource '"+fileName+"'");
+		}
+
+		return new Scanner(is).useDelimiter("\\A").next();
+	}
+
+	protected String addTestClassMethod(String className, String body) {
+		String code = "public class "+className+" {\n"+
+			"public void test() {\n" +
+				body +
+			"\n}}"
+		;
+
+		return addSourceFile(className, code);
+	}
+
+	protected String addSourceFile(String className, String code) {
+		FileOutputStream os = null;
+
+		try {
+			File f = new File(temp.getRoot(), className+".java");
+			os = new FileOutputStream(f);
+			os.write(code.getBytes("UTF-8"));
+
+			return f.getAbsolutePath();
+		} catch (Exception ex) {
+			throw new RuntimeException(ex);
+		} finally {
+			if (os != null) try { os.close(); } catch (Exception ex) { }
 		}
 	}
 
@@ -56,6 +101,49 @@ public abstract class AbstractCompiledTest {
 		compile(sourceFiles);
 	}
 
+	protected void testCompile(String testFile) {
+		// read the test data
+		String test = loadResource(testFile);
+
+		// find every << ... >> pair
+		String regex = "<<(.*)>>";
+		Pattern pattern = Pattern.compile(regex);
+		Matcher matcher = pattern.matcher(test);
+
+		// compile the plain test first
+		{
+			String testClass = addTestClassMethod("Test", test.replaceAll(regex, ""));
+			testCompile();
+			new File(testClass).delete();
+		}
+
+		// for each pair, compile without the comments
+		// and expect a compile-time error
+		while (matcher.find()) {
+			String currentTest = new StringBuilder()
+				.append(test.substring(0, matcher.start()))
+				.append(matcher.group(1))
+				.append(test.substring(matcher.end() + 1))
+			.toString().replaceAll(regex, "");
+
+			String testClass = addTestClassMethod("PartialTest", currentTest);
+
+			try {
+				testCompile();
+				System.out.println("failed test: \n\n" + currentTest);
+				System.out.flush();
+				Assert.fail("expected a compilation error");
+			} catch (CompilationException ex) {
+				if (!ex.getMessage().contains("cannot find symbol")) {
+					throw new RuntimeException("unexpected compilation error", ex);
+				}
+			}
+
+			// remove this particular test
+			new File(testClass).delete();
+		}
+	}
+
 	protected String getTemporaryFolder() {
 		return temp.getRoot().getAbsolutePath();
 	}
@@ -63,7 +151,10 @@ public abstract class AbstractCompiledTest {
 	// - - --  ---------  - - --   -------- - -   - ----- -- ----------  -- ---
 
 	private void recursiveDelete(File directory) {
-		for (File file : directory.listFiles()) {
+		File[] files = directory.listFiles();
+		if (files == null) { return; }
+
+		for (File file : files) {
 			if (file.isDirectory()) {
 				recursiveDelete(file);
 			} else {
@@ -76,8 +167,12 @@ public abstract class AbstractCompiledTest {
 		if (file.isFile() && file.getName().endsWith(".java")) {
 			files.add(file);
 		} else {
-			for (File next : file.listFiles()) {
-				getFiles(next, files);
+			File[] dir = file.listFiles();
+
+			if (dir != null) {
+				for (File next : dir) {
+					getFiles(next, files);
+				}
 			}
 		}
 	}
@@ -113,7 +208,13 @@ public abstract class AbstractCompiledTest {
 		}
 
 		if (errors.length() != 0) {
-			throw new RuntimeException("The compilation was completed with errors."+errors.toString()+"\n");
+			throw new CompilationException("The compilation was completed with errors."+errors.toString()+"\n");
+		}
+	}
+
+	protected static class CompilationException extends RuntimeException {
+		public CompilationException(String message) {
+			super(message);
 		}
 	}
 }

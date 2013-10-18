@@ -40,11 +40,6 @@ public class BlockOutline implements Outline {
 
 	// ------------------------------ //
 
-	@Deprecated
-	public BlockOutline(BlockOutline parentBlock) {
-		this();
-	}
-
 	public BlockOutline() { }
 
 	public String getReturnType() {
@@ -89,30 +84,6 @@ public class BlockOutline implements Outline {
 		methods.add(method);
 
 		return method;
-	}
-
-	public Set<MethodOutline> getRequiredMethods() {
-		Set<MethodOutline> required = new TreeSet<MethodOutline>();
-		
-		for (MethodOutline method : methods) {
-			if (method.isRequired()) {
-				required.add(method);
-			}
-		}
-		
-		return required;
-	}
-
-	public Set<MethodOutline> getDynamicMethods() {
-		Set<MethodOutline> dynamic = new TreeSet<MethodOutline>();
-
-		for (MethodOutline method : methods) {
-			if (!method.isRequired() && method.getTrigger() == null) {
-				dynamic.add(method);
-			}
-		}
-
-		return dynamic;
 	}
 
 	public Set<MethodOutline> getTriggeredMethods() {

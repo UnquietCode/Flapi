@@ -32,7 +32,7 @@ import static com.google.common.base.Preconditions.checkState;
  */
 public class StateClass {
 	protected Set<Transition> transitions = new HashSet<Transition>();
-	private Object baseState;
+	private Object blockMarker;
 	private String name;
 	private boolean isTopLevel = false;
 
@@ -86,17 +86,17 @@ public class StateClass {
 		}
 	}
 
-	public final Object getBaseState() {
-		return baseState;
+	public final Object getBlockMarker() {
+		return blockMarker;
 	}
 
-	public final void setBaseState(Object base) {
-		this.baseState = base;
+	public final void setBlockMarker(Object marker) {
+		this.blockMarker = marker;
 	}
 
 	public boolean isLateral(StateClass other) {
-		return this == other                                // true of we're the same object
-			|| this.getBaseState() == other.getBaseState()  // true if we share the same base state
+		return this == other                                    // true of we're the same object
+			|| this.getBlockMarker() == other.getBlockMarker()  // true if we are from the same block
 		;
 	}
 }
