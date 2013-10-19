@@ -3,12 +3,12 @@
 
 /**  
  * Flapi is a Java DSL for generating fluent API's built on method chaining.
- * Using the tool, you can create your own DSL's in Java, supporting
+ * Using the tool you can create your own DSL's in Java, supporting
  * practices like Language Oriented Programming and enabling higher-order
  * abstractions in your projects. And because they are type safe, any
- * reasonable code autocomplete should be able to provide you with instant
+ * reasonable code autocompleter should be able to provide you with instant
  * coding hints as you type. Method docs are also available, and most IDE's
- * can display these for you.  
+ * can display these for you inline.
  * 
  *
  * ### At Build Time
@@ -74,32 +74,34 @@ builder.writeToStream(System.out);
  * "self-driving" and intuitive via autocomplete and javadocs. 
  */
 
-// Start building a new Descriptor.
-Descriptor descriptor = Flapi.builder()
+// Start building a new Descriptor. Zero or more `ExecutionListener`
+// instances can be provided. (check out `MethodLogger`, which is
+// quite helpful when debugging an error)
+Descriptor descriptor = Flapi.builder(ExecutionListener...listeners)
 
 // Set the package for all generated classes. (**required**)
-.setPackage(String package)
+    .setPackage(String package)
 
 // Set the starting method name. (optional, default is `create()`)
-.setStartingMethodName(String name)
+    .setStartingMethodName(String name)
 
 // Set the name of the descriptor. These will yield names like
-// `ZapBuilder` and `ZapGeneartor` in the generated classes. (**required**)
-.setDescriptorName(String descriptor)
+// `ZapBuilder` and `ZapGenerator` in the generated classes. (**required**)
+    .setDescriptorName(String descriptor)
 
 // Set the return type for the entire descriptor. (optional,
 // default is `void`)
-.setReturnType(Class class)
+    .setReturnType(Class class)
 
 // As above, except the type can be specified without
 // creating a compile-time dependency on the class.
-.setReturnType(String class)
+    .setReturnType(String class)
 
 // Generate class names which are condensed at the expense of
 // being mangled and not as readable by a human. This is
 // useful if you have a complicated descriptor which creates
-// class names too long to be compiled.  (optional)
-.enableCondensedClassNames()
+// class names too long to be compiled.  (optional, disabled by default)
+    .enableCondensedClassNames()
 
 // Complete the finished descriptor, returning a new 
 // `Descriptor` object. (**required**)
@@ -111,8 +113,7 @@ Descriptor descriptor = Flapi.builder()
  *
  * After you finish creating a new `Descriptor`, there are a
  * few methods which can be called on it in order to
- * generate the source files and write them to a stream
- * or directory.
+ * generate the source files and write them out.
  */
 
 // Write the generated source code to a stream.
@@ -135,10 +136,9 @@ Descriptor descriptor = Flapi.builder()
  * type system. 
  *
  * You can define blocks at the `Descriptor` level, or nested inside
- * each other. Similarly, when using the builder at runtime you are
- * moving in to and out of blocks, by way of Java's type system, until
- * you finally 'escape' the top block or a value is returned from the
- * current block.
+ * each other. When using your builder at runtime you are moving in
+ * to and out of blocks until you finally 'escape' thetop block or
+ * return a value from the current block.
  *
  * A block is comprised of methods, and these roughly correspond
  * to the methods found in the generated interfaces. Methods will

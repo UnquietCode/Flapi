@@ -42,5 +42,4 @@ public class EmailBuilderExample implements DescriptorMaker {
 				  "and slightly smells of fish. Please let me know if you have seen, or ever do see it.\n\nThanks!")
 		.send();
 	}
-
 }
