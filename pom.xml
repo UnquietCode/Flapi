@@ -13,10 +13,12 @@
 	<packaging>jar</packaging>
 
 	<name>Flapi</name>
+	<description>Fluent API's in Java!</description>
 	<url>http://www.unquietcode.com/flapi</url>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<flapi.build.version>${project.version}</flapi.build.version>
 	</properties>
 
 	<build>
@@ -92,6 +94,13 @@
 				</configuration>
 			</plugin>
 		</plugins>
+
+		<resources>
+			<resource>
+				<directory>${project.basedir}/src/main/resources</directory>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
 	</build>
 
 	<profiles>
