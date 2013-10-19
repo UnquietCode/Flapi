@@ -41,11 +41,9 @@ public class GeneratorGenerator extends AbstractGenerator {
 		JDefinedClass helper = HELPER_INTERFACE_STRATEGY.createType(ctx, topLevel);
 
 		// FLAPI-126 subclass the return type for consistency between descriptor changes
-		JDefinedClass _returnType = WRAPPER_INTERFACE_STRATEGY.createType(ctx, topLevel);
-		JType returnType = _returnType.narrow(ref(Void.class));
+		JDefinedClass returnType = WRAPPER_INTERFACE_STRATEGY.createType(ctx, topLevel);
 
 		// -- add the constructor method --
-
 		JMethod createMethod = generator.method(JMod.PUBLIC+JMod.STATIC, returnType, outline.methodName);
 		JVar pHelper = createMethod.param(helper, "helper");
 		JVar pListeners = createMethod.varParam(ExecutionListener.class, "listeners");
@@ -68,9 +66,9 @@ public class GeneratorGenerator extends AbstractGenerator {
 		// handler.addListeners(listeners);
 		createMethod.body().invoke(handler, "addListeners").arg(pListeners);
 
-		// return handler._proxy($.class);
+		// return handler._proxy(Wrapper.class);
 		createMethod.body()._return(
-				handler.invoke("_proxy").arg(_returnType.dotclass())
+			handler.invoke("_proxy").arg(returnType.dotclass())
 		);
 
 		return generator;

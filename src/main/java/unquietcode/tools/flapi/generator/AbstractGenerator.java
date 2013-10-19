@@ -87,8 +87,7 @@ public abstract class AbstractGenerator {
 			}
 
 			JDefinedClass builder = BUILDER_INTERFACE_STRATEGY.createType(ctx, state);
-			JTypeVar tv = innerClass.generify(Constants.RETURN_TYPE_NAME);
-			innerClass._extends(builder.narrow(tv));
+			innerClass._extends(builder.narrow(Void.class));
 			return innerClass;
 		}
 	};
