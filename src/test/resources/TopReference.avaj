@@ -1,0 +1,13 @@
+some.thing.Something.SomethingGenerator.create(null)
+	.one()
+	.topLevel()
+		.one()
+		.topLevel()
+			.one()
+			.exit()
+		.exit()
+	.topLevel()
+		.one()
+		.exit()
+	.exit()
+;

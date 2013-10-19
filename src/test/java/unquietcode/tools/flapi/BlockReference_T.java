@@ -19,39 +19,14 @@
 
 package unquietcode.tools.flapi;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 /**
  * @author Ben Fagin
  * @version 05-28-2012
  */
-public class BlockReference_T {
+public class BlockReference_T extends AbstractCompiledTest {
 
-	// Even though this test is no longer relevant, it is still useful for visualizing the
-	// result of the block referencing. Eventually it will benefit from the in-memory compilation
-	// test harness (FLAPI-25).
-
-	@Ignore("This test is irrelevant now.")
-	@Test
-	public void blockReferenceMethodsResolve() {
-		Descriptor descriptor = Flapi.builder()
-			.setDescriptorName("Something")
-			.setPackage("some.thing")
-
-			.startBlock("One", "one()").last()
-				.addMethod("exit()").last()
-			.endBlock()
-
-			.startBlock("Two", "two()").any()
-				.addBlockReference("One", "oneRef()").last()
-			.endBlock()
-		.build();
-
-		descriptor.writeToStream(System.out);
-	}
-
-	@Ignore("unfinished")
 	@Test
 	public void testThatBlockReferencesKeepBlockChain() {
 		Descriptor descriptor = Flapi.builder()
@@ -78,6 +53,23 @@ public class BlockReference_T {
 			.addMethod("exit()").last()
 		.build();
 
-		descriptor.writeToStream(System.out);
+		descriptor.writeToFolder(getTemporaryFolder());
+		addTestClassMethod("Test", loadResource("BlockChainTest.avaj"));
+	}
+
+	@Test
+	public void testReferenceTopBlock() {
+		Descriptor descriptor = Flapi.builder()
+			.setDescriptorName("Something")
+			.setPackage("some.thing")
+
+			.startBlock("One", "one()").last()
+				.addMethod("exit()").last()
+				.addBlockReference("Something", "topLevel()").any()
+			.endBlock()
+		.build();
+
+		descriptor.writeToFolder(getTemporaryFolder());
+		addTestClassMethod("Test", loadResource("TopReference.avaj"));
 	}
 }

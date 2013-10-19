@@ -1,0 +1,11 @@
+some.thing.Something.SomethingGenerator.create(null)
+	.one()
+		.exit()
+
+	.two()
+		.exit()         // bc one
+		.twoRef()       // bc three
+			.exit()     // two
+
+		.exit()         // two
+.exit();
