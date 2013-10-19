@@ -39,10 +39,8 @@ public class TriggeredMethods_T extends AbstractCompiledTest {
 			.addMethod("terminal()").last()
 		.build();
 
-		// TODO this should be easy to test with the invoker
-
 		descriptor.writeToFolder(getTemporaryFolder());
-		testCompile();
+		testCompile("TriggeredTest2.avaj");
 	}
 
 	@Test

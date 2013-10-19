@@ -1,0 +1,17 @@
+something.Something.SomethingGenerator.create(null)
+
+	.dynamic()
+
+	// gone
+	<<.dynamic()>>
+
+	// not yet
+	<<.triggered()>>
+
+	.dynamicWithGroup()
+	.triggered()
+
+	// shouldn't be here
+	<<.dynamicWithGroup()>>
+
+.terminal();
