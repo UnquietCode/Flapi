@@ -153,7 +153,7 @@ public abstract class AbstractGenerator {
 					throw new DescriptorBuilderException("Primitive '"+primitive.name()+"' cannot have type parameters.");
 				}
 
-				return primitive;
+				return type.isArray ? primitive.array() : primitive;
 			} catch (ClassNotFoundException ex) {
 				// nothing
 			}
@@ -172,7 +172,7 @@ public abstract class AbstractGenerator {
 			clazz = clazz.narrow(t);
 		}
 
-		return clazz;
+		return type.isArray ? clazz.array() : clazz;
 	}
 
 	protected JMethod addMethod(JDefinedClass _class, JType returnType, int mods, Transition transition) {

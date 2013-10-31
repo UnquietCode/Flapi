@@ -1,5 +1,6 @@
 package unquietcode.tools.flapi;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import unquietcode.tools.flapi.MethodParser.JavaType;
 
@@ -182,6 +183,86 @@ public class MethodParser_T {
 		String methodSignature = "void continue(int x)";
 		MethodParser parsed = new MethodParser(methodSignature);
 		parsed.validate();
+	}
+
+	@Test
+	public void arrayTypeAsReturn() {
+		String methodSignature = "int[] method()";
+		MethodParser parsed = new MethodParser(methodSignature);
+		assertEquals("array type", true, parsed.returnType.isArray);
+	}
+
+	@Test
+	public void arrayTypeAsParameter() {
+		String methodSignature = "void method(int[] p1, String p2)";
+		MethodParser parsed = new MethodParser(methodSignature);
+		assertEquals("array type", true, parsed.params.get(0).first.isArray);
+		assertEquals("not array type", false, parsed.params.get(1).first.isArray);
+	}
+
+	@Test
+	public void arrayTypeAsParameterAfterIdentifier() {
+		String methodSignature = "void method(int p1, String p2[])";
+		MethodParser parsed = new MethodParser(methodSignature);
+		assertEquals("not array type", false, parsed.params.get(0).first.isArray);
+		assertEquals("array type", true, parsed.params.get(1).first.isArray);
+	}
+
+	@Test
+	public void arrayTypeAsTypeParameter() {
+		String methodSignature = "void method(List<byte[]> list)";
+		MethodParser parsed = new MethodParser(methodSignature);
+		assertEquals("not array type", false, parsed.params.get(0).first.isArray);
+		assertEquals("array type", true, parsed.params.get(0).first.typeParameters.get(0).isArray);
+	}
+
+	@Test(expected=MethodParser.ParseException.class)
+	public void arrayTypesWithTypeParametersNotOk() {
+		String methodSignature = "void method(List[]<String> p1)";
+		new MethodParser(methodSignature);
+	}
+
+	@Test
+	public void arrayTypesWithTypeParametersOk1() {
+		String methodSignature = "void method(List<String>[] p1)";
+		MethodParser parsed = new MethodParser(methodSignature);
+		assertEquals("array type", true, parsed.params.get(0).first.isArray);
+	}
+
+	@Test
+	public void arrayTypesWithTypeParametersOk2() {
+		String methodSignature = "void method(List<String> p1[])";
+		MethodParser parsed = new MethodParser(methodSignature);
+		assertEquals("array type", true, parsed.params.get(0).first.isArray);
+	}
+
+	@Test(expected=MethodParser.ParseException.class)
+	public void duplicateArrayIndexers() {
+		String methodSignature = "void method(int[] p1[])";
+		new MethodParser(methodSignature);
+	}
+
+	@Test(expected=MethodParser.ParseException.class)
+	public void duplicateArrayIndexerWithTypeParam() {
+		String methodSignature = "void method(List<String>[] array[])";
+		new MethodParser(methodSignature);
+	}
+
+	@Ignore("unfinished")
+	@Test
+	public void multiDimensionalArray() {
+		// how to determine the dimensionality?
+
+		String methodSignature = "void method(int[][] p1)";
+		MethodParser parsed = new MethodParser(methodSignature);
+		assertEquals("array type", true, parsed.params.get(0).first.isArray);
+	}
+
+	@Ignore("unfinished")
+	@Test(expected=MethodParser.ParseException.class)
+	public void multiDimensionalDuplicate() {
+		String methodSignature = "void method(int[][] p1[])";
+		new MethodParser(methodSignature);
 	}
 
 	@Test

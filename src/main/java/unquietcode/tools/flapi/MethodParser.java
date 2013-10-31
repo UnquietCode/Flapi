@@ -98,6 +98,14 @@ public class MethodParser {
 			String pName = matchIdentifier();
 			match(WS, -1);
 
+			if (peek(LB, 1)) {
+				if (pType.isArray) {
+					throwGeneralException("duplicate array declaration");
+				}
+				matchArray();
+				pType = new JavaType(pType, true);
+			}
+
 			if (seenVarargs) {
 				_varargType = pType;
 				_varargName = pName;
@@ -146,6 +154,7 @@ public class MethodParser {
 
 	private JavaType matchType() {
 		String typeName;
+		boolean isArray = false;
 		List<JavaType> typeParameters = new ArrayList<JavaType>();
 
 		match(WS, -1);
@@ -153,7 +162,15 @@ public class MethodParser {
 		match(WS, -1);
 
 		if (peek(LB, 1)) {
-			match(LB, 1);
+			matchArray();
+			isArray = true;
+		}
+
+		if (peek(LAB, 1)) {
+			if (isArray) {
+				throwGeneralException("invalid array declaration");
+			}
+			match(LAB, 1);
 			match(WS, -1);
 
 			while (true) {
@@ -168,10 +185,25 @@ public class MethodParser {
 				}
 			}
 
-			match(RB, 1);
+			match(RAB, 1);
 		}
 
-		return new JavaType(typeName, typeParameters);
+		match(WS, -1);
+
+		if (peek(LB, 1)) {
+			matchArray();
+			isArray = true;
+		}
+
+		return new JavaType(typeName, isArray, typeParameters);
+	}
+
+	private void matchArray() {
+		match(WS, -1);
+		match(LB, 1);
+		match(WS, -1);
+		match(RB, 1);
+		match(WS, -1);
 	}
 
 	private String matchIdentifier() {
@@ -251,17 +283,29 @@ public class MethodParser {
 		StringBuilder sb = new StringBuilder();
 		boolean first = true;
 
-		sb.append("Expected to find character in {");
-		for (Character aChar : chars) {
-			if (!first) {
-				sb.append(", ");
-			} else {
-				first = false;
+		sb.append("Expected to find character in ");
+
+		if (chars == ID_START) {
+			sb.append("[A-Za-z0-9_$]");
+		} else if (chars == ID) {
+			sb.append("[A-Za-z_$]");
+		} else {
+			sb.append("{");
+
+			for (Character aChar : chars) {
+				if (!first) {
+					sb.append(", ");
+				} else {
+					first = false;
+				}
+
+				sb.append(aChar);
 			}
 
-			sb.append(aChar);
+			sb.append("}");
 		}
-		sb.append("} but was ");
+
+		sb.append(" but was ");
 
 		if (cur >= signature.length) {
 			sb.append("empty");
@@ -303,16 +347,28 @@ public class MethodParser {
 	public static class JavaType {
 		public final String typeName;
 		public final List<JavaType> typeParameters;
+		public final boolean isArray;
 
-		public JavaType(String typeName, List<JavaType> typeParameters) {
+		public JavaType(String typeName, boolean isArray, List<JavaType> typeParameters) {
 			this.typeName = typeName;
+			this.isArray = isArray;
 			this.typeParameters = Collections.unmodifiableList(typeParameters);
+		}
+
+		/*package*/ JavaType(JavaType other, boolean isArray) {
+			this.typeName = other.typeName;
+			this.typeParameters = other.typeParameters;
+			this.isArray = isArray;
 		}
 
 		@Override
 		public String toString() {
 			StringBuilder sb = new StringBuilder();
 			sb.append(typeName);
+
+			if (isArray) {
+				sb.append("[]");
+			}
 
 			if (!typeParameters.isEmpty()) {
 				sb.append("<");
@@ -363,10 +419,12 @@ public class MethodParser {
 	private static final Set<Character> WS = new HashSet<Character>();
 	private static final Set<Character> COMMA = new HashSet<Character>();
 	private static final Set<Character> DOT = new HashSet<Character>();
-	private static final Set<Character> LB = new HashSet<Character>();
-	private static final Set<Character> RB = new HashSet<Character>();
+	private static final Set<Character> LAB = new HashSet<Character>();
+	private static final Set<Character> RAB = new HashSet<Character>();
 	private static final Set<Character> ID_START = new HashSet<Character>();
 	private static final Set<Character> ID = new HashSet<Character>();
+	private static final Set<Character> LB = new HashSet<Character>();
+	private static final Set<Character> RB = new HashSet<Character>();
 
 	static {
 		LP.add('(');
@@ -374,8 +432,10 @@ public class MethodParser {
 		WS.addAll(Arrays.asList('\t', ' ', '\n', '\r'));
 		COMMA.add(',');
 		DOT.add('.');
-		LB.add('<');
-		RB.add('>');
+		LAB.add('<');
+		RAB.add('>');
+		LB.add('[');
+		RB.add(']');
 
 		ID_START.addAll(Arrays.asList('A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q',
 									 'R','S','T','U','V','W','X','Y','Z','a','b','c','d','e','f','g','h',
