@@ -189,7 +189,7 @@ public class GraphBuilder {
 				terminal.setReturnType(block.getReturnType());
 				transition = terminal;
 			} else {
-				transition = new AscendingTransition();
+				transition = new AscendingTransition(!method.isRequired());
 			}
 		} else if (state == next) { // as in, "no changes detected"
 			transition = new RecursiveTransition();

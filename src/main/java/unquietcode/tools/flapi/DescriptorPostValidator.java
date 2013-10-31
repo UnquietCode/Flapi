@@ -56,19 +56,19 @@ public class DescriptorPostValidator {
 		final AtomicBoolean terminal = new AtomicBoolean(false);
 		final AtomicBoolean recursive = new AtomicBoolean(false);
 
-		// check this state's transitions
+		// check for recursion
 		for (Transition transition : state.getTransitions()) {
 			transition.accept(new TransitionVisitor.$() {
 				public @Override void visit(TerminalTransition transition) {
-					handle(transition);
+					handle(transition, true);
 				}
 
 				public @Override void visit(AscendingTransition transition) {
-					handle(transition);
+					handle(transition, !transition.isOptional());
 				}
 
 				// check for infinite loops
-				void handle(Transition transition) {
+				void handle(Transition transition, boolean value) {
 
 					// for every state in the state chain
 					for (StateClass step : transition.getStateChain()) {
@@ -76,13 +76,11 @@ public class DescriptorPostValidator {
 						// if it is parallel to us, then it's recursive
 						if (step.isLateral(transition.getOwner())) {
 							recursive.set(true);
-
-							// return before declaring officially terminal
 							return;
 						}
 					}
 
-					terminal.set(true);
+					terminal.set(terminal.get() || value);
 				}
 			});
 		}
