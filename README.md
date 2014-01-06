@@ -47,6 +47,9 @@ A screencast has been posted to demonstrate some basic usage, and the main purpo
 ### [Blog Post](http://www.unquietcode.com/blog/2012/software/introducing-flapi)
 The original blog post describing Flapi.
 
+### [User Group](https://groups.google.com/forum/#!forum/flapi-users)
+Google Group for asking questions and connecting with other developers using Flapi in their projects.
+
 ### What's the project's status?
 Version 0.4 has been released, and includes new features and new build tools. The runtime, along with
 some generated builders, are currently running in production code.
