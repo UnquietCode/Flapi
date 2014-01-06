@@ -8,6 +8,8 @@ more akin to natural language.
 See [these](http://www.unquietcode.com/blog/2011/programming/using-generics-to-build-fluent-apis-in-java)
 [articles](http://martinfowler.com/bliki/FluentInterface.html) for more information.
 
+At the time of writing, the project builds fine in JDK 6 and 7. However, please note that the automated builds are no longer being run against JDK 6.
+
 ### [Getting Started](https://github.com/UnquietCode/Flapi/wiki/Getting-Started)
 If you are using Maven (or gradle, or Ivy) you can download and install to your local repo, or include the following
 repository and dependency in your POM file:
