@@ -66,7 +66,7 @@ Feel free to fork the project and fiddle around! Submit pull requests to improve
 Create issues to help support the project. Ask questions. (Say hello.)
 
 ### License
-Flapi is provided under the ASL 2.0 license.
+Flapi is not released under a license. Licenses suck.
 
 ## Thanks!
 
