@@ -53,7 +53,7 @@ The original blog post describing Flapi.
 Google Group for asking questions and connecting with other developers using Flapi in their projects.
 
 ### What's the project's status?
-Version 0.5 has been released, and includes a few important changes.
+Version 0.5 has been released, and includes a few new features and bug fixes.
 See the [Release Notes](https://github.com/UnquietCode/Flapi/wiki/Version-0.5) for the full details.
 
 ### Problems?
