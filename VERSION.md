@@ -4,11 +4,14 @@ Flapi Version 0.5 has been released! Here are the highlights.
 ### Grouped any() Methods
 Methods in a descriptor marked as `any()` can now be associated with a group via the `any(int group)` method. This, combined with `atMost(..)`, comprises what is known as [Method Grouping](Method-Grouping-and-Triggering)
 
-### Flapi's builder is no longer in source control!
+### Flapi's builder is now generated on the fly!
 The generated source code used by the main descriptor builder is no longer part of the codebase. Instead, it is generated at build time using the maven plugin made available starting with version 0.4. The plugin makes it easier to keep generated code out of your source repositories, and now Flapi itself can reap the benefit. 
 
 ### New Flapi User Group on Google
 A user group for Flapi has been created on Google Groups. Feel free to ask questions, leave comments, and otherwise interact with other people using the tool. [Check it out!](https://groups.google.com/forum/#!forum/flapi-users)
+
+### No More License
+Previous versions of the tool have been released under the ASL 2.0 license. After some serious soul-searching, the license has been removed entirely.
 
 ### BREAKING CHANGE - wrapper interface is now 'Start'
 Previously, the wrapper interface was called `$`. Flapi 0.5 has removed all uses of the '$' character from the generated classes to address [Flapi-159](https://unquietcode.atlassian.net/browse/FLAPI-159). The wrapper has been changed to the `*Builder.Start` interface generated for each block. While an inconvenience for those making use of the old interface, this flows from the tool's mandate to be compatible with the most number of code editors.
