@@ -340,12 +340,16 @@ public enum TestEnum {
  */
 
 // Members of the same group will become invisible
-// as soon as the first member of the group does so.
+// as soon as this method does so.
 .atMost(int x, int group)
 
 // The method will only become visible after at
 // least one member of the group has been called.
 .after(int group)
+
+// Members of the same group will become invisible
+// after this method is called for the first time.
+.any(int group)
 
 
 /**
