@@ -11,7 +11,7 @@ See [these](http://www.unquietcode.com/blog/2011/programming/using-generics-to-b
 At the time of writing, the project builds fine in JDK 6 and 7. However, please note that the automated builds are no longer being run against JDK 6.
 
 ### [Getting Started](https://github.com/UnquietCode/Flapi/wiki/Getting-Started)
-If you are using Maven (or gradle, or Ivy) you can download and install to your local repo, or include the following
+If you are using Maven (or Gradle, or Ivy) you can download and install to your local repo, or include the following
 repository and dependency in your POM file:
 ```
 <repositories>
@@ -27,29 +27,33 @@ repository and dependency in your POM file:
 <dependency>
   <groupId>unquietcode.tools.flapi</groupId>
   <artifactId>flapi</artifactId>
-  <version>0.4</version>
+  <version>0.5</version>
   <scope>test</scope>
 </dependency>
 ```
 In a test, define your `Descriptor` object and output the generated source code. (The
 [Pizza Builder](https://github.com/UnquietCode/Flapi/wiki/Pizza-Builder-Example)
-example is a simple descriptor you can start with.)
+example is a simple descriptor you can start with.) You can also make use of the
+[maven plugin](https://github.com/UnquietCode/Flapi/wiki/Maven-Build-Plugin) to
+perform the code generation.
 
-### [Documentation](http://unquietcode.github.io/Flapi)
+#### Additional Resources
+
+* [Documentation](http://unquietcode.github.io/Flapi)  
 Please visit the documentation page for a tour of Flapi's features and
 how to use them. (generated using the very nice tool [docker](https://github.com/jbt/docker))
 
-### [Examples](https://github.com/UnquietCode/Flapi/wiki/Examples)
+* [Examples](https://github.com/UnquietCode/Flapi/wiki/Examples)  
 Many helpful examples are included on the wiki, corresponding to examples and tests in the src/test directory.
 
-### [Screencast](http://vimeo.com/58855907)
+* [Screencast](http://vimeo.com/58855907)  
 A screencast has been posted to demonstrate some basic usage, and the main purpose of the tool.
 (Warning: it's my first attempt at screencasting.)
 
-### [Blog Post](http://www.unquietcode.com/blog/2012/software/introducing-flapi)
+* [Blog Post](http://www.unquietcode.com/blog/2012/software/introducing-flapi)  
 The original blog post describing Flapi.
 
-### [User Group](https://groups.google.com/forum/#!forum/flapi-users)
+* [User Group](https://groups.google.com/forum/#!forum/flapi-users)  
 Google Group for asking questions and connecting with other developers using Flapi in their projects.
 
 ### What's the project's status?
