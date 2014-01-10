@@ -37,7 +37,7 @@ example is a simple descriptor you can start with.) You can also make use of the
 [maven plugin](https://github.com/UnquietCode/Flapi/wiki/Maven-Build-Plugin) to
 perform the code generation.
 
-#### Additional Resources
+### Additional Resources
 
 * [Documentation](http://unquietcode.github.io/Flapi)  
 Please visit the documentation page for a tour of Flapi's features and
