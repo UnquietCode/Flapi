@@ -8,7 +8,32 @@ more akin to natural language.
 See [these](http://www.unquietcode.com/blog/2011/programming/using-generics-to-build-fluent-apis-in-java)
 [articles](http://martinfowler.com/bliki/FluentInterface.html) for more information.
 
-At the time of writing, the project builds fine in JDK 6 and 7. However, please note that the automated builds are no longer being run against JDK 6.
+##### Flapi turns this:
+```java
+Descriptor builder = Flapi.builder()
+	.setPackage("unquietcode.tools.flapi.examples.email.builder")
+	.setStartingMethodName("composeEmail")
+	.setDescriptorName("Email")
+
+	.addMethod("subject(String subject)").atMost(1)
+	.addMethod("addRecipient(String emailAddress)").atLeast(1)
+	.addMethod("sender(String emailAddress)").exactly(1)
+	.addMethod("body(String text)").atMost(1)
+	.addMethod("send()").last(EmailMessage.class)
+.build();
+```
+
+##### ...into this:
+```java
+composeEmail()
+    .sender("HAL9000@gmail.com")
+    .addRecipient("dave@unquietcode.com")
+    .subject("Just what do you think you're doing, Dave?")
+    .body("I know that you and Frank were planning to disconnect me, " +
+          "and I'm afraid that's something I cannot allow to happen...")
+.send();
+```
+
 
 ### [Getting Started](https://github.com/UnquietCode/Flapi/wiki/Getting-Started)
 If you are using Maven (or Gradle, or Ivy) you can download and install to your local repo, or include the following
@@ -36,6 +61,8 @@ In a test, define your `Descriptor` object and output the generated source code.
 example is a simple descriptor you can start with.) You can also make use of the
 [maven plugin](https://github.com/UnquietCode/Flapi/wiki/Maven-Build-Plugin) to
 perform the code generation.
+
+At the time of writing, the project builds fine in JDK 6 and 7. However, please note that the automated builds are no longer being run against JDK 6.
 
 ### Additional Resources
 
