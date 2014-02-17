@@ -13,13 +13,12 @@ import unquietcode.tools.flapi.helpers.DescriptorHelperImpl;
 import unquietcode.tools.flapi.runtime.ExecutionListener;
 
 import javax.lang.model.SourceVersion;
-import java.util.regex.Pattern;
 
 /**
+ * From here you can reach the world.
+ *
  * @author Ben Fagin
  * @version 05-11-2012
- *
- * From here you can reach the world.
  */
 public class Flapi {
 	private static SourceVersion JDKVersion = SourceVersion.RELEASE_6;
@@ -29,7 +28,7 @@ public class Flapi {
 	/**
 	 * Shortcut to build a new descriptor.
 	 */
-	public static DescriptorBuilder.$<Void> builder(ExecutionListener...listeners) {
+	public static DescriptorBuilder.Start builder(ExecutionListener...listeners) {
 		return DescriptorGenerator.create(new DescriptorHelperImpl(), listeners);
 	}
 
@@ -65,28 +64,4 @@ public class Flapi {
 	/*package*/ static boolean not(boolean condition) {
 		return !condition;
 	}
-
-	// a regex library for java built with Flapi?
-	// docs and everything
-	// .anyCharacter()
-	// .anyWhiteSpace()
-
-	private static final Pattern PATTERN = Pattern.compile("(\\{(\\s*)})*");
-
-//	/*package*/ static String format(String pattern, Object...data) {
-//		Matcher matcher = PATTERN.matcher(pattern);
-//		StringBuffer sb = new StringBuffer();
-//		int cur = 0;
-//
-//		while (matcher.find()) {
-//			if (cur >= data.length) {
-//				throw new RuntimeException("not enough data");
-//			}
-//
-//			matcher.appendReplacement(sb, data[cur++].toString());
-//		}
-//
-//		matcher.appendTail(sb);
-//		return sb.toString();
-//	}
 }

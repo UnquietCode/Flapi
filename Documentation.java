@@ -24,10 +24,10 @@
  *
  * ### At Run Time
  *
- *  When a new instance of your builder is constructed, a single JDK dynamic
+ * When a new instance of your builder is constructed, a single JDK dynamic
  * proxy object is configured. Starting with the top-level type, each method
  * in your fluent API is invoked by the user on this proxy, which in turn
- * calls the relevant methods your API's runtime implementation. (more on
+ * calls the relevant methods in your API's runtime implementation. (more on
  * this later)
  */
 
