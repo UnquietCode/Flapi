@@ -400,4 +400,22 @@ public class BuildChecks_T {
 			.endBlock()
 		.build();
 	}
+
+	@Test
+	public void failingAnonymousBlock() {
+		Flapi.builder()
+			.setPackage("unquietcode.tools.flapi.test")
+			.setDescriptorName("Test")
+
+			.startBlock("block()").last()
+
+				.addMethod("stop()")
+					.addBlockChain().startBlock()
+						.addMethod("nothing(Class...types)").last()
+					.endBlock().end()
+				.last(Object.class)
+
+			.endBlock()
+		.build();
+	}
 }

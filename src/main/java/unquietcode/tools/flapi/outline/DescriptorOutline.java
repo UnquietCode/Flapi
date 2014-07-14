@@ -60,10 +60,23 @@ public class DescriptorOutline implements Outline {
 	}
 
 	private static void generateNamesForAnonymousBlocks(BlockOutline block, AtomicInteger counter) {
+
 		// If the name is null, generate one.
-		if (block.getName() == null) {
-			MethodParser parsed = new MethodParser(block.getConstructor().getMethodSignature());
-			block.setName("Anon"+counter.getAndIncrement()+"_"+parsed.methodName);
+		if (block.getName() == null || block.getName().trim().isEmpty()) {
+
+			StringBuilder name = new StringBuilder()
+				.append("Anon").append(counter.getAndIncrement())
+			;
+
+			// Purely anonymous blocks have no constructor!
+			// Only anonymous block references have these.
+			// The name is used only as a convenience.
+			if (block.getConstructor() != null) {
+				MethodParser parsed = new MethodParser(block.getConstructor().getMethodSignature());
+				name.append("_").append(parsed.methodName);
+			}
+
+			block.setName(name.toString());
 		}
 
 		// recurse
