@@ -11,6 +11,8 @@ package unquietcode.tools.flapi.outline;
 import unquietcode.tools.flapi.MethodParser;
 import unquietcode.tools.flapi.Pair;
 
+import java.util.*;
+
 /**
  * @author Ben Fagin
  */
@@ -22,7 +24,8 @@ public class MethodInfo implements Comparable<MethodInfo> {
 	private boolean isDeprecated = false;
 	private String deprecationReason;
 	private boolean didTrigger = false;
-
+    private Map<String, Map<String, Object>> annotations = new LinkedHashMap<String, Map<String, Object>>();
+    private Map<String, Map<String, Class>> annotationTypes = new LinkedHashMap<String, Map<String, Class>>();
 
 	public Integer getMinOccurrences() {
 		return minOccurrences;
@@ -77,7 +80,30 @@ public class MethodInfo implements Comparable<MethodInfo> {
 		didTrigger = true;
 	}
 
-	public MethodInfo copy()  {
+    public void addAnnotation(String annotation) {
+        annotations.put(annotation, new HashMap<String, Object>());
+        annotationTypes.put(annotation, new HashMap<String, Class>());
+    }
+
+    public void addAnnotationParam(String annotation, String param, Object value) {
+        annotations.get(annotation).put(param, value);
+        annotationTypes.get(annotation).put(param, value.getClass());
+    }
+
+    public void addAnnotationClassParam(String annotation, String param, Object value) {
+        annotations.get(annotation).put(param, value);
+        annotationTypes.get(annotation).put(param, Class.class);
+    }
+
+    public Map<String, Map<String, Object>> getAnnotations() {
+        return annotations;
+    }
+
+    public Map<String, Map<String, Class>> getAnnotationTypes() {
+        return annotationTypes;
+    }
+
+    public MethodInfo copy()  {
 		MethodInfo clone = new MethodInfo();
 		copy(clone);
 		return clone;
@@ -91,6 +117,8 @@ public class MethodInfo implements Comparable<MethodInfo> {
 		other.isDeprecated = isDeprecated;
 		other.deprecationReason = deprecationReason;
 		other.didTrigger = didTrigger;
+        other.annotations = annotations;
+        other.annotationTypes = annotationTypes;
 	}
 
 	@Override

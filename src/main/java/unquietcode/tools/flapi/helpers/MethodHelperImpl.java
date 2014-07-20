@@ -8,6 +8,7 @@
 package unquietcode.tools.flapi.helpers;
 
 import unquietcode.tools.flapi.DescriptorBuilderException;
+import unquietcode.tools.flapi.builder.Annotations.AnnotationsHelper;
 import unquietcode.tools.flapi.builder.BlockChain.BlockChainHelper;
 import unquietcode.tools.flapi.builder.Documentation.DocumentationHelper;
 import unquietcode.tools.flapi.builder.Method.MethodHelper;
@@ -25,7 +26,7 @@ public class MethodHelperImpl implements MethodHelper {
 	MethodHelperImpl(MethodOutline method) {
 		this.method = method;
 	}
-	
+
 	@Override
 	public void exactly(int num) {
 		between(num, num);
@@ -134,7 +135,21 @@ public class MethodHelperImpl implements MethodHelper {
 		method.setDeprecated(reason);
 	}
 
-	@Override
+    @Override
+    public void addAnnotation(Class annotation, AtomicReference<AnnotationsHelper> _helper1) {
+        method.addAnnotation(annotation.getName());
+        AnnotationsHelper helper = new AnnotationsHelperImpl(method, annotation.getName());
+        _helper1.set(helper);
+    }
+
+    @Override
+    public void addAnnotation(String annotation, AtomicReference<AnnotationsHelper> _helper1) {
+        method.addAnnotation(annotation);
+        AnnotationsHelper helper = new AnnotationsHelperImpl(method, annotation);
+        _helper1.set(helper);
+    }
+
+    @Override
 	public void after(int group) {
 		method.setTrigger(group);
 	}

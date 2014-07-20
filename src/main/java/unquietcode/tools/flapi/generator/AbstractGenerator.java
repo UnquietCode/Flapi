@@ -16,6 +16,9 @@ import unquietcode.tools.flapi.Pair;
 import unquietcode.tools.flapi.graph.components.StateClass;
 import unquietcode.tools.flapi.graph.components.Transition;
 
+import java.lang.annotation.Annotation;
+import java.util.Map;
+
 /**
  * @author Ben Fagin
  * @version 08-06-2012
@@ -209,6 +212,42 @@ public abstract class AbstractGenerator {
 			}
 		}
 
-		return m;
-	}
+        if (!transition.info().getAnnotations().isEmpty()) {
+            for (Map.Entry<String, Map<String, Object>> entry : transition.info().getAnnotations().entrySet()) {
+
+                JAnnotationUse annotate = m.annotate(ctx.model.directClass(entry.getKey()));
+                Map<String, Class> types = transition.info().getAnnotationTypes().get(entry.getKey());
+
+                for (Map.Entry<String, Object> paramEntry : entry.getValue().entrySet()) {
+                    Object value = paramEntry.getValue();
+                    Class type = types.get(paramEntry.getKey());
+
+                    if (type == Class.class && value instanceof Class)
+                        annotate.param(paramEntry.getKey(), (Class) value);
+                    else if (type == Class.class && value instanceof String)
+                        annotate.param(paramEntry.getKey(), ctx.model.directClass((String) value));
+                    else if (value instanceof Enum)
+                        annotate.param(paramEntry.getKey(), (Enum) value);
+                    else if (value instanceof String)
+                        annotate.param(paramEntry.getKey(), (String) value);
+                    else if (value instanceof Integer)
+                        annotate.param(paramEntry.getKey(), (Integer) value);
+                    else if (value instanceof Long)
+                        annotate.param(paramEntry.getKey(), (Long) value);
+                    else if (value instanceof Float)
+                        annotate.param(paramEntry.getKey(), (Float) value);
+                    else if (value instanceof Double)
+                        annotate.param(paramEntry.getKey(), (Double) value);
+                    else if (value instanceof Short)
+                        annotate.param(paramEntry.getKey(), (Short) value);
+                    else if (value instanceof Boolean)
+                        annotate.param(paramEntry.getKey(), (Boolean) value);
+                    else if (value instanceof Byte)
+                        annotate.param(paramEntry.getKey(), (Byte) value);
+                }
+            }
+        }
+
+        return m;
+    }
 }
