@@ -8,16 +8,14 @@
 package unquietcode.tools.flapi.generator;
 
 import com.sun.codemodel.*;
-import unquietcode.tools.flapi.Constants;
-import unquietcode.tools.flapi.DescriptorBuilderException;
-import unquietcode.tools.flapi.MethodParser;
+import unquietcode.tools.flapi.*;
 import unquietcode.tools.flapi.MethodParser.JavaType;
-import unquietcode.tools.flapi.Pair;
 import unquietcode.tools.flapi.graph.components.StateClass;
 import unquietcode.tools.flapi.graph.components.Transition;
 
-import java.lang.annotation.Annotation;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * @author Ben Fagin
@@ -83,26 +81,35 @@ public abstract class AbstractGenerator {
 		}
 	};
 
-	public static final TypeCreationStrategy NULL_STRATEGY = new TypeCreationStrategy() {
-		public @Override JDefinedClass createType(GeneratorContext ctx, StateClass state) {
-			return null;
-		}
-	};
+//	public static final TypeCreationStrategy NULL_STRATEGY = new TypeCreationStrategy() {
+//		public @Override JDefinedClass createType(GeneratorContext ctx, StateClass state) {
+//			return null;
+//		}
+//	};
 
 	// -------------------------------- //
 
-	public static JAnnotationUse findAnnotation(JMethod method, JClass type) {
-		for (JAnnotationUse annotationUse : method.annotations()) {
-			if (annotationUse.getAnnotationClass().compareTo(type) == 0) {
-				return annotationUse;
-			}
-		}
+//	public static JAnnotationUse findAnnotation(JMethod method, JClass type) {
+//		for (JAnnotationUse annotationUse : method.annotations()) {
+//			if (annotationUse.getAnnotationClass().compareTo(type) == 0) {
+//				return annotationUse;
+//			}
+//		}
+//
+//		return null;
+//	}
 
-		return null;
+	protected static DescriptorBuilderException reportInternalError(String msg) throws DescriptorBuilderException {
+		msg += " (this is an internal error)";
+		throw new DescriptorBuilderException(msg);
 	}
 
 	protected JClass ref(Class clazz) {
 		return ctx.model.ref(clazz);
+	}
+
+	protected JClass ref(String fqcn) {
+		return ctx.model.ref(fqcn);
 	}
 
 	protected JType getType(JavaType type) {
@@ -212,42 +219,64 @@ public abstract class AbstractGenerator {
 			}
 		}
 
-        if (!transition.info().getAnnotations().isEmpty()) {
-            for (Map.Entry<String, Map<String, Object>> entry : transition.info().getAnnotations().entrySet()) {
+		// other annotations
+		if (!transition.info().getAnnotations().isEmpty()) {
+			for (Map.Entry<Object, Map<String, Object>> entry : transition.info().getAnnotations().entrySet()) {
+				Object annotationType = entry.getKey();
+				final JAnnotationUse annotation;
 
-                JAnnotationUse annotate = m.annotate(ctx.model.directClass(entry.getKey()));
-                Map<String, Class> types = transition.info().getAnnotationTypes().get(entry.getKey());
+				if (annotationType instanceof Class) {
+					@SuppressWarnings("unchecked") JAnnotationUse _annotation = m.annotate((Class) annotationType);
+					annotation = _annotation;
+				} else if (annotationType instanceof ClassReference) {
+					String fqcn = ((ClassReference) annotationType).getFQCN();
+					annotation = m.annotate(ref(fqcn));
+				} else {
+					throw reportInternalError("invalid annotation type '"+annotationType.getClass()+"'");
+				}
 
-                for (Map.Entry<String, Object> paramEntry : entry.getValue().entrySet()) {
-                    Object value = paramEntry.getValue();
-                    Class type = types.get(paramEntry.getKey());
+				final Set<String> seenParameterNames = new HashSet<String>();
 
-                    if (type == Class.class && value instanceof Class)
-                        annotate.param(paramEntry.getKey(), (Class) value);
-                    else if (type == Class.class && value instanceof String)
-                        annotate.param(paramEntry.getKey(), ctx.model.directClass((String) value));
-                    else if (value instanceof Enum)
-                        annotate.param(paramEntry.getKey(), (Enum) value);
-                    else if (value instanceof String)
-                        annotate.param(paramEntry.getKey(), (String) value);
-                    else if (value instanceof Integer)
-                        annotate.param(paramEntry.getKey(), (Integer) value);
-                    else if (value instanceof Long)
-                        annotate.param(paramEntry.getKey(), (Long) value);
-                    else if (value instanceof Float)
-                        annotate.param(paramEntry.getKey(), (Float) value);
-                    else if (value instanceof Double)
-                        annotate.param(paramEntry.getKey(), (Double) value);
-                    else if (value instanceof Short)
-                        annotate.param(paramEntry.getKey(), (Short) value);
-                    else if (value instanceof Boolean)
-                        annotate.param(paramEntry.getKey(), (Boolean) value);
-                    else if (value instanceof Byte)
-                        annotate.param(paramEntry.getKey(), (Byte) value);
-                }
-            }
-        }
+				for (Map.Entry<String, Object> parameter : entry.getValue().entrySet()) {
+					final String name = parameter.getKey();
+					final Object value = parameter.getValue();
 
-        return m;
-    }
+					if (seenParameterNames.contains(name)) {
+						String msg = String.format("duplicate parameter '%s' for annotation on method '%s'", name, m.name());
+						throw new DescriptorBuilderException(msg);
+					}
+					seenParameterNames.add(name);
+
+					if (value instanceof Class) {
+						annotation.param(name, (Class<?>) value);
+					} else if (value instanceof ClassReference) {
+						String fqcn = ((ClassReference) value).getFQCN();
+						annotation.param(name, ref(fqcn));
+					} else if (value instanceof Enum) {
+						annotation.param(name, (Enum) value);
+					} else if (value instanceof String) {
+						annotation.param(name, (String) value);
+					} else if (value instanceof Integer) {
+						annotation.param(name, (Integer) value);
+					} else if (value instanceof Long) {
+						annotation.param(name, (Long) value);
+					} else if (value instanceof Float) {
+						annotation.param(name, (Float) value);
+					} else if (value instanceof Double) {
+						annotation.param(name, (Double) value);
+					} else if (value instanceof Short) {
+						annotation.param(name, (Short) value);
+					} else if (value instanceof Boolean) {
+						annotation.param(name, (Boolean) value);
+					} else if (value instanceof Byte) {
+						annotation.param(name, (Byte) value);
+					} else {
+						throw reportInternalError("invalid annotation value type '"+value.getClass()+"'");
+					}
+				}
+			}
+		}
+
+		return m;
+	}
 }

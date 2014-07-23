@@ -11,7 +11,8 @@ package unquietcode.tools.flapi.outline;
 import unquietcode.tools.flapi.MethodParser;
 import unquietcode.tools.flapi.Pair;
 
-import java.util.*;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * @author Ben Fagin
@@ -24,8 +25,7 @@ public class MethodInfo implements Comparable<MethodInfo> {
 	private boolean isDeprecated = false;
 	private String deprecationReason;
 	private boolean didTrigger = false;
-    private Map<String, Map<String, Object>> annotations = new LinkedHashMap<String, Map<String, Object>>();
-    private Map<String, Map<String, Class>> annotationTypes = new LinkedHashMap<String, Map<String, Class>>();
+    private Map<Object, Map<String, Object>> annotations = new LinkedHashMap<Object, Map<String, Object>>();
 
 	public Integer getMinOccurrences() {
 		return minOccurrences;
@@ -80,27 +80,19 @@ public class MethodInfo implements Comparable<MethodInfo> {
 		didTrigger = true;
 	}
 
-    public void addAnnotation(String annotation) {
-        annotations.put(annotation, new HashMap<String, Object>());
-        annotationTypes.put(annotation, new HashMap<String, Class>());
+    public void addAnnotationParam(Object annotation, String param, Object value) {
+	    Map<String, Object> params = annotations.get(annotation);
+
+	    if (params == null) {
+		    params = new LinkedHashMap<String, Object>();
+		    annotations.put(annotation, params);
+	    }
+
+	    params.put(param, value);
     }
 
-    public void addAnnotationParam(String annotation, String param, Object value) {
-        annotations.get(annotation).put(param, value);
-        annotationTypes.get(annotation).put(param, value.getClass());
-    }
-
-    public void addAnnotationClassParam(String annotation, String param, Object value) {
-        annotations.get(annotation).put(param, value);
-        annotationTypes.get(annotation).put(param, Class.class);
-    }
-
-    public Map<String, Map<String, Object>> getAnnotations() {
+    public Map<Object, Map<String, Object>> getAnnotations() {
         return annotations;
-    }
-
-    public Map<String, Map<String, Class>> getAnnotationTypes() {
-        return annotationTypes;
     }
 
     public MethodInfo copy()  {
@@ -117,8 +109,7 @@ public class MethodInfo implements Comparable<MethodInfo> {
 		other.isDeprecated = isDeprecated;
 		other.deprecationReason = deprecationReason;
 		other.didTrigger = didTrigger;
-        other.annotations = annotations;
-        other.annotationTypes = annotationTypes;
+        other.annotations.putAll(annotations);
 	}
 
 	@Override

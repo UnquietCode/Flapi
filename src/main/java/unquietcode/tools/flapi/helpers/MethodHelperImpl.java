@@ -7,14 +7,17 @@
 
 package unquietcode.tools.flapi.helpers;
 
+import unquietcode.tools.flapi.ClassReference;
 import unquietcode.tools.flapi.DescriptorBuilderException;
-import unquietcode.tools.flapi.builder.Annotations.AnnotationsHelper;
+import unquietcode.tools.flapi.builder.Annotation.AnnotationHelper;
 import unquietcode.tools.flapi.builder.BlockChain.BlockChainHelper;
 import unquietcode.tools.flapi.builder.Documentation.DocumentationHelper;
 import unquietcode.tools.flapi.builder.Method.MethodHelper;
 import unquietcode.tools.flapi.outline.MethodOutline;
 
 import java.util.concurrent.atomic.AtomicReference;
+
+import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * @author Ben Fagin
@@ -135,19 +138,19 @@ public class MethodHelperImpl implements MethodHelper {
 		method.setDeprecated(reason);
 	}
 
-    @Override
-    public void addAnnotation(Class annotation, AtomicReference<AnnotationsHelper> _helper1) {
-        method.addAnnotation(annotation.getName());
-        AnnotationsHelper helper = new AnnotationsHelperImpl(method, annotation.getName());
-        _helper1.set(helper);
-    }
+	@Override
+	public void addAnnotation(Class annotation, AtomicReference<AnnotationHelper> _helper1) {
+		checkNotNull(annotation);
+		AnnotationHelper helper = new AnnotationsHelperImpl(method, annotation);
+		_helper1.set(helper);
+	}
 
-    @Override
-    public void addAnnotation(String annotation, AtomicReference<AnnotationsHelper> _helper1) {
-        method.addAnnotation(annotation);
-        AnnotationsHelper helper = new AnnotationsHelperImpl(method, annotation);
-        _helper1.set(helper);
-    }
+	@Override
+	public void addAnnotation(String annotation, AtomicReference<AnnotationHelper> _helper1) {
+		checkNotNull(annotation);
+		AnnotationHelper helper = new AnnotationsHelperImpl(method, new ClassReference(annotation));
+		_helper1.set(helper);
+	}
 
     @Override
 	public void after(int group) {
