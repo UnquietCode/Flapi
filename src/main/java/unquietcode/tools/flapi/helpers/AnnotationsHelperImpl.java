@@ -14,6 +14,7 @@ public class AnnotationsHelperImpl implements AnnotationHelper {
 
     public AnnotationsHelperImpl(MethodOutline method, Class annotation) {
 	    this(method, (Object) annotation);
+        checkArgument(annotation.isAnnotation(), "only annotation classes are allowed");
     }
 
 	public AnnotationsHelperImpl(MethodOutline method, ClassReference annotation) {
@@ -27,7 +28,6 @@ public class AnnotationsHelperImpl implements AnnotationHelper {
 
 	@Override
 	public void withParameter(String name, Class value) {
-		checkArgument(value.isAnnotation(), "only annotation classes are allowed");
 		checkAndAdd(name, value);
 	}
 
