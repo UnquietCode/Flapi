@@ -122,7 +122,7 @@ public class GraphProcessor extends AbstractGenerator implements GenericVisitor<
 		JType helperReturnType1 = helperReturnType.get();
 		JDefinedClass iHelper = HELPER_INTERFACE_STRATEGY.createType(ctx, transition.getOwner());
 		JType methodCallType = helperReturnType1 == null ? ctx.model.VOID : helperReturnType1;
-		JMethod _method = addMethod(iHelper, methodCallType, JMod.NONE, transition);
+		JMethod _method = addHelperMethod(iHelper, methodCallType, JMod.NONE, transition);
 
 		for (int i=0; i < transition.getStateChain().size(); ++i) {
 			JDefinedClass type = HELPER_INTERFACE_STRATEGY.createType(ctx, transition.getStateChain().get(i));

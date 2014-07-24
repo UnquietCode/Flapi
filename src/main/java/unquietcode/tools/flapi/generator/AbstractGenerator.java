@@ -164,6 +164,14 @@ public abstract class AbstractGenerator {
 	}
 
 	protected JMethod addMethod(JDefinedClass _class, JType returnType, int mods, Transition transition) {
+		return addMethod(_class, returnType, mods, transition, false);
+	}
+
+	protected JMethod addHelperMethod(JDefinedClass _class, JType returnType, int mods, Transition transition) {
+		return addMethod(_class, returnType, mods, transition, true);
+	}
+
+	private JMethod addMethod(JDefinedClass _class, JType returnType, int mods, Transition transition, boolean helper) {
 		MethodParser parsed = new MethodParser(transition.getMethodSignature());
 		JMethod m = _class.method(mods, returnType, parsed.methodName);
 
@@ -176,7 +184,13 @@ public abstract class AbstractGenerator {
 		// varargs
 		if (parsed.varargType != null) {
 			JType clazz = getType(parsed.varargType);
-			m.varParam(clazz, parsed.varargName);
+
+			// for helpers, convert to an array parameter
+			if (helper) {
+				m.param(clazz.array(), parsed.varargName);
+			} else {
+				m.varParam(clazz, parsed.varargName);
+			}
 		}
 
 		// documentation
