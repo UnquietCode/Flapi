@@ -4,6 +4,8 @@ import unquietcode.tools.flapi.Descriptor;
 import unquietcode.tools.flapi.DescriptorMaker;
 import unquietcode.tools.flapi.Flapi;
 
+import javax.xml.bind.annotation.XmlElement;
+
 /**
  * @author Benjamin Fagin
  * @version 04-27-2012
@@ -25,7 +27,12 @@ public class TestDescriptor implements DescriptorMaker {
 			.addMethod("addAttachment(java.io.File file)").any()
 			.addMethod("send()").last(EmailMessage.class)
 
-			.startBlock("ABlock", "block()").any()
+			.startBlock("ABlock", "block()")
+                .addAnnotation(TestAnnotation.class)
+                .withParameter("someValue", "a")
+//              .withParameter("someValues",new String[]{"a", "b"})
+                .finish()
+                .any()
 				.addEnumSelector(TestEnum.class, "test()").any()
 				.addMethod("done()").last()
 			.endBlock()

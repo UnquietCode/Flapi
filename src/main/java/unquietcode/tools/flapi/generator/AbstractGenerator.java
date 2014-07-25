@@ -13,6 +13,8 @@ import unquietcode.tools.flapi.MethodParser.JavaType;
 import unquietcode.tools.flapi.graph.components.StateClass;
 import unquietcode.tools.flapi.graph.components.Transition;
 
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Array;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -247,34 +249,75 @@ public abstract class AbstractGenerator {
 					}
 					seenParameterNames.add(name);
 
-					if (value instanceof Class) {
-						annotation.param(name, (Class<?>) value);
-					} else if (value instanceof ClassReference) {
-						String fqcn = ((ClassReference) value).getFQCN();
-						annotation.param(name, ref(fqcn));
-					} else if (value instanceof Enum) {
-						annotation.param(name, (Enum) value);
-					} else if (value instanceof String) {
-						annotation.param(name, (String) value);
-					} else if (value instanceof Integer) {
-						annotation.param(name, (Integer) value);
-					} else if (value instanceof Long) {
-						annotation.param(name, (Long) value);
-					} else if (value instanceof Float) {
-						annotation.param(name, (Float) value);
-					} else if (value instanceof Double) {
-						annotation.param(name, (Double) value);
-					} else if (value instanceof Short) {
-						annotation.param(name, (Short) value);
-					} else if (value instanceof Boolean) {
-						annotation.param(name, (Boolean) value);
-					} else if (value instanceof Byte) {
-						annotation.param(name, (Byte) value);
-					} else {
-						throw reportInternalError("invalid annotation value type '"+value.getClass()+"'");
-					}
-				}
-			}
+                    if (value.getClass().isArray()) {
+
+                        Class<?> componentType = value.getClass().getComponentType();
+                        JAnnotationArrayMember arrayMember = annotation.paramArray(name);
+
+                        int length = Array.getLength(value);
+
+                        for (int i = 0; i < length; i++) {
+                            Object arrayValue = Array.get(value, i);
+
+                            if (componentType == Class.class) {
+                                arrayMember.param((Class<?>) arrayValue);
+                            } else if (componentType == ClassReference.class) {
+                                String fqcn = ((ClassReference) arrayValue).getFQCN();
+                                arrayMember.param(ref(fqcn));
+                            } else if (componentType == Enum.class) {
+                                arrayMember.param((Enum) arrayValue);
+                            } else if (componentType == String.class) {
+                                arrayMember.param((String) arrayValue);
+                            } else if (componentType == Integer.class || componentType == Integer.TYPE) {
+                                arrayMember.param((Integer) arrayValue);
+                            } else if (componentType == Long.class || componentType == Long.TYPE) {
+                                arrayMember.param((Long) arrayValue);
+                            } else if (componentType == Float.class || componentType == Float.TYPE) {
+                                arrayMember.param((Float) arrayValue);
+                            } else if (componentType == Double.class || componentType == Double.TYPE) {
+                                arrayMember.param((Double) arrayValue);
+                            } else if (componentType == Short.class || componentType == Short.TYPE) {
+                                arrayMember.param((Short) arrayValue);
+                            } else if (componentType == Boolean.class || componentType == Boolean.TYPE) {
+                                arrayMember.param((Boolean) arrayValue);
+                            } else if (componentType == Byte.class || componentType == Byte.TYPE) {
+                                arrayMember.param((Byte) arrayValue);
+                            } else {
+                                throw reportInternalError("invalid annotation value type '" + value.getClass() + "'");
+                            }
+                        }
+
+                    } else {
+
+                        if (value instanceof Class) {
+                            annotation.param(name, (Class<?>) value);
+                        } else if (value instanceof ClassReference) {
+                            String fqcn = ((ClassReference) value).getFQCN();
+                            annotation.param(name, ref(fqcn));
+                        } else if (value instanceof Enum) {
+                            annotation.param(name, (Enum) value);
+                        } else if (value instanceof String) {
+                            annotation.param(name, (String) value);
+                        } else if (value instanceof Integer) {
+                            annotation.param(name, (Integer) value);
+                        } else if (value instanceof Long) {
+                            annotation.param(name, (Long) value);
+                        } else if (value instanceof Float) {
+                            annotation.param(name, (Float) value);
+                        } else if (value instanceof Double) {
+                            annotation.param(name, (Double) value);
+                        } else if (value instanceof Short) {
+                            annotation.param(name, (Short) value);
+                        } else if (value instanceof Boolean) {
+                            annotation.param(name, (Boolean) value);
+                        } else if (value instanceof Byte) {
+                            annotation.param(name, (Byte) value);
+                        } else {
+                            throw reportInternalError("invalid annotation value type '" + value.getClass() + "'");
+                        }
+                    }
+                }
+            }
 		}
 
 		return m;
