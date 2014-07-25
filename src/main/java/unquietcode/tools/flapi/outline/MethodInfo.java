@@ -8,6 +8,7 @@
 package unquietcode.tools.flapi.outline;
 
 
+import unquietcode.tools.flapi.DescriptorBuilderException;
 import unquietcode.tools.flapi.MethodParser;
 import unquietcode.tools.flapi.Pair;
 
@@ -87,6 +88,9 @@ public class MethodInfo implements Comparable<MethodInfo> {
 		    params = new LinkedHashMap<String, Object>();
 		    annotations.put(annotation, params);
 	    }
+
+        if (params.containsKey(param))
+            throw new DescriptorBuilderException("duplicate annotation parameter name found: " + param);
 
 	    params.put(param, value);
     }

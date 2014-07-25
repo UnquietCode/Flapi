@@ -1,5 +1,6 @@
 package unquietcode.tools.flapi.plugin;
 
+import org.junit.Assert;
 import org.junit.Test;
 import unquietcode.tools.flapi.plugin.test.builder.ABlock.ABlockHelper;
 import unquietcode.tools.flapi.plugin.test.builder.Email.EmailGenerator;
@@ -30,6 +31,11 @@ public class DescriptorTest {
 			.done()
 		.send();
 	}
+
+    @Test
+    public void annotation() throws NoSuchMethodException {
+        Assert.assertNotNull("missing annotation", EmailHelper.class.getMethod("block").getAnnotation(SuppressWarnings.class));
+    }
 
 	EmailHelper helper = new EmailHelper() {
 		@Override
