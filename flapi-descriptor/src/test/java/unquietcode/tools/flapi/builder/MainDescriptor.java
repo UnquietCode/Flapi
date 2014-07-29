@@ -71,8 +71,6 @@ public class MainDescriptor implements DescriptorMaker {
 				.atMost(1)
 
    				// user Annotations
-                // a primitive type, String, Class, any parameterized invocation of Class, an enum type, an annotation type
-                // or an array type whose element type is one of the preceding types
 				.startBlock("Annotation", "addAnnotation(Class annotation)")
 					.withDocumentation("Adds a custom annotation to the method.")
                 .any()
@@ -88,17 +86,17 @@ public class MainDescriptor implements DescriptorMaker {
 					.addMethod("withParameter(String name, short value)").any()
 					.addMethod("withParameter(String name, byte value)").any()
                     // array versions
-					.addMethod("withParameter(String name, String[] values)").any()
-					.addMethod("withParameter(String name, Enum[] values)").any()
-					.addMethod("withParameter(String name, Class[] values)").any()
-					.addMethod("withParameter(String name, unquietcode.tools.flapi.ClassReference[] values)").any()
-					.addMethod("withParameter(String name, boolean[] values)").any()
-					.addMethod("withParameter(String name, int[] values)").any()
-					.addMethod("withParameter(String name, long[] values)").any()
-					.addMethod("withParameter(String name, float[] values)").any()
-					.addMethod("withParameter(String name, double[] values)").any()
-					.addMethod("withParameter(String name, short[] values)").any()
-					.addMethod("withParameter(String name, byte[] values)").any()
+//					.addMethod("withParameter(String name, String[] values)").any()
+//					.addMethod("withParameter(String name, Enum[] values)").any()
+//					.addMethod("withParameter(String name, Class[] values)").any()
+//					.addMethod("withParameter(String name, unquietcode.tools.flapi.ClassReference[] values)").any()
+//					.addMethod("withParameter(String name, boolean[] values)").any()
+//					.addMethod("withParameter(String name, int[] values)").any()
+//					.addMethod("withParameter(String name, long[] values)").any()
+//					.addMethod("withParameter(String name, float[] values)").any()
+//					.addMethod("withParameter(String name, double[] values)").any()
+//					.addMethod("withParameter(String name, short[] values)").any()
+//					.addMethod("withParameter(String name, byte[] values)").any()
 					.addMethod("finish()").last()
                 .endBlock()
 

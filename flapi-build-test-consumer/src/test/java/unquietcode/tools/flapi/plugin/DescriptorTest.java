@@ -7,7 +7,10 @@ import unquietcode.tools.flapi.plugin.test.builder.Email.EmailGenerator;
 import unquietcode.tools.flapi.plugin.test.builder.Email.EmailHelper;
 import unquietcode.tools.flapi.plugin.test.builder.TestEnum.TestEnumHelper;
 
+import javax.xml.bind.annotation.XmlType;
 import java.io.File;
+import java.lang.reflect.Method;
+import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
@@ -34,7 +37,15 @@ public class DescriptorTest {
 
     @Test
     public void annotation() throws NoSuchMethodException {
-        Assert.assertNotNull("missing annotation", EmailHelper.class.getMethod("block").getAnnotation(SuppressWarnings.class));
+        Method method = EmailHelper.class.getMethod("block", AtomicReference.class);
+        Assert.assertNotNull("missing method", method);
+
+        TestAnnotation annotation = method.getAnnotation(TestAnnotation.class);
+        Assert.assertNotNull("missing annotation", annotation);
+        Assert.assertEquals("missing value", "a", annotation.someValue());
+//        Assert.assertEquals("missing value", 2, annotation.someValues().length);
+//        Assert.assertEquals("missing value", "a", annotation.someValues()[0]);
+//        Assert.assertEquals("missing value", "b", annotation.someValues()[1]);
     }
 
 	EmailHelper helper = new EmailHelper() {
