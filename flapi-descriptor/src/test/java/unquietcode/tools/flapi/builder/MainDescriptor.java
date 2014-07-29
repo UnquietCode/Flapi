@@ -85,7 +85,9 @@ public class MainDescriptor implements DescriptorMaker {
 					.addMethod("withParameter(String name, double value)").any()
 					.addMethod("withParameter(String name, short value)").any()
 					.addMethod("withParameter(String name, byte value)").any()
+
                     // array versions
+					// ( requires propagation of [#5] fix )
 //					.addMethod("withParameter(String name, String[] values)").any()
 //					.addMethod("withParameter(String name, Enum[] values)").any()
 //					.addMethod("withParameter(String name, Class[] values)").any()
@@ -97,6 +99,7 @@ public class MainDescriptor implements DescriptorMaker {
 //					.addMethod("withParameter(String name, double[] values)").any()
 //					.addMethod("withParameter(String name, short[] values)").any()
 //					.addMethod("withParameter(String name, byte[] values)").any()
+
 					.addMethod("finish()").last()
                 .endBlock()
 

@@ -7,10 +7,8 @@ import unquietcode.tools.flapi.plugin.test.builder.Email.EmailGenerator;
 import unquietcode.tools.flapi.plugin.test.builder.Email.EmailHelper;
 import unquietcode.tools.flapi.plugin.test.builder.TestEnum.TestEnumHelper;
 
-import javax.xml.bind.annotation.XmlType;
 import java.io.File;
 import java.lang.reflect.Method;
-import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
