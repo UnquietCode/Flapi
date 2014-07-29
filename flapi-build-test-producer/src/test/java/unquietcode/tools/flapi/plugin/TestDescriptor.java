@@ -25,7 +25,12 @@ public class TestDescriptor implements DescriptorMaker {
 			.addMethod("addAttachment(java.io.File file)").any()
 			.addMethod("send()").last(EmailMessage.class)
 
-			.startBlock("ABlock", "block()").any()
+			.startBlock("ABlock", "block()")
+                .addAnnotation(TestAnnotation.class)
+                    .withParameter("someValue", "a")
+//                  .withParameter("someValues",new String[]{"a", "b"})
+                .finish()
+            .any()
 				.addEnumSelector(TestEnum.class, "test()").any()
 				.addMethod("done()").last()
 			.endBlock()

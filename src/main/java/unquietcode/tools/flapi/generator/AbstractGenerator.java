@@ -8,13 +8,16 @@
 package unquietcode.tools.flapi.generator;
 
 import com.sun.codemodel.*;
-import unquietcode.tools.flapi.Constants;
-import unquietcode.tools.flapi.DescriptorBuilderException;
-import unquietcode.tools.flapi.MethodParser;
+import unquietcode.tools.flapi.*;
 import unquietcode.tools.flapi.MethodParser.JavaType;
-import unquietcode.tools.flapi.Pair;
 import unquietcode.tools.flapi.graph.components.StateClass;
 import unquietcode.tools.flapi.graph.components.Transition;
+
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Array;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * @author Ben Fagin
@@ -80,26 +83,35 @@ public abstract class AbstractGenerator {
 		}
 	};
 
-	public static final TypeCreationStrategy NULL_STRATEGY = new TypeCreationStrategy() {
-		public @Override JDefinedClass createType(GeneratorContext ctx, StateClass state) {
-			return null;
-		}
-	};
+//	public static final TypeCreationStrategy NULL_STRATEGY = new TypeCreationStrategy() {
+//		public @Override JDefinedClass createType(GeneratorContext ctx, StateClass state) {
+//			return null;
+//		}
+//	};
 
 	// -------------------------------- //
 
-	public static JAnnotationUse findAnnotation(JMethod method, JClass type) {
-		for (JAnnotationUse annotationUse : method.annotations()) {
-			if (annotationUse.getAnnotationClass().compareTo(type) == 0) {
-				return annotationUse;
-			}
-		}
+//	public static JAnnotationUse findAnnotation(JMethod method, JClass type) {
+//		for (JAnnotationUse annotationUse : method.annotations()) {
+//			if (annotationUse.getAnnotationClass().compareTo(type) == 0) {
+//				return annotationUse;
+//			}
+//		}
+//
+//		return null;
+//	}
 
-		return null;
+	protected static DescriptorBuilderException reportInternalError(String msg) throws DescriptorBuilderException {
+		msg += " (this is an internal error)";
+		throw new DescriptorBuilderException(msg);
 	}
 
 	protected JClass ref(Class clazz) {
 		return ctx.model.ref(clazz);
+	}
+
+	protected JClass ref(String fqcn) {
+		return ctx.model.ref(fqcn);
 	}
 
 	protected JType getType(JavaType type) {
@@ -207,6 +219,105 @@ public abstract class AbstractGenerator {
 			if (docString != null && !(docString = docString.trim()).isEmpty()) {
 				doc.append(docString);
 			}
+		}
+
+		// other annotations
+		if (!transition.info().getAnnotations().isEmpty()) {
+			for (Map.Entry<Object, Map<String, Object>> entry : transition.info().getAnnotations().entrySet()) {
+				Object annotationType = entry.getKey();
+				final JAnnotationUse annotation;
+
+				if (annotationType instanceof Class) {
+					@SuppressWarnings("unchecked") JAnnotationUse _annotation = m.annotate((Class) annotationType);
+					annotation = _annotation;
+				} else if (annotationType instanceof ClassReference) {
+					String fqcn = ((ClassReference) annotationType).getFQCN();
+					annotation = m.annotate(ref(fqcn));
+				} else {
+					throw reportInternalError("invalid annotation type '"+annotationType.getClass()+"'");
+				}
+
+				final Set<String> seenParameterNames = new HashSet<String>();
+
+				for (Map.Entry<String, Object> parameter : entry.getValue().entrySet()) {
+					final String name = parameter.getKey();
+					final Object value = parameter.getValue();
+
+					if (seenParameterNames.contains(name)) {
+						String msg = String.format("duplicate parameter '%s' for annotation on method '%s'", name, m.name());
+						throw new DescriptorBuilderException(msg);
+					}
+					seenParameterNames.add(name);
+
+//                    if (value.getClass().isArray()) {
+//
+//                        Class<?> componentType = value.getClass().getComponentType();
+//                        JAnnotationArrayMember arrayMember = annotation.paramArray(name);
+//
+//                        int length = Array.getLength(value);
+//
+//                        for (int i = 0; i < length; i++) {
+//                            Object arrayValue = Array.get(value, i);
+//
+//                            if (componentType == Class.class) {
+//                                arrayMember.param((Class<?>) arrayValue);
+//                            } else if (componentType == ClassReference.class) {
+//                                String fqcn = ((ClassReference) arrayValue).getFQCN();
+//                                arrayMember.param(ref(fqcn));
+//                            } else if (componentType == Enum.class) {
+//                                arrayMember.param((Enum) arrayValue);
+//                            } else if (componentType == String.class) {
+//                                arrayMember.param((String) arrayValue);
+//                            } else if (componentType == Integer.class || componentType == Integer.TYPE) {
+//                                arrayMember.param((Integer) arrayValue);
+//                            } else if (componentType == Long.class || componentType == Long.TYPE) {
+//                                arrayMember.param((Long) arrayValue);
+//                            } else if (componentType == Float.class || componentType == Float.TYPE) {
+//                                arrayMember.param((Float) arrayValue);
+//                            } else if (componentType == Double.class || componentType == Double.TYPE) {
+//                                arrayMember.param((Double) arrayValue);
+//                            } else if (componentType == Short.class || componentType == Short.TYPE) {
+//                                arrayMember.param((Short) arrayValue);
+//                            } else if (componentType == Boolean.class || componentType == Boolean.TYPE) {
+//                                arrayMember.param((Boolean) arrayValue);
+//                            } else if (componentType == Byte.class || componentType == Byte.TYPE) {
+//                                arrayMember.param((Byte) arrayValue);
+//                            } else {
+//                                throw reportInternalError("invalid annotation value type '" + value.getClass() + "'");
+//                            }
+//                        }
+//
+//                    } else {
+
+                        if (value instanceof Class) {
+                            annotation.param(name, (Class<?>) value);
+                        } else if (value instanceof ClassReference) {
+                            String fqcn = ((ClassReference) value).getFQCN();
+                            annotation.param(name, ref(fqcn));
+                        } else if (value instanceof Enum) {
+                            annotation.param(name, (Enum) value);
+                        } else if (value instanceof String) {
+                            annotation.param(name, (String) value);
+                        } else if (value instanceof Integer) {
+                            annotation.param(name, (Integer) value);
+                        } else if (value instanceof Long) {
+                            annotation.param(name, (Long) value);
+                        } else if (value instanceof Float) {
+                            annotation.param(name, (Float) value);
+                        } else if (value instanceof Double) {
+                            annotation.param(name, (Double) value);
+                        } else if (value instanceof Short) {
+                            annotation.param(name, (Short) value);
+                        } else if (value instanceof Boolean) {
+                            annotation.param(name, (Boolean) value);
+                        } else if (value instanceof Byte) {
+                            annotation.param(name, (Byte) value);
+                        } else {
+                            throw reportInternalError("invalid annotation value type '" + value.getClass() + "'");
+                        }
+//                    }
+                }
+            }
 		}
 
 		return m;
