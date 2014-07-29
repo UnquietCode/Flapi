@@ -275,76 +275,66 @@ public class MethodParser_T {
 	@Test
 	public void methodEqualityTests() {
 
+		// -- General --
+
 		// different parameter types
-		assertFalse(
-			"expected unequal",
-			new MethodParser("void method(String p1)")
-				.compilerEquivalent(new MethodParser("void method(int p1)")
-			)
-		);
+		testMethodEquality(false, "void method(String p1)", "void method(int p1)");
 
 		// same parameter types
-		assertTrue(
-			"expected equal",
-			new MethodParser("void method(int p1)")
-				.compilerEquivalent(new MethodParser("void method(int p1)")
-			)
-		);
+		testMethodEquality(true, "void method(int p1)", "void method(int p1)");
 
 		// same params, different return type
-		assertFalse(
-			"expected unequal",
-			new MethodParser("void method(String p1)")
-				.compilerEquivalent(new MethodParser("String method(String p1)")
-			)
-		);
-
-		// one with vararg
-		assertFalse(
-			"expected unequal",
-			new MethodParser("void method(String p1, int p2)")
-				.compilerEquivalent(new MethodParser("void method(String p1, int p2, int...p3)")
-			)
-		);
-
-		// vararg only, same return type
-		assertTrue(
-			"expected equal",
-			new MethodParser("void method(String...p1)")
-				.compilerEquivalent(new MethodParser("void method(String...p1)")
-			)
-		);
-
-		// vararg only, different return type
-		assertFalse(
-			"expected unequal",
-			new MethodParser("void method(String...p1)")
-				.compilerEquivalent(new MethodParser("int method(String... p1)")
-			)
-		);
+		testMethodEquality(false, "void method(String p1)", "String method(String p1)");
 
 		// same everything but method name
-		assertFalse(
-			"expected unequal",
-			new MethodParser("void methodA(int p1)")
-				.compilerEquivalent(new MethodParser("void methodB(int p1)")
-			)
-		);
+		testMethodEquality(false, "void methodA(int p1)", "void methodB(int p1)");
 
 		// with and without void
-		assertTrue(
-			"expected equal",
-			new MethodParser("void method(int a)")
-				.compilerEquivalent(new MethodParser("method(int a)")
-			)
-		);
+		testMethodEquality(true, "void method(int a)", "method(int a)");
 
 		// with generic erasure
-		assertTrue(
-			"expected equal",
-			new MethodParser("void method(List<String> list)")
-				.compilerEquivalent(new MethodParser("void method(List<Integer> list)")
-			)
-		);
+		testMethodEquality(true, "void method(List<String> list)", "void method(List<Integer> list)");
+
+
+		// -- Arrays --
+
+		// with primitive array parameters
+		testMethodEquality(false, "method(int a)", "method(int[] a)");
+
+		// with Object array parameters
+		testMethodEquality(false, "method(Object a)", "method(Object[] a)");
+
+		// with flexible bracket position
+		testMethodEquality(true, "method(Object[] a)", "method(Object a[])");
+
+
+		// -- Vararg --
+
+		// one with vararg
+		testMethodEquality(false, "void method(String p1, int p2)", "void method(String p1, int p2, int...p3)");
+
+		// vararg only, same return type
+		testMethodEquality(true, "void method(String...p1)", "void method(String...p1)");
+
+		// vararg only, different return type
+		testMethodEquality(false, "void method(String...p1)", "int method(String... p1)");
+
+		// vararg and array
+		testMethodEquality(true, "method(String...p1)", "method(String[] p2)");
+
+		// array and vararg
+		testMethodEquality(true, "method(String[] p1)", "method(String...p2)");
+	}
+
+
+	private static void testMethodEquality(boolean expected, String method1, String method2) {
+		MethodParser m1 = new MethodParser(method1);
+		MethodParser m2 = new MethodParser(method2);
+
+		if (expected) {
+			assertTrue("expected equal methods (<"+method1+"> <"+method2+">)", m1.compilerEquivalent(m2));
+		} else {
+			assertFalse("expected unequal methods (<"+method1+"> <"+method2+">)", m1.compilerEquivalent(m2));
+		}
 	}
 }

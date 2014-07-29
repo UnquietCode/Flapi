@@ -376,11 +376,19 @@ public class MethodParser {
 
 		@Override
 		public boolean equals(Object obj) {
+
+			// type check
 			if (!(obj instanceof JavaType)) {
 				return false;
 			}
 
 			JavaType other = (JavaType) obj;
+
+			// array check
+			if (this.isArray ^ other.isArray) {
+				return false;
+			}
+
 			return typeName.equals(other.typeName);
 		}
 	}
@@ -436,17 +444,33 @@ public class MethodParser {
 	//-------------------------------------------------------------------------------------------//
 
 	public boolean compilerEquivalent(MethodParser other) {
+
 		// same name
 		if (!methodName.equals(other.methodName)) { return false; }
 
-		// same types, in order
-		if (params.size() != other.params.size()) { return false; }
-		if (varargType == null && other.varargType != null) { return false; }
-		if (varargType != null && !varargType.equals(other.varargType)) { return false; }
+		// synthesize new parameter arrays, accounting for varargs
 
-		for (int i=0; i < params.size(); ++i) {
-			Pair<JavaType,String> p1 = params.get(i);
-			Pair<JavaType,String> p2 = other.params.get(i);
+		List<Pair<JavaType, String>> newParams = new ArrayList<Pair<JavaType, String>>(params);
+
+		if (varargType != null) {
+			newParams.add(new Pair<JavaType, String>(new JavaType(varargType, true), varargName));
+		}
+
+		List<Pair<JavaType, String>> newOtherParams = new ArrayList<Pair<JavaType, String>>(other.params);
+
+		if (other.varargType != null) {
+			newOtherParams.add(new Pair<JavaType, String>(new JavaType(other.varargType, true), other.varargName));
+		}
+
+		// parameter size
+		if (newParams.size() != newOtherParams.size()) {
+			return false;
+		}
+
+		// parameter types
+		for (int i=0; i < newParams.size(); ++i) {
+			Pair<JavaType,String> p1 = newParams.get(i);
+			Pair<JavaType,String> p2 = newOtherParams.get(i);
 
 			if (!p1.first.equals(p2.first)) { return false; }
 		}
