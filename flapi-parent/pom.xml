@@ -14,6 +14,20 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
+	<developers>
+		<developer>
+			<name>Ben Fagin</name>
+			<email>blouis@unquietcode.com</email>
+			<url>https://github.com/UnquietCode</url>
+		</developer>
+	</developers>
+
+	<scm>
+		<url>https://github.com/UnquietCode/Flapi</url>
+		<connection>scm:git:https://github.com/UnquietCode/Flapi.git</connection>
+		<developerConnection>scm:git:https://github.com/UnquietCode/Flapi.git</developerConnection>
+	</scm>
+
 	<build>
 		<pluginManagement>
 			<plugins>
