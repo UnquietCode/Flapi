@@ -4,7 +4,7 @@
 
 	<groupId>unquietcode.tools.flapi</groupId>
 	<artifactId>flapi-parent</artifactId>
-	<version>0.5.1</version>
+	<version>0.0-DEVELOPMENT</version>
 	<packaging>pom</packaging>
 
 	<name>flapi-parent</name>
@@ -115,10 +115,7 @@
 		<module>../flapi-runtime</module>
 		<module>../</module>
 		<module>../flapi-build-plugin</module>
-
-		<!-- TODO maven reactor keeps putting this in the wrong order -->
-		<!--<module>../flapi-build-project</module>-->
-
+		<module>../flapi-build-project</module>
 		<module>../flapi-build-test-producer</module>
 		<module>../flapi-build-test-consumer</module>
 	</modules>
