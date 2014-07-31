@@ -8,12 +8,12 @@
 	<parent>
 		<groupId>unquietcode.tools.flapi</groupId>
 		<artifactId>build-project</artifactId>
-		<version>0.0-DEVELOPMENT</version>
+		<version>0.5.1</version>
 		<relativePath>../flapi-build-project</relativePath>
 	</parent>
 
 	<artifactId>flapi-builder</artifactId>
-	<version>0.0-DEVELOPMENT</version>
+	<version>0.5.1</version>
 	<packaging>jar</packaging>
 
 	<name>Flapi's Descriptor Builder</name>
