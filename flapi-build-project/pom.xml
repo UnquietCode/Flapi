@@ -21,6 +21,12 @@
 		<flapi.descriptor.classes>change.me</flapi.descriptor.classes>
 	</properties>
 
+	<scm>
+		<url>https://github.com/UnquietCode/Flapi</url>
+		<connection>scm:git:https://github.com/UnquietCode/Flapi.git</connection>
+		<developerConnection>scm:git:https://github.com/UnquietCode/Flapi.git</developerConnection>
+	</scm>
+
 	<repositories>
 		<repository>
 			<id>uqc</id>
