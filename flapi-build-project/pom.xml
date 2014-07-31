@@ -43,14 +43,6 @@
 		</pluginRepository>
 	</pluginRepositories>
 
-	<dependencies>
-		<dependency>
-			<groupId>unquietcode.tools.flapi</groupId>
-			<artifactId>flapi-build-plugin</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-	</dependencies>
-
 	<build>
 		<plugins>
 
