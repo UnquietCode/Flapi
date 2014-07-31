@@ -7,13 +7,17 @@
 
 package unquietcode.tools.flapi.helpers;
 
+import unquietcode.tools.flapi.ClassReference;
 import unquietcode.tools.flapi.DescriptorBuilderException;
+import unquietcode.tools.flapi.builder.Annotation.AnnotationHelper;
 import unquietcode.tools.flapi.builder.BlockChain.BlockChainHelper;
 import unquietcode.tools.flapi.builder.Documentation.DocumentationHelper;
 import unquietcode.tools.flapi.builder.Method.MethodHelper;
 import unquietcode.tools.flapi.outline.MethodOutline;
 
 import java.util.concurrent.atomic.AtomicReference;
+
+import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * @author Ben Fagin
@@ -25,7 +29,7 @@ public class MethodHelperImpl implements MethodHelper {
 	MethodHelperImpl(MethodOutline method) {
 		this.method = method;
 	}
-	
+
 	@Override
 	public void exactly(int num) {
 		between(num, num);
@@ -135,6 +139,20 @@ public class MethodHelperImpl implements MethodHelper {
 	}
 
 	@Override
+	public void addAnnotation(Class annotation, AtomicReference<AnnotationHelper> _helper1) {
+		checkNotNull(annotation);
+		AnnotationHelper helper = new AnnotationsHelperImpl(method, annotation);
+		_helper1.set(helper);
+	}
+
+	@Override
+	public void addAnnotation(String annotation, AtomicReference<AnnotationHelper> _helper1) {
+		checkNotNull(annotation);
+		AnnotationHelper helper = new AnnotationsHelperImpl(method, new ClassReference(annotation));
+		_helper1.set(helper);
+	}
+
+    @Override
 	public void after(int group) {
 		method.setTrigger(group);
 	}

@@ -14,7 +14,6 @@ public class MainDescriptor implements DescriptorMaker {
 	private static final int DOC_GROUP = 1;
 	private static final int RETURN_TYPE_GROUP = 2;
 
-
 	@Override
 	public Descriptor descriptor() {
 		Descriptor builder = Flapi.builder()
@@ -70,6 +69,41 @@ public class MainDescriptor implements DescriptorMaker {
 						.addContent("Also adds a note to the Javadocs.")
 					.finish()
 				.atMost(1)
+
+   				// user Annotations
+				.startBlock("Annotation", "addAnnotation(Class annotation)")
+					.withDocumentation("Adds a custom annotation to the method.")
+                .any()
+					.addMethod("withParameter(String name, String value)").any()
+					.addMethod("withParameter(String name, Enum value)").any()
+					.addMethod("withParameter(String name, Class value)").any()
+					.addMethod("withParameter(String name, unquietcode.tools.flapi.ClassReference value)").any()
+					.addMethod("withParameter(String name, boolean value)").any()
+					.addMethod("withParameter(String name, int value)").any()
+					.addMethod("withParameter(String name, long value)").any()
+					.addMethod("withParameter(String name, float value)").any()
+					.addMethod("withParameter(String name, double value)").any()
+					.addMethod("withParameter(String name, short value)").any()
+					.addMethod("withParameter(String name, byte value)").any()
+
+                    // array versions
+					// ( requires propagation of [#5] fix )
+//					.addMethod("withParameter(String name, String[] values)").any()
+//					.addMethod("withParameter(String name, Enum[] values)").any()
+//					.addMethod("withParameter(String name, Class[] values)").any()
+//					.addMethod("withParameter(String name, unquietcode.tools.flapi.ClassReference[] values)").any()
+//					.addMethod("withParameter(String name, boolean[] values)").any()
+//					.addMethod("withParameter(String name, int[] values)").any()
+//					.addMethod("withParameter(String name, long[] values)").any()
+//					.addMethod("withParameter(String name, float[] values)").any()
+//					.addMethod("withParameter(String name, double[] values)").any()
+//					.addMethod("withParameter(String name, short[] values)").any()
+//					.addMethod("withParameter(String name, byte[] values)").any()
+
+					.addMethod("finish()").last()
+                .endBlock()
+
+				.addBlockReference("Annotation", "addAnnotation(String annotation)").any()
 
 				// Documentation
 				.startBlock("Documentation", "withDocumentation()")

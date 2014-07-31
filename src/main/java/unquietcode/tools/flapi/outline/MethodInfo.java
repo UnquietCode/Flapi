@@ -8,8 +8,12 @@
 package unquietcode.tools.flapi.outline;
 
 
+import unquietcode.tools.flapi.DescriptorBuilderException;
 import unquietcode.tools.flapi.MethodParser;
 import unquietcode.tools.flapi.Pair;
+
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * @author Ben Fagin
@@ -22,7 +26,7 @@ public class MethodInfo implements Comparable<MethodInfo> {
 	private boolean isDeprecated = false;
 	private String deprecationReason;
 	private boolean didTrigger = false;
-
+    private Map<Object, Map<String, Object>> annotations = new LinkedHashMap<Object, Map<String, Object>>();
 
 	public Integer getMinOccurrences() {
 		return minOccurrences;
@@ -77,7 +81,25 @@ public class MethodInfo implements Comparable<MethodInfo> {
 		didTrigger = true;
 	}
 
-	public MethodInfo copy()  {
+    public void addAnnotationParam(Object annotation, String param, Object value) {
+	    Map<String, Object> params = annotations.get(annotation);
+
+	    if (params == null) {
+		    params = new LinkedHashMap<String, Object>();
+		    annotations.put(annotation, params);
+	    }
+
+        if (params.containsKey(param))
+            throw new DescriptorBuilderException("duplicate annotation parameter name found: " + param);
+
+	    params.put(param, value);
+    }
+
+    public Map<Object, Map<String, Object>> getAnnotations() {
+        return annotations;
+    }
+
+    public MethodInfo copy()  {
 		MethodInfo clone = new MethodInfo();
 		copy(clone);
 		return clone;
@@ -91,6 +113,7 @@ public class MethodInfo implements Comparable<MethodInfo> {
 		other.isDeprecated = isDeprecated;
 		other.deprecationReason = deprecationReason;
 		other.didTrigger = didTrigger;
+        other.annotations.putAll(annotations);
 	}
 
 	@Override
