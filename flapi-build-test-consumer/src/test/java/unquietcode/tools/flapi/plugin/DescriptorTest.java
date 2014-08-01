@@ -41,9 +41,9 @@ public class DescriptorTest {
         TestAnnotation annotation = method.getAnnotation(TestAnnotation.class);
         Assert.assertNotNull("missing annotation", annotation);
         Assert.assertEquals("missing value", "a", annotation.someValue());
-//        Assert.assertEquals("missing value", 2, annotation.someValues().length);
-//        Assert.assertEquals("missing value", "a", annotation.someValues()[0]);
-//        Assert.assertEquals("missing value", "b", annotation.someValues()[1]);
+        Assert.assertEquals("missing value", 2, annotation.someValues().length);
+        Assert.assertEquals("missing value", "a", annotation.someValues()[0]);
+        Assert.assertEquals("missing value", "b", annotation.someValues()[1]);
     }
 
 	EmailHelper helper = new EmailHelper() {

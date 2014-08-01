@@ -249,45 +249,45 @@ public abstract class AbstractGenerator {
 					}
 					seenParameterNames.add(name);
 
-//                    if (value.getClass().isArray()) {
-//
-//                        Class<?> componentType = value.getClass().getComponentType();
-//                        JAnnotationArrayMember arrayMember = annotation.paramArray(name);
-//
-//                        int length = Array.getLength(value);
-//
-//                        for (int i = 0; i < length; i++) {
-//                            Object arrayValue = Array.get(value, i);
-//
-//                            if (componentType == Class.class) {
-//                                arrayMember.param((Class<?>) arrayValue);
-//                            } else if (componentType == ClassReference.class) {
-//                                String fqcn = ((ClassReference) arrayValue).getFQCN();
-//                                arrayMember.param(ref(fqcn));
-//                            } else if (componentType == Enum.class) {
-//                                arrayMember.param((Enum) arrayValue);
-//                            } else if (componentType == String.class) {
-//                                arrayMember.param((String) arrayValue);
-//                            } else if (componentType == Integer.class || componentType == Integer.TYPE) {
-//                                arrayMember.param((Integer) arrayValue);
-//                            } else if (componentType == Long.class || componentType == Long.TYPE) {
-//                                arrayMember.param((Long) arrayValue);
-//                            } else if (componentType == Float.class || componentType == Float.TYPE) {
-//                                arrayMember.param((Float) arrayValue);
-//                            } else if (componentType == Double.class || componentType == Double.TYPE) {
-//                                arrayMember.param((Double) arrayValue);
-//                            } else if (componentType == Short.class || componentType == Short.TYPE) {
-//                                arrayMember.param((Short) arrayValue);
-//                            } else if (componentType == Boolean.class || componentType == Boolean.TYPE) {
-//                                arrayMember.param((Boolean) arrayValue);
-//                            } else if (componentType == Byte.class || componentType == Byte.TYPE) {
-//                                arrayMember.param((Byte) arrayValue);
-//                            } else {
-//                                throw reportInternalError("invalid annotation value type '" + value.getClass() + "'");
-//                            }
-//                        }
-//
-//                    } else {
+                    if (value.getClass().isArray()) {
+
+                        Class<?> componentType = value.getClass().getComponentType();
+                        JAnnotationArrayMember arrayMember = annotation.paramArray(name);
+
+                        int length = Array.getLength(value);
+
+                        for (int i = 0; i < length; i++) {
+                            Object arrayValue = Array.get(value, i);
+
+                            if (componentType == Class.class) {
+                                arrayMember.param((Class<?>) arrayValue);
+                            } else if (componentType == ClassReference.class) {
+                                String fqcn = ((ClassReference) arrayValue).getFQCN();
+                                arrayMember.param(ref(fqcn));
+                            } else if (componentType == Enum.class) {
+                                arrayMember.param((Enum) arrayValue);
+                            } else if (componentType == String.class) {
+                                arrayMember.param((String) arrayValue);
+                            } else if (componentType == Integer.class || componentType == Integer.TYPE) {
+                                arrayMember.param((Integer) arrayValue);
+                            } else if (componentType == Long.class || componentType == Long.TYPE) {
+                                arrayMember.param((Long) arrayValue);
+                            } else if (componentType == Float.class || componentType == Float.TYPE) {
+                                arrayMember.param((Float) arrayValue);
+                            } else if (componentType == Double.class || componentType == Double.TYPE) {
+                                arrayMember.param((Double) arrayValue);
+                            } else if (componentType == Short.class || componentType == Short.TYPE) {
+                                arrayMember.param((Short) arrayValue);
+                            } else if (componentType == Boolean.class || componentType == Boolean.TYPE) {
+                                arrayMember.param((Boolean) arrayValue);
+                            } else if (componentType == Byte.class || componentType == Byte.TYPE) {
+                                arrayMember.param((Byte) arrayValue);
+                            } else {
+                                throw reportInternalError("invalid annotation value type '" + value.getClass() + "'");
+                            }
+                        }
+
+                    } else {
 
                         if (value instanceof Class) {
                             annotation.param(name, (Class<?>) value);
@@ -315,7 +315,7 @@ public abstract class AbstractGenerator {
                         } else {
                             throw reportInternalError("invalid annotation value type '" + value.getClass() + "'");
                         }
-//                    }
+                    }
                 }
             }
 		}
