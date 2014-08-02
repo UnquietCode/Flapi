@@ -28,7 +28,7 @@ public class TestDescriptor implements DescriptorMaker {
 			.startBlock("ABlock", "block()")
                 .addAnnotation(TestAnnotation.class)
                     .withParameter("someValue", "a")
-//                  .withParameter("someValues",new String[]{"a", "b"})
+                    .withParameter("someValues", new String[]{"a", "b"})
                 .finish()
             .any()
 				.addEnumSelector(TestEnum.class, "test()").any()
