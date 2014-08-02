@@ -5,16 +5,15 @@ import unquietcode.tools.flapi.DescriptorBuilderException;
 import unquietcode.tools.flapi.builder.Annotation.AnnotationHelper;
 import unquietcode.tools.flapi.outline.MethodOutline;
 
-import static com.google.common.base.Preconditions.checkArgument;
+import java.lang.annotation.Annotation;
 
 
 public class AnnotationsHelperImpl implements AnnotationHelper {
     private final MethodOutline method;
     private final Object annotation;
 
-    public AnnotationsHelperImpl(MethodOutline method, Class annotation) {
+    public AnnotationsHelperImpl(MethodOutline method, Class<? extends Annotation> annotation) {
 	    this(method, (Object) annotation);
-        checkArgument(annotation.isAnnotation(), "only annotation classes are allowed");
     }
 
 	public AnnotationsHelperImpl(MethodOutline method, ClassReference annotation) {
@@ -81,62 +80,62 @@ public class AnnotationsHelperImpl implements AnnotationHelper {
 		checkAndAdd(name, value);
 	}
 
-    @Override
-    public void withParameter(String name, Class[] values) {
-        checkAndAdd(name, values);
-    }
+	@Override
+	public void withParameter(String name, Class[] values) {
+		checkAndAdd(name, values);
+	}
 
-    @Override
-    public void withParameter(String name, Enum[] values) {
-        checkAndAdd(name, values);
-    }
+	@Override
+	public void withParameter(String name, ClassReference[] values) {
+		checkAndAdd(name, values);
+	}
 
-    @Override
-    public void withParameter(String name, String[] values) {
-        checkAndAdd(name, values);
-    }
+	@Override
+	public void withParameter(String name, Enum[] values) {
+		checkAndAdd(name, values);
+	}
 
-    @Override
-    public void withParameter(String name, boolean[] values) {
-        checkAndAdd(name, values);
-    }
+	@Override
+	public void withParameter(String name, String[] values) {
+		checkAndAdd(name, values);
+	}
 
-    @Override
-    public void withParameter(String name, byte[] values) {
-        checkAndAdd(name, values);
-    }
+	@Override
+	public void withParameter(String name, boolean[] values) {
+		checkAndAdd(name, values);
+	}
 
-    @Override
-    public void withParameter(String name, double[] values) {
-        checkAndAdd(name, values);
-    }
+	@Override
+	public void withParameter(String name, byte[] values) {
+		checkAndAdd(name, values);
+	}
 
-    @Override
-    public void withParameter(String name, float[] values) {
-        checkAndAdd(name, values);
-    }
+	@Override
+	public void withParameter(String name, double[] values) {
+		checkAndAdd(name, values);
+	}
 
-    @Override
-    public void withParameter(String name, int[] values) {
-        checkAndAdd(name, values);
-    }
+	@Override
+	public void withParameter(String name, float[] values) {
+		checkAndAdd(name, values);
+	}
 
-    @Override
-    public void withParameter(String name, long[] values) {
-        checkAndAdd(name, values);
-    }
+	@Override
+	public void withParameter(String name, int[] values) {
+		checkAndAdd(name, values);
+	}
 
-    @Override
-    public void withParameter(String name, short[] values) {
-        checkAndAdd(name, values);
-    }
+	@Override
+	public void withParameter(String name, long[] values) {
+		checkAndAdd(name, values);
+	}
 
-    @Override
-    public void withParameter(String name, ClassReference[] values) {
-        checkAndAdd(name, values);
-    }
+	@Override
+	public void withParameter(String name, short[] values) {
+		checkAndAdd(name, values);
+	}
 
-    @Override
+	@Override
 	public void finish() {
 		// nothing
 	}
