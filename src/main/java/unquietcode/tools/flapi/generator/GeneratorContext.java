@@ -27,8 +27,19 @@ import java.util.Map;
  * @version 03-07-2012
  */
 public class GeneratorContext {
-	private static final SimpleDateFormat iso8601DateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX");
 	private static final SimpleDateFormat humanReadableDateFormat = new SimpleDateFormat("MMMM dd, yyyy H:mm:ss z");
+
+	private static final SimpleDateFormat iso8601DateFormat; static {
+		boolean legacyVersion =
+			SourceVersion.latestSupported() == SourceVersion.RELEASE_5
+		 || SourceVersion.latestSupported() == SourceVersion.RELEASE_6
+		;
+
+		iso8601DateFormat = legacyVersion
+						  ? new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss")
+						  : new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX")
+		;
+	}
 
 	public final JCodeModel model = new JCodeModel();
 	public final BlockMethodTracker helperMethods = new BlockMethodTracker();
