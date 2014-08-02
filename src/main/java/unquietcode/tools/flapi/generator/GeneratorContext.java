@@ -27,7 +27,8 @@ import java.util.Map;
  * @version 03-07-2012
  */
 public class GeneratorContext {
-	private static final SimpleDateFormat dateFormat = new SimpleDateFormat("MMMM dd, yyyy H:mm:ss z");
+	private static final SimpleDateFormat iso8601DateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX");
+	private static final SimpleDateFormat humanReadableDateFormat = new SimpleDateFormat("MMMM dd, yyyy H:mm:ss z");
 
 	public final JCodeModel model = new JCodeModel();
 	public final BlockMethodTracker helperMethods = new BlockMethodTracker();
@@ -217,7 +218,7 @@ public class GeneratorContext {
 				.append("\n")
 				.append("Visit ").append(Constants.PROJECT_URL).append(" for more information.\n")
 				.append("\n\n")
-				.append("Generated on ").append(dateFormat.format(generationDate))
+				.append("Generated on ").append(humanReadableDateFormat.format(generationDate))
 				.append(" using version ").append(Constants.PROJECT_VERSION)
 			.toString();
 		}
@@ -229,7 +230,7 @@ public class GeneratorContext {
 		if (Flapi.getJDKVersion().ordinal() >= SourceVersion.RELEASE_6.ordinal()) {
 			clazz.annotate(Generated.class)
 				.param("value", "unquietcode.tools.flapi")
-				.param("date", dateFormat.format(generationDate))
+				.param("date", iso8601DateFormat.format(generationDate))
 				.param("comments", "generated using Flapi, the fluent API generator for Java")
 			;
 		}
