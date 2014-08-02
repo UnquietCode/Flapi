@@ -37,8 +37,13 @@ public abstract class AbstractGenerator {
 			Pair<JDefinedClass, Boolean> construction = ctx.getOrCreateInterface(state.getName(), name);
 			JDefinedClass _interface = construction.first;
 
-			if (construction.second) {
+			// if it has yet to have the type parameter added
+			if (_interface.typeParams().length == 0) {
 				_interface.generify(Constants.RETURN_TYPE_NAME);
+			}
+
+			// if newly constructed
+			if (construction.second) {
 
 				// add @see annotation pointing back to helper
 				JDefinedClass helperClass = HELPER_INTERFACE_STRATEGY.createType(ctx, state);
