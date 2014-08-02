@@ -418,4 +418,20 @@ public class BuildChecks_T {
 			.endBlock()
 		.build();
 	}
+
+	@Test(expected=DescriptorBuilderException.class)
+	public void usingDeprecatedAnnotationWithParametersIsVerboten() {
+		Flapi.builder()
+			.setPackage("unquietcode.tools.flapi.test")
+			.setDescriptorName("Test")
+
+			.startBlock("block()").last()
+				.addMethod("stop()")
+					.addAnnotation(Deprecated.class)
+					.withParameter("value", "nope")
+				.finish()
+				.last()
+			.endBlock()
+		.build();
+	}
 }

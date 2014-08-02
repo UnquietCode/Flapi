@@ -9,8 +9,6 @@ import java.lang.annotation.Annotation;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import static com.google.common.base.Preconditions.checkState;
-
 
 public class AnnotationsHelperImpl implements AnnotationHelper {
     private final MethodOutline method;
@@ -145,7 +143,9 @@ public class AnnotationsHelperImpl implements AnnotationHelper {
 	@Override
 	public void finish() {
 		if (FQCN.equals(Deprecated.class.getName())) {
-			checkState(parameters.isEmpty(), "the @Deprecated annotation does not have parameters");
+			if (!parameters.isEmpty()) {
+				throw new DescriptorBuilderException("the @Deprecated annotation does not have any parameters");
+			}
 			method.setDeprecated(null);
 		} else {
 			method.addAnnotation(annotation, parameters);
