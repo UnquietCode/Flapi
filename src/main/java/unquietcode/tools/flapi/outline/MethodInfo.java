@@ -81,19 +81,12 @@ public class MethodInfo implements Comparable<MethodInfo> {
 		didTrigger = true;
 	}
 
-    public void addAnnotationParam(Object annotation, String param, Object value) {
-	    Map<String, Object> params = annotations.get(annotation);
-
-	    if (params == null) {
-		    params = new LinkedHashMap<String, Object>();
-		    annotations.put(annotation, params);
-	    }
-
-        if (params.containsKey(param))
-            throw new DescriptorBuilderException("duplicate annotation parameter name found: " + param);
-
-	    params.put(param, value);
-    }
+	public void addAnnotation(Object annotation, Map<String, Object> params) {
+		if (annotations.containsKey(annotation)) {
+			throw new DescriptorBuilderException("duplicate annotation: "+annotation);
+		}
+		annotations.put(annotation, params);
+	}
 
     public Map<Object, Map<String, Object>> getAnnotations() {
         return annotations;

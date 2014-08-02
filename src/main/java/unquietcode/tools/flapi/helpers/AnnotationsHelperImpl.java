@@ -6,23 +6,30 @@ import unquietcode.tools.flapi.builder.Annotation.AnnotationHelper;
 import unquietcode.tools.flapi.outline.MethodOutline;
 
 import java.lang.annotation.Annotation;
+import java.util.LinkedHashMap;
+import java.util.Map;
+
+import static com.google.common.base.Preconditions.checkState;
 
 
 public class AnnotationsHelperImpl implements AnnotationHelper {
     private final MethodOutline method;
     private final Object annotation;
+	private final String FQCN;
+	private final Map<String, Object> parameters = new LinkedHashMap<String, Object>();
 
-    public AnnotationsHelperImpl(MethodOutline method, Class<? extends Annotation> annotation) {
-	    this(method, (Object) annotation);
+	public AnnotationsHelperImpl(MethodOutline method, Class<? extends Annotation> annotation) {
+	    this(method, annotation, annotation.getName());
     }
 
 	public AnnotationsHelperImpl(MethodOutline method, ClassReference annotation) {
-		this(method, (Object) annotation);
+		this(method, annotation, annotation.getFQCN());
 	}
 
-	private AnnotationsHelperImpl(MethodOutline method, Object annotation) {
+	private AnnotationsHelperImpl(MethodOutline method, Object annotation, String FQCN) {
 		this.method = method;
 		this.annotation = annotation;
+		this.FQCN = FQCN;
 	}
 
 	@Override
@@ -137,7 +144,12 @@ public class AnnotationsHelperImpl implements AnnotationHelper {
 
 	@Override
 	public void finish() {
-		// nothing
+		if (FQCN.equals(Deprecated.class.getName())) {
+			checkState(parameters.isEmpty(), "the @Deprecated annotation does not have parameters");
+			method.setDeprecated(null);
+		} else {
+			method.addAnnotation(annotation, parameters);
+		}
 	}
 
 	private void checkAndAdd(String name, Object value) {
@@ -149,6 +161,10 @@ public class AnnotationsHelperImpl implements AnnotationHelper {
 			throw new DescriptorBuilderException("parameter values cannot be null");
 		}
 
-		method.addAnnotationParam(annotation, name, value);
+		if (parameters.containsKey(name)) {
+			throw new DescriptorBuilderException("duplicate annotation parameter name found: " + name);
+		}
+
+		parameters.put(name, value);
 	}
 }
