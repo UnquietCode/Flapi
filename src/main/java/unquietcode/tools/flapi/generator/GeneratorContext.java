@@ -58,30 +58,35 @@ public class GeneratorContext {
 		condenseNames = value;
 	}
 
-	public JDefinedClass getOrCreateInterface(String subPackage, String name) {
+	public Pair<JDefinedClass, Boolean> getOrCreateInterface(String subPackage, String name) {
 		JDefinedClass _interface = interfaces.get(name);
+		final boolean created = _interface == null;
+
 		if (_interface == null) {
 			JPackage _package = subPackage != null && !subPackage.isEmpty()
-								 ? thePackage.subPackage(subPackage)
-								 : thePackage;
+							  ? thePackage.subPackage(subPackage)
+							  : thePackage;
 			try {
 				_interface = _package._interface(name);
-				interfaces.put(name, _interface);
-				addGeneratedHeader(_interface);
 			} catch (JClassAlreadyExistsException ex) {
 				throw new DescriptorBuilderException(ex);
 			}
+
+			interfaces.put(name, _interface);
+			addGeneratedHeader(_interface);
 		}
 
-		return _interface;
+		return new Pair<JDefinedClass, Boolean>(_interface, created);
 	}
 
-	public JDefinedClass getOrCreateClass(String subPackage, String name) {
+	public Pair<JDefinedClass, Boolean> getOrCreateClass(String subPackage, String name) {
 		JDefinedClass _class = classes.get(name);
+		final boolean created = _class == null;
+
 		if (_class == null) {
 			JPackage _package = subPackage != null && !subPackage.isEmpty()
-						  		 ? thePackage.subPackage(subPackage)
-								 : thePackage;
+						  	  ? thePackage.subPackage(subPackage)
+							  : thePackage;
 			try {
 				_class = _package._class(JMod.PUBLIC, name);
 				classes.put(name, _class);
@@ -91,7 +96,7 @@ public class GeneratorContext {
 			}
 		}
 
-		return _class;
+		return new Pair<JDefinedClass, Boolean>(_class, created);
 	}
 
 	public boolean doesClassExist(String name) {

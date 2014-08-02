@@ -34,10 +34,15 @@ public abstract class AbstractGenerator {
 	protected static final TypeCreationStrategy BUILDER_INTERFACE_STRATEGY = new TypeCreationStrategy() {
 		public @Override JDefinedClass createType(GeneratorContext ctx, StateClass state) {
 			String name = ctx.getGeneratedName("", "Builder", state);
-			JDefinedClass _interface = ctx.getOrCreateInterface(state.getName(), name);
+			Pair<JDefinedClass, Boolean> construction = ctx.getOrCreateInterface(state.getName(), name);
+			JDefinedClass _interface = construction.first;
 
-			if (_interface.typeParams().length == 0) {
+			if (construction.second) {
 				_interface.generify(Constants.RETURN_TYPE_NAME);
+
+				// add @see annotation pointing back to helper
+				JDefinedClass helperClass = HELPER_INTERFACE_STRATEGY.createType(ctx, state);
+				_interface.javadoc().append("\n@see "+helperClass.fullName());
 			}
 
 			return _interface;
@@ -53,21 +58,21 @@ public abstract class AbstractGenerator {
 
 	protected static final TypeCreationStrategy HELPER_INTERFACE_STRATEGY = new TypeCreationStrategy() {
 		public @Override JDefinedClass createType(GeneratorContext ctx, StateClass state) {
-			return ctx.getOrCreateInterface(state.getName(), state.getName()+"Helper");
+			return ctx.getOrCreateInterface(state.getName(), state.getName()+"Helper").first;
 		}
 	};
 
 	protected static final TypeCreationStrategy GENERATOR_CLASS_STRATEGY = new TypeCreationStrategy() {
 		public JDefinedClass createType(GeneratorContext ctx, StateClass state) {
 			String name = state.getName()+"Generator";
-			return ctx.getOrCreateClass(state.getName(), name);
+			return ctx.getOrCreateClass(state.getName(), name).first;
 		}
 	};
 
 	public static final TypeCreationStrategy WRAPPER_INTERFACE_STRATEGY = new TypeCreationStrategy() {
 		public @Override JDefinedClass createType(GeneratorContext ctx, StateClass state) {
 			String name = state.getName()+"Builder";
-			JDefinedClass parent = ctx.getOrCreateInterface(state.getName(), name);
+			JDefinedClass parent = ctx.getOrCreateInterface(state.getName(), name).first;
 			JDefinedClass innerClass;
 
 			try {
