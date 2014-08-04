@@ -129,6 +129,18 @@ public class AnnotationIntrospector {
 			annotations.remove(last);
 		}
 
+		// ensure that non-terminal methods aren't returning anything
+		else {
+			Class<?> returnType = method.getReturnType();
+
+			if (returnType != void.class) {
+				throw new DescriptorBuilderException(
+					"Only @Last methods can return anything; all other methods must be 'void'.\n\t" +
+					"(for method '"+method.getDeclaringClass().getName()+"#"+method.getName()+"')\n"
+				);
+			}
+		}
+
 		// @Documented
 		if (documented != null) {
 			DocumentationHelperImpl docHelper = new DocumentationHelperImpl(methodOutline);
