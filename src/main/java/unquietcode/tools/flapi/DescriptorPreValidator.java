@@ -49,7 +49,7 @@ public class DescriptorPreValidator {
 	}
 
 	private void checkForNameCollisions() {
-		_checkForNameCollisions(outline.selfBlock, new HashSet<String>());
+		_checkForNameCollisions(outline, new HashSet<String>());
 	}
 
 	private void _checkForNameCollisions(BlockOutline block, Set<String> names) {
@@ -93,7 +93,7 @@ public class DescriptorPreValidator {
 	}
 
 	private void checkForInvalidMethodSignatures() {
-		_checkForInvalidMethodSignatures(outline.selfBlock);
+		_checkForInvalidMethodSignatures(outline);
 	}
 
 	private void _checkForInvalidMethodSignatures(BlockOutline block) {
@@ -126,7 +126,7 @@ public class DescriptorPreValidator {
 	}
 
 	private void checkForUnmatchedGroups() {
-		_checkForUnmatchedGroups(outline.selfBlock);
+		_checkForUnmatchedGroups(outline);
 	}
 
 	private void _checkForUnmatchedGroups(BlockOutline block) {

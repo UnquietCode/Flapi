@@ -27,7 +27,7 @@ public class AnnotationIntrospector {
 		descriptor.setPackageName(clazz.getPackage().getName() + ".builder");
 
 		// discover methods and set them on the blocks
-		handleClass(descriptor.selfBlock, clazz);
+		handleClass(descriptor, clazz);
 		return descriptor;
 	}
 

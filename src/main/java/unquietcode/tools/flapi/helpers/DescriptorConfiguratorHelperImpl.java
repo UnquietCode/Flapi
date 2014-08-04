@@ -55,7 +55,7 @@ public class DescriptorConfiguratorHelperImpl implements DescriptorConfiguratorH
 		if (returnType == null) {
 			throw new IllegalArgumentException("Return type cannot be null.");
 		}
-		outline.selfBlock.setReturnType(returnType);
+		outline.setReturnType(returnType);
 	}
 
 	@Override

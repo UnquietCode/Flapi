@@ -16,12 +16,10 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @author Ben Fagin
  * @version 03-07-2012
  */
-public class DescriptorOutline implements Outline {
+public class DescriptorOutline extends BlockOutline implements Outline {
 	private String packageName;
 	private boolean enableCondensedNames = false;
-	public final BlockOutline selfBlock = new BlockOutline();
-	private final GeneratorOutline generator = new GeneratorOutline(selfBlock);
-
+	private final GeneratorOutline generator = new GeneratorOutline(this);
 
 	public GeneratorOutline getGenerator() {
 		return generator;
@@ -39,10 +37,6 @@ public class DescriptorOutline implements Outline {
 		return enableCondensedNames;
 	}
 
-	public void setDescriptorName(String name) {
-		selfBlock.setName(name);
-	}
-
 	public void setCreateMethod(String methodName) {
 		generator.methodName = methodName;
 	}
@@ -56,7 +50,7 @@ public class DescriptorOutline implements Outline {
 	}
 
 	public void prepare() {
-		generateNamesForAnonymousBlocks(selfBlock, new AtomicInteger(1));
+		generateNamesForAnonymousBlocks(this, new AtomicInteger(1));
 	}
 
 	private static void generateNamesForAnonymousBlocks(BlockOutline block, AtomicInteger counter) {

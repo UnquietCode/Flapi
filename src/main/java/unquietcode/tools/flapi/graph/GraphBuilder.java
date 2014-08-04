@@ -27,10 +27,10 @@ public class GraphBuilder {
 	public StateClass buildGraph(DescriptorOutline descriptor) {
 		// resolve block references
 		Map<String, BlockOutline> blocks = new HashMap<String, BlockOutline>();
-		findAllBlocks(blocks, descriptor.selfBlock);
-		initializeReferenceMap(blocks, referenceMap, descriptor.selfBlock);
+		findAllBlocks(blocks, descriptor);
+		initializeReferenceMap(blocks, referenceMap, descriptor);
 
-		return convertBlock(descriptor.selfBlock);
+		return convertBlock(descriptor);
 	}
 
 	private static void findAllBlocks(Map<String, BlockOutline> blocks, BlockOutline block) {
