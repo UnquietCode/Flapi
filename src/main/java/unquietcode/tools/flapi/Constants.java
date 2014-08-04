@@ -22,6 +22,7 @@ public final class Constants {
 	public static final String PROJECT_URL = "https://github.com/UnquietCode/Flapi";
 	public static final String RETURN_TYPE_NAME = "_ReturnType";
 	public static final String HELPER_VALUE_NAME = "_helper";
+	public static final int DEFAULT_NULL_INT = Integer.MIN_VALUE;
 
 	public static final String PROJECT_VERSION; static {
 		InputStream is = Constants.class.getClassLoader().getResourceAsStream("version/version.txt");

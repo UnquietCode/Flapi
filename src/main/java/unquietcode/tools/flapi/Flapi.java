@@ -7,12 +7,19 @@
 
 package unquietcode.tools.flapi;
 
+import unquietcode.tools.flapi.annotations.AnnotationIntrospector;
 import unquietcode.tools.flapi.builder.Descriptor.DescriptorBuilder;
 import unquietcode.tools.flapi.builder.Descriptor.DescriptorGenerator;
+import unquietcode.tools.flapi.configurator.DescriptorConfigurator.DescriptorConfiguratorBuilder;
+import unquietcode.tools.flapi.configurator.DescriptorConfigurator.DescriptorConfiguratorGenerator;
+import unquietcode.tools.flapi.helpers.DescriptorConfiguratorHelperImpl;
 import unquietcode.tools.flapi.helpers.DescriptorHelperImpl;
+import unquietcode.tools.flapi.outline.DescriptorOutline;
 import unquietcode.tools.flapi.runtime.ExecutionListener;
 
 import javax.lang.model.SourceVersion;
+
+import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * From here you can reach the world.
@@ -30,6 +37,20 @@ public class Flapi {
 	 */
 	public static DescriptorBuilder.Start builder(ExecutionListener...listeners) {
 		return DescriptorGenerator.create(new DescriptorHelperImpl(), listeners);
+	}
+
+	/**
+	 * Shortcut to build a descriptor from an existing annotated helper class.
+	 * @see unquietcode.tools.flapi.annotations.AnnotationIntrospector
+	 */
+	public static DescriptorConfiguratorBuilder.Start create(Class<?> topBlock) {
+		checkNotNull(topBlock, "a starting block is required");
+
+		AnnotationIntrospector introspector = new AnnotationIntrospector();
+		DescriptorOutline outline = introspector.createDescriptor(topBlock);
+		DescriptorConfiguratorHelperImpl helper = new DescriptorConfiguratorHelperImpl(outline);
+
+		return DescriptorConfiguratorGenerator.create(helper);
 	}
 
 	/**
