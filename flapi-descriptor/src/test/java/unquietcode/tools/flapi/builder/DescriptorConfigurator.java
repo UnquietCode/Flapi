@@ -28,10 +28,6 @@ public class DescriptorConfigurator implements DescriptorMaker {
 				.withDocumentation("set the root package name to use for the generated classes")
 			.atMost(1)
 
-			.addMethod("setDescriptorName(String descriptorName)")
-				.withDocumentation("set the name of the top level descriptor")
-			.atMost(1)
-
 			.addMethod("setStartingMethodName(String methodName)")
 				.withDocumentation("set the name of the generator's starting method (default is 'create')")
 			.atMost(1)

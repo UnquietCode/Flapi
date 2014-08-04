@@ -30,16 +30,16 @@ public class DescriptorConfiguratorHelperImpl implements DescriptorConfiguratorH
 	}
 
 	@Override
-	public void setPackage(String packageName) {
-		outline.setPackageName(packageName);
+	public void setStartingMethodName(String methodName) {
+		if (methodName == null || methodName.trim().isEmpty()) {
+			throw new IllegalArgumentException("Name cannot be empty.");
+		}
+		outline.setCreateMethod(methodName);
 	}
 
 	@Override
-	public void setDescriptorName(String descriptorName) {
-		if (descriptorName == null || descriptorName.trim().isEmpty()) {
-			throw new IllegalArgumentException("Name cannot be empty.");
-		}
-		outline.setDescriptorName(descriptorName);
+	public void setPackage(String packageName) {
+		outline.setPackageName(packageName);
 	}
 
 	@Override
@@ -56,14 +56,6 @@ public class DescriptorConfiguratorHelperImpl implements DescriptorConfiguratorH
 			throw new IllegalArgumentException("Return type cannot be null.");
 		}
 		outline.selfBlock.setReturnType(returnType);
-	}
-
-	@Override
-	public void setStartingMethodName(String methodName) {
-		if (methodName == null || methodName.trim().isEmpty()) {
-			throw new IllegalArgumentException("Name cannot be empty.");
-		}
-		outline.setCreateMethod(methodName);
 	}
 
 	@Override

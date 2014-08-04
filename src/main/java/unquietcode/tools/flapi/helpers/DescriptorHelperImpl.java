@@ -25,6 +25,14 @@ public class DescriptorHelperImpl extends DescriptorConfiguratorHelperImpl imple
 	}
 
 	@Override
+	public void setDescriptorName(String descriptorName) {
+		if (descriptorName == null || descriptorName.trim().isEmpty()) {
+			throw new IllegalArgumentException("Name cannot be empty.");
+		}
+		outline.setDescriptorName(descriptorName);
+	}
+
+	@Override
 	public void addBlockReference(String blockName, String methodSignature, AtomicReference<MethodHelper> _helper1) {
 		BlockHelperImpl._addBlockReference(outline.selfBlock, blockName, methodSignature, _helper1);
 	}

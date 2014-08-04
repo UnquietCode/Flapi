@@ -22,8 +22,6 @@ public class AnnotationIntrospector {
 	private final Map<Class<?>, BlockOutline> blocks = new HashMap<Class<?>, BlockOutline>();
 
 	public DescriptorOutline createDescriptor(Class<?> clazz) {
-
-		// create a new descriptor and set some defaults
 		DescriptorOutline descriptor = new DescriptorOutline();
 		descriptor.setPackageName(clazz.getPackage().getName() + ".builder");
 
@@ -45,8 +43,15 @@ public class AnnotationIntrospector {
 	}
 
 	private void handleClass(BlockOutline blockOutline, Class<?> blockClass) {
+		Builder builder = blockClass.getAnnotation(Builder.class);
 		blockOutline.setHelperClass(blockClass);
-		blockOutline.setName(blockClass.getSimpleName());
+
+		// block name
+		if (builder != null && !builder.name().trim().isEmpty()) {
+			blockOutline.setName(builder.name());
+		} else {
+			blockOutline.setName(blockClass.getSimpleName());
+		}
 
 		for (Method method : blockClass.getDeclaredMethods()) {
 			String methodSignature = getMethodSignature(method);
