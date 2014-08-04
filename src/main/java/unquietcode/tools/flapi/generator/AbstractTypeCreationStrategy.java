@@ -8,14 +8,16 @@
 package unquietcode.tools.flapi.generator;
 
 import com.sun.codemodel.JClass;
-import com.sun.codemodel.JDefinedClass;
 import unquietcode.tools.flapi.graph.components.StateClass;
 
 /**
  * @author Ben Fagin
- * @version 08-06-2012
+ * @version 2014-08-03
  */
-public interface TypeCreationStrategy {
-	JDefinedClass createStrongType(GeneratorContext ctx, StateClass state);
-	JClass createWeakType(GeneratorContext ctx, StateClass state);
+public abstract class AbstractTypeCreationStrategy implements TypeCreationStrategy {
+
+	@Override
+	public JClass createWeakType(GeneratorContext ctx, StateClass state) {
+		return createStrongType(ctx, state);
+	}
 }

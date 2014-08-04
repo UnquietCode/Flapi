@@ -23,7 +23,19 @@ public class StateClass {
 	private Object blockMarker;
 	private String name;
 	private boolean isTopLevel = false;
+	private final Class<?> helperClass;
 
+	public StateClass() {
+		this(null);
+	}
+
+	public StateClass(Class<?> helperClass) {
+		this.helperClass = helperClass;
+	}
+
+	public Class<?> getHelperClass() {
+		return helperClass;
+	}
 
 	public void setName(String name) {
 		this.name = name;

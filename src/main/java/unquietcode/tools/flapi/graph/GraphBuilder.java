@@ -148,7 +148,7 @@ public class GraphBuilder {
 			return states.get(key);
 		}
 
-		StateClass state = new StateClass();
+		StateClass state = new StateClass(block.getHelperClass());
 		state.setName(block.getName());
 		states.put(key, state);
 

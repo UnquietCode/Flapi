@@ -29,6 +29,8 @@ import java.util.Map;
 public class GeneratorContext {
 	private static final SimpleDateFormat humanReadableDateFormat = new SimpleDateFormat("MMMM dd, yyyy H:mm:ss z");
 
+	// JDK 6 doesn't have a concept of 'X', so it is omitted in those cases
+	// (Probably it is time to dump support for Java 6.)
 	private static final SimpleDateFormat iso8601DateFormat; static {
 		boolean legacyVersion =
 			SourceVersion.latestSupported() == SourceVersion.RELEASE_5

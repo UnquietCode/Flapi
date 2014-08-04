@@ -25,11 +25,11 @@ public class GeneratorGenerator extends AbstractGenerator {
 	}
 
 	public JDefinedClass generate(StateClass topLevel, GeneratorOutline outline) {
-		JDefinedClass generator = GENERATOR_CLASS_STRATEGY.createType(ctx, topLevel);
-		JDefinedClass helper = HELPER_INTERFACE_STRATEGY.createType(ctx, topLevel);
+		JDefinedClass generator = GENERATOR_CLASS_STRATEGY.createStrongType(ctx, topLevel);
+		JClass helper = HELPER_INTERFACE_STRATEGY.createWeakType(ctx, topLevel);
 
 		// FLAPI-126 subclass the return type for consistency between descriptor changes
-		JDefinedClass returnType = WRAPPER_INTERFACE_STRATEGY.createType(ctx, topLevel);
+		JClass returnType = WRAPPER_INTERFACE_STRATEGY.createWeakType(ctx, topLevel);
 
 		// -- add the constructor method --
 		JMethod createMethod = generator.method(JMod.PUBLIC+JMod.STATIC, returnType, outline.methodName);

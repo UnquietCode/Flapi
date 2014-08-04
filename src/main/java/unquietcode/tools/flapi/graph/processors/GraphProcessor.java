@@ -47,7 +47,7 @@ public class GraphProcessor extends AbstractGenerator implements GenericVisitor<
 		}
 
 		// create the interface class
-		JDefinedClass iBuilder = BUILDER_INTERFACE_STRATEGY.createType(ctx, state);
+		JDefinedClass iBuilder = BUILDER_INTERFACE_STRATEGY.createStrongType(ctx, state);
 
 		for (Transition transition : state.getTransitions()) {
 
@@ -62,7 +62,7 @@ public class GraphProcessor extends AbstractGenerator implements GenericVisitor<
 			transition.accept(new TransitionVisitor.$() {
 				public void visit(LateralTransition transition) {
 					if (!transition.getStateChain().isEmpty()) {
-						JDefinedClass next = BUILDER_INTERFACE_STRATEGY.createType(ctx, transition.getSibling());
+						JClass next = BUILDER_INTERFACE_STRATEGY.createWeakType(ctx, transition.getSibling());
 						infoAnnotation.param("next", next);
 					}
 				}
@@ -73,7 +73,7 @@ public class GraphProcessor extends AbstractGenerator implements GenericVisitor<
 				JAnnotationArrayMember chain = infoAnnotation.paramArray("chain");
 
 				for (StateClass sc : transition.getStateChain()) {
-					JDefinedClass type = BUILDER_INTERFACE_STRATEGY.createType(ctx, sc);
+					JClass type = BUILDER_INTERFACE_STRATEGY.createWeakType(ctx, sc);
 					chain.param(type);
 				}
 			}
@@ -89,8 +89,11 @@ public class GraphProcessor extends AbstractGenerator implements GenericVisitor<
 				;
 			}
 
-			// add the helper method to helper interface
-			addHelperCall(transition);
+			// add the helper method to helper interface,
+			// but only if there isn't an existing helper
+			if (transition.getOwner().getHelperClass() == null) {
+				addHelperCall(transition);
+			}
 
 			// continue to the next states
 			transition.acceptForTraversal(this);
@@ -98,7 +101,7 @@ public class GraphProcessor extends AbstractGenerator implements GenericVisitor<
 	}
 
 	private void addHelperCall(Transition transition) {
-		if (ctx.helperMethods.seen(transition)) { return;}
+		if (ctx.helperMethods.seen(transition)) { return; }
 
 		// get a return value if present
 		final AtomicReference<JType> helperReturnType = new AtomicReference<JType>();
@@ -120,12 +123,12 @@ public class GraphProcessor extends AbstractGenerator implements GenericVisitor<
 
 		// add the helper method to the helper interface
 		JType helperReturnType1 = helperReturnType.get();
-		JDefinedClass iHelper = HELPER_INTERFACE_STRATEGY.createType(ctx, transition.getOwner());
+		JDefinedClass iHelper = HELPER_INTERFACE_STRATEGY.createStrongType(ctx, transition.getOwner());
 		JType methodCallType = helperReturnType1 == null ? ctx.model.VOID : helperReturnType1;
 		JMethod _method = addHelperMethod(iHelper, methodCallType, JMod.NONE, transition);
 
 		for (int i=0; i < transition.getStateChain().size(); ++i) {
-			JDefinedClass type = HELPER_INTERFACE_STRATEGY.createType(ctx, transition.getStateChain().get(i));
+			JClass type = HELPER_INTERFACE_STRATEGY.createWeakType(ctx, transition.getStateChain().get(i));
 			_method.param(ref(AtomicReference.class).narrow(type), Constants.HELPER_VALUE_NAME+(i+1));
 		}
 	}

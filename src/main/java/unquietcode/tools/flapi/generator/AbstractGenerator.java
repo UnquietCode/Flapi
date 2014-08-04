@@ -31,8 +31,8 @@ public abstract class AbstractGenerator {
 
 	// ------- type creation strategies ------- //
 
-	protected static final TypeCreationStrategy BUILDER_INTERFACE_STRATEGY = new TypeCreationStrategy() {
-		public @Override JDefinedClass createType(GeneratorContext ctx, StateClass state) {
+	protected static final TypeCreationStrategy BUILDER_INTERFACE_STRATEGY = new AbstractTypeCreationStrategy() {
+		public @Override JDefinedClass createStrongType(GeneratorContext ctx, StateClass state) {
 			String name = ctx.getGeneratedName("", "Builder", state);
 			Pair<JDefinedClass, Boolean> construction = ctx.getOrCreateInterface(state.getName(), name);
 			JDefinedClass _interface = construction.first;
@@ -46,7 +46,7 @@ public abstract class AbstractGenerator {
 			if (construction.second) {
 
 				// add @see annotation pointing back to helper
-				JDefinedClass helperClass = HELPER_INTERFACE_STRATEGY.createType(ctx, state);
+				JClass helperClass = HELPER_INTERFACE_STRATEGY.createWeakType(ctx, state);
 				_interface.javadoc().append("\n@see "+helperClass.fullName());
 			}
 
@@ -54,28 +54,47 @@ public abstract class AbstractGenerator {
 		}
 	};
 
-	protected static final class BUILDER_NARROWED_INTERFACE_STRATEGY {
-		public static JClass createType(GeneratorContext ctx, StateClass state) {
-			JClass type = BUILDER_INTERFACE_STRATEGY.createType(ctx, state);
+	protected static final TypeCreationStrategy BUILDER_NARROWED_INTERFACE_STRATEGY = new TypeCreationStrategy() {
+
+		@Override
+		public JClass createWeakType(GeneratorContext ctx, StateClass state) {
+			JDefinedClass type = BUILDER_INTERFACE_STRATEGY.createStrongType(ctx, state);
 			return type.narrow(type.typeParams()[0]);
+		}
+
+		@Override
+		public JDefinedClass createStrongType(GeneratorContext ctx, StateClass state) {
+			throw new UnsupportedOperationException("strong type not supported");
 		}
 	};
 
 	protected static final TypeCreationStrategy HELPER_INTERFACE_STRATEGY = new TypeCreationStrategy() {
-		public @Override JDefinedClass createType(GeneratorContext ctx, StateClass state) {
-			return ctx.getOrCreateInterface(state.getName(), state.getName()+"Helper").first;
+		public @Override JClass createWeakType(GeneratorContext ctx, StateClass state) {
+			if (state.getHelperClass() != null) {
+				return ctx.model.ref(state.getHelperClass());
+			} else {
+				return createStrongType(ctx, state);
+			}
+		}
+
+		public @Override JDefinedClass createStrongType(GeneratorContext ctx, StateClass state) {
+			if (state.getHelperClass() != null) {
+				return null;
+			} else {
+				return ctx.getOrCreateInterface(state.getName(), state.getName() + "Helper").first;
+			}
 		}
 	};
 
-	protected static final TypeCreationStrategy GENERATOR_CLASS_STRATEGY = new TypeCreationStrategy() {
-		public JDefinedClass createType(GeneratorContext ctx, StateClass state) {
+	protected static final TypeCreationStrategy GENERATOR_CLASS_STRATEGY = new AbstractTypeCreationStrategy() {
+		public JDefinedClass createStrongType(GeneratorContext ctx, StateClass state) {
 			String name = state.getName()+"Generator";
 			return ctx.getOrCreateClass(state.getName(), name).first;
 		}
 	};
 
-	public static final TypeCreationStrategy WRAPPER_INTERFACE_STRATEGY = new TypeCreationStrategy() {
-		public @Override JDefinedClass createType(GeneratorContext ctx, StateClass state) {
+	public static final TypeCreationStrategy WRAPPER_INTERFACE_STRATEGY = new AbstractTypeCreationStrategy() {
+		public @Override JDefinedClass createStrongType(GeneratorContext ctx, StateClass state) {
 			String name = state.getName()+"Builder";
 			JDefinedClass parent = ctx.getOrCreateInterface(state.getName(), name).first;
 			JDefinedClass innerClass;
@@ -86,7 +105,7 @@ public abstract class AbstractGenerator {
 				return ex.getExistingClass();
 			}
 
-			JDefinedClass builder = BUILDER_INTERFACE_STRATEGY.createType(ctx, state);
+			JClass builder = BUILDER_INTERFACE_STRATEGY.createWeakType(ctx, state);
 			innerClass._extends(builder.narrow(Void.class));
 			return innerClass;
 		}

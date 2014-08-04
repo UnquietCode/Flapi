@@ -15,7 +15,8 @@ import java.util.*;
  */
 public class BlockOutline implements Outline {
 	private String name;
-	private String returnType = null;
+	private String returnType;
+	private Class<?> helperClass;
 
 	// nested blocks
 	private final List<BlockOutline> blocks = new ArrayList<BlockOutline>();
@@ -28,7 +29,13 @@ public class BlockOutline implements Outline {
 
 	// ------------------------------ //
 
-	public BlockOutline() { }
+	public Class<?> getHelperClass() {
+		return helperClass;
+	}
+
+	public void setHelperClass(Class<?> helperClass) {
+		this.helperClass = helperClass;
+	}
 
 	public String getReturnType() {
 		return constructor != null ? constructor.getReturnType() : returnType;
