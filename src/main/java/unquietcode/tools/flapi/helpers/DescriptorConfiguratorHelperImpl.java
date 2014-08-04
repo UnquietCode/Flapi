@@ -10,7 +10,7 @@ import unquietcode.tools.flapi.Descriptor;
 import unquietcode.tools.flapi.configurator.DescriptorConfigurator.DescriptorConfiguratorHelper;
 import unquietcode.tools.flapi.outline.DescriptorOutline;
 
-import java.util.Objects;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * @author Ben Fagin
@@ -20,7 +20,7 @@ public class DescriptorConfiguratorHelperImpl implements DescriptorConfiguratorH
 	final DescriptorOutline outline;
 
 	public DescriptorConfiguratorHelperImpl(DescriptorOutline outline) {
-		this.outline = Objects.requireNonNull(outline);
+		this.outline = checkNotNull(outline);
 	}
 
 	@Override
