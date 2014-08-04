@@ -26,7 +26,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public class MethodHelperImpl implements MethodHelper {
 	final MethodOutline method;
 
-	MethodHelperImpl(MethodOutline method) {
+	public MethodHelperImpl(MethodOutline method) {
 		this.method = method;
 	}
 
@@ -113,8 +113,8 @@ public class MethodHelperImpl implements MethodHelper {
 			throw new DescriptorBuilderException("must have atLeast <= then atMost");
 		}
 
-		method.setMaxOccurrences(atLeast);
-		method.setMinOccurrences(atMost);
+		method.setMinOccurrences(atLeast);
+		method.setMaxOccurrences(atMost);
 	}
 
 	@Override
