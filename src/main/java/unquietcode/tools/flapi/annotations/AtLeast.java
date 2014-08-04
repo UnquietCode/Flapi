@@ -11,6 +11,7 @@ import java.lang.annotation.Target;
  * @author Ben Fagin
  * @version 2014-08-03
  */
+@MethodQuantifier
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface AtLeast {

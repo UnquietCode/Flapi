@@ -26,4 +26,15 @@ public class AnnotationBuilder_T {
 		@Any Integer one();
 		@Last String two();
 	}
+
+	@Test(expected=DescriptorBuilderException.class)
+	public void testThatOnlyOneAnnotationIsPermittedPerMethod() {
+		Flapi.create(MultiHelper.class).build();
+	}
+
+	public interface MultiHelper {
+		@Last
+		@AtMost(1)
+		void done();
+	}
 }

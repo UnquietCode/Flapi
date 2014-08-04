@@ -10,6 +10,7 @@ import unquietcode.tools.flapi.outline.DescriptorOutline;
 import unquietcode.tools.flapi.outline.MethodOutline;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Method;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
@@ -70,7 +71,15 @@ public class AnnotationIntrospector {
 		final Exactly exactly = method.getAnnotation(Exactly.class);
 		final Last last = method.getAnnotation(Last.class);
 
-		// TODO validate that the provided permutation is not conflicting
+		try {
+			exactlyOneAnnotatedElement(MethodQuantifier.class, method.getAnnotations());
+		} catch (IllegalStateException ex) {
+			throw new DescriptorBuilderException(
+				"Only one annotation from " +
+				"{@Any, @AtLeast, @AtMost, @Between, @Exactly, @Last}" +
+				" is allowed per method."
+			);
+		}
 
 		final MethodHelperImpl helper = new MethodHelperImpl(methodOutline);
 		final Set<Annotation> annotations = new HashSet<Annotation>(Arrays.asList(method.getAnnotations()));
@@ -224,5 +233,49 @@ public class AnnotationIntrospector {
 		}
 
 		return null;
+	}
+
+	private static <T extends Annotation> Annotation exactlyOneAnnotatedElement(Class<T> marker, Annotation...elements) {
+		AnnotatedElement[] annotatedElements = new AnnotatedElement[elements.length];
+
+		for (int i=0; i < elements.length; ++i) {
+			annotatedElements[i] = elements[i].annotationType();
+		}
+
+		AnnotatedElement annotatedElement = exactlyOneAnnotatedElement(marker, annotatedElements);
+
+		for (Annotation element : elements) {
+			if (element.annotationType() == annotatedElement) {
+				return element;
+			}
+		}
+
+		throw new IllegalStateException("expected to find annotation by type");
+	}
+
+	private static <T extends Annotation, Z extends AnnotatedElement> Z exactlyOneAnnotatedElement(Class<T> marker, Z...elements) {
+		List<Z> annotatedElements = findAnnotatedElements(marker, elements);
+
+		if (annotatedElements.size() != 1) {
+			throw new IllegalStateException("expected exactly one non-null value");
+		}
+
+		return annotatedElements.get(0);
+	}
+
+	private static <T extends Annotation, Z extends AnnotatedElement> List<Z> findAnnotatedElements(Class<T> marker, Z...elements) {
+		List<Z> annotated = new ArrayList<Z>();
+
+		for (Z element : elements) {
+			if (element != null) {
+				T annotation = element.getAnnotation(marker);
+
+				if (annotation != null) {
+					annotated.add(element);
+				}
+			}
+		}
+
+		return annotated;
 	}
 }
