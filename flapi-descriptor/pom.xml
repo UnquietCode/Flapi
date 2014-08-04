@@ -18,7 +18,10 @@
 	<name>Flapi's Descriptor Builder</name>
 
 	<properties>
-		<flapi.descriptor.class>unquietcode.tools.flapi.builder.MainDescriptor</flapi.descriptor.class>
+		<flapi.descriptor.classes>
+			unquietcode.tools.flapi.builder.MainDescriptor,
+			unquietcode.tools.flapi.builder.DescriptorConfigurator
+		</flapi.descriptor.classes>
 		<flapi.includeRuntime>false</flapi.includeRuntime>
 		<flapi.version>${project.parent.version}</flapi.version>
 	</properties>
