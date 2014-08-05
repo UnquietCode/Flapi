@@ -52,7 +52,7 @@ repository and dependency in your POM file:
 <dependency>
   <groupId>unquietcode.tools.flapi</groupId>
   <artifactId>flapi</artifactId>
-  <version>0.5.1</version>
+  <version>0.5.2</version>
   <scope>test</scope>
 </dependency>
 ```
@@ -87,7 +87,7 @@ Google Group for asking questions and connecting with other developers using Fla
 Version 0.5 has been released, and includes a few new features and bug fixes.
 See the [Release Notes](https://github.com/UnquietCode/Flapi/wiki/Version-0.5) for the full details.
 
-The latest patch version is `0.5.1`.
+The latest patch version is `0.5.2`.
 
 ### Problems?
 Use the [issue tracker](https://github.com/UnquietCode/Flapi/issues) to report problems encountered or new
