@@ -33,6 +33,22 @@ public class DescriptorHelperImpl extends DescriptorConfiguratorHelperImpl imple
 	}
 
 	@Override
+	public void setReturnType(Class returnType) {
+		if (returnType == null) {
+			throw new IllegalArgumentException("Return type cannot be null.");
+		}
+		setReturnType(returnType.getName());
+	}
+
+	@Override
+	public void setReturnType(String returnType) {
+		if (returnType == null) {
+			throw new IllegalArgumentException("Return type cannot be null.");
+		}
+		outline.setReturnType(returnType);
+	}
+
+	@Override
 	public void addBlockReference(String blockName, String methodSignature, AtomicReference<MethodHelper> _helper1) {
 		BlockHelperImpl._addBlockReference(outline, blockName, methodSignature, _helper1);
 	}

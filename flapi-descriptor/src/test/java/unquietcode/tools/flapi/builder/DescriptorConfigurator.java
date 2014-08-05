@@ -12,7 +12,6 @@ import unquietcode.tools.flapi.Flapi;
  * @version 08-03-2014
  */
 public class DescriptorConfigurator implements DescriptorMaker {
-	private static final int RETURN_TYPE_GROUP = 2;
 
 	@Override
 	public Descriptor descriptor() {
@@ -31,14 +30,6 @@ public class DescriptorConfigurator implements DescriptorMaker {
 			.addMethod("setStartingMethodName(String methodName)")
 				.withDocumentation("set the name of the generator's starting method (default is 'create')")
 			.atMost(1)
-
-			.addMethod("setReturnType(Class returnType)")
-				.withDocumentation("set the return type for the top level descriptor (default is void)")
-			.atMost(1, RETURN_TYPE_GROUP)
-
-			.addMethod("setReturnType(String returnType)")
-				.withDocumentation("set the return type for the top level descriptor (default is void)")
-			.atMost(1, RETURN_TYPE_GROUP)
 
 			.addMethod("enableCondensedClassNames()")
 				.withDocumentation()

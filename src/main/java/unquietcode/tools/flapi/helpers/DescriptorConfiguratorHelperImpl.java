@@ -43,22 +43,6 @@ public class DescriptorConfiguratorHelperImpl implements DescriptorConfiguratorH
 	}
 
 	@Override
-	public void setReturnType(Class returnType) {
-		if (returnType == null) {
-			throw new IllegalArgumentException("Return type cannot be null.");
-		}
-		setReturnType(returnType.getName());
-	}
-
-	@Override
-	public void setReturnType(String returnType) {
-		if (returnType == null) {
-			throw new IllegalArgumentException("Return type cannot be null.");
-		}
-		outline.setReturnType(returnType);
-	}
-
-	@Override
 	public void enableCondensedClassNames() {
 		outline.enableCondensedNames(true);
 	}

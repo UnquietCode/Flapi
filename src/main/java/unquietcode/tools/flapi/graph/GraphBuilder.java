@@ -13,8 +13,6 @@ import unquietcode.tools.flapi.outline.*;
 
 import java.util.*;
 
-import static com.google.common.base.Preconditions.checkState;
-
 
 /**
  * @author Ben Fagin
@@ -24,7 +22,6 @@ public class GraphBuilder {
 	private Map<String, StateClass> blocks = new HashMap<String, StateClass>();
 	private Map<String, StateClass> states = new HashMap<String, StateClass>();
 	private Map<BlockReference, BlockOutline> referenceMap = new IdentityHashMap<BlockReference, BlockOutline>();
-	private DescriptorOutline descriptor;
 
 	public StateClass buildGraph(DescriptorOutline descriptor) {
 		// resolve block references
@@ -32,7 +29,6 @@ public class GraphBuilder {
 		findAllBlocks(blocks, descriptor);
 		initializeReferenceMap(blocks, referenceMap, descriptor);
 
-		this.descriptor = descriptor;
 		return convertBlock(descriptor);
 	}
 
@@ -176,7 +172,6 @@ public class GraphBuilder {
 				terminal.setReturnType(method.getReturnType());
 				transition = terminal;
 			} else if (block.getReturnType() != null) {
-				checkState(block == descriptor, "only the top-most block can have a return type");
 				TerminalTransition terminal = new TerminalTransition();
 				terminal.setReturnType(block.getReturnType());
 				transition = terminal;
