@@ -44,12 +44,12 @@ public class AnnotationIntrospector {
 	}
 
 	private void handleClass(BlockOutline blockOutline, Class<?> blockClass) {
-		Builder builder = blockClass.getAnnotation(Builder.class);
+		Block block = blockClass.getAnnotation(Block.class);
 		blockOutline.setHelperClass(blockClass);
 
 		// block name
-		if (builder != null && !builder.name().trim().isEmpty()) {
-			blockOutline.setName(builder.name());
+		if (block != null && !block.name().trim().isEmpty()) {
+			blockOutline.setName(block.name());
 		} else {
 			blockOutline.setName(blockClass.getSimpleName());
 		}
