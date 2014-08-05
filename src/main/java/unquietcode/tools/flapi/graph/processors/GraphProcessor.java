@@ -49,6 +49,11 @@ public class GraphProcessor extends AbstractGenerator implements GenericVisitor<
 		// create the interface class
 		JDefinedClass iBuilder = BUILDER_INTERFACE_STRATEGY.createStrongType(ctx, state);
 
+		// create the wrapper interface
+		if (state.isTopLevel()) {
+			WRAPPER_INTERFACE_STRATEGY.createWeakType(ctx, state);
+		}
+
 		for (Transition transition : state.getTransitions()) {
 
 			// add methods to interface
