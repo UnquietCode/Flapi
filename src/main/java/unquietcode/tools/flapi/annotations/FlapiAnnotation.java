@@ -4,7 +4,6 @@
 
  Flapi is free and open software provided without a license.
  ********************************************************************/
-
 package unquietcode.tools.flapi.annotations;
 
 import java.lang.annotation.ElementType;
@@ -13,16 +12,13 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Marks a block type with additional information
- * which can be used to customize the associated
- * generated builder.
+ * Marker annotation for Flapi annotations.
  *
  * @author Ben Fagin
- * @version 2014-08-03
+ * @version 2014-08-09
  */
-@FlapiAnnotation
-@Target(ElementType.TYPE)
+@Target(ElementType.ANNOTATION_TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Block {
-	String name() default "";
+/*package*/ @interface FlapiAnnotation {
+	// nothing for now
 }

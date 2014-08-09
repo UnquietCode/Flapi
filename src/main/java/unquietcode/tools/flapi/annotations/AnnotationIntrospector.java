@@ -12,7 +12,10 @@ import unquietcode.tools.flapi.outline.MethodOutline;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Method;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static com.google.common.base.Preconditions.checkState;
@@ -84,12 +87,10 @@ public class AnnotationIntrospector {
 		}
 
 		final MethodHelperImpl helper = new MethodHelperImpl(methodOutline);
-		final Set<Annotation> annotations = new HashSet<Annotation>(Arrays.asList(method.getAnnotations()));
 
 		// @After
 		if (after != null) {
 			helper.after(after.value());
-			annotations.remove(after);
 		}
 
 		// @Any
@@ -99,14 +100,11 @@ public class AnnotationIntrospector {
 			} else {
 				helper.any(any.group());
 			}
-
-			annotations.remove(any);
 		}
 
 		// @AtLeast
 		if (atLeast != null) {
 			helper.atLeast(atLeast.value());
-			annotations.remove(atLeast);
 		}
 
 		// @AtMost
@@ -116,20 +114,16 @@ public class AnnotationIntrospector {
 			} else {
 				helper.atMost(atMost.value(), atMost.group());
 			}
-
-			annotations.remove(atMost);
 		}
 
 		// @Between
 		if (between != null) {
 			helper.between(between.minInc(), between.maxInc());
-			annotations.remove(between);
 		}
 
 		// @Exactly
 		if (exactly != null) {
 			helper.exactly(exactly.value());
-			annotations.remove(exactly);
 		}
 
 		// @Last
@@ -141,8 +135,6 @@ public class AnnotationIntrospector {
 			} else {
 				helper.last(returnType);
 			}
-
-			annotations.remove(last);
 		}
 
 		// ensure that non-terminal methods aren't returning anything
@@ -166,11 +158,15 @@ public class AnnotationIntrospector {
 			}
 
 			docHelper.finish();
-			annotations.remove(documented);
 		}
 
 		// other annotations
-		for (Annotation annotation : annotations) {
+		for (Annotation annotation : method.getAnnotations()) {
+
+			// skip over Flapi's own annotation types
+			if (annotation.annotationType().getAnnotation(FlapiAnnotation.class) != null) {
+				continue;
+			}
 			handleMethodAnnotation(methodOutline, annotation);
 		}
 

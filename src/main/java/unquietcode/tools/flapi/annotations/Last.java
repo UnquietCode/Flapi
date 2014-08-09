@@ -14,6 +14,7 @@ import java.lang.annotation.Target;
  * @author Ben Fagin
  * @version 2014-08-03
  */
+@FlapiAnnotation
 @MethodQuantifier
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)

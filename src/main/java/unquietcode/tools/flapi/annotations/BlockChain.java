@@ -24,6 +24,7 @@ import java.lang.annotation.Target;
  * @author Ben Fagin
  * @version 2014-08-03
  */
+@FlapiAnnotation
 @Target(ElementType.PARAMETER)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface BlockChain {
