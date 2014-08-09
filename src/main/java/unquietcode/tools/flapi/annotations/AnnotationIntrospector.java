@@ -15,6 +15,8 @@ import java.lang.reflect.Method;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 
+import static com.google.common.base.Preconditions.checkState;
+
 /**
  * @author Ben Fagin
  * @version 2014-08-03
@@ -217,7 +219,25 @@ public class AnnotationIntrospector {
 				signature.append(", ");
 			}
 
-			signature.append(parameterType).append(" p").append(i);
+			final String typeName;
+
+			// varargs
+			if (i == parameterTypes.length-1 && method.isVarArgs()) {
+				checkState(parameterType.isArray());
+				typeName = parameterType.getComponentType().getName()+"...";
+			}
+
+			// arrays
+			else if (parameterType.isArray()) {
+				typeName = parameterType.getComponentType().getName()+"[]";
+			}
+
+			// normal
+			else {
+				typeName = parameterType.getName();
+			}
+
+			signature.append(typeName).append(" p").append(i);
 		}
 
 		signature.append(")");
