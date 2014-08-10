@@ -1,5 +1,7 @@
 package unquietcode.tools.flapi.annotations;
 
+import com.google.common.base.Function;
+import com.google.common.base.Functions;
 import unquietcode.tools.flapi.Constants;
 import unquietcode.tools.flapi.DescriptorBuilderException;
 import unquietcode.tools.flapi.helpers.AnnotationsHelperImpl;
@@ -60,6 +62,22 @@ public class AnnotationIntrospector {
 		}
 
 		for (Method method : blockClass.getDeclaredMethods()) {
+			List<Annotation> methodQuantifiers = findAnnotatedElements(MethodQuantifier.class, method.getAnnotations());
+
+			// skip methods which are not annotated
+			if (methodQuantifiers.size() == 0) {
+				continue;
+			}
+
+			// only allow one quantifier annotation per method
+			if (methodQuantifiers.size() > 1) {
+				throw new DescriptorBuilderException(
+					"Only one annotation from " +
+					"{@Any, @AtLeast, @AtMost, @Between, @Exactly, @Last}" +
+					" is allowed per method."
+				);
+			}
+
 			String methodSignature = getMethodSignature(method);
 			MethodOutline methodOutline = blockOutline.addMethod(methodSignature);
 			handleMethod(methodOutline, method);
@@ -75,16 +93,6 @@ public class AnnotationIntrospector {
 		final Documented documented = method.getAnnotation(Documented.class);
 		final Exactly exactly = method.getAnnotation(Exactly.class);
 		final Last last = method.getAnnotation(Last.class);
-
-		try {
-			exactlyOneAnnotatedElement(MethodQuantifier.class, method.getAnnotations());
-		} catch (IllegalStateException ex) {
-			throw new DescriptorBuilderException(
-				"Only one annotation from " +
-				"{@Any, @AtLeast, @AtMost, @Between, @Exactly, @Last}" +
-				" is allowed per method."
-			);
-		}
 
 		final MethodHelperImpl helper = new MethodHelperImpl(methodOutline);
 
@@ -251,44 +259,45 @@ public class AnnotationIntrospector {
 		return null;
 	}
 
-	private static <T extends Annotation> Annotation exactlyOneAnnotatedElement(Class<T> marker, Annotation...elements) {
-		AnnotatedElement[] annotatedElements = new AnnotatedElement[elements.length];
-
-		for (int i=0; i < elements.length; ++i) {
-			annotatedElements[i] = elements[i].annotationType();
-		}
-
-		AnnotatedElement annotatedElement = exactlyOneAnnotatedElement(marker, annotatedElements);
-
-		for (Annotation element : elements) {
-			if (element.annotationType() == annotatedElement) {
-				return element;
+	private static <
+		_MarkerAnnotation extends Annotation
+	>
+	List<Annotation> findAnnotatedElements(
+		Class<_MarkerAnnotation> marker, Annotation...elements
+	){
+		return findAnnotatedElements(marker, elements, new Function<Annotation, Class<? extends Annotation>>() {
+			public Class<? extends Annotation> apply(Annotation input) {
+				return input.annotationType();
 			}
-		}
-
-		throw new IllegalStateException("expected to find annotation by type");
+		});
 	}
 
-	private static <T extends Annotation, Z extends AnnotatedElement> Z exactlyOneAnnotatedElement(Class<T> marker, Z...elements) {
-		List<Z> annotatedElements = findAnnotatedElements(marker, elements);
-
-		if (annotatedElements.size() != 1) {
-			throw new IllegalStateException("expected exactly one non-null value");
-		}
-
-		return annotatedElements.get(0);
+	private static <
+		_MarkerAnnotation extends Annotation,
+		_AnnotatedElement extends AnnotatedElement
+	>
+	List<_AnnotatedElement> findAnnotatedElements(
+		Class<_MarkerAnnotation> marker, _AnnotatedElement...elements
+	){
+		return findAnnotatedElements(marker, elements, Functions.<_AnnotatedElement>identity());
 	}
 
-	private static <T extends Annotation, Z extends AnnotatedElement> List<Z> findAnnotatedElements(Class<T> marker, Z...elements) {
-		List<Z> annotated = new ArrayList<Z>();
+	private static <
+		_MarkerAnnotation extends Annotation,
+		_AnnotatedElement extends AnnotatedElement,
+		_BaseElement
+	>
+	List<_BaseElement> findAnnotatedElements(
+		Class<_MarkerAnnotation> marker, _BaseElement[] elements, Function<_BaseElement, _AnnotatedElement> function
+	){
+		List<_BaseElement> annotated = new ArrayList<_BaseElement>();
 
-		for (Z element : elements) {
-			if (element != null) {
-				T annotation = element.getAnnotation(marker);
+		for (_BaseElement element : elements) {
+			_AnnotatedElement annotatedElement = function.apply(element);
+			_MarkerAnnotation annotation = annotatedElement.getAnnotation(marker);
 
-				if (annotation != null) {
-					annotated.add(element);
-				}
+			if (annotation != null) {
+				annotated.add(element);
 			}
 		}
 
