@@ -30,6 +30,7 @@ public class GeneratorGenerator extends AbstractGenerator {
 
 		// FLAPI-126 subclass the return type for consistency between descriptor changes
 		JClass returnType = WRAPPER_INTERFACE_STRATEGY.createWeakType(ctx, topLevel);
+		returnType = returnType.narrow(Void.class);
 
 		// -- add the constructor method --
 		JMethod createMethod = generator.method(JMod.PUBLIC+JMod.STATIC, returnType, outline.methodName);

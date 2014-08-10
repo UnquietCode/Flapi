@@ -31,7 +31,7 @@ public abstract class AbstractGenerator {
 
 	// ------- type creation strategies ------- //
 
-	protected static final TypeCreationStrategy BUILDER_INTERFACE_STRATEGY = new AbstractTypeCreationStrategy() {
+	protected static final TypeCreationStrategy BUILDER_INTERFACE_STRATEGY = new DefaultTypeCreationStrategy() {
 		public @Override JDefinedClass createStrongType(GeneratorContext ctx, StateClass state) {
 			String name = ctx.getGeneratedName("", "Builder", state);
 			Pair<JDefinedClass, Boolean> construction = ctx.getOrCreateInterface(state.getName(), name);
@@ -44,6 +44,11 @@ public abstract class AbstractGenerator {
 
 			// if newly constructed
 			if (construction.second) {
+
+				// create the wrapper interface
+				if (state.isTopLevel()) {
+					WRAPPER_INTERFACE_STRATEGY.createWeakType(ctx, state);
+				}
 
 				// add @see annotation pointing back to helper
 				JClass helperClass = HELPER_INTERFACE_STRATEGY.createWeakType(ctx, state);
@@ -68,6 +73,37 @@ public abstract class AbstractGenerator {
 		}
 	};
 
+	protected static final TypeCreationStrategy BUILDER_OR_WRAPPER_INTERFACE_STRATEGY = new DefaultTypeCreationStrategy() {
+
+		@Override
+		public JDefinedClass createStrongType(GeneratorContext ctx, StateClass state) {
+			if (state.isTopLevel()) {
+				return WRAPPER_INTERFACE_STRATEGY.createStrongType(ctx, state);
+			} else {
+				return BUILDER_INTERFACE_STRATEGY.createStrongType(ctx, state);
+			}
+		}
+	};
+
+	protected static final TypeCreationStrategy BUILDER_OR_WRAPPER_NARROWED_INTERFACE_STRATEGY = new TypeCreationStrategy() {
+
+		@Override
+		public JClass createWeakType(GeneratorContext ctx, StateClass state) {
+			if (state.isTopLevel()) {
+				JClass builder = BUILDER_NARROWED_INTERFACE_STRATEGY.createWeakType(ctx, state);
+				JClass wrapper = WRAPPER_INTERFACE_STRATEGY.createWeakType(ctx, state);
+				return wrapper.narrow(builder.getTypeParameters().get(0));
+			} else {
+				return BUILDER_NARROWED_INTERFACE_STRATEGY.createWeakType(ctx, state);
+			}
+		}
+
+		@Override
+		public JDefinedClass createStrongType(GeneratorContext ctx, StateClass state) {
+			throw new UnsupportedOperationException("nope");
+		}
+	};
+
 	protected static final TypeCreationStrategy HELPER_INTERFACE_STRATEGY = new TypeCreationStrategy() {
 		public @Override JClass createWeakType(GeneratorContext ctx, StateClass state) {
 			if (state.getHelperClass() != null) {
@@ -86,48 +122,32 @@ public abstract class AbstractGenerator {
 		}
 	};
 
-	protected static final TypeCreationStrategy GENERATOR_CLASS_STRATEGY = new AbstractTypeCreationStrategy() {
+	protected static final TypeCreationStrategy GENERATOR_CLASS_STRATEGY = new DefaultTypeCreationStrategy() {
 		public JDefinedClass createStrongType(GeneratorContext ctx, StateClass state) {
 			String name = state.getName()+"Generator";
 			return ctx.getOrCreateClass(state.getName(), name).first;
 		}
 	};
 
-	public static final TypeCreationStrategy WRAPPER_INTERFACE_STRATEGY = new AbstractTypeCreationStrategy() {
+	public static final TypeCreationStrategy WRAPPER_INTERFACE_STRATEGY = new DefaultTypeCreationStrategy() {
 		public @Override JDefinedClass createStrongType(GeneratorContext ctx, StateClass state) {
 			String name = state.getName()+"Builder";
 			JDefinedClass parent = ctx.getOrCreateInterface(state.getName(), name).first;
-			JDefinedClass innerClass;
+			JDefinedClass startClass;
 
 			try {
-				innerClass = parent._interface("Start");
+				startClass = parent._interface("Start");
 			} catch (JClassAlreadyExistsException ex) {
 				return ex.getExistingClass();
 			}
 
+			JTypeVar startReturnType = startClass.generify(Constants.RETURN_TYPE_NAME);
 			JClass builder = BUILDER_INTERFACE_STRATEGY.createWeakType(ctx, state);
-			innerClass._extends(builder.narrow(Void.class));
-			return innerClass;
+			startClass = startClass._extends(builder.narrow(startReturnType));
+
+			return startClass;
 		}
 	};
-
-//	public static final TypeCreationStrategy NULL_STRATEGY = new TypeCreationStrategy() {
-//		public @Override JDefinedClass createType(GeneratorContext ctx, StateClass state) {
-//			return null;
-//		}
-//	};
-
-	// -------------------------------- //
-
-//	public static JAnnotationUse findAnnotation(JMethod method, JClass type) {
-//		for (JAnnotationUse annotationUse : method.annotations()) {
-//			if (annotationUse.getAnnotationClass().compareTo(type) == 0) {
-//				return annotationUse;
-//			}
-//		}
-//
-//		return null;
-//	}
 
 	protected static DescriptorBuilderException reportInternalError(String msg) throws DescriptorBuilderException {
 		msg += " (this is an internal error)";

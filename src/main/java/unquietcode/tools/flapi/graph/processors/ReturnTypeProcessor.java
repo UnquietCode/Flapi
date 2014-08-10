@@ -35,18 +35,18 @@ public class ReturnTypeProcessor extends AbstractGenerator {
 		transition.accept(new TransitionVisitor.$() {
 			@Override
 			public void visit(AscendingTransition transition) {
-				JClass sc = BUILDER_NARROWED_INTERFACE_STRATEGY.createWeakType(ctx, transition.getOwner());
+				JClass sc = BUILDER_OR_WRAPPER_NARROWED_INTERFACE_STRATEGY.createWeakType(ctx, transition.getOwner());
 				initialType.set(sc.getTypeParameters().get(0));
 			}
 
 			@Override
 			public void visit(LateralTransition transition) {
-				initialType.set(BUILDER_NARROWED_INTERFACE_STRATEGY.createWeakType(ctx, transition.getSibling()));
+				initialType.set(BUILDER_OR_WRAPPER_NARROWED_INTERFACE_STRATEGY.createWeakType(ctx, transition.getSibling()));
 			}
 
 			@Override
 			public void visit(RecursiveTransition transition) {
-				initialType.set(BUILDER_NARROWED_INTERFACE_STRATEGY.createWeakType(ctx, transition.getSelf()));
+				initialType.set(BUILDER_OR_WRAPPER_NARROWED_INTERFACE_STRATEGY.createWeakType(ctx, transition.getSelf()));
 			}
 
 			@Override
@@ -68,7 +68,7 @@ public class ReturnTypeProcessor extends AbstractGenerator {
 		
 		for (int i = sequentialStates.size()-1; i >= 0; --i) {
 			StateClass sequentialState = sequentialStates.get(i);
-			JClass targetBuilder = BUILDER_INTERFACE_STRATEGY.createWeakType(ctx, sequentialState);
+			JClass targetBuilder = BUILDER_OR_WRAPPER_INTERFACE_STRATEGY.createWeakType(ctx, sequentialState);
 			returnType = targetBuilder.narrow(returnType);
 		}
 

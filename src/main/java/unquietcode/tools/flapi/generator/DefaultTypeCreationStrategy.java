@@ -14,10 +14,10 @@ import unquietcode.tools.flapi.graph.components.StateClass;
  * @author Ben Fagin
  * @version 2014-08-03
  */
-public abstract class AbstractTypeCreationStrategy implements TypeCreationStrategy {
+public abstract class DefaultTypeCreationStrategy implements TypeCreationStrategy {
 
 	@Override
-	public JClass createWeakType(GeneratorContext ctx, StateClass state) {
+	public final JClass createWeakType(GeneratorContext ctx, StateClass state) {
 		return createStrongType(ctx, state);
 	}
 }
