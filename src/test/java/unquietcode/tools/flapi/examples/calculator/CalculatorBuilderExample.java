@@ -18,6 +18,14 @@ import unquietcode.tools.flapi.examples.calculator.builder.Calculator.Calculator
 import java.math.BigInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
+import static org.junit.Assert.assertEquals;
+
+//import unquietcode.tools.flapi.examples.calculator.builder.Calculation.CalculationBuilder;
+//import unquietcode.tools.flapi.examples.calculator.builder.Calculation.CalculationBuilder_2abs_4f_2divide_4f_2minus_4f_2mod_4f_2plus_4f_2power_4f_2times_4f;
+//import unquietcode.tools.flapi.examples.calculator.builder.Calculator.CalculatorBuilder;
+//import unquietcode.tools.flapi.examples.calculator.builder.Calculator.CalculatorGenerator;
+//
+
 /**
  * @author Ben Fagin
  * @version 05-11-2012
@@ -26,22 +34,9 @@ public class CalculatorBuilderExample implements DescriptorMaker {
 
 	@Override
 	public Descriptor descriptor() {
-		return Flapi.builder()
-			.setDescriptorName("Calculator")
+		return Flapi.create(Calculator.class)
 			.setPackage("unquietcode.tools.flapi.examples.calculator.builder")
 			.setStartingMethodName("begin")
-
-			.startBlock("Calculation", "$(int startingValue)").last()
-				.addMethod("plus(int value)").any()
-				.addMethod("minus(int value)").any()
-				.addMethod("times(int value)").any()
-				.addMethod("divide(int value)").any()
-				.addMethod("power(int value)").any()
-				.addMethod("mod(int value)").any()
-				.addMethod("abs()").any()
-
-				.addMethod("equals()").last(Result.class)
-			.endBlock()
 		.build();
 	}
 
@@ -57,24 +52,23 @@ public class CalculatorBuilderExample implements DescriptorMaker {
 
 		BigInteger result = _result.get();
 		System.out.println(result);
+		assertEquals(BigInteger.valueOf(16), result);
 	}
 
 	// ------- - - ------- -------- -  --     -- - -   ---- - -   -   -----------
 
 	public static class Result extends AtomicReference<BigInteger> { }
 
-	static class Calculator {
-		static CalculationBuilder<AtomicReference<BigInteger>> begin(int startingValue) {
-			CalculatorBuilder.$ result = CalculatorGenerator.begin(new CalculatorHelperImpl());
-			CalculationBuilder builder = result.$(startingValue);
-
-			return builder;
-		}
+	static CalculationBuilder.Start<Void> begin(int startingValue) {
+		CalculatorBuilder.Start<Void> begin = CalculatorGenerator.begin(new CalculatorHelperImpl());
+		CalculationBuilder.Start<Void> start = begin.$(startingValue);
+		return start;
 	}
 
 	@Test
 	public void cleanedUpUsage() {
-		AtomicReference result = Calculator.begin(0)
+		AtomicReference<BigInteger> result
+		= begin(0)
 			.plus(1)
 			.plus(1)
 			.power(5)

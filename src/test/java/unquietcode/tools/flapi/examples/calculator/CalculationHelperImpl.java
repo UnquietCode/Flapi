@@ -7,15 +7,13 @@
 
 package unquietcode.tools.flapi.examples.calculator;
 
-import unquietcode.tools.flapi.examples.calculator.builder.Calculation.CalculationHelper;
-
 import java.math.BigInteger;
 
 /**
  * @author Ben Fagin
  * @version 05-12-2012
  */
-public class CalculationHelperImpl implements CalculationHelper {
+public class CalculationHelperImpl implements Calculation {
 	private final CalculatorBuilderExample.Result _value;
 
 	public CalculationHelperImpl(CalculatorBuilderExample.Result value) {
