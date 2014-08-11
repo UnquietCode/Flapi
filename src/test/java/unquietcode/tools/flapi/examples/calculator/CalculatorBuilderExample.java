@@ -20,11 +20,6 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import static org.junit.Assert.assertEquals;
 
-//import unquietcode.tools.flapi.examples.calculator.builder.Calculation.CalculationBuilder;
-//import unquietcode.tools.flapi.examples.calculator.builder.Calculation.CalculationBuilder_2abs_4f_2divide_4f_2minus_4f_2mod_4f_2plus_4f_2power_4f_2times_4f;
-//import unquietcode.tools.flapi.examples.calculator.builder.Calculator.CalculatorBuilder;
-//import unquietcode.tools.flapi.examples.calculator.builder.Calculator.CalculatorGenerator;
-//
 
 /**
  * @author Ben Fagin
