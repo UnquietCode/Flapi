@@ -179,17 +179,32 @@ public class AnnotationIntrospector {
 		}
 
 		// block chaining
+		boolean weAreAtTheEnd = false;
+
 		for (int i=0; i < method.getParameterTypes().length; ++i) {
 			Class<?> parameterType = method.getParameterTypes()[i];
 			BlockChain blockChain = getParameterAnnotation(method, i, BlockChain.class);
 
 			if (blockChain != null) {
+				weAreAtTheEnd = true;
+
+				// check type
 				if (parameterType != AtomicReference.class) {
 					throw new DescriptorBuilderException("@BlockChain parameters must be of type AtomicReference");
 				}
 
 				BlockOutline blockOutline = handleClass(blockChain.value());
 				methodOutline.getBlockChain().add(blockOutline);
+			}
+
+			else {
+
+				// We can't currently support block helpers anywhere but the final position
+				if (weAreAtTheEnd) {
+					throw new DescriptorBuilderException(
+						"@BlockChain parameters are currently only supported as the last arguments to the method"
+					);
+				}
 			}
 		}
 	}
