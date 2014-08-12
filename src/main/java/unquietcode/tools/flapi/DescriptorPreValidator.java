@@ -65,6 +65,11 @@ public class DescriptorPreValidator {
 			names.add(name);
 		}
 
+		// check name validity
+		if (!SourceVersion.isName(name)) {
+			throw new DescriptorBuilderException("Invalid block name '"+name+"'.");
+		}
+
 		// check method name collisions
 		for (MethodOutline method : block.getAllMethods()) {
 			String currentSignature = method.getMethodSignature();
