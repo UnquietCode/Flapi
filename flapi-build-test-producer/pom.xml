@@ -17,7 +17,7 @@
 	<packaging>jar</packaging>
 
 	<properties>
-		<flapi.descriptor.class>unquietcode.tools.flapi.plugin.TestDescriptor</flapi.descriptor.class>
+		<flapi.descriptor.classes>unquietcode.tools.flapi.plugin.TestDescriptor</flapi.descriptor.classes>
 		<flapi.includeRuntime>true</flapi.includeRuntime>
 	</properties>
 
