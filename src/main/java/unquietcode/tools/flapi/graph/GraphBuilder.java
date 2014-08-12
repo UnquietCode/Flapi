@@ -55,10 +55,24 @@ public class GraphBuilder {
 	                                           BlockOutline block
 	){
 		if (block instanceof BlockReference) {
-			BlockOutline resolved = blocks.get(block.getName());
+			final BlockReference reference = (BlockReference) block;
+			final BlockOutline resolved;
+
+			// check for a direct reference first
+			if (reference.directReference() != null) {
+				resolved = reference.directReference();
+			}
+
+			// then check for it by name
+			else {
+				resolved = blocks.get(reference.getName());
+			}
+
+			// it wasn't a direct reference, and we couldn't find it by name
 			if (resolved == null) {
 				throw new DescriptorBuilderException("Could not resolve block reference with name '"+block.getName()+"'.");
 			}
+
 			references.put((BlockReference) block, resolved);
 		}
 

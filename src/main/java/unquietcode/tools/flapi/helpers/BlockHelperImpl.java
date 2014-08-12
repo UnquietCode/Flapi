@@ -69,8 +69,15 @@ public class BlockHelperImpl implements BlockHelper {
 		String methodSignature,
 		AtomicReference<MethodHelper> _helper1
 	){
-		BlockReference blockReference = new BlockReference();
-		blockReference.setName(blockName);
+		final BlockReference blockReference;
+
+		// Allow referencing the current block, and just
+		// let the resolution logic do its work later on.
+		if ("this".equals(blockName)) {
+			blockReference = new BlockReference(block);
+		} else {
+			blockReference = new BlockReference(blockName);
+		}
 
 		MethodOutline blockMethod = block.addMethod(methodSignature);
 		blockMethod.getBlockChain().add(blockReference);

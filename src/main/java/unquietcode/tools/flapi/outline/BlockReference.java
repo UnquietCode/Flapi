@@ -8,6 +8,8 @@
 package unquietcode.tools.flapi.outline;
 
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 /**
  * @author Ben Fagin
  * @version 03-10-2012
@@ -19,5 +21,18 @@ package unquietcode.tools.flapi.outline;
  * are unique to each {@link BlockOutline}, including references.
  */
 public class BlockReference extends BlockOutline {
-	// nothing for now
+	private final BlockOutline directReference;
+
+	public BlockReference(BlockOutline directReference) {
+		this.directReference = checkNotNull(directReference);
+	}
+
+	public BlockReference(String name) {
+		directReference = null;
+		setName(name);
+	}
+
+	public BlockOutline directReference() {
+		return directReference;
+	}
 }

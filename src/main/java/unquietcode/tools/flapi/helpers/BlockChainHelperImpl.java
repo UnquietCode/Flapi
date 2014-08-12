@@ -34,8 +34,7 @@ public class BlockChainHelperImpl implements BlockChainHelper {
 	*/
 	@Override
 	public void addBlockReference(String blockName) {
-		BlockReference ref = new BlockReference();
-		ref.setName(blockName);
+		BlockReference ref = new BlockReference(blockName);
 		ref.setConstructor(blockMethod);
 		chain.add(ref);
 	}
