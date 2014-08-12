@@ -40,7 +40,7 @@ public class HouseBuilderExample implements DescriptorMaker {
 
 	@Test
 	public void usage() {
-		HouseBuilder<Void> houseBuilder = HouseGenerator.create(new HouseHelperImpl());
+		HouseBuilder.Start<Void> houseBuilder = HouseGenerator.create(new HouseHelperImpl());
 
 		// using the builder
 		houseBuilder.addWall()

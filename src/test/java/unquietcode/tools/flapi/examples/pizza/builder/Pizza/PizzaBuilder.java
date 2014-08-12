@@ -1,14 +1,9 @@
 
-/*********************************************************************
- Flapi, the fluent API builder for Java.
- Visit the project page at https://github.com/UnquietCode/Flapi
-
- Flapi is free and open software provided without a license.
- ********************************************************************/
-
 package unquietcode.tools.flapi.examples.pizza.builder.Pizza;
 
 import unquietcode.tools.flapi.examples.pizza.DisappearingPizzaExample.Pizza;
+import unquietcode.tools.flapi.examples.pizza.DisappearingPizzaExample.SauceType;
+import unquietcode.tools.flapi.examples.pizza.DisappearingPizzaExample.Topping;
 import unquietcode.tools.flapi.runtime.MethodInfo;
 import unquietcode.tools.flapi.runtime.TransitionType;
 
@@ -23,18 +18,26 @@ import javax.annotation.Generated;
  * Visit https://github.com/UnquietCode/Flapi for more information.
  * 
  * 
- * Generated on July 02, 2013 0:08:51 PDT using version 0.4
+ * Generated on August 12, 2014 13:17:30 PDT using version 0.0-DEVELOPMENT
  */
-@Generated(value = "unquietcode.tools.flapi", date = "July 02, 2013 0:08:51 PDT", comments = "generated using Flapi, the fluent API generator for Java")
+@Generated(value = "unquietcode.tools.flapi", date = "2014-08-12T13:17:30-07:00", comments = "generated using Flapi, the fluent API generator for Java")
 public interface PizzaBuilder<_ReturnType> {
-    @MethodInfo(type = TransitionType.Terminal, chain = {
-
-    })
+    @MethodInfo(type = TransitionType.Terminal)
     Pizza bake();
 
-    public interface $<_ReturnType>
-        extends PizzaBuilder_addCheese_addSauce_addTopping$3 <_ReturnType>
+    public interface Start<_ReturnType>
+        extends PizzaBuilder_2addCheese_4f_2addSauce_4f_2addTopping_33_4f<_ReturnType>
     {
+        @MethodInfo(type = TransitionType.Lateral)
+        PizzaBuilder_2addSauce_4f_2addTopping_33_4f<_ReturnType> addCheese();
 
+        @MethodInfo(type = TransitionType.Lateral)
+        PizzaBuilder_2addCheese_4f_2addTopping_33_4f<_ReturnType> addSauce(SauceType sauceType);
+
+        @MethodInfo(type = TransitionType.Lateral)
+        PizzaBuilder_2addCheese_4f_2addSauce_4f_2addTopping_32_4f<_ReturnType> addTopping(Topping topping);
+
+        @MethodInfo(type = TransitionType.Terminal)
+        Pizza bake();
     }
 }

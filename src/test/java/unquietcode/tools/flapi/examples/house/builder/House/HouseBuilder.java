@@ -1,17 +1,9 @@
 
-/*********************************************************************
- Flapi, the fluent API builder for Java.
- Visit the project page at https://github.com/UnquietCode/Flapi
-
- Flapi is free and open software provided without a license.
- ********************************************************************/
-
 package unquietcode.tools.flapi.examples.house.builder.House;
 
 import unquietcode.tools.flapi.examples.house.AffordableHouse;
 import unquietcode.tools.flapi.examples.house.ExpensiveHouse;
 import unquietcode.tools.flapi.examples.house.Wall;
-import unquietcode.tools.flapi.examples.house.builder.Wall.WallBuilder_setColor_setWidth;
 import unquietcode.tools.flapi.runtime.MethodInfo;
 import unquietcode.tools.flapi.runtime.TransitionType;
 
@@ -26,28 +18,22 @@ import javax.annotation.Generated;
  * Visit https://github.com/UnquietCode/Flapi for more information.
  * 
  * 
- * Generated on July 02, 2013 0:08:51 PDT using version 0.4
+ * Generated on August 12, 2014 13:17:30 PDT using version 0.0-DEVELOPMENT
  */
-@Generated(value = "unquietcode.tools.flapi", date = "July 02, 2013 0:08:51 PDT", comments = "generated using Flapi, the fluent API generator for Java")
+@Generated(value = "unquietcode.tools.flapi", date = "2014-08-12T13:17:30-07:00", comments = "generated using Flapi, the fluent API generator for Java")
 public interface HouseBuilder<_ReturnType> {
-    @MethodInfo(type = TransitionType.Terminal, chain = {
-        WallBuilder_setColor_setWidth.class
-    })
-    WallBuilder_setColor_setWidth<Wall> addWall();
-
-    @MethodInfo(type = TransitionType.Terminal, chain = {
-
-    })
-    AffordableHouse constructAffordableHouse();
-
-    @MethodInfo(type = TransitionType.Terminal, chain = {
-
-    })
-    ExpensiveHouse constructExpensiveHouse();
-
-    public interface $<_ReturnType>
+    public interface Start<_ReturnType>
         extends HouseBuilder<_ReturnType>
     {
+        @MethodInfo(type = TransitionType.Terminal, chain = {
+            unquietcode.tools.flapi.examples.house.builder.Wall.WallBuilder.Start.class
+        })
+        unquietcode.tools.flapi.examples.house.builder.Wall.WallBuilder.Start<Wall> addWall();
 
+        @MethodInfo(type = TransitionType.Terminal)
+        AffordableHouse constructAffordableHouse();
+
+        @MethodInfo(type = TransitionType.Terminal)
+        ExpensiveHouse constructExpensiveHouse();
     }
 }

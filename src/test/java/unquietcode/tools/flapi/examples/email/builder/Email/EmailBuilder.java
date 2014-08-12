@@ -1,11 +1,4 @@
 
-/*********************************************************************
- Flapi, the fluent API builder for Java.
- Visit the project page at https://github.com/UnquietCode/Flapi
-
- Flapi is free and open software provided without a license.
- ********************************************************************/
-
 package unquietcode.tools.flapi.examples.email.builder.Email;
 
 import unquietcode.tools.flapi.examples.email.EmailMessage;
@@ -25,39 +18,37 @@ import java.io.File;
  * Visit https://github.com/UnquietCode/Flapi for more information.
  * 
  * 
- * Generated on July 02, 2013 0:08:51 PDT using version 0.4
+ * Generated on August 12, 2014 13:17:30 PDT using version 0.0-DEVELOPMENT
  */
-@Generated(value = "unquietcode.tools.flapi", date = "July 02, 2013 0:08:51 PDT", comments = "generated using Flapi, the fluent API generator for Java")
-public interface EmailBuilder<_ReturnType> {
-    @MethodInfo(type = TransitionType.Recursive, chain = {
-
-    })
-    EmailBuilder<_ReturnType> addAttachment(File file);
-
-    @MethodInfo(type = TransitionType.Recursive, chain = {
-
-    })
-    EmailBuilder<_ReturnType> addBCC(String emailAddress);
-
-    @MethodInfo(type = TransitionType.Recursive, chain = {
-
-    })
-    EmailBuilder<_ReturnType> addCC(String emailAddress);
-
-    @MethodInfo(type = TransitionType.Recursive, chain = {
-
-    })
-    @Tracked(atLeast = 1, key = "Email_addRecipient$String_emailAddress")
-    EmailBuilder<_ReturnType> addRecipient(String emailAddress);
-
-    @MethodInfo(type = TransitionType.Terminal, chain = {
-
-    })
-    EmailMessage send();
-
-    public interface $<_ReturnType>
-        extends EmailBuilder_body_sender_subject<_ReturnType>
+@Generated(value = "unquietcode.tools.flapi", date = "2014-08-12T13:17:30-07:00", comments = "generated using Flapi, the fluent API generator for Java")
+public interface EmailBuilder {
+    public interface Start<_ReturnType>
+        extends EmailBuilder_2addAttachment_4f_2addBCC_4f_2addCC_4f_2addRecipient_4f_2body_4f_2sender_4f_2subject_4f<_ReturnType>
     {
+        @MethodInfo(type = TransitionType.Recursive)
+        EmailBuilder.Start<_ReturnType> addAttachment(File file);
 
+        @MethodInfo(type = TransitionType.Recursive)
+        EmailBuilder.Start<_ReturnType> addBCC(String emailAddress);
+
+        @MethodInfo(type = TransitionType.Recursive)
+        EmailBuilder.Start<_ReturnType> addCC(String emailAddress);
+
+        @MethodInfo(type = TransitionType.Recursive)
+        @Tracked(atLeast = 1, key = "addRecipient$String_emailAddress")
+        EmailBuilder.Start<_ReturnType> addRecipient(String emailAddress);
+
+        @MethodInfo(type = TransitionType.Lateral)
+        EmailBuilder_2addAttachment_4f_2addBCC_4f_2addCC_4f_2addRecipient_4f_2sender_4f_2subject_4f<_ReturnType> body(String text);
+
+        @MethodInfo(type = TransitionType.Terminal)
+        EmailMessage send();
+
+        @MethodInfo(type = TransitionType.Lateral)
+        @Tracked(atLeast = 1, key = "sender$String_emailAddress")
+        EmailBuilder_2addAttachment_4f_2addBCC_4f_2addCC_4f_2addRecipient_4f_2body_4f_2subject_4f<_ReturnType> sender(String emailAddress);
+
+        @MethodInfo(type = TransitionType.Lateral)
+        EmailBuilder_2addAttachment_4f_2addBCC_4f_2addCC_4f_2addRecipient_4f_2body_4f_2sender_4f<_ReturnType> subject(String subject);
     }
 }

@@ -1,15 +1,9 @@
 
-/*********************************************************************
- Flapi, the fluent API builder for Java.
- Visit the project page at https://github.com/UnquietCode/Flapi
-
- Flapi is free and open software provided without a license.
- ********************************************************************/
-
 package unquietcode.tools.flapi.examples.pizza.builder.Pizza;
 
-import unquietcode.tools.flapi.examples.pizza.builder.Pizza.PizzaBuilder.$;
+import unquietcode.tools.flapi.examples.pizza.builder.Pizza.PizzaBuilder.Start;
 import unquietcode.tools.flapi.runtime.BlockInvocationHandler;
+import unquietcode.tools.flapi.runtime.ExecutionListener;
 
 import javax.annotation.Generated;
 
@@ -22,16 +16,17 @@ import javax.annotation.Generated;
  * Visit https://github.com/UnquietCode/Flapi for more information.
  * 
  * 
- * Generated on July 02, 2013 0:08:51 PDT using version 0.4
+ * Generated on August 12, 2014 13:17:30 PDT using version 0.0-DEVELOPMENT
  */
-@Generated(value = "unquietcode.tools.flapi", date = "July 02, 2013 0:08:51 PDT", comments = "generated using Flapi, the fluent API generator for Java")
+@Generated(value = "unquietcode.tools.flapi", date = "2014-08-12T13:17:30-07:00", comments = "generated using Flapi, the fluent API generator for Java")
 public class PizzaGenerator {
-    @SuppressWarnings("unchecked")
-    public static $<Void> makePizza(PizzaHelper helper) {
+    public static Start<Void> makePizza(PizzaHelper helper, ExecutionListener... listeners) {
         if (helper == null) {
             throw new IllegalArgumentException("Helper cannot be null.");
         }
          
-        return new BlockInvocationHandler(helper, null)._proxy($.class);
+        BlockInvocationHandler handler = new BlockInvocationHandler(helper, null);
+        handler.addListeners(listeners);
+        return handler._proxy(Start.class);
     }
 }

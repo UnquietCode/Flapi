@@ -1,10 +1,6 @@
 
 package unquietcode.tools.flapi.examples.pizza.builder.Pizza;
 
-import unquietcode.tools.flapi.examples.pizza.DisappearingPizzaExample.Pizza;
-import unquietcode.tools.flapi.examples.pizza.DisappearingPizzaExample.SauceType;
-import unquietcode.tools.flapi.examples.pizza.DisappearingPizzaExample.Topping;
-
 import javax.annotation.Generated;
 
 
@@ -17,14 +13,9 @@ import javax.annotation.Generated;
  * 
  * 
  * Generated on August 12, 2014 13:17:30 PDT using version 0.0-DEVELOPMENT
+ * @see unquietcode.tools.flapi.examples.pizza.builder.Pizza.PizzaHelper
  */
 @Generated(value = "unquietcode.tools.flapi", date = "2014-08-12T13:17:30-07:00", comments = "generated using Flapi, the fluent API generator for Java")
-public interface PizzaHelper {
-    void addCheese();
+public interface PizzaBuilder_2addCheese_4f_2addSauce_4f_2addTopping_33_4f<_ReturnType> {
 
-    void addSauce(SauceType sauceType);
-
-    void addTopping(Topping topping);
-
-    Pizza bake();
 }

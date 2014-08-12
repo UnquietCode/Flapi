@@ -13,7 +13,7 @@ import org.w3c.dom.Document;
 import unquietcode.tools.flapi.Descriptor;
 import unquietcode.tools.flapi.DescriptorMaker;
 import unquietcode.tools.flapi.Flapi;
-import unquietcode.tools.flapi.examples.xhtml.builder.Element.ElementBuilder_endElement_setValue;
+import unquietcode.tools.flapi.examples.xhtml.builder.Element.ElementBuilder;
 import unquietcode.tools.flapi.examples.xhtml.builder.XHTML.XHTMLBuilder;
 import unquietcode.tools.flapi.examples.xhtml.builder.XHTML.XHTMLGenerator;
 
@@ -75,8 +75,7 @@ public class XHTMLBuilderExample implements DescriptorMaker {
 	@Test
 	public void dividedUsage() {
 		Document doc;
-		ElementBuilder_endElement_setValue<XHTMLBuilder<Void>> movies
-			= XHTMLGenerator.createDocument(new XHTMLHelperImpl())
+		ElementBuilder.Start<XHTMLBuilder.Start<Void>> movies = XHTMLGenerator.createDocument(new XHTMLHelperImpl())
 			.addComment("This is a list of movies in my library.")
 			.startElement("movies");
 

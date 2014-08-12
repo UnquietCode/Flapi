@@ -1,12 +1,10 @@
 
-package unquietcode.tools.flapi.examples.pipes.builder.Process;
+package unquietcode.tools.flapi.examples.xhtml.builder.Element;
 
 import unquietcode.tools.flapi.runtime.MethodInfo;
-import unquietcode.tools.flapi.runtime.Tracked;
 import unquietcode.tools.flapi.runtime.TransitionType;
 
 import javax.annotation.Generated;
-import java.io.InputStream;
 
 
 /**
@@ -20,26 +18,25 @@ import java.io.InputStream;
  * Generated on August 12, 2014 13:17:30 PDT using version 0.0-DEVELOPMENT
  */
 @Generated(value = "unquietcode.tools.flapi", date = "2014-08-12T13:17:30-07:00", comments = "generated using Flapi, the fluent API generator for Java")
-public interface ProcessBuilder {
+public interface ElementBuilder {
     public interface Start<_ReturnType>
-        extends ProcessBuilder_2addArgument_4f_2addArgument_1A_4f_2withProcess_4f<_ReturnType>
+        extends ElementBuilder_2addAttribute_4f_2addComment_4f_2setValue_4f_2startElement_4f<_ReturnType>
     {
         @MethodInfo(type = TransitionType.Recursive)
-        ProcessBuilder.Start<_ReturnType> addArgument(String argument);
+        ElementBuilder.Start<_ReturnType> addAttribute(String key, String value);
 
         @MethodInfo(type = TransitionType.Recursive)
-        ProcessBuilder.Start<_ReturnType> addArgument(String name, String value);
+        ElementBuilder.Start<_ReturnType> addComment(String comment);
 
-        @MethodInfo(type = TransitionType.Ascending, chain = {
-            ProcessBuilder.Start.class
-        })
-        ProcessBuilder.Start<_ReturnType> pipe();
-
-        @MethodInfo(type = TransitionType.Terminal)
-        InputStream run();
+        @MethodInfo(type = TransitionType.Ascending)
+        _ReturnType endElement();
 
         @MethodInfo(type = TransitionType.Lateral)
-        @Tracked(atLeast = 1, key = "withProcess$String_name")
-        ProcessBuilder_2addArgument_4f_2addArgument_1A_4f_2pipe_4f<_ReturnType> withProcess(String name);
+        ElementBuilder_2addAttribute_4f_2addComment_4f_2endElement_4f_2startElement_4f<_ReturnType> setValue(String value);
+
+        @MethodInfo(type = TransitionType.Recursive, chain = {
+            ElementBuilder.Start.class
+        })
+        ElementBuilder.Start<ElementBuilder.Start<_ReturnType>> startElement(String tagName);
     }
 }

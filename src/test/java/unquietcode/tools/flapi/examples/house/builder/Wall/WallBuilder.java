@@ -1,10 +1,12 @@
 
-package unquietcode.tools.flapi.examples.calculator.builder.Calculator;
+package unquietcode.tools.flapi.examples.house.builder.Wall;
 
+import unquietcode.tools.flapi.examples.house.Wall;
 import unquietcode.tools.flapi.runtime.MethodInfo;
 import unquietcode.tools.flapi.runtime.TransitionType;
 
 import javax.annotation.Generated;
+import java.awt.*;
 
 
 /**
@@ -18,13 +20,20 @@ import javax.annotation.Generated;
  * Generated on August 12, 2014 13:17:30 PDT using version 0.0-DEVELOPMENT
  */
 @Generated(value = "unquietcode.tools.flapi", date = "2014-08-12T13:17:30-07:00", comments = "generated using Flapi, the fluent API generator for Java")
-public interface CalculatorBuilder<_ReturnType> {
+public interface WallBuilder<_ReturnType> {
+    @MethodInfo(type = TransitionType.Terminal)
+    Wall setWidth(double inches);
+
+    @MethodInfo(type = TransitionType.Terminal)
+    Wall setColor(Color color);
+
     public interface Start<_ReturnType>
-        extends CalculatorBuilder<_ReturnType>
+        extends WallBuilder_2setColor_4f_2setWidth_4f<_ReturnType>
     {
-        @MethodInfo(type = TransitionType.Ascending, chain = {
-            unquietcode.tools.flapi.examples.calculator.builder.Calculation.CalculationBuilder.Start.class
-        })
-        unquietcode.tools.flapi.examples.calculator.builder.Calculation.CalculationBuilder.Start<_ReturnType> $(int p0);
+        @MethodInfo(type = TransitionType.Lateral)
+        WallBuilder<_ReturnType> setColor(Color color);
+
+        @MethodInfo(type = TransitionType.Lateral)
+        WallBuilder<_ReturnType> setWidth(double inches);
     }
 }

@@ -17,9 +17,9 @@ import javax.annotation.Generated;
  * Visit https://github.com/UnquietCode/Flapi for more information.
  * 
  * 
- * Generated on August 10, 2014 21:27:17 PDT using version 0.0-DEVELOPMENT
+ * Generated on August 12, 2014 13:17:30 PDT using version 0.0-DEVELOPMENT
  */
-@Generated(value = "unquietcode.tools.flapi", date = "2014-08-10T21:27:17-07:00", comments = "generated using Flapi, the fluent API generator for Java")
+@Generated(value = "unquietcode.tools.flapi", date = "2014-08-12T13:17:30-07:00", comments = "generated using Flapi, the fluent API generator for Java")
 public class CalculatorGenerator {
     public static Start<Void> begin(Calculator helper, ExecutionListener... listeners) {
         if (helper == null) {

@@ -1,11 +1,4 @@
 
-/*********************************************************************
- Flapi, the fluent API builder for Java.
- Visit the project page at https://github.com/UnquietCode/Flapi
-
- Flapi is free and open software provided without a license.
- ********************************************************************/
-
 package unquietcode.tools.flapi.examples.email.builder.Email;
 
 import unquietcode.tools.flapi.examples.email.EmailMessage;
@@ -22,9 +15,9 @@ import java.io.File;
  * Visit https://github.com/UnquietCode/Flapi for more information.
  * 
  * 
- * Generated on July 02, 2013 0:08:51 PDT using version 0.4
+ * Generated on August 12, 2014 13:17:30 PDT using version 0.0-DEVELOPMENT
  */
-@Generated(value = "unquietcode.tools.flapi", date = "July 02, 2013 0:08:51 PDT", comments = "generated using Flapi, the fluent API generator for Java")
+@Generated(value = "unquietcode.tools.flapi", date = "2014-08-12T13:17:30-07:00", comments = "generated using Flapi, the fluent API generator for Java")
 public interface EmailHelper {
     void addAttachment(File file);
 
