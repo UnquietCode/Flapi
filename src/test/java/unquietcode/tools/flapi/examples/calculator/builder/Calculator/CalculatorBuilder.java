@@ -15,16 +15,18 @@ import javax.annotation.Generated;
  * Visit https://github.com/UnquietCode/Flapi for more information.
  * 
  * 
- * Generated on August 12, 2014 13:17:30 PDT using version 0.0-DEVELOPMENT
+ * Generated on August 13, 2014 16:08:20 PDT using version 0.0-DEVELOPMENT
  */
-@Generated(value = "unquietcode.tools.flapi", date = "2014-08-12T13:17:30-07:00", comments = "generated using Flapi, the fluent API generator for Java")
+@Generated(value = "unquietcode.tools.flapi", date = "2014-08-13T16:08:20-07:00", comments = "generated using Flapi, the fluent API generator for Java")
 public interface CalculatorBuilder<_ReturnType> {
+    @MethodInfo(type = TransitionType.Ascending, chain = {
+        unquietcode.tools.flapi.examples.calculator.builder.Calculation.CalculationBuilder.Start.class
+    })
+    unquietcode.tools.flapi.examples.calculator.builder.Calculation.CalculationBuilder.Start<_ReturnType> $(int p0);
+
     public interface Start<_ReturnType>
         extends CalculatorBuilder<_ReturnType>
     {
-        @MethodInfo(type = TransitionType.Ascending, chain = {
-            unquietcode.tools.flapi.examples.calculator.builder.Calculation.CalculationBuilder.Start.class
-        })
-        unquietcode.tools.flapi.examples.calculator.builder.Calculation.CalculationBuilder.Start<_ReturnType> $(int p0);
+
     }
 }

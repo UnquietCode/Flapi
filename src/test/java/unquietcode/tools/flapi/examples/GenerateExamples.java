@@ -31,7 +31,6 @@ public final class GenerateExamples {
 		Regenerates all of the examples.
 	 */
 	public static void main(String[] args) {
-		args = new String[]{"/Users/bfagin/Documents/IdeaProjects/Flapi/src/test/java"};
 		generate(new CalculatorBuilderExample(), args);
 		generate(new EmailBuilderExample(), args);
 		generate(new HouseBuilderExample(), args);

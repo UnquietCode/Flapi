@@ -1,10 +1,6 @@
 
 package unquietcode.tools.flapi.examples.calculator.builder.Calculation;
 
-import unquietcode.tools.flapi.examples.calculator.CalculatorBuilderExample.Result;
-import unquietcode.tools.flapi.runtime.MethodInfo;
-import unquietcode.tools.flapi.runtime.TransitionType;
-
 import javax.annotation.Generated;
 
 
@@ -16,35 +12,13 @@ import javax.annotation.Generated;
  * Visit https://github.com/UnquietCode/Flapi for more information.
  * 
  * 
- * Generated on August 12, 2014 13:17:30 PDT using version 0.0-DEVELOPMENT
+ * Generated on August 13, 2014 16:08:20 PDT using version 0.0-DEVELOPMENT
  */
-@Generated(value = "unquietcode.tools.flapi", date = "2014-08-12T13:17:30-07:00", comments = "generated using Flapi, the fluent API generator for Java")
+@Generated(value = "unquietcode.tools.flapi", date = "2014-08-13T16:08:20-07:00", comments = "generated using Flapi, the fluent API generator for Java")
 public interface CalculationBuilder {
     public interface Start<_ReturnType>
-        extends CalculationBuilder_2abs_4f_2divide_4f_2minus_4f_2mod_4f_2plus_4f_2power_4f_2times_4f<_ReturnType>
+        extends CalculationBuilder_2abs_2divide_2minus_2mod_2plus_2power_2times<_ReturnType>
     {
-        @MethodInfo(type = TransitionType.Recursive)
-        CalculationBuilder.Start<_ReturnType> abs();
 
-        @MethodInfo(type = TransitionType.Recursive)
-        CalculationBuilder.Start<_ReturnType> divide(int p0);
-
-        @MethodInfo(type = TransitionType.Terminal)
-        Result equals();
-
-        @MethodInfo(type = TransitionType.Recursive)
-        CalculationBuilder.Start<_ReturnType> minus(int p0);
-
-        @MethodInfo(type = TransitionType.Recursive)
-        CalculationBuilder.Start<_ReturnType> mod(int p0);
-
-        @MethodInfo(type = TransitionType.Recursive)
-        CalculationBuilder.Start<_ReturnType> plus(int p0);
-
-        @MethodInfo(type = TransitionType.Recursive)
-        CalculationBuilder.Start<_ReturnType> power(int p0);
-
-        @MethodInfo(type = TransitionType.Recursive)
-        CalculationBuilder.Start<_ReturnType> times(int p0);
     }
 }
