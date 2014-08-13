@@ -26,6 +26,7 @@ public class MethodInfo implements Comparable<MethodInfo> {
 	private boolean isDeprecated = false;
 	private String deprecationReason;
 	private boolean didTrigger = false;
+	private boolean isImplicit = false;
     private Map<Object, Map<String, Object>> annotations = new LinkedHashMap<Object, Map<String, Object>>();
 
 	public Integer getMinOccurrences() {
@@ -81,6 +82,14 @@ public class MethodInfo implements Comparable<MethodInfo> {
 		didTrigger = true;
 	}
 
+	public boolean isImplicit() {
+		return isImplicit;
+	}
+
+	public void isImplicit(boolean isImplicit) {
+		this.isImplicit = isImplicit;
+	}
+
 	public void addAnnotation(Object annotation, Map<String, Object> params) {
 		if (annotations.containsKey(annotation)) {
 			throw new DescriptorBuilderException("duplicate annotation: "+annotation);
@@ -106,6 +115,7 @@ public class MethodInfo implements Comparable<MethodInfo> {
 		other.isDeprecated = isDeprecated;
 		other.deprecationReason = deprecationReason;
 		other.didTrigger = didTrigger;
+		other.isImplicit = isImplicit;
         other.annotations.putAll(annotations);
 	}
 
@@ -125,7 +135,7 @@ public class MethodInfo implements Comparable<MethodInfo> {
 		StringBuilder sb = new StringBuilder();
 		MethodParser parser = new MethodParser(methodSignature);
 
-		sb.append(parser.methodName).append("$");
+		sb.append(parser.methodName).append("_1");
 		boolean first = true;
 
 		for (Pair<MethodParser.JavaType, String> param : parser.params) {
@@ -135,7 +145,14 @@ public class MethodInfo implements Comparable<MethodInfo> {
 			sb.append(param.first.typeName).append("_").append(param.second);
 		}
 
-		sb.append("$").append(didTrigger ? "t" : "f");
+		if (didTrigger) {
+			sb.append("_2t");
+		}
+
+		if (isImplicit) {
+			sb.append("_3t");
+		}
+
 		return sb.toString();
 	}
 }

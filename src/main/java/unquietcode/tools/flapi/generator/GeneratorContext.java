@@ -149,14 +149,15 @@ public class GeneratorContext {
 		name.append(prefix).append(state.getName()).append(suffix);
 
 		for (Transition transition : state.getTransitions()) {
+			final boolean isImplicit = transition.info().isImplicit();
 
 			// reduce noise by not utilizing all of the available names
-			if (transition.getType() == TransitionType.Terminal) {
+			if (transition.getType() == TransitionType.Terminal && !isImplicit) {
 				continue;
 			}
 
 			// also skip Ascending when it's leading nowhere
-			if (transition.getType() == TransitionType.Ascending && transition.getOwner().isTopLevel()) {
+			if (transition.getType() == TransitionType.Ascending && transition.getOwner().isTopLevel() && !isImplicit) {
 				continue;
 			}
 
@@ -209,7 +210,13 @@ public class GeneratorContext {
 				name.append("_3").append(transition.info().getMaxOccurrences());
 			}
 
-			name.append("_4").append(transition.info().didTrigger() ? "t" : "f");
+			if (transition.info().didTrigger()) {
+				name.append("_4t");
+			}
+
+			if (isImplicit) {
+				name.append("_5t");
+			}
 		}
 
 		return name.toString();

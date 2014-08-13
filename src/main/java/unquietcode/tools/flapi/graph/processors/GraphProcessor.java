@@ -108,7 +108,7 @@ public class GraphProcessor extends AbstractGenerator implements GenericVisitor<
 
 		transition.accept(new TransitionVisitor.$() {
 			public @Override void visit(TerminalTransition transition) {
-				String clazz = transition.getReturnType() == null
+				String clazz = transition.getReturnType() == null || transition.info().isImplicit()
 						     ? Void.class.getName()
 							 : transition.getReturnType();
 

@@ -144,14 +144,17 @@ public class GraphBuilder {
 	}
 
 	private StateClass getStateFromBlockAndMethods(BlockOutline block, Set<MethodOutline> allMethods) {
+		StringBuilder sb = new StringBuilder();
+
+		// block name
+		sb.append(block.getName());
+
 		TreeSet<String> names = new TreeSet<String>();
 		for (MethodOutline method : allMethods) {
 			names.add(method.keyString()+"-"+method.getMaxOccurrences());
 		}
 
-		StringBuilder sb = new StringBuilder();
-		sb.append(block.getName());
-
+		// method names
 		for (String name : names) {
 			sb.append(name);
 		}
@@ -175,12 +178,11 @@ public class GraphBuilder {
 		Set<MethodOutline> triggered,
 		MethodOutline method
 	){
-		Transition transition;
-		Set<MethodOutline> nextMethods = computeNextMethods(combination, triggered, method);
-		StateClass next = getStateFromBlockAndMethods(block, nextMethods);
-		boolean implicitTerminalWorthy = nextMethods.isEmpty();
+		final Set<MethodOutline> nextMethods = computeNextMethods(combination, triggered, method);
+		final StateClass next = getStateFromBlockAndMethods(block, nextMethods);
+		final Transition transition;
 
-		if (method.isTerminal() || implicitTerminalWorthy) {
+		if (method.isTerminal()) {
 			if (method.getReturnType() != null) {
 				TerminalTransition terminal = new TerminalTransition();
 				terminal.setReturnType(method.getReturnType());
@@ -284,6 +286,20 @@ public class GraphBuilder {
 						nextMethods.add(triggeredMethod.copy());
 					}
 				}
+			}
+		}
+
+		// we might be able to switch out an implicit terminal
+		if (nextMethods.size() == 1) {
+			MethodOutline nextMethod = nextMethods.iterator().next();
+
+			if (!nextMethod.isTerminal() && !nextMethod.isRequired()) {
+				MethodOutline copy = nextMethod.copy();
+				copy.isImplicit(true);
+				copy.isTerminal(true);
+
+				nextMethods = new TreeSet<MethodOutline>();
+				nextMethods.add(copy);
 			}
 		}
 
