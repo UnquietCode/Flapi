@@ -34,8 +34,10 @@ public abstract class AbstractGenerator {
 	protected static final TypeCreationStrategy BUILDER_INTERFACE_STRATEGY = new DefaultTypeCreationStrategy() {
 		public @Override JDefinedClass createStrongType(GeneratorContext ctx, StateClass state) {
 			String name = ctx.getGeneratedName("", "Builder", state);
+
 			Pair<JDefinedClass, Boolean> construction = ctx.getOrCreateInterface(state.getName(), name);
-			JDefinedClass _interface = construction.first;
+			final JDefinedClass _interface = construction.first;
+			final boolean created = construction.second;
 
 			// if it has yet to have the type parameter added
 			if (_interface.typeParams().length == 0) {
@@ -43,7 +45,7 @@ public abstract class AbstractGenerator {
 			}
 
 			// if newly constructed
-			if (construction.second) {
+			if (created) {
 
 				// create the wrapper interface
 				if (state.isTopLevel()) {

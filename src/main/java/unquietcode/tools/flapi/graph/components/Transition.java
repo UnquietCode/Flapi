@@ -20,18 +20,10 @@ import java.util.List;
  * @version 07-10-2012
  */
 public abstract class Transition implements Comparable<Transition> {
-	private MethodInfo methodInfo = new MethodInfo();
 	private final List<StateClass> stateChain = new ArrayList<StateClass>();
-	private StateClass owner;
 	private final TransitionType type;
-
-	public abstract void accept(TransitionVisitor visitor);
-
-	public void acceptForTraversal(GenericVisitor<StateClass> visitor) {
-		for (StateClass stateClass : stateChain) {
-			visitor.visit(stateClass);
-		}
-	}
+	private MethodInfo methodInfo = new MethodInfo();
+	private StateClass owner;
 
 	protected Transition(TransitionType type) {
 	    this.type = type;
@@ -39,6 +31,14 @@ public abstract class Transition implements Comparable<Transition> {
 
 	public TransitionType getType() {
 		return type;
+	}
+
+	public abstract void accept(TransitionVisitor visitor);
+
+	public void acceptForTraversal(GenericVisitor<StateClass> visitor) {
+		for (StateClass stateClass : stateChain) {
+			visitor.visit(stateClass);
+		}
 	}
 
 	public List<StateClass> getStateChain() {

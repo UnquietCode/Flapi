@@ -16,9 +16,9 @@ import java.util.List;
  * @version 03-07-2012
  */
 public class MethodOutline extends MethodInfo implements Outline {
+	private final List<BlockOutline> blockChain = new ArrayList<BlockOutline>();
 	private boolean isTerminal = false;
 	private String returnType;
-	private final List<BlockOutline> blockChain = new ArrayList<BlockOutline>();
 	private Integer group;
 	private Integer trigger;
 
