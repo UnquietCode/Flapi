@@ -66,6 +66,9 @@ public class MethodOutline extends MethodInfo implements Outline {
 		A required method must be present on all interfaces.
 	 */
 	public boolean isRequired() {
+
+		// it's not triggered, and either it's not dynamic
+		// or it is terminal
 		return trigger == null && (getMaxOccurrences() == -1 || isTerminal);
 	}
 

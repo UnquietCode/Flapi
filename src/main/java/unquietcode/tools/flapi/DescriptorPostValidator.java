@@ -52,7 +52,7 @@ public class DescriptorPostValidator {
 				}
 
 				public @Override void visit(AscendingTransition transition) {
-					handle(transition, !transition.isOptional());
+					handle(transition, transition.isRequired());
 				}
 
 				// check for infinite loops

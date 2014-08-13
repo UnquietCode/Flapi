@@ -13,6 +13,8 @@ import unquietcode.tools.flapi.outline.*;
 
 import java.util.*;
 
+import static com.google.common.base.Preconditions.checkState;
+
 
 /**
  * @author Ben Fagin
@@ -192,10 +194,13 @@ public class GraphBuilder {
 				terminal.setReturnType(block.getReturnType());
 				transition = terminal;
 			} else {
-				transition = new AscendingTransition(!method.isRequired());
+				checkState(method.isRequired()); // all terminal methods should be required
+				transition = new AscendingTransition(true);
 			}
 		} else if (state == next) { // as in, "no changes detected"
 			transition = new RecursiveTransition();
+		} else if (nextMethods.isEmpty()) {
+			transition = new AscendingTransition(method.isRequired());
 		} else {
 			LateralTransition lateral = new LateralTransition();
 			lateral.setSibling(next);

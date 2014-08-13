@@ -15,15 +15,15 @@ import unquietcode.tools.flapi.runtime.TransitionType;
  * @version 08-15-2012
  */
 public class AscendingTransition extends Transition {
-	private final boolean isOptional;
+	private final boolean isRequired;
 
-	public AscendingTransition(boolean isOptional) {
+	public AscendingTransition(boolean isRequired) {
 		super(TransitionType.Ascending);
-		this.isOptional = isOptional;
+		this.isRequired = isRequired;
 	}
 
-	public boolean isOptional() {
-		return isOptional;
+	public boolean isRequired() {
+		return isRequired;
 	}
 
 	@Override
@@ -33,7 +33,7 @@ public class AscendingTransition extends Transition {
 
 	@Override
 	public Transition copy() {
-		AscendingTransition copy = new AscendingTransition(isOptional);
+		AscendingTransition copy = new AscendingTransition(isRequired);
 		basicCopy(copy);
 		return copy;
 	}

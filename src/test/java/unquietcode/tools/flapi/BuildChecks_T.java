@@ -332,6 +332,19 @@ public class BuildChecks_T {
 		.build();
 	}
 
+	@Test
+	public void topLevelLastMethods() {
+		Flapi.builder()
+			.setPackage("unquietcode.something")
+			.setDescriptorName("Something")
+			.setStartingMethodName("create")
+
+			.startBlock("BlockB", "void hello()").last()
+				.addMethod("end()").last()
+			.endBlock()
+		.build();
+	}
+
 	@Test(expected=DescriptorBuilderException.class)
 	public void infiniteLoop() {
 		Flapi.builder()
