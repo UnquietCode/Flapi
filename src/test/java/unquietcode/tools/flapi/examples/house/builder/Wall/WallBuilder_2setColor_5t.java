@@ -1,13 +1,12 @@
 
-package unquietcode.tools.flapi.examples.house.builder.House;
+package unquietcode.tools.flapi.examples.house.builder.Wall;
 
-import unquietcode.tools.flapi.examples.house.AffordableHouse;
-import unquietcode.tools.flapi.examples.house.ExpensiveHouse;
 import unquietcode.tools.flapi.examples.house.Wall;
 import unquietcode.tools.flapi.runtime.MethodInfo;
 import unquietcode.tools.flapi.runtime.TransitionType;
 
 import javax.annotation.Generated;
+import java.awt.*;
 
 
 /**
@@ -19,23 +18,10 @@ import javax.annotation.Generated;
  * 
  * 
  * Generated on August 13, 2014 12:17:17 PDT using version 0.0-DEVELOPMENT
+ * @see unquietcode.tools.flapi.examples.house.builder.Wall.WallHelper
  */
 @Generated(value = "unquietcode.tools.flapi", date = "2014-08-13T12:17:17-07:00", comments = "generated using Flapi, the fluent API generator for Java")
-public interface HouseBuilder<_ReturnType> {
-    @MethodInfo(type = TransitionType.Terminal, chain = {
-        unquietcode.tools.flapi.examples.house.builder.Wall.WallBuilder.Start.class
-    })
-    unquietcode.tools.flapi.examples.house.builder.Wall.WallBuilder.Start<Wall> addWall();
-
+public interface WallBuilder_2setColor_5t<_ReturnType> {
     @MethodInfo(type = TransitionType.Terminal)
-    AffordableHouse constructAffordableHouse();
-
-    @MethodInfo(type = TransitionType.Terminal)
-    ExpensiveHouse constructExpensiveHouse();
-
-    public interface Start<_ReturnType>
-        extends HouseBuilder<_ReturnType>
-    {
-
-    }
+    Wall setColor(Color color);
 }

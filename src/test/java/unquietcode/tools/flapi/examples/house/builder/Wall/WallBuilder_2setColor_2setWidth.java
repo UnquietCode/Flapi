@@ -1,6 +1,9 @@
 
 package unquietcode.tools.flapi.examples.house.builder.Wall;
 
+import unquietcode.tools.flapi.runtime.MethodInfo;
+import unquietcode.tools.flapi.runtime.TransitionType;
+
 import javax.annotation.Generated;
 import java.awt.*;
 
@@ -14,10 +17,13 @@ import java.awt.*;
  * 
  * 
  * Generated on August 13, 2014 12:17:17 PDT using version 0.0-DEVELOPMENT
+ * @see unquietcode.tools.flapi.examples.house.builder.Wall.WallHelper
  */
 @Generated(value = "unquietcode.tools.flapi", date = "2014-08-13T12:17:17-07:00", comments = "generated using Flapi, the fluent API generator for Java")
-public interface WallHelper {
-    void setColor(Color color);
+public interface WallBuilder_2setColor_2setWidth<_ReturnType> {
+    @MethodInfo(type = TransitionType.Lateral)
+    WallBuilder_2setWidth_5t<_ReturnType> setColor(Color color);
 
-    void setWidth(double inches);
+    @MethodInfo(type = TransitionType.Lateral)
+    WallBuilder_2setColor_5t<_ReturnType> setWidth(double inches);
 }

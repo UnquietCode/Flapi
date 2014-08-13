@@ -42,18 +42,16 @@ public class HouseBuilderExample implements DescriptorMaker {
 	public void usage() {
 		HouseBuilder.Start<Void> houseBuilder = HouseGenerator.create(new HouseHelperImpl());
 
-		// using the builder
-		houseBuilder.addWall()
+		Wall wall1 = houseBuilder.addWall()
 			.setWidth(120.35)
 			.setColor(Color.RED)
 		;
 
-		houseBuilder.addWall()
+		Wall wall2 = houseBuilder.addWall()
 			.setColor(Color.BLACK)
 			.setWidth(87.45)
 		;
 
-		// using both the builder and the object
 		Wall wall3 = houseBuilder.addWall()
 			.setColor(Color.BLACK)
 			.setWidth(80.25)

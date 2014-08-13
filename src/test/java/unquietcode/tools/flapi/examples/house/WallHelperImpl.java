@@ -25,10 +25,7 @@ public class WallHelperImpl implements WallHelper {
 	}
 
 	@Override
-	public Wall setWidth(double inches) {
+	public void setWidth(double inches) {
 		wall.setWidth(inches);
-		return null;
-
-		// TODO fix this
 	}
 }
