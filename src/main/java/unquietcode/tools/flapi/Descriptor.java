@@ -37,8 +37,9 @@ public class Descriptor {
 	 * @see com.sun.codemodel.writer.SingleStreamCodeWriter
 	 * @param stream to write generated files
 	 */
-	public void writeToStream(OutputStream stream) {
+	public Descriptor writeToStream(OutputStream stream) {
 		CodeWriter.writeToStream(model, stream);
+		return this;
 	}
 
 	/**
@@ -51,7 +52,7 @@ public class Descriptor {
 	 * @see com.sun.codemodel.writer.FileCodeWriter
 	 * @param folder where files are to be written
 	 */
-	public void writeToFolder(String folder) {
+	public Descriptor writeToFolder(String folder) {
 		File f = new File(folder);
 		if (!f.exists()) {
 			throw new DescriptorBuilderException("Folder '"+folder+"' does not exist.");
@@ -76,6 +77,8 @@ public class Descriptor {
 
 		// always do this last so we don't unnecessarily write files
 		CodeWriter.writeToDirectory(model, f);
+
+		return this;
 	}
 
 	/**
