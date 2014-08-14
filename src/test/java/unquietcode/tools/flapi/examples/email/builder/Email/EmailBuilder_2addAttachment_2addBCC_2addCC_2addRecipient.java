@@ -18,23 +18,23 @@ import java.io.File;
  * Visit https://github.com/UnquietCode/Flapi for more information.
  * 
  * 
- * Generated on August 12, 2014 13:17:30 PDT using version 0.0-DEVELOPMENT
+ * Generated on August 13, 2014 16:08:21 PDT using version 0.0-DEVELOPMENT
  * @see unquietcode.tools.flapi.examples.email.builder.Email.EmailHelper
  */
-@Generated(value = "unquietcode.tools.flapi", date = "2014-08-12T13:17:30-07:00", comments = "generated using Flapi, the fluent API generator for Java")
-public interface EmailBuilder_2addAttachment_4f_2addBCC_4f_2addCC_4f_2addRecipient_4f<_ReturnType> {
+@Generated(value = "unquietcode.tools.flapi", date = "2014-08-13T16:08:21-07:00", comments = "generated using Flapi, the fluent API generator for Java")
+public interface EmailBuilder_2addAttachment_2addBCC_2addCC_2addRecipient<_ReturnType> {
     @MethodInfo(type = TransitionType.Recursive)
-    EmailBuilder_2addAttachment_4f_2addBCC_4f_2addCC_4f_2addRecipient_4f<_ReturnType> addAttachment(File file);
+    EmailBuilder_2addAttachment_2addBCC_2addCC_2addRecipient<_ReturnType> addAttachment(File file);
 
     @MethodInfo(type = TransitionType.Recursive)
-    EmailBuilder_2addAttachment_4f_2addBCC_4f_2addCC_4f_2addRecipient_4f<_ReturnType> addBCC(String emailAddress);
+    EmailBuilder_2addAttachment_2addBCC_2addCC_2addRecipient<_ReturnType> addBCC(String emailAddress);
 
     @MethodInfo(type = TransitionType.Recursive)
-    EmailBuilder_2addAttachment_4f_2addBCC_4f_2addCC_4f_2addRecipient_4f<_ReturnType> addCC(String emailAddress);
+    EmailBuilder_2addAttachment_2addBCC_2addCC_2addRecipient<_ReturnType> addCC(String emailAddress);
 
     @MethodInfo(type = TransitionType.Recursive)
-    @Tracked(atLeast = 1, key = "addRecipient$String_emailAddress")
-    EmailBuilder_2addAttachment_4f_2addBCC_4f_2addCC_4f_2addRecipient_4f<_ReturnType> addRecipient(String emailAddress);
+    @Tracked(atLeast = 1, key = "addRecipient_1String_emailAddre")
+    EmailBuilder_2addAttachment_2addBCC_2addCC_2addRecipient<_ReturnType> addRecipient(String emailAddress);
 
     @MethodInfo(type = TransitionType.Terminal)
     EmailMessage send();

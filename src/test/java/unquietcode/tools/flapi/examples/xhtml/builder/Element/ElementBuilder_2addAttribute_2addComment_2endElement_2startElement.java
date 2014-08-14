@@ -16,16 +16,16 @@ import javax.annotation.Generated;
  * Visit https://github.com/UnquietCode/Flapi for more information.
  * 
  * 
- * Generated on August 12, 2014 13:17:30 PDT using version 0.0-DEVELOPMENT
+ * Generated on August 13, 2014 16:08:21 PDT using version 0.0-DEVELOPMENT
  * @see unquietcode.tools.flapi.examples.xhtml.builder.Element.ElementHelper
  */
-@Generated(value = "unquietcode.tools.flapi", date = "2014-08-12T13:17:30-07:00", comments = "generated using Flapi, the fluent API generator for Java")
-public interface ElementBuilder_2addAttribute_4f_2addComment_4f_2endElement_4f_2startElement_4f<_ReturnType> {
+@Generated(value = "unquietcode.tools.flapi", date = "2014-08-13T16:08:21-07:00", comments = "generated using Flapi, the fluent API generator for Java")
+public interface ElementBuilder_2addAttribute_2addComment_2endElement_2startElement<_ReturnType> {
     @MethodInfo(type = TransitionType.Recursive)
-    ElementBuilder_2addAttribute_4f_2addComment_4f_2endElement_4f_2startElement_4f<_ReturnType> addAttribute(String key, String value);
+    ElementBuilder_2addAttribute_2addComment_2endElement_2startElement<_ReturnType> addAttribute(String key, String value);
 
     @MethodInfo(type = TransitionType.Recursive)
-    ElementBuilder_2addAttribute_4f_2addComment_4f_2endElement_4f_2startElement_4f<_ReturnType> addComment(String comment);
+    ElementBuilder_2addAttribute_2addComment_2endElement_2startElement<_ReturnType> addComment(String comment);
 
     @MethodInfo(type = TransitionType.Ascending)
     _ReturnType endElement();
@@ -33,5 +33,5 @@ public interface ElementBuilder_2addAttribute_4f_2addComment_4f_2endElement_4f_2
     @MethodInfo(type = TransitionType.Recursive, chain = {
         Start.class
     })
-    Start<ElementBuilder_2addAttribute_4f_2addComment_4f_2endElement_4f_2startElement_4f<_ReturnType>> startElement(String tagName);
+    Start<ElementBuilder_2addAttribute_2addComment_2endElement_2startElement<_ReturnType>> startElement(String tagName);
 }

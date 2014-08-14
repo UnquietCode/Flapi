@@ -18,19 +18,19 @@ import javax.annotation.Generated;
  * Visit https://github.com/UnquietCode/Flapi for more information.
  * 
  * 
- * Generated on August 12, 2014 13:17:30 PDT using version 0.0-DEVELOPMENT
+ * Generated on August 13, 2014 16:08:21 PDT using version 0.0-DEVELOPMENT
  * @see unquietcode.tools.flapi.examples.pizza.builder.Pizza.PizzaHelper
  */
-@Generated(value = "unquietcode.tools.flapi", date = "2014-08-12T13:17:30-07:00", comments = "generated using Flapi, the fluent API generator for Java")
-public interface PizzaBuilder_2addCheese_4f_2addSauce_4f_2addTopping_32_4f<_ReturnType> {
+@Generated(value = "unquietcode.tools.flapi", date = "2014-08-13T16:08:21-07:00", comments = "generated using Flapi, the fluent API generator for Java")
+public interface PizzaBuilder_2addCheese_2addSauce_2addTopping_33 <_ReturnType> {
     @MethodInfo(type = TransitionType.Lateral)
-    PizzaBuilder_2addSauce_4f_2addTopping_32_4f<_ReturnType> addCheese();
+    PizzaBuilder_2addSauce_2addTopping_33 <_ReturnType> addCheese();
 
     @MethodInfo(type = TransitionType.Lateral)
-    PizzaBuilder_2addCheese_4f_2addTopping_32_4f<_ReturnType> addSauce(SauceType sauceType);
+    PizzaBuilder_2addCheese_2addTopping_33 <_ReturnType> addSauce(SauceType sauceType);
 
     @MethodInfo(type = TransitionType.Lateral)
-    PizzaBuilder_2addCheese_4f_2addSauce_4f_2addTopping_4f<_ReturnType> addTopping(Topping topping);
+    PizzaBuilder_2addCheese_2addSauce_2addTopping_32 <_ReturnType> addTopping(Topping topping);
 
     @MethodInfo(type = TransitionType.Terminal)
     Pizza bake();
