@@ -39,13 +39,11 @@ composeEmail()
 If you are using Maven (or Gradle, or Ivy) you can download and install to your local repo, or include the following
 repository and dependency in your POM file:
 ```
-<repositories>
-  <repository>
-    <id>uqc</id>
-    <name>UnquietCode Repository</name>
-    <url>http://www.unquietcode.com/maven/releases</url>
-  </repository>
-</repositories>
+<repository>
+  <id>uqc</id>
+  <name>UnquietCode Repository</name>
+  <url>http://www.unquietcode.com/maven/releases</url>
+</repository>
 
 ...
 
