@@ -20,6 +20,8 @@ import com.google.common.base.Function;
 import com.google.common.base.Functions;
 import unquietcode.tools.flapi.Constants;
 import unquietcode.tools.flapi.DescriptorBuilderException;
+import unquietcode.tools.flapi.IntrospectorSupport;
+import unquietcode.tools.flapi.beans.BeanIntrospector;
 import unquietcode.tools.flapi.helpers.AnnotationsHelperImpl;
 import unquietcode.tools.flapi.helpers.DocumentationHelperImpl;
 import unquietcode.tools.flapi.helpers.MethodHelperImpl;
@@ -36,21 +38,47 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 
-import static com.google.common.base.Preconditions.checkState;
-
 /**
  * @author Ben Fagin
  * @version 2014-08-03
  */
-public class AnnotationIntrospector {
+public class AnnotationIntrospector extends IntrospectorSupport {
 	private final Map<Class<?>, BlockOutline> blocks = new HashMap<Class<?>, BlockOutline>();
+
+
+	public static boolean isAnnotated(Class<?> clazz) {
+
+		// for every method in the class
+		for (Method method : clazz.getDeclaredMethods()) {
+			List<Annotation> methodQuantifiers = findAnnotatedElements(MethodQuantifier.class, method.getAnnotations());
+
+			// if the method has at least one marker
+			// then it is annotated (even though having
+			// more than one marker is technically an
+			// error, the intent is still clear)
+			if (methodQuantifiers.size() > 0) {
+				return true;
+			}
+		}
+
+		// we didn't find any methods
+		return false;
+	}
 
 	public DescriptorOutline createDescriptor(Class<?> clazz) {
 		DescriptorOutline descriptor = new DescriptorOutline();
 		descriptor.setPackageName(clazz.getPackage().getName() + ".builder");
 
 		// discover methods and set them on the blocks
-		handleClass(descriptor, clazz);
+		boolean found = handleClass(descriptor, clazz);
+
+		if (found) {
+			return descriptor;
+		}
+
+		// if we didn't find any, try the bean introspector
+		BeanIntrospector beanIntrospector = new BeanIntrospector();
+		descriptor = beanIntrospector.createDescriptor(clazz);
 		return descriptor;
 	}
 
@@ -66,7 +94,7 @@ public class AnnotationIntrospector {
 		return outline;
 	}
 
-	private void handleClass(BlockOutline blockOutline, Class<?> blockClass) {
+	private boolean handleClass(BlockOutline blockOutline, Class<?> blockClass) {
 		Block block = blockClass.getAnnotation(Block.class);
 		blockOutline.setHelperClass(blockClass);
 
@@ -76,6 +104,8 @@ public class AnnotationIntrospector {
 		} else {
 			blockOutline.setName(blockClass.getSimpleName());
 		}
+
+		boolean atLeastOne = false;
 
 		for (Method method : blockClass.getDeclaredMethods()) {
 			List<Annotation> methodQuantifiers = findAnnotatedElements(MethodQuantifier.class, method.getAnnotations());
@@ -97,7 +127,10 @@ public class AnnotationIntrospector {
 			String methodSignature = getMethodSignature(method);
 			MethodOutline methodOutline = blockOutline.addMethod(methodSignature);
 			handleMethod(methodOutline, method);
+			atLeastOne = true;
 		}
+
+		return atLeastOne;
 	}
 
 	private void handleMethod(MethodOutline methodOutline, Method method) {
@@ -234,49 +267,6 @@ public class AnnotationIntrospector {
 		}
 
 		helper.finish();
-	}
-
-	private static String getMethodSignature(Method method) {
-		StringBuilder signature = new StringBuilder();
-		signature.append(method.getName()).append("(");
-
-		Class<?>[] parameterTypes = method.getParameterTypes();
-
-		for (int i=0; i < parameterTypes.length; i++) {
-			Class<?> parameterType = parameterTypes[i];
-
-			// skip block chain parameters
-			if (getParameterAnnotation(method, i, BlockChain.class) != null) {
-				continue;
-			}
-			
-			if (i > 0) {
-				signature.append(", ");
-			}
-
-			final String typeName;
-
-			// varargs
-			if (i == parameterTypes.length-1 && method.isVarArgs()) {
-				checkState(parameterType.isArray());
-				typeName = parameterType.getComponentType().getName()+"...";
-			}
-
-			// arrays
-			else if (parameterType.isArray()) {
-				typeName = parameterType.getComponentType().getName()+"[]";
-			}
-
-			// normal
-			else {
-				typeName = parameterType.getName();
-			}
-
-			signature.append(typeName).append(" p").append(i);
-		}
-
-		signature.append(")");
-		return signature.toString();
 	}
 
 	private static <T extends Annotation> T getParameterAnnotation(Method method, int parameterIndex, Class<T> annotationClass) {

@@ -33,17 +33,23 @@ public class StateClass {
 	private String name;
 	private boolean isTopLevel = false;
 	private final Class<?> helperClass;
+	private final Class<?> beanClass;
 
 	public StateClass() {
-		this(null);
+		this(null, null);
 	}
 
-	public StateClass(Class<?> helperClass) {
+	public StateClass(Class<?> helperClass, Class<?> beanClass) {
 		this.helperClass = helperClass;
+		this.beanClass = beanClass;
 	}
 
 	public Class<?> getHelperClass() {
 		return helperClass;
+	}
+
+	public Class<?> getBeanClass() {
+		return beanClass;
 	}
 
 	public void setName(String name) {

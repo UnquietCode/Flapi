@@ -50,6 +50,7 @@ public class Flapi {
 
 	/**
 	 * Shortcut to build a descriptor from an existing annotated helper class.
+	 *
 	 * @see unquietcode.tools.flapi.annotations.AnnotationIntrospector
 	 */
 	public static DescriptorConfiguratorBuilder.Start create(Class<?> topBlock) {

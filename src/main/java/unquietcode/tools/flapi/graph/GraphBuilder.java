@@ -175,7 +175,7 @@ public class GraphBuilder {
 			return states.get(key);
 		}
 
-		StateClass state = new StateClass(block.getHelperClass());
+		StateClass state = new StateClass(block.getHelperClass(), block.getBeanClass());
 		state.setName(block.getName());
 		states.put(key, state);
 

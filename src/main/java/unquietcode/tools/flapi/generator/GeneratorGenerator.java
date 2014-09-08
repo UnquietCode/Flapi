@@ -21,6 +21,7 @@ import unquietcode.tools.flapi.graph.components.StateClass;
 import unquietcode.tools.flapi.outline.GeneratorOutline;
 import unquietcode.tools.flapi.runtime.BlockInvocationHandler;
 import unquietcode.tools.flapi.runtime.ExecutionListener;
+import unquietcode.tools.flapi.runtime.Helpers;
 
 
 /**
@@ -41,8 +42,51 @@ public class GeneratorGenerator extends AbstractGenerator {
 		JClass returnType = WRAPPER_INTERFACE_STRATEGY.createWeakType(ctx, topLevel);
 		returnType = returnType.narrow(Void.class);
 
-		// -- add the constructor method --
 		JMethod createMethod = generator.method(JMod.PUBLIC+JMod.STATIC, returnType, outline.methodName);
+
+		// is this a dynamic helper? use that factory method
+		if (topLevel.getBeanClass() != null) {
+			createBeanFactoryMethod(helper, topLevel.getBeanClass(), returnType, createMethod);
+		}
+
+		// else add the default factory method
+		else {
+			createDefaultFactoryMethod(helper, returnType, createMethod);
+		}
+
+		return generator;
+	}
+
+	private void createBeanFactoryMethod(JClass helper, Class<?> beanType, JClass returnType, JMethod createMethod) {
+		JVar pBean = createMethod.param(beanType, "bean");
+		JVar pListeners = createMethod.varParam(ExecutionListener.class, "listeners");
+
+		// if (bean == null)
+		//     throw new IllegalArgumentException("Bean target cannot be null.");
+		//
+		JConditional _if = createMethod.body()._if(pBean.eq(JExpr._null()));
+		_if._then()._throw(JExpr._new(ref(IllegalArgumentException.class)).arg("Bean target cannot be null."));
+		createMethod.body().directStatement(" ");
+
+		JInvocation beanProxyHelper = ref(Helpers.class).staticInvoke("beanProxyHelper")
+			.arg(helper.dotclass())
+			.arg(pBean)
+		;
+
+		JVar proxyHelper = createMethod.body().decl(helper, "helper", beanProxyHelper);
+		createMethod.body().directStatement(" ");
+
+		// BlockInvocationHandler handler = new BlockInvocationHandler(helper, bean);
+		JVar handler = createMethod.body().decl(ref(BlockInvocationHandler.class), "handler",
+			JExpr._new(ref(BlockInvocationHandler.class))
+				.arg(proxyHelper)
+				.arg(pBean)
+		);
+
+		addDefaultMethodBody(pListeners, handler, returnType, createMethod);
+	}
+
+	private void createDefaultFactoryMethod(JClass helper, JClass returnType, JMethod createMethod) {
 		JVar pHelper = createMethod.param(helper, "helper");
 		JVar pListeners = createMethod.varParam(ExecutionListener.class, "listeners");
 
@@ -57,9 +101,14 @@ public class GeneratorGenerator extends AbstractGenerator {
 		JVar handler = createMethod.body().decl(ref(BlockInvocationHandler.class), "handler",
 			JExpr._new(ref(BlockInvocationHandler.class))
 				.arg(pHelper)
-				.arg(JExpr._null()
-			)
+				.arg(JExpr._null())
 		);
+
+
+		addDefaultMethodBody(pListeners, handler, returnType, createMethod);
+	}
+
+	private void addDefaultMethodBody(JVar pListeners, JVar handler, JClass returnType, JMethod createMethod) {
 
 		// handler.addListeners(listeners);
 		createMethod.body().invoke(handler, "addListeners").arg(pListeners);
@@ -68,7 +117,5 @@ public class GeneratorGenerator extends AbstractGenerator {
 		createMethod.body()._return(
 			handler.invoke("_proxy").arg(returnType.dotclass())
 		);
-
-		return generator;
 	}
 }

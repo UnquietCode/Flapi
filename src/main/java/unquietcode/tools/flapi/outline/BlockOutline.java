@@ -26,6 +26,7 @@ public class BlockOutline implements Outline {
 	private String name;
 	private String returnType;
 	private Class<?> helperClass;
+	private Class<?> beanClass;
 
 	// nested blocks
 	private final List<BlockOutline> blocks = new ArrayList<BlockOutline>();
@@ -44,6 +45,14 @@ public class BlockOutline implements Outline {
 
 	public void setHelperClass(Class<?> helperClass) {
 		this.helperClass = helperClass;
+	}
+
+	public Class<?> getBeanClass() {
+		return beanClass;
+	}
+
+	public void setBeanClass(Class<?> beanClass) {
+		this.beanClass = beanClass;
 	}
 
 	public String getReturnType() {
