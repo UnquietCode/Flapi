@@ -27,6 +27,7 @@ import unquietcode.tools.flapi.runtime.TransitionType;
 import java.util.IdentityHashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * @author Ben Fagin
@@ -43,15 +44,18 @@ public class DescriptorPostValidator {
 	}
 
 	public void validate() {
-		checkForBlocksWithNoEnd(graph, new IdentityHashMap<StateClass, Boolean>());
-		checkForBlocksWithNoEnd(graph, new IdentityHashMap<StateClass, Boolean>());
+		AtomicBoolean value = checkForBlocksWithNoEnd(graph, new IdentityHashMap<StateClass, AtomicBoolean>());
+
+		if (!value.get()) {
+			throw reportNoTerminalMethod(graph);
+		}
 	}
 
-	private boolean checkForBlocksWithNoEnd(StateClass state, final Map<StateClass, Boolean> seen) {
+	private AtomicBoolean checkForBlocksWithNoEnd(StateClass state, final Map<StateClass, AtomicBoolean> seen) {
 		if (seen.containsKey(state)) { return seen.get(state); }
-		final AtomicBoolean valid = new AtomicBoolean(false);
-		final AtomicBoolean terminal = new AtomicBoolean(false);
-		final AtomicBoolean recursive = new AtomicBoolean(false);
+		final AtomicReference<AtomicBoolean> valid = new AtomicReference<AtomicBoolean>(new AtomicBoolean(false));
+		final AtomicReference<AtomicBoolean> terminal = new AtomicReference<AtomicBoolean>(new AtomicBoolean(false));
+		final AtomicReference<AtomicBoolean> recursive = new AtomicReference<AtomicBoolean>(new AtomicBoolean(false));
 
 		// check for recursion
 		for (Transition transition : state.getTransitions()) {
@@ -72,12 +76,12 @@ public class DescriptorPostValidator {
 
 						// if it is parallel to us, then it's recursive
 						if (step.isLateral(transition.getOwner())) {
-							recursive.set(true);
+							recursive.get().set(true);
 							return;
 						}
 					}
 
-					terminal.set(terminal.get() || value);
+					terminal.get().set(terminal.get().get() || value);
 				}
 			});
 		}
@@ -85,7 +89,7 @@ public class DescriptorPostValidator {
 		// If there was a good method, AND it's recursive, no sweat,
 		// but if there was ONLY a recursive method, then that's an
 		// indication of an infinite loop.
-		if (terminal.get() == false && recursive.get() == true) {
+		if (terminal.get().get() == false && recursive.get().get() == true) {
 			throw new DescriptorBuilderException("Infinite loop detected for block '"+state.getName()+"'.");
 		}
 
@@ -98,20 +102,24 @@ public class DescriptorPostValidator {
 
 			transition.acceptForTraversal(new GenericVisitor<StateClass>() {
 				public void visit(StateClass next) {
-					boolean nextIsTerminal = checkForBlocksWithNoEnd(next, seen);
+					AtomicBoolean nextIsTerminal = checkForBlocksWithNoEnd(next, seen);
 
 					if (transitionType != TransitionType.Recursive) {
-						valid.set(valid.get() || nextIsTerminal);
+						valid.get().set(valid.get().get() || nextIsTerminal.get());
 					}
 				}
 			});
 		}
 
-		if (!valid.get() == true) {
-			throw new DescriptorBuilderException("Encountered a block with no terminal method: " + state.getName());
+		if (valid.get().get() != true) {
+			throw reportNoTerminalMethod(state);
 		}
 
 		// return terminal because that's what we are really tracking
 		return terminal.get();
+	}
+
+	private static DescriptorBuilderException reportNoTerminalMethod(StateClass state) throws DescriptorBuilderException {
+		throw new DescriptorBuilderException("Encountered a block with no terminal method: " + state.getName());
 	}
 }

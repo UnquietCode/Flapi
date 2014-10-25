@@ -447,4 +447,16 @@ public class BuildChecks_T {
 			.endBlock()
 		.build();
 	}
+
+	@Test
+	public void testThatLateralTransitionsAreImplicitTerminals() {
+		Flapi.builder()
+			.setPackage("what.the")
+			.setDescriptorName("What")
+
+			.addMethod("one()").exactly(1)
+			.addMethod("two()").exactly(1)
+			.addMethod("three()").exactly(1)
+		.build();
+	}
 }
