@@ -21,6 +21,7 @@ import com.google.common.base.Functions;
 import unquietcode.tools.flapi.Constants;
 import unquietcode.tools.flapi.DescriptorBuilderException;
 import unquietcode.tools.flapi.IntrospectorSupport;
+import unquietcode.tools.flapi.SpringMethodUtils;
 import unquietcode.tools.flapi.beans.BeanIntrospector;
 import unquietcode.tools.flapi.helpers.AnnotationsHelperImpl;
 import unquietcode.tools.flapi.helpers.DocumentationHelperImpl;
@@ -32,10 +33,7 @@ import unquietcode.tools.flapi.outline.MethodOutline;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
@@ -49,7 +47,7 @@ public class AnnotationIntrospector extends IntrospectorSupport {
 	public static boolean isAnnotated(Class<?> clazz) {
 
 		// for every method in the class
-		for (Method method : clazz.getDeclaredMethods()) {
+		for (Method method : getAllMethods(clazz)) {
 			List<Annotation> methodQuantifiers = findAnnotatedElements(MethodQuantifier.class, method.getAnnotations());
 
 			// if the method has at least one marker
@@ -63,6 +61,11 @@ public class AnnotationIntrospector extends IntrospectorSupport {
 
 		// we didn't find any methods
 		return false;
+	}
+
+	private static Set<Method> getAllMethods(Class<?> clazz) {
+		Method[] methods = SpringMethodUtils.getUniqueDeclaredMethods(clazz);
+		return new HashSet<Method>(Arrays.asList(methods));
 	}
 
 	public DescriptorOutline createDescriptor(Class<?> clazz) {
@@ -107,7 +110,7 @@ public class AnnotationIntrospector extends IntrospectorSupport {
 
 		boolean atLeastOne = false;
 
-		for (Method method : blockClass.getDeclaredMethods()) {
+		for (Method method : getAllMethods(blockClass)) {
 			List<Annotation> methodQuantifiers = findAnnotatedElements(MethodQuantifier.class, method.getAnnotations());
 
 			// skip methods which are not annotated
