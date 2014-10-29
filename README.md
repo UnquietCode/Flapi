@@ -96,7 +96,7 @@ Feel free to fork the project and fiddle around! Submit pull requests to improve
 Create issues to help support the project. Ask questions. (Say hello.)
 
 ### License
-Flapi is free and open software provided without a license. Licenses are depressing.
+Flapi is licensed under the Apache Software License (ASL) 2.0
 
 ## Thanks!
 
