@@ -24,7 +24,22 @@ Descriptor builder = Flapi.builder()
 ```
 ##### ...or this:
 ```java
-annotation example
+interface EmailHelper {
+
+	@AtMost(1) void subject(String subject);
+	@AtLeast(1) void addRecipient(String emailAddress);
+	@Exactly(1) void sender(String emailAddress);
+	@Any void addCC(String emailAddress);
+	@Any void addBCC(String emailAddress);
+	@AtMost(1) void body(String text);
+	@Any void addAttachment(File file);
+	@Last EmailMessage send();
+}
+
+Flapi.create(EmailHelper.class)
+	.setPackage("unquietcode.tools.flapi.examples.email.builder")
+	.setStartingMethodName("compose")
+.build();
 ```
 
 ##### ...into this:
@@ -54,7 +69,7 @@ repository and dependency in your POM file:
 <dependency>
   <groupId>unquietcode.tools.flapi</groupId>
   <artifactId>flapi</artifactId>
-  <version>0.5.2</version>
+  <version>0.6</version>
   <scope>test</scope>
 </dependency>
 ```
@@ -86,10 +101,7 @@ The original blog post describing Flapi.
 Google Group for asking questions and connecting with other developers using Flapi in their projects.
 
 ### What's the project's status?
-Version 0.5 has been released, and includes a few new features and bug fixes.
-See the [Release Notes](https://github.com/UnquietCode/Flapi/wiki/Version-0.5) for the full details.
-
-The latest patch version is `0.5.2`.
+Version 0.6 has been released, and includes support for creating descriptors using annotations. See the [Release Notes](https://github.com/UnquietCode/Flapi/wiki/Version-0.6) for the full details.
 
 ### Problems?
 Use the [issue tracker](https://github.com/UnquietCode/Flapi/issues) to report problems encountered or new

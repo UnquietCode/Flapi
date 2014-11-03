@@ -470,54 +470,116 @@ public enum TestEnum {
 /**
  * ## Annotations
  *
- * Yes, you can!
+ * Starting in version 0.6 it is possible to describe a
+ * descriptor based on a given interface or class, in addition
+ * to the existing fluent builder. This method essentially replaces
+ * the generated helpers with helpers that you provide, using
+ * annotations to describe the intended flow of execution
+ * through your methods.
  */
+@Block(name="CustomizedName")
+public interface MyHelper {
 
+	@AtLeast(2)
+	void doSomething();
 
-// marks the method as occurring any number of times
-@Any
+	@Between(minInc=1, maxInc=2)
+	void doSomethingElse();
 
-// marks the method as occurring any tim
-// copy these from the stuff above
-@Any(int group)
+	@Last
+	@Documented("the last method you'll ever need")
+	String end();
 
-//
-@AtLeast(int value)
-void x()
+	void skipped();
+}
 
+Descriptor descriptor = Flapi.create(MyHelper.class).build();
+
+// Create a new descriptor by introspecting the class,
+// first for Flapi annotations, and then as a generic bean.
+Descriptor descriptor = Flapi.create(Class class)
+
+// Specifies that the method can be called at most _x_ times.
+// After that amount, the method will no longer be available
+// to be called.
 @AtMost(int value)
 
+// Members of the same group will become invisible
+// as soon as this method does so.
 @AtMost(int value, int group)
 
+// The method must be called at least _x_ times.
+@AtLeast(int value)
+
+// The method must be called between _x_ and _y_ times.
 @Between(int minin, int maxInc)
 
+// The method must be called exactly _x_ times.
 @Exactly(int value)
 
+// The method can be called any number of times.
+@Any()
 
+// Members of the same group will become invisible
+// after this method is called for the first time.
+@Any(int group)
 
-// marks the method as last
-@Last
+// The method can be called once, and will return
+// the method's return type after being called.
+@Last()
 
-// last with return value
-
+// The method will only become visible after at
+// least one member of the group has been called.
 @After(int group)
 
-
-// mark a method parameter as a container for another block
-// helper. The chain is constructed by looking at the last parameters
-// marked with the chain info. In the current implementation, the
-// parameters **must** be placed as the last parameters to the method.
-//
-// The types must match the generic signature of the `AtomicReference` object,
-// or else an error will be thrown at runtime.
-@BlockChain(Class<?>[] types)
-
-// provide documentation for the method
+// Provide documentation for the method.
 @Documented(String[] value)
 
-// create a new descriptor by introspecting the class,
-// first for Flapi annotations, and then as a generic bean
-Descriptor descriptor = Flapi.create(Class class)
+// Provide an alternate name to use for the interface
+// or class's corresponding generated name, instead of
+// the default (`XyzBuilder`).
+@Block(String name)
+
+
+/**
+ * ### @BlockChain Parameters
+ *
+ * A method may specify a block chain by annotating any number
+ * of parameters with `@BlockChain`. The parameter **must** be of
+ * type `AtomicReference`, and the annotation must include the
+ * type of the block, matching the generic signature of the reference.
+ *
+ * The helper will be introspected like the current type, and the
+ * chain will be constructed moving from the leftmost parameter
+ * towards the rightmost.
+ */
+interface Alpha {
+
+	@Last
+	void alpha();
+}
+
+interface Beta {
+
+	@Last
+	void beta();
+}
+
+interface MyHelper {
+
+	@Last
+	String startBlock(
+		int paramA,	@BlockChain(Alpha.class) AtomicReference<Alpha> helperA,
+		int paramB,	@BlockChain(Beta.class) AtomicReference<Beta> helperB
+	);
+}
+
+// Marks a method parameter as a container for another block's helper.
+// The types must match the generic signature of the `AtomicReference` object,
+// or else an error will be thrown at runtime.
+@BlockChain(Class<?> type)
+
+
 
 
 

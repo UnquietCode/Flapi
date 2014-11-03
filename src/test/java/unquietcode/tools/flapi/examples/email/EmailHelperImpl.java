@@ -15,7 +15,7 @@ import java.io.File;
  * @author Ben Fagin
  * @version 04-29-2012
  */
-public class EmailHelperImpl implements EmailHelper {
+public class EmailHelperImpl implements EmailHelper, AnnotatedEmailHelper {
 	private final EmailMessage email;
 
 	public EmailHelperImpl() {

@@ -40,6 +40,14 @@ public class EmailBuilderExample implements DescriptorMaker {
 	}
 
 	@Test
+	public void annot() {
+		Flapi.create(AnnotatedEmailHelper.class)
+			.setPackage("unquietcode.tools.flapi.examples.email.builder")
+			.setStartingMethodName("compose")
+		.build();
+	}
+
+	@Test
 	public void usage() {
 		EmailMessage message = EmailGenerator.compose(new EmailHelperImpl())
 			.sender("iamthewalrus@hotmail.com")

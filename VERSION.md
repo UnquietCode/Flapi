@@ -5,6 +5,9 @@ of descriptors.
 ### Annotations
 You can now create descriptors from annotated helper classes and interfaces. See the documentation section on [annotations]() for more details.
 
+### Bean Builders
+Similar to annotations, you can provide a class with `setXYZ(..)` and `withXYZ(..)` methods, and these will be turned into a simple builder where each method can only be called at most one time, and where a bean will be returned at the end of the chain.
+
 ## Resolved Issues
 Issues are now handled through GitHub, and historical issues have been migrated from JIRA.
 
