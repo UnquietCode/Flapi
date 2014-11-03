@@ -70,6 +70,12 @@
         <a href="#method%20documentation">Method Documentation</a>
       </div>
       <div class="heading h2">
+        <a href="#annotations">Annotations</a>
+      </div>
+      <div class="heading h3">
+        <a href="#%40blockchain%20parameters">@BlockChain Parameters</a>
+      </div>
+      <div class="heading h2">
         <a href="#thanks!">Thanks!</a>
       </div>
     </div>
@@ -139,12 +145,15 @@ on the fly. See more <a href="https://github.com/UnquietCode/Flapi/wiki/Maven-Bu
 <p>When a new instance of your builder is constructed, a single JDK dynamic
 proxy object is configured. Starting with the top-level type, each method
 in your fluent API is invoked by the user on this proxy, which in turn
-calls the relevant methods your API's runtime implementation. (more on
+calls the relevant methods in your API's runtime implementation. (more on
 this later)</p>
   </div>
 </div>
         </td>
         <td class="code highlight"><div class="highlight"><pre>
+
+<span class="kn">import</span> <span class="nn">unquietcode.tools.flapi.annotations.Between</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">unquietcode.tools.flapi.annotations.Last</span><span class="o">;</span>
 
 <span class="n">EmailGenerator</span><span class="o">.</span><span class="na">compose</span><span class="o">(</span><span class="k">new</span> <span class="n">EmailHelperImpl</span><span class="o">())</span>
     <span class="o">.</span><span class="na">sender</span><span class="o">(</span><span class="s">&quot;HAL9000@gmail.com&quot;</span><span class="o">)</span>
@@ -175,6 +184,9 @@ information needed to generate the source code. You can start creating a
 new Descriptor using <code>Flapi.builder()</code>...<code>.build()</code>, making sure to call
 all of the required methods in between. After the call to build you will
 have a descriptor which is ready to be generated.</p>
+
+<p>There are two ways to create a descriptor, via the fluent builder
+or by using <a href="">annotations</a>.</p>
   </div>
 </div>
         </td>
@@ -189,7 +201,10 @@ have a descriptor which is ready to be generated.</p>
   <span class="o">.</span><span class="na">addMethod</span><span class="o">(</span><span class="s">&quot;addRecipient(String emailAddress)&quot;</span><span class="o">).</span><span class="na">atLeast</span><span class="o">(</span><span class="mi">1</span><span class="o">)</span>
   <span class="o">.</span><span class="na">addMethod</span><span class="o">(</span><span class="s">&quot;sender(String emailAddress)&quot;</span><span class="o">).</span><span class="na">exactly</span><span class="o">(</span><span class="mi">1</span><span class="o">)</span>
   <span class="o">.</span><span class="na">addMethod</span><span class="o">(</span><span class="s">&quot;body(String text)&quot;</span><span class="o">).</span><span class="na">atMost</span><span class="o">(</span><span class="mi">1</span><span class="o">)</span>
-  <span class="o">.</span><span class="na">addMethod</span><span class="o">(</span><span class="s">&quot;send()&quot;</span><span class="o">).</span><span class="na">last</span><span class="o">(</span><span class="n">EmailMessage</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">addMethod</span><span class="o">(</span><span class="s">&quot;send()&quot;</span><span class="o">).</span><span class="na">last</span><span class="o">(</span><span class="n">EmailMessage</span><span class="o">.</span><span class="na">import</span> <span class="n">java</span><span class="o">.</span><span class="na">lang</span><span class="o">.</span><span class="na">Class</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.lang.String</span><span class="o">;</span>
+
+<span class="n">class</span><span class="o">)</span>
 <span class="o">.</span><span class="na">build</span><span class="o">();</span>
 
 <span class="n">builder</span><span class="o">.</span><span class="na">writeToStream</span><span class="o">(</span><span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">);</span>
@@ -230,7 +245,7 @@ it detects an inconsistency. Where possible, the API has been made
 </div>
 <p>Start building a new Descriptor. Zero or more <code>ExecutionListener</code>
 instances can be provided. (check out <code>MethodLogger</code>, which is
-quite helpful when debugging an error)</p>
+helpful when debugging an error)</p>
         </td>
         <td class="code highlight"><div class="highlight"><pre>
 <span class="n">Descriptor</span> <span class="n">descriptor</span> <span class="o">=</span> <span class="n">Flapi</span><span class="o">.</span><span class="na">builder</span><span class="o">(</span><span class="n">ExecutionListener</span><span class="o">...</span><span class="na">listeners</span><span class="o">)</span>
@@ -1199,6 +1214,296 @@ a <code>@deprecated</code> tag to the javadocs.</p>
         </td>
         <td class="code highlight"><div class="highlight"><pre>
 <span class="o">.</span><span class="na">markAsDeprecated</span><span class="o">(</span><span class="n">String</span> <span class="n">reason</span><span class="o">)</span>
+
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs"><div class="dox">
+  <div class="summary">
+<div class="pilwrap" id="annotations">
+  <h2>
+    <a href="#annotations" name="annotations" class="pilcrow">&#182;</a>
+    Annotations
+  </h2>
+</div>
+
+  </div>
+  <div class="body"><p>Starting in version 0.6 it is possible to describe a
+descriptor based on a given interface or class, in addition
+to the existing fluent builder. This method essentially replaces
+the generated helpers with helpers that you provide, using
+annotations to describe the intended flow of execution
+through your methods.</p>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="nd">@Block</span><span class="o">(</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;CustomizedName&quot;</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kd">interface</span> <span class="nc">MyHelper</span> <span class="o">{</span>
+
+  <span class="nd">@AtLeast</span><span class="o">(</span><span class="mi">2</span><span class="o">)</span>
+  <span class="kt">void</span> <span class="nf">doSomething</span><span class="o">();</span>
+
+  <span class="nd">@Between</span><span class="o">(</span><span class="n">minInc</span><span class="o">=</span><span class="mi">1</span><span class="o">,</span> <span class="n">maxInc</span><span class="o">=</span><span class="mi">2</span><span class="o">)</span>
+  <span class="kt">void</span> <span class="nf">doSomethingElse</span><span class="o">();</span>
+
+  <span class="nd">@Last</span>
+  <span class="nd">@Documented</span><span class="o">(</span><span class="s">&quot;the last method you&#39;ll ever need&quot;</span><span class="o">)</span>
+  <span class="n">String</span> <span class="nf">end</span><span class="o">();</span>
+
+  <span class="kt">void</span> <span class="nf">skipped</span><span class="o">();</span>
+<span class="o">}</span>
+
+<span class="n">Descriptor</span> <span class="n">descriptor</span> <span class="o">=</span> <span class="n">Flapi</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="n">MyHelper</span><span class="o">.</span><span class="na">class</span><span class="o">).</span><span class="na">build</span><span class="o">();</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-56" id="section-56">&#182;</a>
+</div>
+<p>Create a new descriptor by introspecting the class,
+first for Flapi annotations, and then as a generic bean.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="n">Descriptor</span> <span class="n">descriptor</span> <span class="o">=</span> <span class="n">Flapi</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="n">Class</span> <span class="n">class</span><span class="o">)</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-57" id="section-57">&#182;</a>
+</div>
+<p>Specifies that the method can be called at most <em>x</em> times.
+After that amount, the method will no longer be available
+to be called.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="nd">@AtMost</span><span class="o">(</span><span class="kt">int</span> <span class="n">value</span><span class="o">)</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-58" id="section-58">&#182;</a>
+</div>
+<p>Members of the same group will become invisible
+as soon as this method does so.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="nd">@AtMost</span><span class="o">(</span><span class="kt">int</span> <span class="n">value</span><span class="o">,</span> <span class="kt">int</span> <span class="n">group</span><span class="o">)</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-59" id="section-59">&#182;</a>
+</div>
+<p>The method must be called at least <em>x</em> times.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="nd">@AtLeast</span><span class="o">(</span><span class="kt">int</span> <span class="n">value</span><span class="o">)</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-60" id="section-60">&#182;</a>
+</div>
+<p>The method must be called between <em>x</em> and <em>y</em> times.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="nd">@Between</span><span class="o">(</span><span class="kt">int</span> <span class="n">minin</span><span class="o">,</span> <span class="kt">int</span> <span class="n">maxInc</span><span class="o">)</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-61" id="section-61">&#182;</a>
+</div>
+<p>The method must be called exactly <em>x</em> times.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="nd">@Exactly</span><span class="o">(</span><span class="kt">int</span> <span class="n">value</span><span class="o">)</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-62" id="section-62">&#182;</a>
+</div>
+<p>The method can be called any number of times.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="nd">@Any</span><span class="o">()</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-63" id="section-63">&#182;</a>
+</div>
+<p>Members of the same group will become invisible
+after this method is called for the first time.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="nd">@Any</span><span class="o">(</span><span class="kt">int</span> <span class="n">group</span><span class="o">)</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-64" id="section-64">&#182;</a>
+</div>
+<p>The method can be called once, and will return
+the method's return type after being called.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="nd">@Last</span><span class="o">()</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-65" id="section-65">&#182;</a>
+</div>
+<p>The method will only become visible after at
+least one member of the group has been called.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="nd">@After</span><span class="o">(</span><span class="kt">int</span> <span class="n">group</span><span class="o">)</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-66" id="section-66">&#182;</a>
+</div>
+<p>Provide documentation for the method.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="nd">@Documented</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">value</span><span class="o">)</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-67" id="section-67">&#182;</a>
+</div>
+<p>Provide an alternate name to use for the interface
+or class's corresponding generated name, instead of
+the default (<code>XyzBuilder</code>).</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="nd">@Block</span><span class="o">(</span><span class="n">String</span> <span class="n">name</span><span class="o">)</span>
+
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs"><div class="dox">
+  <div class="summary">
+<div class="pilwrap" id="%40blockchain%20parameters">
+  <h3>
+    <a href="#%40blockchain%20parameters" name="%40blockchain%20parameters" class="pilcrow">&#182;</a>
+    @BlockChain Parameters
+  </h3>
+</div>
+
+  </div>
+  <div class="body"><p>A method may specify a block chain by annotating any number
+of parameters with <code>@BlockChain</code>. The parameter <strong>must</strong> be of
+type <code>AtomicReference</code>, and the annotation must include the
+type of the block, matching the generic signature of the reference.</p>
+
+<p>The helper will be introspected like the current type, and the
+chain will be constructed moving from the leftmost parameter
+towards the rightmost.</p>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="kd">interface</span> <span class="nc">Alpha</span> <span class="o">{</span>
+
+  <span class="nd">@Last</span>
+  <span class="kt">void</span> <span class="nf">alpha</span><span class="o">();</span>
+<span class="o">}</span>
+
+<span class="kd">interface</span> <span class="nc">Beta</span> <span class="o">{</span>
+
+  <span class="nd">@Last</span>
+  <span class="kt">void</span> <span class="nf">beta</span><span class="o">();</span>
+<span class="o">}</span>
+
+<span class="kd">interface</span> <span class="nc">MyHelper</span> <span class="o">{</span>
+
+  <span class="nd">@Last</span>
+  <span class="n">String</span> <span class="nf">startBlock</span><span class="o">(</span>
+    <span class="kt">int</span> <span class="n">paramA</span><span class="o">,</span> <span class="nd">@BlockChain</span><span class="o">(</span><span class="n">Alpha</span><span class="o">.</span><span class="na">class</span><span class="o">)</span> <span class="n">AtomicReference</span><span class="o">&lt;</span><span class="n">Alpha</span><span class="o">&gt;</span> <span class="n">helperA</span><span class="o">,</span>
+    <span class="kt">int</span> <span class="n">paramB</span><span class="o">,</span> <span class="nd">@BlockChain</span><span class="o">(</span><span class="n">Beta</span><span class="o">.</span><span class="na">class</span><span class="o">)</span> <span class="n">AtomicReference</span><span class="o">&lt;</span><span class="n">Beta</span><span class="o">&gt;</span> <span class="n">helperB</span>
+  <span class="o">);</span>
+<span class="o">}</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-69" id="section-69">&#182;</a>
+</div>
+<p>Marks a method parameter as a container for another block's helper.
+The types must match the generic signature of the <code>AtomicReference</code> object,
+or else an error will be thrown at runtime.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="nd">@BlockChain</span><span class="o">(</span><span class="n">Class</span><span class="o">&lt;?&gt;</span> <span class="n">type</span><span class="o">)</span>
+
+
+
+
 
 
 
