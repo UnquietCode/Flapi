@@ -26,6 +26,7 @@ import java.util.List;
  */
 public class MethodOutline extends MethodInfo implements Outline {
 	private final List<BlockOutline> blockChain = new ArrayList<BlockOutline>();
+	private final List<Integer> chainParameterPositions = new ArrayList<Integer>();
 	private boolean isTerminal = false;
 	private String returnType;
 	private Integer group;
@@ -41,6 +42,10 @@ public class MethodOutline extends MethodInfo implements Outline {
 
 	public List<BlockOutline> getBlockChain() {
 		return blockChain;
+	}
+
+	public List<Integer> getChainParameterPositions() {
+		return chainParameterPositions;
 	}
 
 	/*

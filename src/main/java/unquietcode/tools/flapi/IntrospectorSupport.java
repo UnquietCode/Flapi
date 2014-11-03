@@ -16,6 +16,9 @@
 
 package unquietcode.tools.flapi;
 
+import unquietcode.tools.flapi.annotations.BlockChain;
+
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 
 import static com.google.common.base.Preconditions.checkState;
@@ -25,6 +28,21 @@ import static com.google.common.base.Preconditions.checkState;
  * @version 2014-09-07
  */
 public class IntrospectorSupport {
+
+	protected static <T extends Annotation> T getParameterAnnotation(Method method, int parameterIndex, Class<T> annotationClass) {
+		for (Annotation annotation : method.getParameterAnnotations()[parameterIndex]) {
+			if (annotation.annotationType() == annotationClass) {
+				@SuppressWarnings("unchecked") T annotation1 = (T) annotation;
+				return annotation1;
+			}
+		}
+
+		return null;
+	}
+
+	protected static <T extends Annotation> boolean hasParameterAnnotation(Method method, int parameterIndex, Class<T> annotationClass) {
+		return getParameterAnnotation(method, parameterIndex, annotationClass) != null;
+	}
 
 	protected static String getMethodSignature(Method method) {
 		return getMethodSignature(method, null);
@@ -36,13 +54,21 @@ public class IntrospectorSupport {
 		String name = normalizedName != null ? normalizedName : method.getName();
 		signature.append(name).append("(");
 
+		boolean first = true;
 		Class<?>[] parameterTypes = method.getParameterTypes();
 
 		for (int i=0; i < parameterTypes.length; i++) {
 			Class<?> parameterType = parameterTypes[i];
 
-			if (i > 0) {
+			// skip BlockChain parameters
+			if (hasParameterAnnotation(method, i, BlockChain.class)) {
+				continue;
+			}
+
+			if (!first) {
 				signature.append(", ");
+			} else {
+				first = false;
 			}
 
 			final String typeName;

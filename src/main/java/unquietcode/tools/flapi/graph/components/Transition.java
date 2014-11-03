@@ -30,6 +30,7 @@ import java.util.List;
  */
 public abstract class Transition implements Comparable<Transition> {
 	private final List<StateClass> stateChain = new ArrayList<StateClass>();
+	private final List<Integer> chainParameterPositions = new ArrayList<Integer>();
 	private final TransitionType type;
 	private MethodInfo methodInfo = new MethodInfo();
 	private StateClass owner;
@@ -69,6 +70,10 @@ public abstract class Transition implements Comparable<Transition> {
 
 	public String getMethodSignature() {
 		return methodInfo.getMethodSignature();
+	}
+
+	public List<Integer> getChainParameterPositions() {
+		return chainParameterPositions;
 	}
 
 	public MethodInfo info() {

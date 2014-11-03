@@ -16,14 +16,12 @@
 
 package unquietcode.tools.flapi.runtime;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.IdentityHashMap;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
@@ -83,25 +81,49 @@ public class BlockInvocationHandler implements InvocationHandler {
 		return invokeAndReturn(method, args, proxy, info);
 	}
 
+	// handles legacy concerns before the chainInfo() array existed by
+	// synthesizing a new array from the older values
 	private Object invokeAndReturn(Method method, Object[] originalArgs, Object proxy, MethodInfo info) {
-		final int depth = info.chain().length;
+		final ChainInfo[] chain;
 
-		// create the new arguments and types arrays
-		Object[] newArgs = new Object[originalArgs.length+depth];
-		Class<?>[] originalTypes = method.getParameterTypes();
-		Class[] newTypes = new Class[originalTypes.length+depth];
+		// true in v0.5 and before
+		if (info.chain().length > info.chainInfo().length) {
+			List<ChainInfo> chainInfo = new ArrayList<ChainInfo>();
+			int position = originalArgs.length;
 
-		for (int i=0; i < depth; ++i) {
-			newArgs[originalArgs.length+i] = new AtomicReference();
-			newTypes[originalTypes.length+i] = AtomicReference.class;
+			for (Class<?> type : info.chain()) {
+				chainInfo.add(new ChainInfoHolder(position++, type));
+			}
+
+			chain = chainInfo.toArray(new ChainInfo[chainInfo.size()]);
+		} else {
+			chain = info.chainInfo();
 		}
 
-		System.arraycopy(originalArgs, 0, newArgs, 0, originalArgs.length);
-		System.arraycopy(originalTypes, 0, newTypes, 0, originalTypes.length);
+		return invokeAndReturn(method, originalArgs, proxy, info, chain);
+	}
+
+	private Object invokeAndReturn(Method method, Object[] originalArgs, Object proxy, MethodInfo info, ChainInfo[] chain) {
+		// Don't use info.chainInfo() directly, since they might not match due
+		// to legacy considerations (will be removed in 1.0).
+
+		final int depth = chain.length;
+
+		// create the new arguments and types arrays
+		Class<?>[] originalTypes = method.getParameterTypes();
+		List<Class<?>> newTypes = new ArrayList<Class<?>>(Arrays.asList(originalTypes));
+		List<Object> newArgs = new ArrayList<Object>(Arrays.asList(originalArgs));
+
+		for (ChainInfo chainInfo : chain) {
+			newArgs.add(chainInfo.position(), new AtomicReference());
+			newTypes.add(chainInfo.position(), AtomicReference.class);
+		}
+
 		Method helperMethod;
 
 		// find the helper method
-		helperMethod = SpringMethodUtils.findMethod(helper.getClass(), method.getName(), newTypes);
+		final Class<?>[] newTypesArray = newTypes.toArray(new Class[newTypes.size()]);
+		helperMethod = SpringMethodUtils.findMethod(helper.getClass(), method.getName(), newTypesArray);
 
 		if (helperMethod == null) {
 			throw new IllegalStateException("unable to locate method '"+method.getName()+"' on helper");
@@ -112,10 +134,12 @@ public class BlockInvocationHandler implements InvocationHandler {
 			helperMethod.setAccessible(true);
 		}
 
+		final Object[] newArgsArray = newArgs.toArray(new Object[newArgs.size()]);
+
 		// invoke method
 		Object result;
 		try {
-			result = helperMethod.invoke(helper, newArgs);
+			result = helperMethod.invoke(helper, newArgsArray);
 		} catch (IllegalAccessException ex) {
 			throw new IllegalStateException(ex);
 		} catch (InvocationTargetException ex) {
@@ -129,17 +153,18 @@ public class BlockInvocationHandler implements InvocationHandler {
 		Object _returnValue = computeReturnValue(method, proxy, info, depth, helperMethod, result);
 
 		// unwrap helper results
-		for (int i=depth-1; i >= 0; --i) {
-			AtomicReference wrapper = (AtomicReference) newArgs[originalArgs.length+i];
+		for (int i = chain.length-1; i >= 0; --i) {
+			ChainInfo chainInfo = chain[i];
+			AtomicReference wrapper = (AtomicReference) newArgs.get(chainInfo.position());
 
 			if (wrapper.get() == null) {
-				throw new IllegalStateException("null helper provided for method "+method.getName());
+				throw new IllegalStateException("null helper provided for method " + method.getName());
 			}
 
 			BlockInvocationHandler handler
 				= new BlockInvocationHandler(wrapper.get(), _returnValue, listeners);
 
-			_returnValue = handler._proxy(info.chain()[i]);
+			_returnValue = handler._proxy(chainInfo.type());
 		}
 
 		return _returnValue;
@@ -198,6 +223,31 @@ public class BlockInvocationHandler implements InvocationHandler {
 					cur = null;
 				}
 			}
+		}
+	}
+
+	private static class ChainInfoHolder implements ChainInfo {
+		private final int position;
+		private final Class<?> type;
+
+		public ChainInfoHolder(int position, Class<?> type) {
+			this.position = position;
+			this.type = type;
+		}
+
+		@Override
+		public Class<?> type() {
+			return type;
+		}
+
+		@Override
+		public int position() {
+			return position;
+		}
+
+		@Override
+		public Class<? extends Annotation> annotationType() {
+			return ChainInfo.class;
 		}
 	}
 }

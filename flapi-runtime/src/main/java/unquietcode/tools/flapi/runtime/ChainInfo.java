@@ -22,16 +22,15 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
+ * Information about the position and type of a block
+ * chain parameter.
+ *
  * @author Ben Fagin
- * @version 2013-06-30
+ * @version 2014-11-02
  */
+@Target(ElementType.ANNOTATION_TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.METHOD)
-public @interface MethodInfo {
-	TransitionType type();
-
-	@Deprecated Class<?>[] chain() default {};
-	ChainInfo[] chainInfo() default {};
-
-	Class<?> next() default MethodInfo.class;
+public @interface ChainInfo {
+	Class<?> type();
+	int position();
 }

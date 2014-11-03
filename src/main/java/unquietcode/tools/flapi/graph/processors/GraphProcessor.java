@@ -26,11 +26,13 @@ import unquietcode.tools.flapi.graph.components.LateralTransition;
 import unquietcode.tools.flapi.graph.components.StateClass;
 import unquietcode.tools.flapi.graph.components.TerminalTransition;
 import unquietcode.tools.flapi.graph.components.Transition;
+import unquietcode.tools.flapi.runtime.ChainInfo;
 import unquietcode.tools.flapi.runtime.MethodInfo;
 import unquietcode.tools.flapi.runtime.Tracked;
 
 import java.util.Collections;
 import java.util.IdentityHashMap;
+import java.util.List;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -79,11 +81,23 @@ public class GraphProcessor extends AbstractGenerator implements GenericVisitor<
 
 			// store the type information for the state chain
 			if (!transition.getStateChain().isEmpty()) {
-				JAnnotationArrayMember chain = infoAnnotation.paramArray("chain");
+				List<Integer> chainParameterPositions = transition.getChainParameterPositions();
+				int positionCounter = 0;
 
-				for (StateClass sc : transition.getStateChain()) {
+				List<StateClass> stateChain = transition.getStateChain();
+				JAnnotationArrayMember chain = infoAnnotation.paramArray("chainInfo");
+
+				for (int i=0; i < stateChain.size(); i++) {
+					StateClass sc = stateChain.get(i);
 					JClass type = BUILDER_OR_WRAPPER_INTERFACE_STRATEGY.createWeakType(ctx, sc);
-					chain.param(type);
+
+					int position = chainParameterPositions.isEmpty()
+								 ? positionCounter++
+								 : chainParameterPositions.get(i);
+
+					JAnnotationUse chainInfo = chain.annotate(ChainInfo.class);
+					chainInfo.param("type", type);
+					chainInfo.param("position", position);
 				}
 			}
 

@@ -217,6 +217,7 @@ public class GraphBuilder {
 		}
 
 		transition.setMethodInfo(((MethodInfo) method).copy());
+		transition.getChainParameterPositions().addAll(method.getChainParameterPositions());
 		state.addTransitions(transition);
 
 		// state chain

@@ -231,14 +231,11 @@ public class AnnotationIntrospector extends IntrospectorSupport {
 		}
 
 		// block chaining
-		boolean weAreAtTheEnd = false;
-
 		for (int i=0; i < method.getParameterTypes().length; ++i) {
 			Class<?> parameterType = method.getParameterTypes()[i];
 			BlockChain blockChain = getParameterAnnotation(method, i, BlockChain.class);
 
 			if (blockChain != null) {
-				weAreAtTheEnd = true;
 
 				// check type
 				if (parameterType != AtomicReference.class) {
@@ -247,17 +244,7 @@ public class AnnotationIntrospector extends IntrospectorSupport {
 
 				BlockOutline blockOutline = handleClass(blockChain.value());
 				methodOutline.getBlockChain().add(blockOutline);
-//				methodOutline.getChainParameterPositions().add(i);
-			}
-
-			else {
-
-				// We can't currently support block helpers anywhere but the final position
-				if (weAreAtTheEnd) {
-					throw new DescriptorBuilderException(
-						"@BlockChain parameters are currently only supported as the last arguments to the method"
-					);
-				}
+				methodOutline.getChainParameterPositions().add(i);
 			}
 		}
 	}
@@ -271,17 +258,6 @@ public class AnnotationIntrospector extends IntrospectorSupport {
 		}
 
 		helper.finish();
-	}
-
-	private static <T extends Annotation> T getParameterAnnotation(Method method, int parameterIndex, Class<T> annotationClass) {
-		for (Annotation annotation : method.getParameterAnnotations()[parameterIndex]) {
-			if (annotation.annotationType() == annotationClass) {
-				@SuppressWarnings("unchecked") T annotation1 = (T) annotation;
-				return annotation1;
-			}
-		}
-
-		return null;
 	}
 
 	private static <
