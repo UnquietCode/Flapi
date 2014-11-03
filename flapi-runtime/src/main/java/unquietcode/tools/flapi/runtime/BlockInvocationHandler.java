@@ -101,10 +101,10 @@ public class BlockInvocationHandler implements InvocationHandler {
 		Method helperMethod;
 
 		// find the helper method
-		try {
-			helperMethod = helper.getClass().getMethod(method.getName(), newTypes);
-		} catch (NoSuchMethodException ex) {
-			throw new IllegalStateException("internal error", ex);
+		helperMethod = SpringMethodUtils.findMethod(helper.getClass(), method.getName(), newTypes);
+
+		if (helperMethod == null) {
+			throw new IllegalStateException("unable to locate method '"+method.getName()+"' on helper");
 		}
 
 		// make accessible if not (debatable as to whether this is a good idea)

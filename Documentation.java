@@ -31,6 +31,9 @@
  * this later)
  */
 
+import unquietcode.tools.flapi.annotations.Between;
+import unquietcode.tools.flapi.annotations.Last;
+
 EmailGenerator.compose(new EmailHelperImpl())
     .sender("HAL9000@gmail.com")
     .addRecipient("dave@unquietcode.com")
@@ -48,6 +51,9 @@ EmailGenerator.compose(new EmailHelperImpl())
  * new Descriptor using `Flapi.builder()`...`.build()`, making sure to call
  * all of the required methods in between. After the call to build you will
  * have a descriptor which is ready to be generated.
+ *
+ * There are two ways to create a descriptor, via the fluent builder
+ * or by using [annotations]().
  */
 
 Descriptor builder = Flapi.builder()
@@ -59,7 +65,10 @@ Descriptor builder = Flapi.builder()
 	.addMethod("addRecipient(String emailAddress)").atLeast(1)
 	.addMethod("sender(String emailAddress)").exactly(1)
 	.addMethod("body(String text)").atMost(1)
-	.addMethod("send()").last(EmailMessage.class)
+	.addMethod("send()").last(EmailMessage.import java.lang.Class;
+import java.lang.String;
+
+class)
 .build();
 
 builder.writeToStream(System.out);
@@ -76,7 +85,7 @@ builder.writeToStream(System.out);
 
 // Start building a new Descriptor. Zero or more `ExecutionListener`
 // instances can be provided. (check out `MethodLogger`, which is
-// quite helpful when debugging an error)
+// helpful when debugging an error)
 Descriptor descriptor = Flapi.builder(ExecutionListener...listeners)
 
 // Set the package for all generated classes. (**required**)
@@ -456,6 +465,61 @@ public enum TestEnum {
 // Marks the method as `@Deprecated`. Also adds
 // a `@deprecated` tag to the javadocs.
 .markAsDeprecated(String reason)
+
+
+/**
+ * ## Annotations
+ *
+ * Yes, you can!
+ */
+
+
+// marks the method as occurring any number of times
+@Any
+
+// marks the method as occurring any tim
+// copy these from the stuff above
+@Any(int group)
+
+//
+@AtLeast(int value)
+void x()
+
+@AtMost(int value)
+
+@AtMost(int value, int group)
+
+@Between(int minin, int maxInc)
+
+@Exactly(int value)
+
+
+
+// marks the method as last
+@Last
+
+// last with return value
+
+@After(int group)
+
+
+// mark a method parameter as a container for another block
+// helper. The chain is constructed by looking at the last parameters
+// marked with the chain info. In the current implementation, the
+// parameters **must** be placed as the last parameters to the method.
+//
+// The types must match the generic signature of the `AtomicReference` object,
+// or else an error will be thrown at runtime.
+@BlockChain(Class<?>[] types)
+
+// provide documentation for the method
+@Documented(String[] value)
+
+// create a new descriptor by introspecting the class,
+// first for Flapi annotations, and then as a generic bean
+Descriptor descriptor = Flapi.create(Class class)
+
+
 
 
 /**

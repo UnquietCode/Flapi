@@ -21,7 +21,6 @@ import com.google.common.base.Functions;
 import unquietcode.tools.flapi.Constants;
 import unquietcode.tools.flapi.DescriptorBuilderException;
 import unquietcode.tools.flapi.IntrospectorSupport;
-import unquietcode.tools.flapi.SpringMethodUtils;
 import unquietcode.tools.flapi.beans.BeanIntrospector;
 import unquietcode.tools.flapi.helpers.AnnotationsHelperImpl;
 import unquietcode.tools.flapi.helpers.DocumentationHelperImpl;
@@ -29,6 +28,7 @@ import unquietcode.tools.flapi.helpers.MethodHelperImpl;
 import unquietcode.tools.flapi.outline.BlockOutline;
 import unquietcode.tools.flapi.outline.DescriptorOutline;
 import unquietcode.tools.flapi.outline.MethodOutline;
+import unquietcode.tools.flapi.runtime.SpringMethodUtils;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedElement;
@@ -247,6 +247,7 @@ public class AnnotationIntrospector extends IntrospectorSupport {
 
 				BlockOutline blockOutline = handleClass(blockChain.value());
 				methodOutline.getBlockChain().add(blockOutline);
+//				methodOutline.getChainParameterPositions().add(i);
 			}
 
 			else {

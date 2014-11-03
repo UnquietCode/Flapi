@@ -1,5 +1,5 @@
 # Flapi - A fluent API generator for Java
-## v0.5.2 [![Build Status](https://travis-ci.org/UnquietCode/Flapi.png?branch=master)](https://travis-ci.org/UnquietCode/Flapi)
+## v0.6 [![Build Status](https://travis-ci.org/UnquietCode/Flapi.png?branch=master)](https://travis-ci.org/UnquietCode/Flapi)
 
 ### What is it?
 Flapi is a code generation library for creating fluent API's in Java.
@@ -21,6 +21,10 @@ Descriptor builder = Flapi.builder()
 	.addMethod("body(String text)").atMost(1)
 	.addMethod("send()").last(EmailMessage.class)
 .build();
+```
+##### ...or this:
+```java
+annotation example
 ```
 
 ##### ...into this:

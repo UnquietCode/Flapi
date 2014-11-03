@@ -1,3 +1,31 @@
+# Version 0.6
+Flapi Version 0.6 includes a major update to support annotation based configuration
+of descriptors. 
+
+### Annotations
+You can now create descriptors from annotated helper classes and interfaces. See the documentation section on [annotations]() for more details.
+
+## Resolved Issues
+Issues are now handled through GitHub, and historical issues have been migrated from JIRA.
+
+### Features and Improvement
+	+ [FLAPI-188 / #11]: Support for creating descriptors from annotated helper interfaces.
+    + [FLAPI-155 / #52]: Support referencing the current block.
+	+ [FLAPI-185 / #38]: Add @see to generated documentation pointing to actual Helper methods.
+	+ [FLAPI-147 / #36]: Provide Wrapper interface for all blocks.
+
+### Bugs
+	+ [FLAPI-165 / #35]: Get build project working in the reactor build.
+
+### Tasks
+	+ [FLAPI-190 / #34]: Update docs and wiki with annotations info.
+	+ [FLAPI-189 / #17]: Move issues from JIRA to GitHub
+
+The full list of tasks and issues included in the release is available on the project's
+[Issue Tracker](https://github.com/UnquietCode/Flapi/milestones/0.6).
+
+------------------------------------------------
+
 # Version 0.5
 Flapi Version 0.5 has been released! Here are the highlights.
 
@@ -37,7 +65,8 @@ Previously, the wrapper interface was called `$`. Flapi 0.5 has removed all uses
     + [FLAPI-173] - Document method grouping / triggering in wiki.
     + [FLAPI-182] - Create a mailing list / user group for Flapi.
 
-The full list of tasks and issues included in the release is available on the project's [JIRA](https://unquietcode.atlassian.net/secure/ReleaseNote.jspa?projectId=10160&version=10740).
+The full list of tasks and issues included in the release is available on the project's
+[Issue Tracker](https://github.com/UnquietCode/Flapi/issues?q=milestone%3A0.5+milestone%3A0.5.1).
 
 ------------------------------------------------
 
@@ -134,7 +163,7 @@ A brand new documentation page is available at
     + [FLAPI-139] - Create two-column documentation of Flapi features.
 
 The full list of tasks and issues included in the release is available on the project's
-[JIRA](https://unquietcode.atlassian.net/secure/ReleaseNote.jspa?projectId=10160&version=10640).
+[Issue Tracker](https://github.com/UnquietCode/Flapi/issues?q=milestone%3A0.4).
 
 ------------------------------------------------
 
@@ -184,7 +213,7 @@ A screencast which attempts to explain the basic use of Flapi has been posted [h
     * [FLAPI-123] - Add PipedProcess example to project.
 
 The full list of tasks and issues included in the release is available on the project's
-[JIRA](https://unquietcode.atlassian.net/secure/ReleaseNote.jspa?version=10142&styleName=Text&projectId=10160).
+[Issue Tracker](https://github.com/UnquietCode/Flapi/issues?q=milestone%3A0.3).
 
 ------------------------------------------------
 
@@ -209,6 +238,10 @@ This version includes a few notable changes:
 	+ [FLAPI-25] - Create a test harness to test known cases of compilation failures.
 	+ [FLAPI-56] - Incorporate existing examples into tests.
 
+
+The full list of tasks and issues included in the release is available on the project's
+[Issue Tracker](https://github.com/UnquietCode/Flapi/issues?q=milestone%3A0.2).
+
 ------------------------------------------------
 
 # Version 0.1
@@ -216,3 +249,6 @@ Notes also available at: https://github.com/UnquietCode/Flapi/wiki/v0_1
 JIRA: https://unquietcode.atlassian.net/secure/ReleaseNote.jspa?projectId=10160&version=10140
 
 Initial beta release.
+
+The full list of tasks and issues included in the release is available on the project's
+[Issue Tracker](https://github.com/UnquietCode/Flapi/issues?q=milestone%3A0.1).
