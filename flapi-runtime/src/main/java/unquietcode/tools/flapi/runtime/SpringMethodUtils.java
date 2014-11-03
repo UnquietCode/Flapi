@@ -38,8 +38,13 @@ public class SpringMethodUtils {
 	 * @return the Method object, or {@code null} if none found
 	 */
 	public static Method findMethod(Class<?> clazz, String name, Class<?>... paramTypes) {
-		Objects.requireNonNull(clazz, "Class must not be null");
-		Objects.requireNonNull(name, "Method name must not be null");
+		if (clazz == null) {
+			throw new NullPointerException("Class must not be null");
+		}
+
+		if (name == null) {
+			throw new NullPointerException("Method name must not be null");
+		}
 
 		Class<?> searchType = clazz;
 		while (searchType != null) {
