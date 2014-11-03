@@ -39,13 +39,13 @@ public class EmailBuilderExample implements DescriptorMaker {
 		.build();
 	}
 
-	@Test
-	public void annot() {
-		Flapi.create(AnnotatedEmailHelper.class)
-			.setPackage("unquietcode.tools.flapi.examples.email.builder")
-			.setStartingMethodName("compose")
-		.build();
-	}
+//	@Test
+//	public void annotated() {
+//		Flapi.create(AnnotatedEmailHelper.class)
+//			.setPackage("unquietcode.tools.flapi.examples.email.builder")
+//			.setStartingMethodName("compose")
+//		.build();
+//	}
 
 	@Test
 	public void usage() {
