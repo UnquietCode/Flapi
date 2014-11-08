@@ -4,7 +4,7 @@
 
 	<groupId>unquietcode.tools.flapi</groupId>
 	<artifactId>flapi-parent</artifactId>
-	<version>0.0-DEVELOPMENT</version>
+	<version>0.6</version>
 	<packaging>pom</packaging>
 
 	<name>flapi-parent</name>
