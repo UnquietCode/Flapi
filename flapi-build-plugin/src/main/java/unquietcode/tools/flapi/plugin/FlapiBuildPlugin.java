@@ -37,6 +37,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.*;
@@ -292,13 +293,20 @@ public class FlapiBuildPlugin extends AbstractMojo {
 	}
 
 	private static String makeClasspath(URLClassLoader classLoader) {
-		StringBuilder buffer = new StringBuilder();
+		StringBuilder buffer = new StringBuilder("\"");
 
 		for (URL url : classLoader.getURLs()) {
-			buffer.append(new File(url.getPath()));
+			final File file;
+			try {
+				file = new File(url.toURI());
+			} catch (URISyntaxException e) {
+				throw new RuntimeException(e);
+			}
+
+			buffer.append(file);
 			buffer.append(System.getProperty("path.separator"));
 		}
 
-		return buffer.toString();
+		return buffer.append("\"").toString();
 	}
 }
