@@ -43,6 +43,7 @@ public class BlockReference_T extends AbstractCompiledTest {
 
 		descriptor.writeToFolder(getTemporaryFolder());
 		addTestClassMethod("Test", loadResource("BlockChainTest.avaj"));
+		testCompile();
 	}
 
 	@Test
@@ -59,5 +60,6 @@ public class BlockReference_T extends AbstractCompiledTest {
 
 		descriptor.writeToFolder(getTemporaryFolder());
 		addTestClassMethod("Test", loadResource("TopReference.avaj"));
+		testCompile();
 	}
 }
