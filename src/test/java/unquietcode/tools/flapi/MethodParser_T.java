@@ -7,7 +7,6 @@
 
 package unquietcode.tools.flapi;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import unquietcode.tools.flapi.MethodParser.JavaType;
 
@@ -196,31 +195,39 @@ public class MethodParser_T {
 	public void arrayTypeAsReturn() {
 		String methodSignature = "int[] method()";
 		MethodParser parsed = new MethodParser(methodSignature);
-		assertEquals("array type", true, parsed.returnType.isArray);
+		assertEquals("array type", 1, parsed.returnType.arrayDepth);
 	}
 
 	@Test
 	public void arrayTypeAsParameter() {
 		String methodSignature = "void method(int[] p1, String p2)";
 		MethodParser parsed = new MethodParser(methodSignature);
-		assertEquals("array type", true, parsed.params.get(0).first.isArray);
-		assertEquals("not array type", false, parsed.params.get(1).first.isArray);
+		assertEquals("array type", 1, parsed.params.get(0).first.arrayDepth);
+		assertEquals("not array type", 0, parsed.params.get(1).first.arrayDepth);
+	}
+
+	@Test
+	public void multidimensionalArrayTypeAsParameter() {
+		String methodSignature = "void method(int[] [] p1, String p2)";
+		MethodParser parsed = new MethodParser(methodSignature);
+		assertEquals("array type", 2, parsed.params.get(0).first.arrayDepth);
+		assertEquals("not array type", 0, parsed.params.get(1).first.arrayDepth);
 	}
 
 	@Test
 	public void arrayTypeAsParameterAfterIdentifier() {
 		String methodSignature = "void method(int p1, String p2[])";
 		MethodParser parsed = new MethodParser(methodSignature);
-		assertEquals("not array type", false, parsed.params.get(0).first.isArray);
-		assertEquals("array type", true, parsed.params.get(1).first.isArray);
+		assertEquals("not array type", 0, parsed.params.get(0).first.arrayDepth);
+		assertEquals("array type", 1, parsed.params.get(1).first.arrayDepth);
 	}
 
 	@Test
 	public void arrayTypeAsTypeParameter() {
 		String methodSignature = "void method(List<byte[]> list)";
 		MethodParser parsed = new MethodParser(methodSignature);
-		assertEquals("not array type", false, parsed.params.get(0).first.isArray);
-		assertEquals("array type", true, parsed.params.get(0).first.typeParameters.get(0).isArray);
+		assertEquals("not array type", 0, parsed.params.get(0).first.arrayDepth);
+		assertEquals("array type", 1, parsed.params.get(0).first.typeParameters.get(0).arrayDepth);
 	}
 
 	@Test(expected=MethodParser.ParseException.class)
@@ -233,14 +240,23 @@ public class MethodParser_T {
 	public void arrayTypesWithTypeParametersOk1() {
 		String methodSignature = "void method(List<String>[] p1)";
 		MethodParser parsed = new MethodParser(methodSignature);
-		assertEquals("array type", true, parsed.params.get(0).first.isArray);
+		assertEquals("array type", 1, parsed.params.get(0).first.arrayDepth);
 	}
 
 	@Test
 	public void arrayTypesWithTypeParametersOk2() {
 		String methodSignature = "void method(List<String> p1[])";
 		MethodParser parsed = new MethodParser(methodSignature);
-		assertEquals("array type", true, parsed.params.get(0).first.isArray);
+		assertEquals("array type", 1, parsed.params.get(0).first.arrayDepth);
+	}
+
+	@Test
+	public void multidimensionalArrayTypesWithTypeParameters() {
+		String methodSignature = "void method(List<String>[][][] p1)";
+		MethodParser parsed = new MethodParser(methodSignature);
+		assertEquals("string type", "List", parsed.params.get(0).first.typeName);
+		assertEquals("string type", "String", parsed.params.get(0).first.typeParameters.get(0).typeName);
+		assertEquals("array type", 3, parsed.params.get(0).first.arrayDepth);
 	}
 
 	@Test(expected=MethodParser.ParseException.class)
@@ -255,17 +271,13 @@ public class MethodParser_T {
 		new MethodParser(methodSignature);
 	}
 
-	@Ignore("unfinished")
 	@Test
 	public void multiDimensionalArray() {
-		// how to determine the dimensionality?
-
 		String methodSignature = "void method(int[][] p1)";
 		MethodParser parsed = new MethodParser(methodSignature);
-		assertEquals("array type", true, parsed.params.get(0).first.isArray);
+		assertEquals("array type", 2, parsed.params.get(0).first.arrayDepth);
 	}
 
-	@Ignore("unfinished")
 	@Test(expected=MethodParser.ParseException.class)
 	public void multiDimensionalDuplicate() {
 		String methodSignature = "void method(int[][] p1[])";

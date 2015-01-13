@@ -19,6 +19,8 @@ package unquietcode.tools.flapi;
 import javax.lang.model.SourceVersion;
 import java.util.*;
 
+import static com.google.common.base.Preconditions.checkArgument;
+
 /**
  * @author Ben Fagin
  * @version 03-03-2012
@@ -96,11 +98,11 @@ public class MethodParser {
 			match(WS, -1);
 
 			if (peek(LB, 1)) {
-				if (pType.isArray) {
+				if (pType.arrayDepth > 0) {
 					throwGeneralException("duplicate array declaration");
 				}
-				matchArray();
-				pType = new JavaType(pType, true);
+				int arrayDepth = matchArray();
+				pType = new JavaType(pType, arrayDepth);
 			}
 
 			if (seenVarargs) {
@@ -151,7 +153,7 @@ public class MethodParser {
 
 	private JavaType matchType() {
 		String typeName;
-		boolean isArray = false;
+		int arrayDepth = 0;
 		List<JavaType> typeParameters = new ArrayList<JavaType>();
 
 		match(WS, -1);
@@ -159,12 +161,11 @@ public class MethodParser {
 		match(WS, -1);
 
 		if (peek(LB, 1)) {
-			matchArray();
-			isArray = true;
+			arrayDepth = matchArray();
 		}
 
 		if (peek(LAB, 1)) {
-			if (isArray) {
+			if (arrayDepth > 0) {
 				throwGeneralException("invalid array declaration");
 			}
 			match(LAB, 1);
@@ -188,19 +189,26 @@ public class MethodParser {
 		match(WS, -1);
 
 		if (peek(LB, 1)) {
-			matchArray();
-			isArray = true;
+			arrayDepth = matchArray();
 		}
 
-		return new JavaType(typeName, isArray, typeParameters);
+		return new JavaType(typeName, arrayDepth, typeParameters);
 	}
 
-	private void matchArray() {
+	private int matchArray() {
+		int depth = 0;
 		match(WS, -1);
-		match(LB, 1);
-		match(WS, -1);
-		match(RB, 1);
-		match(WS, -1);
+
+		while (peek(LB, 1)) {
+			match(LB, 1);
+			match(WS, -1);
+			match(RB, 1);
+			match(WS, -1);
+
+			++depth;
+		}
+
+		return depth;
 	}
 
 	private String matchIdentifier() {
@@ -344,18 +352,22 @@ public class MethodParser {
 	public static class JavaType {
 		public final String typeName;
 		public final List<JavaType> typeParameters;
-		public final boolean isArray;
+		public final int arrayDepth;
 
-		public JavaType(String typeName, boolean isArray, List<JavaType> typeParameters) {
+		public JavaType(String typeName, int arrayDepth, List<JavaType> typeParameters) {
 			this.typeName = typeName;
-			this.isArray = isArray;
 			this.typeParameters = Collections.unmodifiableList(typeParameters);
+
+			checkArgument(arrayDepth >= 0);
+			this.arrayDepth = arrayDepth;
 		}
 
-		/*package*/ JavaType(JavaType other, boolean isArray) {
+		/*package*/ JavaType(JavaType other, int arrayDepth) {
 			this.typeName = other.typeName;
 			this.typeParameters = other.typeParameters;
-			this.isArray = isArray;
+
+			checkArgument(arrayDepth >= 0);
+			this.arrayDepth = arrayDepth;
 		}
 
 		@Override
@@ -363,7 +375,7 @@ public class MethodParser {
 			StringBuilder sb = new StringBuilder();
 			sb.append(typeName);
 
-			if (isArray) {
+			for (int i=0; i < arrayDepth; ++i) {
 				sb.append("[]");
 			}
 
@@ -394,7 +406,7 @@ public class MethodParser {
 			JavaType other = (JavaType) obj;
 
 			// array check
-			if (this.isArray ^ other.isArray) {
+			if (this.arrayDepth != other.arrayDepth) {
 				return false;
 			}
 
@@ -462,13 +474,13 @@ public class MethodParser {
 		List<Pair<JavaType, String>> newParams = new ArrayList<Pair<JavaType, String>>(params);
 
 		if (varargType != null) {
-			newParams.add(new Pair<JavaType, String>(new JavaType(varargType, true), varargName));
+			newParams.add(new Pair<JavaType, String>(new JavaType(varargType, 1), varargName));
 		}
 
 		List<Pair<JavaType, String>> newOtherParams = new ArrayList<Pair<JavaType, String>>(other.params);
 
 		if (other.varargType != null) {
-			newOtherParams.add(new Pair<JavaType, String>(new JavaType(other.varargType, true), other.varargName));
+			newOtherParams.add(new Pair<JavaType, String>(new JavaType(other.varargType, 1), other.varargName));
 		}
 
 		// parameter size
