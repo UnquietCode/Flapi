@@ -21,7 +21,7 @@ import java.util.Map;
 
 /**
  * Simple suffix generator for graph naming.
- * The output takes the form 'A'->'AC'->'FH' etc. rolling forward as needed.
+ * The output takes the form 'A'→'AC'→'FH' etc. rolling forward as needed.
  * Not so generic, but it gets the job done.
  *
  * @author Ben Fagin

@@ -29,7 +29,7 @@ import unquietcode.tools.flapi.outline.DescriptorOutline;
  * @version 03-07-2012
  *
  * Turns an outline into a code model. The general flow is:
- *      outline -> validate -> build graph -> transform -> validate -> generate
+ *      outline → validate → build graph → transform → validate → generate
  */
 public class DescriptorGenerator extends AbstractGenerator {
 	private DescriptorOutline outline;

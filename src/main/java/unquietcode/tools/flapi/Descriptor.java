@@ -45,6 +45,7 @@ public class Descriptor {
 	 *
 	 * @see com.sun.codemodel.writer.SingleStreamCodeWriter
 	 * @param stream to write generated files
+	 * @return this descriptor, for chaining
 	 */
 	public Descriptor writeToStream(OutputStream stream) {
 		CodeWriter.writeToStream(model, stream);
@@ -60,6 +61,7 @@ public class Descriptor {
 	 *
 	 * @see com.sun.codemodel.writer.FileCodeWriter
 	 * @param folder where files are to be written
+	 * @return this descriptor, for chaining
 	 */
 	public Descriptor writeToFolder(String folder) {
 		File f = new File(folder);
@@ -92,7 +94,9 @@ public class Descriptor {
 
 	/**
 	 * Writes individual files to individual streams.
+	 *
 	 * @param streams stream iterator, should always return another!
+	 * @return this descriptor, for chaining
 	 */
 	public Map<String, OutputStream> writeToStreams(Iterator<OutputStream> streams) {
 		if (streams == null) {

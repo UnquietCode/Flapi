@@ -34,7 +34,7 @@ public final class ExtractRuntime {
 	 * specified as the first argument.
 	 *
 	 * This allows the generated library to be more portable,
-	 * and mimics the behavior in versions <= 0.3
+	 * and mimics the behavior in versions &lt;= 0.3
 	 */
 	public static void main(String[] args) {
 		if (args.length != 1) {

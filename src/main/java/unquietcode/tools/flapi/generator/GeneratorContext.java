@@ -139,9 +139,9 @@ public class GeneratorContext {
 
 	/**
 	 * Generates a name based on the following rules:
-	 *  once => prefix + state name + suffix
-	 *  1st method => name$number
-	 *  2nd..Nth method => name$letter$number
+	 *  once → prefix + state name + suffix
+	 *  1st method → name$number
+	 *  2nd..Nth method → name$letter$number
 	 *
 	 *  Where 'letter' is for instance id and number is maxOccurs.
 	 *  The letter was added to address FLAPI-105, which identified

@@ -43,6 +43,9 @@ public class Flapi {
 
 	/**
 	 * Shortcut to build a new descriptor.
+	 *
+	 * @param listeners any execution listeners to be included
+	 * @return a new descriptor builder
 	 */
 	public static DescriptorBuilder.Start builder(ExecutionListener...listeners) {
 		return DescriptorGenerator.create(new DescriptorHelperImpl(), listeners);
@@ -50,6 +53,9 @@ public class Flapi {
 
 	/**
 	 * Shortcut to build a descriptor from an existing annotated helper class.
+	 *
+	 * @param topBlock the top-level annotated class
+	 * @return a new descriptor builder
 	 *
 	 * @see unquietcode.tools.flapi.annotations.AnnotationIntrospector
 	 */

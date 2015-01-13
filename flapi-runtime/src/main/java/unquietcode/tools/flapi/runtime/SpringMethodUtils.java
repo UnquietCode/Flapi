@@ -64,8 +64,8 @@ public class SpringMethodUtils {
 	/**
 	 * Cache for {@link Class#getDeclaredMethods()}, allowing for fast resolution.
 	 */
-	private static final Map<Class<?>, Reference<Method[]>> declaredMethodsCache = new WeakHashMap<Class<?>, Reference<Method[]>>();
-
+	private static final Map<Class<?>, Reference<Method[]>> declaredMethodsCache
+		= Collections.synchronizedMap(new WeakHashMap<Class<?>, Reference<Method[]>>());
 
 
 	/**
