@@ -142,7 +142,13 @@ public class MethodInfo implements Comparable<MethodInfo> {
 
 	public String keyString() {
 		StringBuilder sb = new StringBuilder();
-		MethodParser parser = new MethodParser(methodSignature);
+
+		final MethodParser parser;
+		try {
+			parser = new MethodParser(methodSignature);
+		} catch (MethodParser.ParseException e) {
+			throw new DescriptorBuilderException(e);
+		}
 
 		sb.append(parser.methodName).append("_1");
 		boolean first = true;
