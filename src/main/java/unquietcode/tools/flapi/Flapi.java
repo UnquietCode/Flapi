@@ -37,7 +37,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * @version 05-11-2012
  */
 public class Flapi {
-	private static SourceVersion JDKVersion = SourceVersion.RELEASE_6;
+	private static SourceVersion JDKVersion = SourceVersion.RELEASE_7;
 	private static boolean outputRuntime = false;
 
 
