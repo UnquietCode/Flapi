@@ -17,7 +17,6 @@
 package unquietcode.tools.flapi.graph.components;
 
 
-import java.util.HashSet;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -28,7 +27,7 @@ import static com.google.common.base.Preconditions.checkState;
  * @version 07-10-2012
  */
 public class StateClass {
-	protected Set<Transition> transitions = new HashSet<Transition>();
+	protected Set<Transition> transitions = new TreeSet<Transition>();
 	private Object blockMarker;
 	private String name;
 	private boolean isTopLevel = false;

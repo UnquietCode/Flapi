@@ -37,6 +37,8 @@ public class DescriptorGenerator extends AbstractGenerator {
 	public DescriptorGenerator(DescriptorOutline outline) {
 		super(new GeneratorContext(outline.getPackageName()));
 		ctx.condenseNames(outline.shouldEnableCondensedNames());
+		ctx.disableTimestamps(outline.shouldDisableTimestamps());
+
 		this.outline = outline;
 	}
 	

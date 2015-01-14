@@ -1,8 +1,6 @@
 package unquietcode.tools.flapi.builder;
 
 import unquietcode.tools.flapi.Descriptor;
-import unquietcode.tools.flapi.DescriptorMaker;
-import unquietcode.tools.flapi.Flapi;
 
 /**
  * @author Benjamin Fagin
@@ -10,32 +8,24 @@ import unquietcode.tools.flapi.Flapi;
  *
  * The main descriptor for Flapi, used to generate other descriptors.
  */
-public class MainDescriptor implements DescriptorMaker {
+public class MainDescriptor extends BaseDescriptor {
 	private static final int DOC_GROUP = 1;
 	private static final int RETURN_TYPE_GROUP = 2;
 
 	@Override
 	public Descriptor descriptor() {
-		Descriptor builder = Flapi.builder()
+		Descriptor builder = baseBuilder()
 
 			// descriptor configuration
 			.setPackage("unquietcode.tools.flapi.builder")
 			.setStartingMethodName("create")
 			.setDescriptorName("Descriptor")
-			.enableCondensedClassNames()
 
 			// descriptor methods
-			.addMethod("setPackage(String packageName)")
-				.withDocumentation("set the root package name to use for the generated classes")
-			.exactly(1)
 
 			.addMethod("setDescriptorName(String descriptorName)")
 				.withDocumentation("set the name of the top level descriptor")
 			.exactly(1)
-
-			.addMethod("setStartingMethodName(String methodName)")
-				.withDocumentation("set the name of the generator's starting method (default is 'create')")
-			.atMost(1)
 
 			.addMethod("setReturnType(Class returnType)")
 				.withDocumentation("set the return type for the top level descriptor (default is void)")
@@ -45,17 +35,6 @@ public class MainDescriptor implements DescriptorMaker {
 				.withDocumentation("set the return type for the top level descriptor (default is void)")
 			.atMost(1, RETURN_TYPE_GROUP)
 
-			.addMethod("enableCondensedClassNames()")
-				.withDocumentation()
-					.addContent("Allow class names to be condensed, at the cost of no longer being\n")
-					.addContent("humanly readable. If your generated class names are too long to be\n")
-					.addContent("compiled, you will have to use this.")
-				.finish()
-			.atMost(1)
-
-			.addMethod("build()")
-				.withDocumentation("Finish work and build the descriptor. This should only be called once.")
-			.last(Descriptor.class)
 
 			// Method
 			.startBlock("Method", "addMethod(String methodSignature)")

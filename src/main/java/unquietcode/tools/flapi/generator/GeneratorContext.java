@@ -58,6 +58,7 @@ public class GeneratorContext {
 	private final Map<String, JDefinedClass> interfaces = new HashMap<String, JDefinedClass>();
 	private final Map<String, JDefinedClass> classes = new HashMap<String, JDefinedClass>();
 	private boolean condenseNames = false;
+	private boolean enableTimestamps = true;
 
 	public GeneratorContext(String rootPackage) {
 		if (rootPackage != null && !rootPackage.trim().equals("")) {
@@ -79,6 +80,10 @@ public class GeneratorContext {
 
 	public void condenseNames(boolean value) {
 		condenseNames = value;
+	}
+
+	public void disableTimestamps(boolean value) {
+		enableTimestamps = !value;
 	}
 
 	public Pair<JDefinedClass, Boolean> getOrCreateInterface(String subPackage, String name) {
@@ -240,16 +245,27 @@ public class GeneratorContext {
 		if (header == null) {
 			generationDate = new Date();
 
-			header = new StringBuilder()
+			StringBuilder sb = new StringBuilder()
 				.append("This class was generated using Flapi, the fluent API generator for Java.\n")
 				.append("Modifications to this file will be lost upon regeneration.\n")
 				.append("You have been warned!\n")
 				.append("\n")
 				.append("Visit ").append(Constants.PROJECT_URL).append(" for more information.\n")
 				.append("\n\n")
-				.append("Generated on ").append(humanReadableDateFormat.format(generationDate))
-				.append(" using version ").append(Constants.PROJECT_VERSION)
-			.toString();
+			;
+
+			// optional timestamp with project version
+			if (enableTimestamps) {
+				sb.append("Generated on ").append(humanReadableDateFormat.format(generationDate))
+				  .append(" using version ").append(Constants.PROJECT_VERSION);
+			}
+
+			// otherwise just the project version
+			else {
+				sb.append("Generated using version ").append(Constants.PROJECT_VERSION);
+			}
+
+			header = sb.toString();
 		}
 
 		// javadoc header
@@ -257,11 +273,16 @@ public class GeneratorContext {
 
 		// @Generated, when JDK version is >= 6
 		if (Flapi.getJDKVersion().ordinal() >= SourceVersion.RELEASE_6.ordinal()) {
-			clazz.annotate(Generated.class)
-				.param("value", "unquietcode.tools.flapi")
-				.param("date", iso8601DateFormat.format(generationDate))
-				.param("comments", "generated using Flapi, the fluent API generator for Java")
-			;
+			final JAnnotationUse generatedAnnotation = clazz.annotate(Generated.class);
+			generatedAnnotation.param("value", "unquietcode.tools.flapi");
+
+			// optional date
+			if (enableTimestamps) {
+				generatedAnnotation.param("date", iso8601DateFormat.format(generationDate));
+			}
+
+			// always a comment with tool version
+			generatedAnnotation.param("comments", "generated using Flapi, the fluent API generator for Java, version "+Constants.PROJECT_VERSION);
 		}
 	}
 }

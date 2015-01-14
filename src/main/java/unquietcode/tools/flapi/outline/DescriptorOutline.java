@@ -28,6 +28,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class DescriptorOutline extends BlockOutline implements Outline {
 	private String packageName;
 	private boolean enableCondensedNames = false;
+	private boolean disableTimestamps = false;
 	private final GeneratorOutline generator = new GeneratorOutline(this);
 
 	public GeneratorOutline getGenerator() {
@@ -42,8 +43,16 @@ public class DescriptorOutline extends BlockOutline implements Outline {
 		enableCondensedNames = value;
 	}
 
+	public void disableTimestamps(boolean value) {
+		disableTimestamps = value;
+	}
+
 	public boolean shouldEnableCondensedNames() {
 		return enableCondensedNames;
+	}
+
+	public boolean shouldDisableTimestamps() {
+		return disableTimestamps;
 	}
 
 	public void setCreateMethod(String methodName) {

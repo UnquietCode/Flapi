@@ -56,4 +56,9 @@ public class DescriptorConfiguratorHelperImpl implements DescriptorConfiguratorH
 	public void enableCondensedClassNames() {
 		outline.enableCondensedNames(true);
 	}
+
+	@Override
+	public void disableTimestamps() {
+		outline.disableTimestamps(true);
+	}
 }
