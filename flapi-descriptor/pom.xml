@@ -12,7 +12,7 @@
 	</parent>
 
 	<artifactId>flapi-builder</artifactId>
-	<version>0.6</version>
+	<version>0.6.1</version>
 	<packaging>jar</packaging>
 
 	<name>Flapi's Descriptor Builder</name>
