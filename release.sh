@@ -36,4 +36,4 @@ cd ..
 #find . -name "pom.xml" -exec sed -i -e "$replacement" {} \;
 
 # reset to the last working commit
-git reset --hard HEAD~1
+#git reset --hard HEAD~1
