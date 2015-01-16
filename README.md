@@ -1,5 +1,5 @@
 # Flapi - A fluent API generator for Java
-## v0.6 [![Build Status](https://travis-ci.org/UnquietCode/Flapi.png?branch=master)](https://travis-ci.org/UnquietCode/Flapi)
+## v0.6.1 [![Build Status](https://travis-ci.org/UnquietCode/Flapi.png?branch=master)](https://travis-ci.org/UnquietCode/Flapi)
 
 ### What is it?
 Flapi is a code generation library for creating fluent API's in Java.
@@ -69,7 +69,7 @@ repository and dependency in your POM file:
 <dependency>
   <groupId>unquietcode.tools.flapi</groupId>
   <artifactId>flapi</artifactId>
-  <version>0.6</version>
+  <version>0.6.1</version>
   <scope>test</scope>
 </dependency>
 ```
