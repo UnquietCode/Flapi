@@ -16,8 +16,10 @@
 
 package unquietcode.tools.flapi.graph.processors;
 
+import com.google.common.base.Function;
 import com.sun.codemodel.*;
 import unquietcode.tools.flapi.Constants;
+import unquietcode.tools.flapi.MethodParser;
 import unquietcode.tools.flapi.generator.AbstractGenerator;
 import unquietcode.tools.flapi.generator.GeneratorContext;
 import unquietcode.tools.flapi.graph.GenericVisitor;
@@ -81,8 +83,27 @@ public class GraphProcessor extends AbstractGenerator implements GenericVisitor<
 
 			// store the type information for the state chain
 			if (!transition.getStateChain().isEmpty()) {
-				List<Integer> chainParameterPositions = transition.getChainParameterPositions();
-				int positionCounter = 0;
+				final List<Integer> chainParameterPositions = transition.getChainParameterPositions();
+				final Function<Integer, Integer> positionFunction;
+
+				// if no specific parameters, start after the last regular parameter
+				if (transition.getChainParameterPositions().isEmpty()) {
+					final int offset = new MethodParser(transition.getMethodSignature()).params.size();
+
+					positionFunction = new Function<Integer, Integer>() {
+						public Integer apply(Integer idx) {
+							return offset + idx;
+						}
+					};
+
+				// otherwise, use the provided position
+				} else {
+					positionFunction = new Function<Integer, Integer>() {
+						public Integer apply(Integer idx) {
+							return chainParameterPositions.get(idx);
+						}
+					};
+				}
 
 				List<StateClass> stateChain = transition.getStateChain();
 				JAnnotationArrayMember chain = infoAnnotation.paramArray("chainInfo");
@@ -90,10 +111,7 @@ public class GraphProcessor extends AbstractGenerator implements GenericVisitor<
 				for (int i=0; i < stateChain.size(); i++) {
 					StateClass sc = stateChain.get(i);
 					JClass type = BUILDER_OR_WRAPPER_INTERFACE_STRATEGY.createWeakType(ctx, sc);
-
-					int position = chainParameterPositions.isEmpty()
-								 ? positionCounter++
-								 : chainParameterPositions.get(i);
+					final int position = positionFunction.apply(i);
 
 					JAnnotationUse chainInfo = chain.annotate(ChainInfo.class);
 					chainInfo.param("type", type);
