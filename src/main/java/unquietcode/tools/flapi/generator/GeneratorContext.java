@@ -19,6 +19,8 @@ package unquietcode.tools.flapi.generator;
 import com.sun.codemodel.*;
 import unquietcode.tools.flapi.*;
 import unquietcode.tools.flapi.MethodParser.JavaType;
+import unquietcode.tools.flapi.generator.naming.DefaultNameGenerator;
+import unquietcode.tools.flapi.generator.naming.NameGenerator;
 import unquietcode.tools.flapi.graph.BlockMethodTracker;
 import unquietcode.tools.flapi.graph.components.StateClass;
 import unquietcode.tools.flapi.graph.components.Transition;
@@ -30,6 +32,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * @author Ben Fagin
@@ -54,10 +57,11 @@ public class GeneratorContext {
 
 	public final JCodeModel model = new JCodeModel();
 	public final BlockMethodTracker helperMethods = new BlockMethodTracker();
+
 	private final JPackage thePackage;
 	private final Map<String, JDefinedClass> interfaces = new HashMap<String, JDefinedClass>();
 	private final Map<String, JDefinedClass> classes = new HashMap<String, JDefinedClass>();
-	private boolean condenseNames = false;
+	private NameGenerator nameGenerator = new DefaultNameGenerator();
 	private boolean enableTimestamps = true;
 
 	public GeneratorContext(String rootPackage) {
@@ -78,8 +82,8 @@ public class GeneratorContext {
 		return name;
 	}
 
-	public void condenseNames(boolean value) {
-		condenseNames = value;
+	public void setNameGenerator(NameGenerator generator) {
+		this.nameGenerator = Objects.requireNonNull(generator);
 	}
 
 	public void disableTimestamps(boolean value) {
@@ -137,8 +141,6 @@ public class GeneratorContext {
 
 	//---o---o---o---o---o---o---o--- Name Creation --o---o---o---o---o---o---o---o---o---o---//
 
-	Map<String, String> nameMap = new HashMap<String, String>();
-	int nameIdCounter = 1;
 	private final Map<String, String> hashToSuffix = new HashMap<String, String>();
 	private final Map<String, CharacterGenerator> nameToGenerator = new HashMap<String, CharacterGenerator>();
 
@@ -206,34 +208,26 @@ public class GeneratorContext {
 				hashToSuffix.put(krazyKey, methodSuffix);
 			}
 
-			name.append("_2");
+			// method name
+			name.append("_2").append(nameGenerator.methodName(methodName));
 
-			if (condenseNames) {
-				if (nameMap.containsKey(methodName)) {
-					name.append(nameMap.get(methodName));
-				} else {
-					String gen = "m"+(nameIdCounter++);
-					name.append(gen);
-					nameMap.put(methodName, gen);
-				}
-			} else {
-				name.append(methodName);
-			}
-
+			// remaining invocations
 			if (transition.info().getMaxOccurrences() > 1) {
 				name.append("_3").append(transition.info().getMaxOccurrences());
 			}
 
+			// triggered methods
 			if (transition.info().didTrigger()) {
 				name.append("_4t");
 			}
 
+			// implicit terminals
 			if (isImplicit) {
 				name.append("_5t");
 			}
 		}
 
-		return name.toString();
+		return nameGenerator.className(name.toString());
 	}
 
 	//---o---o---o---o---o---o---o---o---o---o---o---o---o---o---o---o---o---o---o---o---o---o---//

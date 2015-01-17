@@ -18,6 +18,7 @@ package unquietcode.tools.flapi.helpers;
 
 import unquietcode.tools.flapi.Descriptor;
 import unquietcode.tools.flapi.configurator.DescriptorConfigurator.DescriptorConfiguratorHelper;
+import unquietcode.tools.flapi.generator.naming.NameGenerator;
 import unquietcode.tools.flapi.outline.DescriptorOutline;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -60,5 +61,10 @@ public class DescriptorConfiguratorHelperImpl implements DescriptorConfiguratorH
 	@Override
 	public void disableTimestamps() {
 		outline.disableTimestamps(true);
+	}
+
+	@Override
+	public void useCustomNameGenerator(NameGenerator generator) {
+		outline.setCustomNameGenerator(generator);
 	}
 }
