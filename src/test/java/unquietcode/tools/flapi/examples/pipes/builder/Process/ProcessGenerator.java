@@ -1,6 +1,7 @@
 
 package unquietcode.tools.flapi.examples.pipes.builder.Process;
 
+import unquietcode.tools.flapi.Supplier;
 import unquietcode.tools.flapi.examples.pipes.builder.Process.ProcessBuilder.Start;
 import unquietcode.tools.flapi.runtime.BlockInvocationHandler;
 import unquietcode.tools.flapi.runtime.ExecutionListener;
@@ -16,9 +17,9 @@ import javax.annotation.Generated;
  * Visit https://github.com/UnquietCode/Flapi for more information.
  * 
  * 
- * Generated on August 13, 2014 16:08:21 PDT using version 0.0-DEVELOPMENT
+ * Generated using version 0.0-DEVELOPMENT
  */
-@Generated(value = "unquietcode.tools.flapi", date = "2014-08-13T16:08:21-07:00", comments = "generated using Flapi, the fluent API generator for Java")
+@Generated(value = "unquietcode.tools.flapi", comments = "generated using Flapi, the fluent API generator for Java, version 0.0-DEVELOPMENT")
 public class ProcessGenerator {
     public static Start<Void> begin(ProcessHelper helper, ExecutionListener... listeners) {
         if (helper == null) {
@@ -28,5 +29,14 @@ public class ProcessGenerator {
         BlockInvocationHandler handler = new BlockInvocationHandler(helper, null);
         handler.addListeners(listeners);
         return handler._proxy(Start.class);
+    }
+
+    public static ProcessFactory factory(final Supplier<ProcessHelper> provider, final ExecutionListener... listeners) {
+        return new ProcessFactory() {
+            public Start<Void> begin() {
+                ProcessHelper helper = provider.get();
+                return ProcessGenerator.begin(helper, listeners);
+            }
+        };
     }
 }

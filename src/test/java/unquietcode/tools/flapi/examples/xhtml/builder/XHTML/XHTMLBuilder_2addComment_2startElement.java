@@ -2,6 +2,7 @@
 package unquietcode.tools.flapi.examples.xhtml.builder.XHTML;
 
 import org.w3c.dom.Document;
+import unquietcode.tools.flapi.runtime.ChainInfo;
 import unquietcode.tools.flapi.runtime.MethodInfo;
 import unquietcode.tools.flapi.runtime.TransitionType;
 
@@ -16,10 +17,10 @@ import javax.annotation.Generated;
  * Visit https://github.com/UnquietCode/Flapi for more information.
  * 
  * 
- * Generated on August 13, 2014 16:08:21 PDT using version 0.0-DEVELOPMENT
+ * Generated using version 0.0-DEVELOPMENT
  * @see unquietcode.tools.flapi.examples.xhtml.builder.XHTML.XHTMLHelper
  */
-@Generated(value = "unquietcode.tools.flapi", date = "2014-08-13T16:08:21-07:00", comments = "generated using Flapi, the fluent API generator for Java")
+@Generated(value = "unquietcode.tools.flapi", comments = "generated using Flapi, the fluent API generator for Java, version 0.0-DEVELOPMENT")
 public interface XHTMLBuilder_2addComment_2startElement<_ReturnType> {
     @MethodInfo(type = TransitionType.Recursive)
     unquietcode.tools.flapi.examples.xhtml.builder.XHTML.XHTMLBuilder.Start<_ReturnType> addComment(String comment);
@@ -27,8 +28,8 @@ public interface XHTMLBuilder_2addComment_2startElement<_ReturnType> {
     @MethodInfo(type = TransitionType.Terminal)
     Document done();
 
-    @MethodInfo(type = TransitionType.Recursive, chain = {
-        unquietcode.tools.flapi.examples.xhtml.builder.Element.ElementBuilder.Start.class
+    @MethodInfo(type = TransitionType.Recursive, chainInfo = {
+        @ChainInfo(type = unquietcode.tools.flapi.examples.xhtml.builder.Element.ElementBuilder.Start.class, position = 1)
     })
     unquietcode.tools.flapi.examples.xhtml.builder.Element.ElementBuilder.Start<unquietcode.tools.flapi.examples.xhtml.builder.XHTML.XHTMLBuilder.Start<_ReturnType>> startElement(String tagName);
 }

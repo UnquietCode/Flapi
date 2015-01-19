@@ -4,6 +4,7 @@ package unquietcode.tools.flapi.examples.house.builder.House;
 import unquietcode.tools.flapi.examples.house.AffordableHouse;
 import unquietcode.tools.flapi.examples.house.ExpensiveHouse;
 import unquietcode.tools.flapi.examples.house.Wall;
+import unquietcode.tools.flapi.runtime.ChainInfo;
 import unquietcode.tools.flapi.runtime.MethodInfo;
 import unquietcode.tools.flapi.runtime.TransitionType;
 
@@ -18,12 +19,12 @@ import javax.annotation.Generated;
  * Visit https://github.com/UnquietCode/Flapi for more information.
  * 
  * 
- * Generated on August 13, 2014 16:08:21 PDT using version 0.0-DEVELOPMENT
+ * Generated using version 0.0-DEVELOPMENT
  */
-@Generated(value = "unquietcode.tools.flapi", date = "2014-08-13T16:08:21-07:00", comments = "generated using Flapi, the fluent API generator for Java")
+@Generated(value = "unquietcode.tools.flapi", comments = "generated using Flapi, the fluent API generator for Java, version 0.0-DEVELOPMENT")
 public interface HouseBuilder<_ReturnType> {
-    @MethodInfo(type = TransitionType.Terminal, chain = {
-        unquietcode.tools.flapi.examples.house.builder.Wall.WallBuilder.Start.class
+    @MethodInfo(type = TransitionType.Terminal, chainInfo = {
+        @ChainInfo(type = unquietcode.tools.flapi.examples.house.builder.Wall.WallBuilder.Start.class, position = 0)
     })
     unquietcode.tools.flapi.examples.house.builder.Wall.WallBuilder.Start<Wall> addWall();
 

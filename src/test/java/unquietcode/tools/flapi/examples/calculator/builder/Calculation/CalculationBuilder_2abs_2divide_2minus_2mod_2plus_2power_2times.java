@@ -16,10 +16,10 @@ import javax.annotation.Generated;
  * Visit https://github.com/UnquietCode/Flapi for more information.
  * 
  * 
- * Generated on January 16, 2015 21:49:46 PST using version 0.0-DEVELOPMENT
+ * Generated using version 0.0-DEVELOPMENT
  * @see unquietcode.tools.flapi.examples.calculator.Calculation
  */
-@Generated(value = "unquietcode.tools.flapi", date = "2015-01-16T21:49:46-08:00", comments = "generated using Flapi, the fluent API generator for Java, version 0.0-DEVELOPMENT")
+@Generated(value = "unquietcode.tools.flapi", comments = "generated using Flapi, the fluent API generator for Java, version 0.0-DEVELOPMENT")
 public interface CalculationBuilder_2abs_2divide_2minus_2mod_2plus_2power_2times<_ReturnType> {
     @MethodInfo(type = TransitionType.Recursive)
     Start<_ReturnType> abs();
