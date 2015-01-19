@@ -25,7 +25,7 @@ import com.google.common.base.Function;
  * @author Ben Fagin
  * @version 2015-01-14
  */
-public class HashedNameGenerator implements NameGenerator {
+public class HashedNameGenerator extends DefaultNameGenerator {
 	private final Function<String, String> methodNameHasher = new Hasher("m");
 	private final Function<String, String> stateNameHasher = new Hasher("S");
 

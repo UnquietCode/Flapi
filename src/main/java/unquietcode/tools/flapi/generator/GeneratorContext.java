@@ -82,6 +82,10 @@ public class GeneratorContext {
 		return name;
 	}
 
+	public NameGenerator getNameGenerator() {
+		return nameGenerator;
+	}
+
 	public void setNameGenerator(NameGenerator generator) {
 		this.nameGenerator = Objects.requireNonNull(generator);
 	}
@@ -155,14 +159,12 @@ public class GeneratorContext {
 	 *  a lack of support for two methods with the same name but
 	 *  different parameters.
 	 *
-	 * @param prefix prefix for the name (eg 'Impl')
-	 * @param suffix suffix for the name (eg 'Builder')
 	 * @param state state to generate a name for
 	 * @return the generated name, which should be unique across the graph
 	 */
-	public String getGeneratedName(String prefix, String suffix, StateClass state) {
-		StringBuilder name = new StringBuilder();
-		name.append(prefix).append(state.getName()).append(suffix);
+	public String getGeneratedName(StateClass state) {
+		final String builderName = nameGenerator.builderName(state.getName());
+		final StringBuilder name = new StringBuilder(builderName);
 
 		for (Transition transition : state.getTransitions()) {
 			final boolean isImplicit = transition.info().isImplicit();

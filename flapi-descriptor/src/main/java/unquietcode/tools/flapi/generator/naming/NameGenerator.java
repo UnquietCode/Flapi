@@ -47,4 +47,20 @@ public interface NameGenerator {
 	 * @return a new state name, or the same, but not null
 	 */
 	String className(String stateKey);
+
+
+	// *Generator
+	String generatorName(String stateName);
+
+	// *Factory
+	String factoryName(String stateName);
+
+	// *Helper
+	String helperName(String stateName);
+
+	// *Builder
+	String builderName(String stateName);
+
+	// Start
+	String wrapperName(String stateName);
 }

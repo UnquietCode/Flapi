@@ -17,8 +17,7 @@
 package unquietcode.tools.flapi.generator.naming;
 
 /**
- * Default name generator, which acts simply as a pass-through
- * for the provided names.
+ * Default name generator.
  *
  * @author Ben Fagin
  * @version 2015-01-14
@@ -33,5 +32,30 @@ public class DefaultNameGenerator implements NameGenerator {
 	@Override
 	public String className(String stateKey) {
 		return stateKey;
+	}
+
+	@Override
+	public String generatorName(String stateName) {
+		return stateName+"Generator";
+	}
+
+	@Override
+	public String factoryName(String stateName) {
+		return stateName+"Factory";
+	}
+
+	@Override
+	public String helperName(String stateName) {
+		return stateName+"Helper";
+	}
+
+	@Override
+	public String builderName(String stateName) {
+		return stateName+"Builder";
+	}
+
+	@Override
+	public String wrapperName(String stateName) {
+		return "Start";
 	}
 }

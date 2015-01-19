@@ -9,6 +9,7 @@ package unquietcode.tools.flapi;
 
 import org.junit.Test;
 import unquietcode.tools.flapi.generator.GeneratorContext;
+import unquietcode.tools.flapi.generator.naming.DefaultNameGenerator;
 import unquietcode.tools.flapi.graph.components.LateralTransition;
 import unquietcode.tools.flapi.graph.components.StateClass;
 import unquietcode.tools.flapi.graph.components.Transition;
@@ -30,16 +31,21 @@ public class GraphNaming_T {
 		t2.info().setMaxOccurrences(1);
 
 		GeneratorContext ctx = new GeneratorContext("");
+		ctx.setNameGenerator(new DefaultNameGenerator() {
+			public @Override String builderName(String stateName) {
+				return stateName;
+			}
+		});
 
 		StateClass sc1 = new StateClass();
 		sc1.setName("State");
 		sc1.addTransitions(t1);
-		String s1 = ctx.getGeneratedName("", "", sc1);
+		String s1 = ctx.getGeneratedName(sc1);
 
 		StateClass sc2 = new StateClass();
 		sc2.setName("State");
 		sc2.addTransitions(t2);
-		String s2 = ctx.getGeneratedName("", "", sc2);
+		String s2 = ctx.getGeneratedName(sc2);
 
 		assertFalse(s1.equals(s2));
 	}
@@ -62,7 +68,13 @@ public class GraphNaming_T {
 		sc1.addTransitions(t1, t2);
 
 		GeneratorContext ctx = new GeneratorContext("");
-		String name = ctx.getGeneratedName("", "", sc1);
+		ctx.setNameGenerator(new DefaultNameGenerator() {
+			public @Override String builderName(String stateName) {
+				return stateName;
+			}
+		});
+
+		String name = ctx.getGeneratedName(sc1);
 		assertEquals("expected the same name", "State_2method_2method_1A", name);
 	}
 }

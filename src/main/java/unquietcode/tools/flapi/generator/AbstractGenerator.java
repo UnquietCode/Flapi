@@ -42,9 +42,8 @@ public abstract class AbstractGenerator {
 
 	protected static final TypeCreationStrategy BUILDER_INTERFACE_STRATEGY = new DefaultTypeCreationStrategy() {
 		public @Override JDefinedClass createStrongType(GeneratorContext ctx, StateClass state) {
-			String name = ctx.getGeneratedName("", "Builder", state);
-
-			Pair<JDefinedClass, Boolean> construction = ctx.getOrCreateInterface(state.getName(), name);
+			final String name = ctx.getGeneratedName(state);
+			final Pair<JDefinedClass, Boolean> construction = ctx.getOrCreateInterface(state.getName(), name);
 			final JDefinedClass _interface = construction.first;
 			final boolean created = construction.second;
 
@@ -128,33 +127,35 @@ public abstract class AbstractGenerator {
 			if (state.getHelperClass() != null) {
 				return null;
 			} else {
-				return ctx.getOrCreateInterface(state.getName(), state.getName() + "Helper").first;
+				String name = ctx.getNameGenerator().helperName(state.getName());
+				return ctx.getOrCreateInterface(state.getName(), name).first;
 			}
 		}
 	};
 
 	protected static final TypeCreationStrategy GENERATOR_CLASS_STRATEGY = new DefaultTypeCreationStrategy() {
 		public JDefinedClass createStrongType(GeneratorContext ctx, StateClass state) {
-			String name = state.getName()+"Generator";
+			String name = ctx.getNameGenerator().generatorName(state.getName());
 			return ctx.getOrCreateClass(state.getName(), name).first;
 		}
 	};
 
 	protected static final TypeCreationStrategy FACTORY_INTERFACE_STRATEGY = new DefaultTypeCreationStrategy() {
 		public JDefinedClass createStrongType(GeneratorContext ctx, StateClass state) {
-			String name = state.getName()+"Factory";
+			String name = ctx.getNameGenerator().factoryName(state.getName());
 			return ctx.getOrCreateInterface(state.getName(), name).first;
 		}
 	};
 
 	public static final TypeCreationStrategy WRAPPER_INTERFACE_STRATEGY = new DefaultTypeCreationStrategy() {
 		public @Override JDefinedClass createStrongType(GeneratorContext ctx, StateClass state) {
-			String name = state.getName()+"Builder";
-			JDefinedClass parent = ctx.getOrCreateInterface(state.getName(), name).first;
+			final String builderName = ctx.getNameGenerator().builderName(state.getName());
+			final JDefinedClass parent = ctx.getOrCreateInterface(state.getName(), builderName).first;
 			JDefinedClass startClass;
 
 			try {
-				startClass = parent._interface("Start");
+				String wrapperName = ctx.getNameGenerator().wrapperName(state.getName());
+				startClass = parent._interface(wrapperName);
 			} catch (JClassAlreadyExistsException ex) {
 				return ex.getExistingClass();
 			}
