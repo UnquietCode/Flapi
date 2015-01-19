@@ -19,5 +19,5 @@ import java.util.concurrent.atomic.AtomicReference;
 public interface Calculator {
 
 	@Last
-	void $(int startingValue, @BlockChain(Calculation.class) AtomicReference<Calculation> helper);
+	void $(int startingValue, @BlockChain AtomicReference<Calculation> helper);
 }

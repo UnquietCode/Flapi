@@ -17,6 +17,8 @@
 package unquietcode.tools.flapi;
 
 import unquietcode.tools.flapi.annotations.BlockChain;
+import unquietcode.tools.spring.generics.MethodParameter;
+import unquietcode.tools.spring.generics.ResolvableType;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
@@ -89,7 +91,27 @@ public class IntrospectorSupport {
 				typeName = parameterType.getName();
 			}
 
-			signature.append(typeName).append(" p").append(i);
+			// raw type
+			signature.append(typeName);
+
+			// generics
+			Class<?>[] generics = ResolvableType.forMethodParameter(MethodParameter.forMethodOrConstructor(method, i)).resolveGenerics();
+
+			if (generics != null && generics.length > 0) {
+				signature.append("<");
+
+				for (int p = 0; p < generics.length; ++p) {
+					if (p != 0) { signature.append(", "); }
+
+					Class<?> generic = generics[p];
+					signature.append(generic.getName());
+				}
+
+				signature.append("> ");
+			}
+
+			// parameter name
+			signature.append(" p").append(i);
 		}
 
 		signature.append(")");

@@ -29,6 +29,8 @@ import unquietcode.tools.flapi.outline.BlockOutline;
 import unquietcode.tools.flapi.outline.DescriptorOutline;
 import unquietcode.tools.flapi.outline.MethodOutline;
 import unquietcode.tools.flapi.runtime.SpringMethodUtils;
+import unquietcode.tools.spring.generics.MethodParameter;
+import unquietcode.tools.spring.generics.ResolvableType;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedElement;
@@ -242,7 +244,11 @@ public class AnnotationIntrospector extends IntrospectorSupport {
 					throw new DescriptorBuilderException("@BlockChain parameters must be of type AtomicReference");
 				}
 
-				BlockOutline blockOutline = handleClass(blockChain.value());
+				// get the generic type of the reference
+				Class<?> generic = ResolvableType.forMethodParameter(MethodParameter.forMethodOrConstructor(method, i)).resolveGeneric();
+
+				// handle the reference type
+				BlockOutline blockOutline = handleClass(generic);
 				methodOutline.getBlockChain().add(blockOutline);
 				methodOutline.getChainParameterPositions().add(i);
 			}

@@ -211,6 +211,11 @@
 			<version>1.0.2</version>
 		</dependency>
 		<dependency>
+			<groupId>com.unquietcode.tools.spring</groupId>
+			<artifactId>spring-generics</artifactId>
+			<version>4.1.4</version>
+		</dependency>
+		<dependency>
 			<groupId>com.google.guava</groupId>
 			<artifactId>guava</artifactId>
 			<version>18.0</version>
