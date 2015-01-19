@@ -140,6 +140,13 @@ public abstract class AbstractGenerator {
 		}
 	};
 
+	protected static final TypeCreationStrategy FACTORY_INTERFACE_STRATEGY = new DefaultTypeCreationStrategy() {
+		public JDefinedClass createStrongType(GeneratorContext ctx, StateClass state) {
+			String name = state.getName()+"Factory";
+			return ctx.getOrCreateInterface(state.getName(), name).first;
+		}
+	};
+
 	public static final TypeCreationStrategy WRAPPER_INTERFACE_STRATEGY = new DefaultTypeCreationStrategy() {
 		public @Override JDefinedClass createStrongType(GeneratorContext ctx, StateClass state) {
 			String name = state.getName()+"Builder";
