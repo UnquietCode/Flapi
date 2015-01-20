@@ -560,8 +560,7 @@ Descriptor descriptor = Flapi.create(Class class)
  *
  * A method may specify a block chain by annotating any number
  * of parameters with `@BlockChain`. The parameter **must** be of
- * type `AtomicReference`, and the annotation must include the
- * type of the block, matching the generic signature of the reference.
+ * type `AtomicReference`.
  *
  * The helper will be introspected like the current type, and the
  * chain will be constructed moving from the leftmost parameter
@@ -583,15 +582,14 @@ interface MyHelper {
 
 	@Last
 	String startBlock(
-		int paramA,	@BlockChain(Alpha.class) AtomicReference<Alpha> helperA,
-		int paramB,	@BlockChain(Beta.class) AtomicReference<Beta> helperB
+		int paramA,	@BlockChain AtomicReference<Alpha> helperA,
+		int paramB,	@BlockChain AtomicReference<Beta> helperB
 	);
 }
 
 // Marks a method parameter as a container for another block's helper.
-// The types must match the generic signature of the `AtomicReference` object,
-// or else an error will be thrown at runtime.
-@BlockChain(Class<?> type)
+// The parameter **must** be of type `AtomicReference`.
+@BlockChain
 
 
 
