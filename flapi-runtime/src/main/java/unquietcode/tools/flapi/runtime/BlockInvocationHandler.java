@@ -83,6 +83,7 @@ public class BlockInvocationHandler implements InvocationHandler {
 
 	// handles legacy concerns before the chainInfo() array existed by
 	// synthesizing a new array from the older values
+	@SuppressWarnings("deprecation")
 	private Object invokeAndReturn(Method method, Object[] originalArgs, Object proxy, MethodInfo info) {
 		final ChainInfo[] chain;
 
