@@ -507,4 +507,9 @@ public class MethodParser {
 		// otherwise, equal (probably)
 		return true;
 	}
+
+	// return the number of parameters, accounting for varargs
+	public int parameterCount() {
+		return params.size() + (varargType != null ? 1 : 0);
+	}
 }
