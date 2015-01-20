@@ -7,7 +7,7 @@
 
 	<groupId>unquietcode.tools.flapi.test</groupId>
 	<artifactId>build-test-consumer</artifactId>
-	<version>0.6.1</version>
+	<version>0.6.2</version>
 	<packaging>jar</packaging>
 
 	<build>

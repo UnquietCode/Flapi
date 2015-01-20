@@ -8,7 +8,7 @@
 	<parent>
 		<artifactId>flapi-parent</artifactId>
 		<groupId>unquietcode.tools.flapi</groupId>
-		<version>0.6.1</version>
+		<version>0.6.2</version>
 		<relativePath>../flapi-parent</relativePath>
 	</parent>
 
