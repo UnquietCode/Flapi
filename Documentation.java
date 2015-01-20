@@ -117,8 +117,10 @@ Descriptor descriptor = Flapi.builder(ExecutionListener...listeners)
 //
 // The `DefaultNameGenerator` implementation will leave names
 // as they are. A more compact form can be achieved by using
-// the `HashedNameGenerator`, which will try to shorten names
-// as much as possible.
+// the `TinyNameGenerator`, which will try to shorten names
+// as much as possible. For more consistent naming the
+// `HashedNameGenerator` can be used, which makes use of the
+// MD5 hashing algorithm.
 	.useCustomNameGenerator(NameGenerator generator)
 
 // Disable the printing of timestamps in the generated source

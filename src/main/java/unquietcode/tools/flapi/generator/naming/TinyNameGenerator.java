@@ -17,29 +17,17 @@
 package unquietcode.tools.flapi.generator.naming;
 
 import com.google.common.base.Function;
-import com.google.common.hash.Hashing;
-
-import java.nio.charset.Charset;
 
 /**
- * Name generator implementation which shortens method names into
- * smaller strings, and then hashes the entire class name using
- * an MD5 hasher. This has the added advantage that, since it is a
- * consistent hash, if there are no differences between names then
- * the hash will always be the same.
+ * Name generator implementation which shortens names into
+ * smaller strings.
  *
  * @author Ben Fagin
  * @version 2015-01-14
  */
-public class HashedNameGenerator extends DefaultNameGenerator {
+public class TinyNameGenerator extends DefaultNameGenerator {
 	private final Function<String, String> methodNameHasher = new Hasher("m");
-
-	private final Function<String, String> stateNameHasher = new Function<String, String>() {
-		public @Override String apply(String string) {
-			String hashed = Hashing.md5().hashString(string, Charset.forName("UTF-8")).toString();
-			return "S"+hashed;
-		}
-	};
+	private final Function<String, String> stateNameHasher = new Hasher("S");
 
 	@Override
 	public String methodName(String methodKey) {
