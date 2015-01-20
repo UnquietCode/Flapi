@@ -107,10 +107,24 @@ Descriptor descriptor = Flapi.builder(ExecutionListener...listeners)
     .setReturnType(String class)
 
 // Generate class names which are condensed at the expense of
-// being mangled and not as readable by a human. This is
+// being mangled and not as readable by humans. This is
 // useful if you have a complicated descriptor which creates
-// class names too long to be compiled.  (optional, disabled by default)
+// class names too long to be compiled.  (disabled by default)
     .enableCondensedClassNames()
+
+// Provide a custom name generator instance, to be consulted
+// when creating the generated source code.
+//
+// The `DefaultNameGenerator` implementation will leave names
+// as they are. A more compact form can be achieved by using
+// the `HashedNameGenerator`, which will try to shorten names
+// as much as possible.
+	.useCustomNameGenerator(NameGenerator generator)
+
+// Disable the printing of timestamps in the generated source
+// code. This will eliminate changes between successive executions
+// so long as the same version of the tool is used each time.
+	.disableTimestamps()
 
 // Complete the finished descriptor, returning a new 
 // `Descriptor` object. (**required**)

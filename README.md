@@ -56,8 +56,10 @@ composeEmail()
 
 ### [Getting Started](https://github.com/UnquietCode/Flapi/wiki/Getting-Started)
 If you are using Maven (or Gradle, or Ivy) you can download and install to your local repo, or include the following
-repository and dependency in your POM file:
-```
+repository and dependency in your build script:
+
+#### Maven
+```xml
 <repository>
   <id>uqc</id>
   <name>UnquietCode Repository</name>
@@ -73,13 +75,31 @@ repository and dependency in your POM file:
   <scope>test</scope>
 </dependency>
 ```
-In a test, define your `Descriptor` object and output the generated source code. (The
+
+#### Gradle
+```groovy
+repositories {
+  maven {
+    url 'http://www.unquietcode.com/maven/releases'
+  }
+}
+
+...
+
+dependencies {
+  testCompile 'unquietcode.tools.flapi:flapi:0.6.1'
+}
+```
+
+In a test define your `Descriptor` object and output the generated source code. (The
 [Pizza Builder](https://github.com/UnquietCode/Flapi/wiki/Pizza-Builder-Example)
 example is a simple descriptor you can start with.) You can also make use of the
 [maven plugin](https://github.com/UnquietCode/Flapi/wiki/Maven-Build-Plugin) to
 perform the code generation.
 
-At the time of writing, the project builds fine in JDK 6 and 7. However, please note that the automated builds are no longer being run against JDK 6.
+At the time of writing, the project builds fine in JDK 6 and 7. However, please note that
+the automated builds are no longer being run against JDK 6.
+
 
 ### Additional Resources
 
