@@ -43,7 +43,6 @@ public class CalculatorBuilderExample implements DescriptorMaker {
 		return Flapi.create(Calculator.class)
 			.setPackage("unquietcode.tools.flapi.examples.calculator.builder")
 			.setStartingMethodName("begin")
-			.disableTimestamps()
 		.build();
 	}
 

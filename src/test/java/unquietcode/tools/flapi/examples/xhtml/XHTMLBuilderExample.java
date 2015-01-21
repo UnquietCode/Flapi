@@ -48,7 +48,6 @@ public class XHTMLBuilderExample implements DescriptorMaker {
 			.setPackage("unquietcode.tools.flapi.examples.xhtml.builder")
 			.setStartingMethodName("createDocument")
 			.setDescriptorName("XHTML")
-			.disableTimestamps()
 
 			.addMethod("addComment(String comment)").any()
 			.addMethod("done()").last(Document.class)

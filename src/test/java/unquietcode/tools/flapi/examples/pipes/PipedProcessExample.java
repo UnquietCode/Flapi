@@ -39,7 +39,6 @@ public class PipedProcessExample implements DescriptorMaker {
 			.setDescriptorName("Process")
 			.setPackage("unquietcode.tools.flapi.examples.pipes.builder")
 			.setStartingMethodName("begin")
-			.disableTimestamps()
 
 			.addMethod("withProcess(String name)").exactly(1)
 			.addMethod("addArgument(String argument)").any()

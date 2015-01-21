@@ -39,7 +39,6 @@ public class DisappearingPizzaExample implements DescriptorMaker {
 			.setPackage("unquietcode.tools.flapi.examples.pizza.builder")
 			.setStartingMethodName("makePizza")
 			.setDescriptorName("Pizza")
-			.disableTimestamps()
 
 			.addMethod("addSauce(unquietcode.tools.flapi.examples.pizza.DisappearingPizzaExample.SauceType sauceType)").atMost(1)
 			.addMethod("addCheese()").atMost(1)

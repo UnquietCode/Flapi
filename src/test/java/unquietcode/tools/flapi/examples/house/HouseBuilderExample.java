@@ -36,7 +36,6 @@ public class HouseBuilderExample implements DescriptorMaker {
 		return Flapi.builder()
 			.setDescriptorName("House")
 			.setPackage("unquietcode.tools.flapi.examples.house.builder")
-			.disableTimestamps()
 
 			.startBlock("Wall", "addWall()").last(Wall.class)
 				.addMethod("setColor(java.awt.Color color)").atMost(1)

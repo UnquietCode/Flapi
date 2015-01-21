@@ -36,7 +36,6 @@ public class EmailBuilderExample implements DescriptorMaker {
 			.setPackage("unquietcode.tools.flapi.examples.email.builder")
 			.setStartingMethodName("compose")
 			.setDescriptorName("Email")
-			.disableTimestamps()
 
 			.addMethod("subject(String subject)").atMost(1)
 			.addMethod("addRecipient(String emailAddress)").atLeast(1)
