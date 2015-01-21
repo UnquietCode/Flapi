@@ -19,6 +19,8 @@ package unquietcode.tools.flapi.generator;
 import com.sun.codemodel.*;
 import unquietcode.tools.flapi.*;
 import unquietcode.tools.flapi.MethodParser.JavaType;
+import unquietcode.tools.flapi.generator.naming.DefaultNameGenerator;
+import unquietcode.tools.flapi.generator.naming.NameGenerator;
 import unquietcode.tools.flapi.graph.BlockMethodTracker;
 import unquietcode.tools.flapi.graph.components.StateClass;
 import unquietcode.tools.flapi.graph.components.Transition;
@@ -30,6 +32,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * @author Ben Fagin
@@ -54,10 +57,12 @@ public class GeneratorContext {
 
 	public final JCodeModel model = new JCodeModel();
 	public final BlockMethodTracker helperMethods = new BlockMethodTracker();
+
 	private final JPackage thePackage;
 	private final Map<String, JDefinedClass> interfaces = new HashMap<String, JDefinedClass>();
 	private final Map<String, JDefinedClass> classes = new HashMap<String, JDefinedClass>();
-	private boolean condenseNames = false;
+	private NameGenerator nameGenerator = new DefaultNameGenerator();
+	private boolean enableTimestamps = true;
 
 	public GeneratorContext(String rootPackage) {
 		if (rootPackage != null && !rootPackage.trim().equals("")) {
@@ -77,8 +82,16 @@ public class GeneratorContext {
 		return name;
 	}
 
-	public void condenseNames(boolean value) {
-		condenseNames = value;
+	public NameGenerator getNameGenerator() {
+		return nameGenerator;
+	}
+
+	public void setNameGenerator(NameGenerator generator) {
+		this.nameGenerator = Objects.requireNonNull(generator);
+	}
+
+	public void disableTimestamps(boolean value) {
+		enableTimestamps = !value;
 	}
 
 	public Pair<JDefinedClass, Boolean> getOrCreateInterface(String subPackage, String name) {
@@ -132,8 +145,6 @@ public class GeneratorContext {
 
 	//---o---o---o---o---o---o---o--- Name Creation --o---o---o---o---o---o---o---o---o---o---//
 
-	Map<String, String> nameMap = new HashMap<String, String>();
-	int nameIdCounter = 1;
 	private final Map<String, String> hashToSuffix = new HashMap<String, String>();
 	private final Map<String, CharacterGenerator> nameToGenerator = new HashMap<String, CharacterGenerator>();
 
@@ -148,14 +159,12 @@ public class GeneratorContext {
 	 *  a lack of support for two methods with the same name but
 	 *  different parameters.
 	 *
-	 * @param prefix prefix for the name (eg 'Impl')
-	 * @param suffix suffix for the name (eg 'Builder')
 	 * @param state state to generate a name for
 	 * @return the generated name, which should be unique across the graph
 	 */
-	public String getGeneratedName(String prefix, String suffix, StateClass state) {
-		StringBuilder name = new StringBuilder();
-		name.append(prefix).append(state.getName()).append(suffix);
+	public String getGeneratedName(StateClass state) {
+		final String builderName = nameGenerator.builderName(state.getName());
+		final StringBuilder name = new StringBuilder(builderName);
 
 		for (Transition transition : state.getTransitions()) {
 			final boolean isImplicit = transition.info().isImplicit();
@@ -201,34 +210,26 @@ public class GeneratorContext {
 				hashToSuffix.put(krazyKey, methodSuffix);
 			}
 
-			name.append("_2");
+			// method name
+			name.append("_2").append(nameGenerator.methodName(methodName));
 
-			if (condenseNames) {
-				if (nameMap.containsKey(methodName)) {
-					name.append(nameMap.get(methodName));
-				} else {
-					String gen = "m"+(nameIdCounter++);
-					name.append(gen);
-					nameMap.put(methodName, gen);
-				}
-			} else {
-				name.append(methodName);
-			}
-
+			// remaining invocations
 			if (transition.info().getMaxOccurrences() > 1) {
 				name.append("_3").append(transition.info().getMaxOccurrences());
 			}
 
+			// triggered methods
 			if (transition.info().didTrigger()) {
 				name.append("_4t");
 			}
 
+			// implicit terminals
 			if (isImplicit) {
 				name.append("_5t");
 			}
 		}
 
-		return name.toString();
+		return nameGenerator.className(name.toString());
 	}
 
 	//---o---o---o---o---o---o---o---o---o---o---o---o---o---o---o---o---o---o---o---o---o---o---//
@@ -240,16 +241,27 @@ public class GeneratorContext {
 		if (header == null) {
 			generationDate = new Date();
 
-			header = new StringBuilder()
+			StringBuilder sb = new StringBuilder()
 				.append("This class was generated using Flapi, the fluent API generator for Java.\n")
 				.append("Modifications to this file will be lost upon regeneration.\n")
 				.append("You have been warned!\n")
 				.append("\n")
 				.append("Visit ").append(Constants.PROJECT_URL).append(" for more information.\n")
 				.append("\n\n")
-				.append("Generated on ").append(humanReadableDateFormat.format(generationDate))
-				.append(" using version ").append(Constants.PROJECT_VERSION)
-			.toString();
+			;
+
+			// optional timestamp with project version
+			if (enableTimestamps) {
+				sb.append("Generated on ").append(humanReadableDateFormat.format(generationDate))
+				  .append(" using version ").append(Constants.PROJECT_VERSION);
+			}
+
+			// otherwise just the project version
+			else {
+				sb.append("Generated using version ").append(Constants.PROJECT_VERSION);
+			}
+
+			header = sb.toString();
 		}
 
 		// javadoc header
@@ -257,11 +269,16 @@ public class GeneratorContext {
 
 		// @Generated, when JDK version is >= 6
 		if (Flapi.getJDKVersion().ordinal() >= SourceVersion.RELEASE_6.ordinal()) {
-			clazz.annotate(Generated.class)
-				.param("value", "unquietcode.tools.flapi")
-				.param("date", iso8601DateFormat.format(generationDate))
-				.param("comments", "generated using Flapi, the fluent API generator for Java")
-			;
+			final JAnnotationUse generatedAnnotation = clazz.annotate(Generated.class);
+			generatedAnnotation.param("value", "unquietcode.tools.flapi");
+
+			// optional date
+			if (enableTimestamps) {
+				generatedAnnotation.param("date", iso8601DateFormat.format(generationDate));
+			}
+
+			// always a comment with tool version
+			generatedAnnotation.param("comments", "generated using Flapi, the fluent API generator for Java, version "+Constants.PROJECT_VERSION);
 		}
 	}
 }

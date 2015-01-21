@@ -83,6 +83,7 @@ public class BlockInvocationHandler implements InvocationHandler {
 
 	// handles legacy concerns before the chainInfo() array existed by
 	// synthesizing a new array from the older values
+	@SuppressWarnings("deprecation")
 	private Object invokeAndReturn(Method method, Object[] originalArgs, Object proxy, MethodInfo info) {
 		final ChainInfo[] chain;
 
@@ -105,7 +106,7 @@ public class BlockInvocationHandler implements InvocationHandler {
 
 	private Object invokeAndReturn(Method method, Object[] originalArgs, Object proxy, MethodInfo info, ChainInfo[] chain) {
 		// Don't use info.chainInfo() directly, since they might not match due
-		// to legacy considerations (will be removed in 1.0).
+		// to legacy considerations (will be removed in 1.0).  TODO remove in 1.0
 
 		final int depth = chain.length;
 

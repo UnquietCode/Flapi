@@ -1,6 +1,6 @@
-
 package unquietcode.tools.flapi.examples.calculator.builder.Calculator;
 
+import unquietcode.tools.flapi.runtime.ChainInfo;
 import unquietcode.tools.flapi.runtime.MethodInfo;
 import unquietcode.tools.flapi.runtime.TransitionType;
 
@@ -15,12 +15,12 @@ import javax.annotation.Generated;
  * Visit https://github.com/UnquietCode/Flapi for more information.
  * 
  * 
- * Generated on August 13, 2014 16:08:20 PDT using version 0.0-DEVELOPMENT
+ * Generated using version 0.0-DEVELOPMENT
  */
-@Generated(value = "unquietcode.tools.flapi", date = "2014-08-13T16:08:20-07:00", comments = "generated using Flapi, the fluent API generator for Java")
+@Generated(value = "unquietcode.tools.flapi", comments = "generated using Flapi, the fluent API generator for Java, version 0.0-DEVELOPMENT")
 public interface CalculatorBuilder<_ReturnType> {
-    @MethodInfo(type = TransitionType.Ascending, chain = {
-        unquietcode.tools.flapi.examples.calculator.builder.Calculation.CalculationBuilder.Start.class
+    @MethodInfo(type = TransitionType.Ascending, chainInfo = {
+        @ChainInfo(type = unquietcode.tools.flapi.examples.calculator.builder.Calculation.CalculationBuilder.Start.class, position = 1)
     })
     unquietcode.tools.flapi.examples.calculator.builder.Calculation.CalculationBuilder.Start<_ReturnType> $(int p0);
 

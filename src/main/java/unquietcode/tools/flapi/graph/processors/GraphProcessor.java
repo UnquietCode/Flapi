@@ -88,7 +88,7 @@ public class GraphProcessor extends AbstractGenerator implements GenericVisitor<
 
 				// if no specific parameters, start after the last regular parameter
 				if (transition.getChainParameterPositions().isEmpty()) {
-					final int offset = new MethodParser(transition.getMethodSignature()).params.size();
+					final int offset = new MethodParser(transition.getMethodSignature()).parameterCount();
 
 					positionFunction = new Function<Integer, Integer>() {
 						public Integer apply(Integer idx) {

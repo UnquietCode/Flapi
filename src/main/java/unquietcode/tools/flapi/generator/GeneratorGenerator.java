@@ -17,6 +17,7 @@
 package unquietcode.tools.flapi.generator;
 
 import com.sun.codemodel.*;
+import unquietcode.tools.flapi.Supplier;
 import unquietcode.tools.flapi.graph.components.StateClass;
 import unquietcode.tools.flapi.outline.GeneratorOutline;
 import unquietcode.tools.flapi.runtime.BlockInvocationHandler;
@@ -53,6 +54,11 @@ public class GeneratorGenerator extends AbstractGenerator {
 		else {
 			createDefaultFactoryMethod(helper, returnType, createMethod);
 		}
+
+		// also add a static factory method
+		JDefinedClass factory = FACTORY_INTERFACE_STRATEGY.createStrongType(ctx, topLevel);
+		JMethod factoryInterfaceMethod = factory.method(0, returnType, createMethod.name());
+		createFactoryMethod(generator, createMethod, helper, factory, factoryInterfaceMethod);
 
 		return generator;
 	}
@@ -115,7 +121,38 @@ public class GeneratorGenerator extends AbstractGenerator {
 
 		// return handler._proxy(Wrapper.class);
 		createMethod.body()._return(
-			handler.invoke("_proxy").arg(returnType.dotclass())
+		handler.invoke("_proxy").arg(returnType.dotclass())
 		);
+	}
+
+	private void createFactoryMethod(JDefinedClass generator, JMethod createMethod, JClass helper, JClass factory, JMethod factoryInterfaceMethod) {
+
+		// Supplier<Helper>
+		JClass helperSupplier = ref(Supplier.class).narrow(helper);
+
+		// public static Factory factory(Supplier<Helper> provider, ExecutionListener...listeners)
+		JMethod factoryMethod = generator.method(JMod.PUBLIC+JMod.STATIC, factory, "factory");
+		JVar pHelper = factoryMethod.param(JMod.FINAL, helperSupplier, "provider");
+		JVar pListeners = factoryMethod.varParam(JMod.FINAL, ref(ExecutionListener.class), "listeners");
+
+		// return a new anonymous class
+		JDefinedClass factoryImplementation = ctx.model.anonymousClass(factory);
+		factoryMethod.body()._return(JExpr._new(factoryImplementation));
+
+		// implementation of the anonymous class
+		JMethod factoryImplMethod = factoryImplementation.method(JMod.PUBLIC, factoryInterfaceMethod.type(), factoryInterfaceMethod.name());
+
+		// Helper helper = provider.get();
+		JVar suppliedHelper = factoryImplMethod.body().decl(helper, "helper", pHelper.invoke("get"));
+
+		// return
+		factoryImplMethod.body()._return(
+
+			// Generator.start(helper, listeners)
+			generator.staticInvoke(createMethod)
+				.arg(suppliedHelper)
+				.arg(pListeners)
+			)
+		;
 	}
 }

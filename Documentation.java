@@ -107,10 +107,26 @@ Descriptor descriptor = Flapi.builder(ExecutionListener...listeners)
     .setReturnType(String class)
 
 // Generate class names which are condensed at the expense of
-// being mangled and not as readable by a human. This is
+// being mangled and not as readable by humans. This is
 // useful if you have a complicated descriptor which creates
-// class names too long to be compiled.  (optional, disabled by default)
+// class names too long to be compiled.  (disabled by default)
     .enableCondensedClassNames()
+
+// Provide a custom name generator instance, to be consulted
+// when creating the generated source code.
+//
+// The `DefaultNameGenerator` implementation will leave names
+// as they are. A more compact form can be achieved by using
+// the `TinyNameGenerator`, which will try to shorten names
+// as much as possible. For more consistent naming the
+// `HashedNameGenerator` can be used, which makes use of the
+// MD5 hashing algorithm.
+	.useCustomNameGenerator(NameGenerator generator)
+
+// Disable the printing of timestamps in the generated source
+// code. This will eliminate changes between successive executions
+// so long as the same version of the tool is used each time.
+	.disableTimestamps()
 
 // Complete the finished descriptor, returning a new 
 // `Descriptor` object. (**required**)
@@ -546,8 +562,7 @@ Descriptor descriptor = Flapi.create(Class class)
  *
  * A method may specify a block chain by annotating any number
  * of parameters with `@BlockChain`. The parameter **must** be of
- * type `AtomicReference`, and the annotation must include the
- * type of the block, matching the generic signature of the reference.
+ * type `AtomicReference`.
  *
  * The helper will be introspected like the current type, and the
  * chain will be constructed moving from the leftmost parameter
@@ -569,15 +584,14 @@ interface MyHelper {
 
 	@Last
 	String startBlock(
-		int paramA,	@BlockChain(Alpha.class) AtomicReference<Alpha> helperA,
-		int paramB,	@BlockChain(Beta.class) AtomicReference<Beta> helperB
+		int paramA,	@BlockChain AtomicReference<Alpha> helperA,
+		int paramB,	@BlockChain AtomicReference<Beta> helperB
 	);
 }
 
 // Marks a method parameter as a container for another block's helper.
-// The types must match the generic signature of the `AtomicReference` object,
-// or else an error will be thrown at runtime.
-@BlockChain(Class<?> type)
+// The parameter **must** be of type `AtomicReference`.
+@BlockChain
 
 
 

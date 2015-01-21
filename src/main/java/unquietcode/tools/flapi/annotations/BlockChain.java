@@ -24,11 +24,7 @@ import java.lang.annotation.Target;
 /**
  * Specifies a method parameter that is to be used for building
  * a block chain around the method. The parameter must be of
- * type {@link java.util.concurrent.atomic.AtomicReference},
- * and the provided {@link #value()} class must match the
- * generic type of the reference object. A mismatch will not
- * be discovered until runtime, at which point you will receive
- * a ClassCastException.
+ * type {@link java.util.concurrent.atomic.AtomicReference}.
  *
  * @author Ben Fagin
  * @version 2014-08-03
@@ -36,6 +32,4 @@ import java.lang.annotation.Target;
 @FlapiAnnotation
 @Target(ElementType.PARAMETER)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface BlockChain {
-	Class<?> value();
-}
+public @interface BlockChain { }

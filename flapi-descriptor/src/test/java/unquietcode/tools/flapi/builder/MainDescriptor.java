@@ -13,6 +13,7 @@ import unquietcode.tools.flapi.Flapi;
 public class MainDescriptor implements DescriptorMaker {
 	private static final int DOC_GROUP = 1;
 	private static final int RETURN_TYPE_GROUP = 2;
+	private static final int NAME_GROUP = 3;
 
 	@Override
 	public Descriptor descriptor() {
@@ -25,17 +26,44 @@ public class MainDescriptor implements DescriptorMaker {
 			.enableCondensedClassNames()
 
 			// descriptor methods
+
 			.addMethod("setPackage(String packageName)")
 				.withDocumentation("set the root package name to use for the generated classes")
-			.exactly(1)
-
-			.addMethod("setDescriptorName(String descriptorName)")
-				.withDocumentation("set the name of the top level descriptor")
-			.exactly(1)
+			.atMost(1)
 
 			.addMethod("setStartingMethodName(String methodName)")
 				.withDocumentation("set the name of the generator's starting method (default is 'create')")
 			.atMost(1)
+
+			.addMethod("enableCondensedClassNames()")
+				.withDocumentation()
+					.addContent("Allow class names to be condensed, at the cost of no longer being\n")
+					.addContent("humanly readable. If your generated class names are too long to be\n")
+					.addContent("compiled, you will have to use this.")
+				.finish()
+			.atMost(1, NAME_GROUP)
+
+			.addMethod("useCustomNameGenerator(unquietcode.tools.flapi.generator.naming.NameGenerator generator)")
+				.withDocumentation()
+					.addContent("Provide a custom NameGenerator.")
+				.finish()
+			.atMost(1, NAME_GROUP)
+
+			.addMethod("disableTimestamps()")
+				.withDocumentation()
+					.addContent("Disable the use of timestamps in the generated source code.\n")
+					.addContent("This will eliminate changes between successive executions so long\n")
+					.addContent("as the same version of the tool is used each time.")
+				.finish()
+			.atMost(1)
+
+			.addMethod("build()").last(Descriptor.class)
+
+			// descriptor methods
+
+			.addMethod("setDescriptorName(String descriptorName)")
+				.withDocumentation("set the name of the top level descriptor")
+			.exactly(1)
 
 			.addMethod("setReturnType(Class returnType)")
 				.withDocumentation("set the return type for the top level descriptor (default is void)")
@@ -45,17 +73,6 @@ public class MainDescriptor implements DescriptorMaker {
 				.withDocumentation("set the return type for the top level descriptor (default is void)")
 			.atMost(1, RETURN_TYPE_GROUP)
 
-			.addMethod("enableCondensedClassNames()")
-				.withDocumentation()
-					.addContent("Allow class names to be condensed, at the cost of no longer being\n")
-					.addContent("humanly readable. If your generated class names are too long to be\n")
-					.addContent("compiled, you will have to use this.")
-				.finish()
-			.atMost(1)
-
-			.addMethod("build()")
-				.withDocumentation("Finish work and build the descriptor. This should only be called once.")
-			.last(Descriptor.class)
 
 			// Method
 			.startBlock("Method", "addMethod(String methodSignature)")

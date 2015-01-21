@@ -19,6 +19,7 @@ package unquietcode.tools.flapi.generator;
 import com.sun.codemodel.JCodeModel;
 import unquietcode.tools.flapi.DescriptorPostValidator;
 import unquietcode.tools.flapi.DescriptorPreValidator;
+import unquietcode.tools.flapi.generator.naming.CondensedNameGenerator;
 import unquietcode.tools.flapi.graph.GraphBuilder;
 import unquietcode.tools.flapi.graph.components.StateClass;
 import unquietcode.tools.flapi.graph.processors.GraphProcessor;
@@ -36,11 +37,22 @@ public class DescriptorGenerator extends AbstractGenerator {
 
 	public DescriptorGenerator(DescriptorOutline outline) {
 		super(new GeneratorContext(outline.getPackageName()));
-		ctx.condenseNames(outline.shouldEnableCondensedNames());
 		this.outline = outline;
+
+		// use a custom name generator
+		if (outline.getCustomNameGenerator() != null) {
+			ctx.setNameGenerator(outline.getCustomNameGenerator());
+
+		// or the condensed name generator
+		} else if (outline.shouldEnableCondensedNames()) {
+			ctx.setNameGenerator(new CondensedNameGenerator());
+		}
+
+		ctx.disableTimestamps(outline.shouldDisableTimestamps());
 	}
 	
 	public JCodeModel generate() {
+
 		// pre-graph validation
 		DescriptorPreValidator preValidator = new DescriptorPreValidator(outline);
 		preValidator.validate();

@@ -1,4 +1,3 @@
-
 package unquietcode.tools.flapi.examples.calculator.builder.Calculation;
 
 import javax.annotation.Generated;
@@ -12,9 +11,9 @@ import javax.annotation.Generated;
  * Visit https://github.com/UnquietCode/Flapi for more information.
  * 
  * 
- * Generated on August 13, 2014 16:08:20 PDT using version 0.0-DEVELOPMENT
+ * Generated using version 0.0-DEVELOPMENT
  */
-@Generated(value = "unquietcode.tools.flapi", date = "2014-08-13T16:08:20-07:00", comments = "generated using Flapi, the fluent API generator for Java")
+@Generated(value = "unquietcode.tools.flapi", comments = "generated using Flapi, the fluent API generator for Java, version 0.0-DEVELOPMENT")
 public interface CalculationBuilder {
     public interface Start<_ReturnType>
         extends CalculationBuilder_2abs_2divide_2minus_2mod_2plus_2power_2times<_ReturnType>

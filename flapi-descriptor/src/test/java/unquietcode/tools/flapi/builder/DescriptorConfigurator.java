@@ -12,10 +12,10 @@ import unquietcode.tools.flapi.Flapi;
  * @version 08-03-2014
  */
 public class DescriptorConfigurator implements DescriptorMaker {
+	private static final int NAME_GROUP = 3;
 
 	@Override
 	public Descriptor descriptor() {
-
 		Descriptor builder = Flapi.builder()
 			.setPackage("unquietcode.tools.flapi.configurator")
 			.setDescriptorName("DescriptorConfigurator")
@@ -36,6 +36,20 @@ public class DescriptorConfigurator implements DescriptorMaker {
 					.addContent("Allow class names to be condensed, at the cost of no longer being\n")
 					.addContent("humanly readable. If your generated class names are too long to be\n")
 					.addContent("compiled, you will have to use this.")
+				.finish()
+			.atMost(1, NAME_GROUP)
+
+			.addMethod("useCustomNameGenerator(unquietcode.tools.flapi.generator.naming.NameGenerator generator)")
+				.withDocumentation()
+					.addContent("Provide a custom NameGenerator.")
+				.finish()
+			.atMost(1, NAME_GROUP)
+
+			.addMethod("disableTimestamps()")
+				.withDocumentation()
+					.addContent("Disable the use of timestamps in the generated source code.\n")
+					.addContent("This will eliminate changes between successive executions so long\n")
+					.addContent("as the same version of the tool is used each time.")
 				.finish()
 			.atMost(1)
 

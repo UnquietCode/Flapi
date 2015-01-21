@@ -18,6 +18,7 @@ package unquietcode.tools.flapi.outline;
 
 
 import unquietcode.tools.flapi.MethodParser;
+import unquietcode.tools.flapi.generator.naming.NameGenerator;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -26,9 +27,11 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @version 03-07-2012
  */
 public class DescriptorOutline extends BlockOutline implements Outline {
-	private String packageName;
-	private boolean enableCondensedNames = false;
 	private final GeneratorOutline generator = new GeneratorOutline(this);
+	private boolean enableCondensedNames = false;
+	private boolean disableTimestamps = false;
+	private String packageName;
+	private NameGenerator customNameGenerator;
 
 	public GeneratorOutline getGenerator() {
 		return generator;
@@ -42,8 +45,16 @@ public class DescriptorOutline extends BlockOutline implements Outline {
 		enableCondensedNames = value;
 	}
 
+	public void disableTimestamps(boolean value) {
+		disableTimestamps = value;
+	}
+
 	public boolean shouldEnableCondensedNames() {
 		return enableCondensedNames;
+	}
+
+	public boolean shouldDisableTimestamps() {
+		return disableTimestamps;
 	}
 
 	public void setCreateMethod(String methodName) {
@@ -56,6 +67,14 @@ public class DescriptorOutline extends BlockOutline implements Outline {
 
 	public void setPackageName(String packageName) {
 		this.packageName = packageName;
+	}
+
+	public NameGenerator getCustomNameGenerator() {
+		return customNameGenerator;
+	}
+
+	public void setCustomNameGenerator(NameGenerator customNameGenerator) {
+		this.customNameGenerator = customNameGenerator;
 	}
 
 	public void prepare() {

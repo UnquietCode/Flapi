@@ -35,7 +35,7 @@ public class BlockOutline implements Outline {
 	private MethodOutline constructor;
 
 	// block methods
-	private final Set<MethodOutline> methods = new HashSet<MethodOutline>();
+	private final Set<MethodOutline> methods = new TreeSet<MethodOutline>();
 
 	// ------------------------------ //
 

@@ -14,7 +14,7 @@
 
 	<name>Flapi</name>
 	<description>Fluent API's in Java!</description>
-	<url>http://www.unquietcode.com/flapi</url>
+	<url>https://github.com/UnquietCode/Flapi</url>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -209,6 +209,11 @@
 			<groupId>unquietcode.tools.jcodemodel</groupId>
 			<artifactId>codemodel</artifactId>
 			<version>1.0.2</version>
+		</dependency>
+		<dependency>
+			<groupId>com.unquietcode.tools.spring</groupId>
+			<artifactId>spring-generics</artifactId>
+			<version>4.1.4</version>
 		</dependency>
 		<dependency>
 			<groupId>com.google.guava</groupId>
