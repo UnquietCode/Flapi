@@ -14,7 +14,7 @@
 
 	<name>Flapi</name>
 	<description>Fluent API's in Java!</description>
-	<url>http://www.unquietcode.com/flapi</url>
+	<url>https://github.com/UnquietCode/Flapi</url>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
