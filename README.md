@@ -1,5 +1,5 @@
 # Flapi - A fluent API generator for Java
-## v0.6.2 [![Build Status](https://travis-ci.org/UnquietCode/Flapi.png?branch=master)](https://travis-ci.org/UnquietCode/Flapi)
+## v0.7 [![Build Status](https://travis-ci.org/UnquietCode/Flapi.png?branch=master)](https://travis-ci.org/UnquietCode/Flapi)
 
 ### What is it?
 Flapi is a code generation library for creating fluent API's in Java.
@@ -71,7 +71,7 @@ repository and dependency in your build script:
 <dependency>
   <groupId>unquietcode.tools.flapi</groupId>
   <artifactId>flapi</artifactId>
-  <version>0.6.2</version>
+  <version>0.7</version>
   <scope>test</scope>
 </dependency>
 ```
@@ -87,7 +87,7 @@ repositories {
 ...
 
 dependencies {
-  testCompile 'unquietcode.tools.flapi:flapi:0.6.1'
+  testCompile 'unquietcode.tools.flapi:flapi:0.7'
 }
 ```
 
@@ -121,7 +121,9 @@ The original blog post describing Flapi.
 Google Group for asking questions and connecting with other developers using Flapi in their projects.
 
 ### What's the project's status?
-Version 0.6 has been released, and includes support for creating descriptors using annotations. See the [Release Notes](https://github.com/UnquietCode/Flapi/wiki/Version-0.6) for the full details.
+Version 0.7 has been released, and includes enhancements for customizing the generated code, plus several
+other new features and improvements. See the
+[Release Notes](https://github.com/UnquietCode/Flapi/wiki/Version-0.7) for the full details.
 
 ### Problems?
 Use the [issue tracker](https://github.com/UnquietCode/Flapi/issues) to report problems encountered or new
