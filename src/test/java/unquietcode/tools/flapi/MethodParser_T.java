@@ -294,6 +294,14 @@ public class MethodParser_T {
 	}
 
 	@Test
+	public void genericReturnType() {
+		MethodParser parsed = new MethodParser("List<String> method()");
+		assertEquals(1, parsed.returnType.typeParameters.size());
+		assertEquals("List", parsed.returnType.typeName);
+		assertEquals("String", parsed.returnType.typeParameters.get(0).typeName);
+	}
+
+	@Test
 	public void methodEqualityTests() {
 
 		// -- General --

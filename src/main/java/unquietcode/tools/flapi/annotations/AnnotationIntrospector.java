@@ -195,7 +195,8 @@ public class AnnotationIntrospector extends IntrospectorSupport {
 			if (returnType == void.class) {
 				helper.last();
 			} else {
-				helper.last(returnType);
+				Class<?>[] generics = ResolvableType.forMethodReturnType(method).resolveGenerics();
+				helper.last(makeTypeWithGenerics(returnType, generics));
 			}
 		}
 

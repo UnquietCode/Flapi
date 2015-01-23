@@ -91,24 +91,9 @@ public class IntrospectorSupport {
 				typeName = parameterType.getName();
 			}
 
-			// raw type
-			signature.append(typeName);
-
-			// generics
+			// type
 			Class<?>[] generics = ResolvableType.forMethodParameter(MethodParameter.forMethodOrConstructor(method, i)).resolveGenerics();
-
-			if (generics != null && generics.length > 0) {
-				signature.append("<");
-
-				for (int p = 0; p < generics.length; ++p) {
-					if (p != 0) { signature.append(", "); }
-
-					Class<?> generic = generics[p];
-					signature.append(generic.getName());
-				}
-
-				signature.append("> ");
-			}
+			signature.append(makeTypeWithGenerics(typeName, generics));
 
 			// parameter name
 			signature.append(" p").append(i);
@@ -116,5 +101,28 @@ public class IntrospectorSupport {
 
 		signature.append(")");
 		return signature.toString();
+	}
+
+	protected static String makeTypeWithGenerics(Class<?> base, Class<?>[] generics) {
+		return makeTypeWithGenerics(base.getName(), generics);
+	}
+
+	protected static String makeTypeWithGenerics(String base, Class<?>[] generics) {
+		StringBuilder sb = new StringBuilder(base);
+
+		if (generics != null && generics.length > 0) {
+			sb.append("<");
+
+			for (int p = 0; p < generics.length; ++p) {
+				if (p != 0) { sb.append(", "); }
+
+				Class<?> generic = generics[p];
+				sb.append(generic.getName());
+			}
+
+			sb.append("> ");
+		}
+
+		return sb.toString();
 	}
 }

@@ -18,6 +18,7 @@ package unquietcode.tools.flapi.graph.processors;
 
 import com.sun.codemodel.JClass;
 import com.sun.codemodel.JType;
+import unquietcode.tools.flapi.MethodParser;
 import unquietcode.tools.flapi.generator.AbstractGenerator;
 import unquietcode.tools.flapi.generator.GeneratorContext;
 import unquietcode.tools.flapi.graph.TransitionVisitor;
@@ -64,10 +65,12 @@ public class ReturnTypeProcessor extends AbstractGenerator {
 							 ? Void.class.getName()
 							 : transition.getReturnType();
 
-				if (!clazz.equals(Void.class.getName()) || !transition.getStateChain().isEmpty()) {
-					initialType.set(ctx.model.ref(clazz));
-				} else {
+				if (clazz.equals(Void.class.getName()) && transition.getStateChain().isEmpty()) {
 					initialType.set(ctx.model.VOID);
+				} else {
+					MethodParser fakeParsed = new MethodParser(clazz+" fake()");
+					JType returnType = getType(fakeParsed.returnType);
+					initialType.set(returnType);
 				}
 			}
 		});
