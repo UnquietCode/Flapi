@@ -41,6 +41,31 @@ EmailGenerator.compose(new EmailHelperImpl())
 
 
 /**
+ * ### Configuring
+ *
+ * Several methods are available on the `Flapi` object for setting
+ * global configuration options.
+ */
+Flapi
+
+// Set the Java source version for the generated code. Some features
+// are only enabled when the source version is set high enough. As of
+// version 0.7 the default is set at JDK 7.
+    .setJDKVersion(SourceVersion version)
+
+// Get the current source version used for generating code.
+    .getJDKVersion()
+
+// Set whether Flapi should write out the runtime classes with the
+// rest of the generated code. Use this option to enable a fixed,
+// zero-dependency version of your builder.
+    .shouldOutputRuntime(boolean value)
+
+// Whether or not Flapi is currently outputting the runtime classes
+// with the generated code.
+    .shouldOutputRuntime()
+
+/**
  * ## Descriptors
  *
  * The top level object in Flapi is the `Descriptor`. This contains all of the
@@ -103,11 +128,13 @@ Descriptor descriptor = Flapi.builder(ExecutionListener...listeners)
 // Generate class names which are condensed at the expense of
 // being mangled and not as readable by humans. This is
 // useful if you have a complicated descriptor which creates
-// class names too long to be compiled.  (disabled by default)
+// class names too long to be compiled.  (optional, disabled
+// by default)
     .enableCondensedClassNames()
 
 // Provide a custom name generator instance, to be consulted
-// when creating the generated source code.
+// when creating the generated source code. (optional,
+// default implementation is the `DefaultNameGenerator`)
 //
 // The `DefaultNameGenerator` implementation will leave names
 // as they are. A more compact form can be achieved by using
@@ -115,12 +142,13 @@ Descriptor descriptor = Flapi.builder(ExecutionListener...listeners)
 // as much as possible. For more consistent naming the
 // `HashedNameGenerator` can be used, which makes use of the
 // MD5 hashing algorithm.
-	.useCustomNameGenerator(NameGenerator generator)
+    .useCustomNameGenerator(NameGenerator generator)
 
 // Disable the printing of timestamps in the generated source
 // code. This will eliminate changes between successive executions
 // so long as the same version of the tool is used each time.
-	.disableTimestamps()
+// (optional, disabled by default)
+    .disableTimestamps()
 
 // Complete the finished descriptor, returning a new 
 // `Descriptor` object. (**required**)

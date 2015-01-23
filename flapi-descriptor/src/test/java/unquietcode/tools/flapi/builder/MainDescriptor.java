@@ -192,8 +192,8 @@ public class MainDescriptor implements DescriptorMaker {
 				// BlockChain
 				.startBlock("BlockChain", "addBlockChain()")
 					.withDocumentation()
-						.addContent("Add a BlockChain, which is a sequence of blocks  which must be")
-						.addContent("passed through\n before the method returns.")
+						.addContent("Add a BlockChain, which is a sequence of blocks  which must be passed through\n")
+						.addContent("before the method returns.")
 					.finish()
 				.atMost(1)
 					.addMethod("addBlockReference(String blockName)")
@@ -277,7 +277,7 @@ public class MainDescriptor implements DescriptorMaker {
 
 			// anonymous blocks for the top level block
 			.addBlockReference("Block", "startBlock(String methodSignature)")
-				.withDocumentation("Starts a new block.")
+				.withDocumentation("Starts a new anonymous block.")
 				.addBlockChain()
 					.addBlockReference("Method")
 				.end()
