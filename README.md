@@ -1,5 +1,5 @@
 # Flapi - A fluent API generator for Java
-## v0.7 [![Build Status](https://travis-ci.org/UnquietCode/Flapi.png?branch=master)](https://travis-ci.org/UnquietCode/Flapi)
+## v0.7.1 [![Build Status](https://travis-ci.org/UnquietCode/Flapi.png?branch=master)](https://travis-ci.org/UnquietCode/Flapi) 
 
 ### What is it?
 Flapi is a code generation library for creating fluent API's in Java.
@@ -71,7 +71,7 @@ repository and dependency in your build script:
 <dependency>
   <groupId>unquietcode.tools.flapi</groupId>
   <artifactId>flapi</artifactId>
-  <version>0.7</version>
+  <version>0.7.1</version>
   <scope>test</scope>
 </dependency>
 ```
@@ -87,7 +87,7 @@ repositories {
 ...
 
 dependencies {
-  testCompile 'unquietcode.tools.flapi:flapi:0.7'
+  testCompile 'unquietcode.tools.flapi:flapi:0.7.1'
 }
 ```
 
@@ -110,15 +110,9 @@ how to use them. (generated using the very nice tool [docker](https://github.com
 * [Examples](https://github.com/UnquietCode/Flapi/wiki/Examples)  
 Many helpful examples are included on the wiki, corresponding to examples and tests in the src/test directory.
 
-* [Screencast](http://vimeo.com/58855907)  
-A screencast has been posted to demonstrate some basic usage, and the main purpose of the tool.
-(Warning: it's my first attempt at screencasting.)
-
 * [Blog Post](http://www.unquietcode.com/blog/2012/software/introducing-flapi)  
 The original blog post describing Flapi.
 
-* [User Group](https://groups.google.com/forum/#!forum/flapi-users)  
-Google Group for asking questions and connecting with other developers using Flapi in their projects.
 
 ### What's the project's status?
 Version 0.7 has been released, and includes enhancements for customizing the generated code, plus several
@@ -132,6 +126,15 @@ feature requests.
 ### Contributing
 Feel free to fork the project and fiddle around! Submit pull requests to improve the code.  
 Create issues to help support the project. Ask questions. (Say hello.)
+
+[![Tip with Gratipay](https://assets.gratipay.com/gratipay.svg)](https://gratipay.com/UnquietCode) [![Tip with Bitcoin](https://assets.gratipay.com/bitcoin.png)](https://blockchain.info/address/1Ec6mzLpJQvuzXqhxfJz1h9ZwJmoHMW9BX)**Bitcoin**
+
+If you like this software and find it useful, then please consider supporting my efforts through
+a donation via [BitCoin](https://gratipay.com/UnquietCode) or [other means](https://gratipay.com/UnquietCode).
+
+Special thanks to [Concurrent, Inc.](http://www.concurrentinc.com) for their feedback and support
+as a power user of Flapi, which they use in their [Fluid](https://github.com/Cascading/fluid)
+library for Cascading.
 
 ### License
 Flapi is licensed under the Apache Software License (ASL) 2.0
