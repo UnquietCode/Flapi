@@ -4,12 +4,12 @@ of the generated source code. As well, better type handling is availble
 for arrays and generics.
 
 ### Features and Improvements
-	+ [#197]: pluggable class and method name generator
-	+ [#14]: support for disabling the printing of timestamps
-	+ [#194, #208]: support for generic parameters in annotated helpers
-	+ [#94]: support for multi-dimensional array types
-	+ [#47]: new `*Factory` interfaces and static factory method
-	+ [#33]: update to JDK7, and enable JDK8 builds
+	+ #197 - pluggable class and method name generator
+	+ #14 - support for disabling the printing of timestamps
+	+ #194, #208 - support for generic parameters in annotated helpers
+	+ #94 - support for multi-dimensional array types
+	+ #47 - new `*Factory` interfaces and static factory method
+	+ #33 - update to JDK7, and enable JDK8 builds
 
 ### Disabling Timestamps
 Timestamps in the generated source can be disabled by calling the new `disableTimestamps()`
@@ -21,10 +21,10 @@ of the new `NameGenerator` interface. An instance can be provided by calling the
 `useCustomNameGenerator(..)` method on the fluent builder. Several name generators are
 provided out of the box:
 
-	* `DefaultNameGenerator` - makes no alterations
-	* `CondensedNameGenerator` - shortens method names
-	* `TinyNameGenerator` - shortens method and class names
-	* `HashedNameGenerator` - shortens method and class names using an MD5 hash
+* `DefaultNameGenerator` - makes no alterations
+* `CondensedNameGenerator` - shortens method names
+* `TinyNameGenerator` - shortens method and class names
+* `HashedNameGenerator` - shortens method and class names using an MD5 hash
 
 ### Generics in Annotated Helpers and Return Types
 Improving upon the annotations introduced in version 0.6, you can now use generic
