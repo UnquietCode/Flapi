@@ -3,6 +3,7 @@ package unquietcode.tools.flapi.builder;
 import unquietcode.tools.flapi.Descriptor;
 import unquietcode.tools.flapi.DescriptorMaker;
 import unquietcode.tools.flapi.Flapi;
+import unquietcode.tools.flapi.generator.naming.HashedNameGenerator;
 
 /**
  * @author Benjamin Fagin
@@ -23,7 +24,7 @@ public class MainDescriptor implements DescriptorMaker {
 			.setPackage("unquietcode.tools.flapi.builder")
 			.setStartingMethodName("create")
 			.setDescriptorName("Descriptor")
-			.enableCondensedClassNames()
+			.useCustomNameGenerator(new HashedNameGenerator())
 
 			// descriptor methods
 

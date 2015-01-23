@@ -3,6 +3,7 @@ package unquietcode.tools.flapi.builder;
 import unquietcode.tools.flapi.Descriptor;
 import unquietcode.tools.flapi.DescriptorMaker;
 import unquietcode.tools.flapi.Flapi;
+import unquietcode.tools.flapi.generator.naming.HashedNameGenerator;
 
 /**
  * Smaller descriptor for customizing the creation of a
@@ -19,7 +20,7 @@ public class DescriptorConfigurator implements DescriptorMaker {
 		Descriptor builder = Flapi.builder()
 			.setPackage("unquietcode.tools.flapi.configurator")
 			.setDescriptorName("DescriptorConfigurator")
-			.enableCondensedClassNames()
+			.useCustomNameGenerator(new HashedNameGenerator())
 
 			// descriptor methods
 
