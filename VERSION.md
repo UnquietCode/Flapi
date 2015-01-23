@@ -4,12 +4,12 @@ of the generated source code. As well, better type handling is availble
 for arrays and generics.
 
 ### Features and Improvements
-	+ #197 - pluggable class and method name generator
-	+ #14 - support for disabling the printing of timestamps
-	+ #194, #208 - support for generic parameters in annotated helpers
-	+ #94 - support for multi-dimensional array types
-	+ #47 - new `*Factory` interfaces and static factory method
-	+ #33 - update to JDK7, and enable JDK8 builds
+	+ [#197]: pluggable class and method name generator
+	+ [#14]: support for disabling the printing of timestamps
+	+ [#194, #208]: support for generic parameters in annotated helpers
+	+ [#94]: support for multi-dimensional array types
+	+ [#47]: new `*Factory` interfaces and static factory method
+	+ [#33]: update to JDK7, and enable JDK8 builds
 
 ### Disabling Timestamps
 Timestamps in the generated source can be disabled by calling the new `disableTimestamps()`
