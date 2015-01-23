@@ -14,7 +14,7 @@
  limitations under the License.
  ********************************************************************/
 
-package unquietcode.tools.flapi;
+package unquietcode.tools.flapi.runtime;
 
 /**
  * Simple little ditty to provide things.

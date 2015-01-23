@@ -20,11 +20,11 @@ import org.junit.Test;
 import unquietcode.tools.flapi.Descriptor;
 import unquietcode.tools.flapi.DescriptorMaker;
 import unquietcode.tools.flapi.Flapi;
-import unquietcode.tools.flapi.Supplier;
 import unquietcode.tools.flapi.examples.calculator.builder.Calculation.CalculationBuilder;
 import unquietcode.tools.flapi.examples.calculator.builder.Calculator.CalculatorBuilder;
 import unquietcode.tools.flapi.examples.calculator.builder.Calculator.CalculatorFactory;
 import unquietcode.tools.flapi.examples.calculator.builder.Calculator.CalculatorGenerator;
+import unquietcode.tools.flapi.runtime.Supplier;
 
 import java.math.BigInteger;
 import java.util.concurrent.atomic.AtomicReference;
