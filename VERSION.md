@@ -1,3 +1,52 @@
+# Version 0.7
+The latest version includes some new features for modifying the output
+of the generated source code. As well, better type handling is availble
+for arrays and generics.
+
+### Features and Improvements
+	+ [#197]: pluggable class and method name generator
+	+ [#14]: support for disabling the printing of timestamps
+	+ [#194, #208]: support for generic parameters in annotated helpers
+	+ [#94]: support for multi-dimensional array types
+	+ [#47]: new `*Factory` interfaces and static factory method
+	+ [#33]: update to JDK7, and enable JDK8 builds
+
+### Disabling Timestamps
+Timestamps in the generated source can be disabled by calling the new `disableTimestamps()`
+method on the fluent builder.
+
+### Pluggable Name Generator
+It is now possible to customize the generated names by using different implementations
+of the new `NameGenerator` interface. An instance can be provided by calling the new
+`useCustomNameGenerator(..)` method on the fluent builder. Several name generators are
+provided out of the box:
+
+	* `DefaultNameGenerator` - makes no alterations
+	* `CondensedNameGenerator` - shortens method names
+	* `TinyNameGenerator` - shortens method and class names
+	* `HashedNameGenerator` - shortens method and class names using an MD5 hash
+
+### Generics in Annotated Helpers and Return Types
+Improving upon the annotations introduced in version 0.6, you can now use generic
+parameters and return types in your annotated helper classes. Additionally, all
+methods can make use of generic return types.
+
+### Factory Methods
+A new `Factory` interface is now created for each descriptor, and contains a
+single parameter-less method which can be used to start a new builder. The
+`Generator` classes correspondingly have a new method which binds parameters
+to a new factory instance and returns it. This functionality is provided as
+a shortcut to defining your own factory for downstream consumers.
+
+### BREAKING CHANGE - `@BlockChain` annotation does not have a value
+The value for the block chain marker annotation for use in annotated helpers
+has been removed through better resolution of generics.
+
+The full list of tasks and issues included in the release is available on the project's
+[Issue Tracker](https://github.com/UnquietCode/Flapi/milestones/0.7).
+
+------------------------------------------------
+
 # Version 0.6
 Flapi Version 0.6 includes a major update to support annotation based configuration
 of descriptors. 
@@ -11,7 +60,7 @@ Similar to annotations, you can provide a class with `setXYZ(..)` and `withXYZ(.
 ## Resolved Issues
 Issues are now handled through GitHub, and historical issues have been migrated from JIRA.
 
-### Features and Improvement
+### Features and Improvements
 	+ [FLAPI-188 / #11]: Support for creating descriptors from annotated helper interfaces.
     + [FLAPI-155 / #52]: Support referencing the current block.
 	+ [FLAPI-185 / #38]: Add @see to generated documentation pointing to actual Helper methods.
@@ -23,6 +72,10 @@ Issues are now handled through GitHub, and historical issues have been migrated 
 ### Tasks
 	+ [FLAPI-190 / #34]: Update docs and wiki with annotations info.
 	+ [FLAPI-189 / #17]: Move issues from JIRA to GitHub
+
+### BREAKING CHANGE - wrapper `Start` interface requires a type parameter
+In order to enable proper nested blocks, all `Start` interfaces now require a
+type parameter to be provided. In most cases, this value will simply be `Void`.
 
 The full list of tasks and issues included in the release is available on the project's
 [Issue Tracker](https://github.com/UnquietCode/Flapi/milestones/0.6).

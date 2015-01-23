@@ -68,6 +68,8 @@ public class ReturnTypeProcessor extends AbstractGenerator {
 				if (clazz.equals(Void.class.getName()) && transition.getStateChain().isEmpty()) {
 					initialType.set(ctx.model.VOID);
 				} else {
+					// TODO this is pretty shameful
+
 					MethodParser fakeParsed = new MethodParser(clazz+" fake()");
 					JType returnType = getType(fakeParsed.returnType);
 					initialType.set(returnType);
