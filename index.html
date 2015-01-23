@@ -30,6 +30,9 @@
       <div class="heading h3">
         <a href="#at%20run%20time">At Run Time</a>
       </div>
+      <div class="heading h3">
+        <a href="#configuring">Configuring</a>
+      </div>
       <div class="heading h2">
         <a href="#descriptors">Descriptors</a>
       </div>
@@ -168,6 +171,89 @@ this later)</p>
       <tr>
         <td class="docs"><div class="dox">
   <div class="summary">
+<div class="pilwrap" id="configuring">
+  <h3>
+    <a href="#configuring" name="configuring" class="pilcrow">&#182;</a>
+    Configuring
+  </h3>
+</div>
+
+  </div>
+  <div class="body"><p>Several methods are available on the <code>Flapi</code> object for setting
+global configuration options.</p>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-4" id="section-4">&#182;</a>
+</div>
+<p>Set the Java source version for the generated code. Some features
+are only enabled when the source version is set high enough. As of
+version 0.7 the default is set at JDK 7.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="o">.</span><span class="na">setJDKVersion</span><span class="o">(</span><span class="n">SourceVersion</span> <span class="n">version</span><span class="o">)</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-5" id="section-5">&#182;</a>
+</div>
+<p>Get the current source version used for generating code.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="o">.</span><span class="na">getJDKVersion</span><span class="o">()</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-6" id="section-6">&#182;</a>
+</div>
+<p>Set whether Flapi should write out the runtime classes with the
+rest of the generated code. Use this option to enable a fixed,
+zero-dependency version of your builder.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="o">.</span><span class="na">shouldOutputRuntime</span><span class="o">(</span><span class="kt">boolean</span> <span class="n">value</span><span class="o">)</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-7" id="section-7">&#182;</a>
+</div>
+<p>Whether or not Flapi is currently outputting the runtime classes
+with the generated code.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="o">.</span><span class="na">shouldOutputRuntime</span><span class="o">()</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs"><div class="dox">
+  <div class="summary">
 <div class="pilwrap" id="descriptors">
   <h2>
     <a href="#descriptors" name="descriptors" class="pilcrow">&#182;</a>
@@ -235,7 +321,7 @@ it detects an inconsistency. Where possible, the API has been made
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-5" id="section-5">&#182;</a>
+  <a class="pilcrow" href="#section-10" id="section-10">&#182;</a>
 </div>
 <p>Start building a new Descriptor. Zero or more <code>ExecutionListener</code>
 instances can be provided. (check out <code>MethodLogger</code>, which is
@@ -251,7 +337,7 @@ helpful when debugging an error)</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-6" id="section-6">&#182;</a>
+  <a class="pilcrow" href="#section-11" id="section-11">&#182;</a>
 </div>
 <p>Set the package for all generated classes. (<strong>required</strong>)</p>
         </td>
@@ -265,7 +351,7 @@ helpful when debugging an error)</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-7" id="section-7">&#182;</a>
+  <a class="pilcrow" href="#section-12" id="section-12">&#182;</a>
 </div>
 <p>Set the starting method name. (optional, default is <code>create()</code>)</p>
         </td>
@@ -279,7 +365,7 @@ helpful when debugging an error)</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-8" id="section-8">&#182;</a>
+  <a class="pilcrow" href="#section-13" id="section-13">&#182;</a>
 </div>
 <p>Set the name of the descriptor. These will yield names like
 <code>ZapBuilder</code> and <code>ZapGenerator</code> in the generated classes. (<strong>required</strong>)</p>
@@ -294,7 +380,7 @@ helpful when debugging an error)</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-9" id="section-9">&#182;</a>
+  <a class="pilcrow" href="#section-14" id="section-14">&#182;</a>
 </div>
 <p>Set the return type for the entire descriptor. (optional,
 default is <code>void</code>)</p>
@@ -309,7 +395,7 @@ default is <code>void</code>)</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-10" id="section-10">&#182;</a>
+  <a class="pilcrow" href="#section-15" id="section-15">&#182;</a>
 </div>
 <p>As above, except the type can be specified without
 creating a compile-time dependency on the class.</p>
@@ -324,12 +410,13 @@ creating a compile-time dependency on the class.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-11" id="section-11">&#182;</a>
+  <a class="pilcrow" href="#section-16" id="section-16">&#182;</a>
 </div>
 <p>Generate class names which are condensed at the expense of
 being mangled and not as readable by humans. This is
 useful if you have a complicated descriptor which creates
-class names too long to be compiled.  (disabled by default)</p>
+class names too long to be compiled.  (optional, disabled
+by default)</p>
         </td>
         <td class="code highlight"><div class="highlight"><pre>
     <span class="o">.</span><span class="na">enableCondensedClassNames</span><span class="o">()</span>
@@ -341,10 +428,11 @@ class names too long to be compiled.  (disabled by default)</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-12" id="section-12">&#182;</a>
+  <a class="pilcrow" href="#section-17" id="section-17">&#182;</a>
 </div>
 <p>Provide a custom name generator instance, to be consulted
-when creating the generated source code.</p>
+when creating the generated source code. (optional,
+default implementation is the <code>DefaultNameGenerator</code>)</p>
 
 <p>The <code>DefaultNameGenerator</code> implementation will leave names
 as they are. A more compact form can be achieved by using
@@ -354,7 +442,7 @@ as much as possible. For more consistent naming the
 MD5 hashing algorithm.</p>
         </td>
         <td class="code highlight"><div class="highlight"><pre>
-  <span class="o">.</span><span class="na">useCustomNameGenerator</span><span class="o">(</span><span class="n">NameGenerator</span> <span class="n">generator</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">useCustomNameGenerator</span><span class="o">(</span><span class="n">NameGenerator</span> <span class="n">generator</span><span class="o">)</span>
 
 
 </pre></div>
@@ -363,14 +451,15 @@ MD5 hashing algorithm.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-13" id="section-13">&#182;</a>
+  <a class="pilcrow" href="#section-18" id="section-18">&#182;</a>
 </div>
 <p>Disable the printing of timestamps in the generated source
 code. This will eliminate changes between successive executions
-so long as the same version of the tool is used each time.</p>
+so long as the same version of the tool is used each time.
+(optional, disabled by default)</p>
         </td>
         <td class="code highlight"><div class="highlight"><pre>
-  <span class="o">.</span><span class="na">disableTimestamps</span><span class="o">()</span>
+    <span class="o">.</span><span class="na">disableTimestamps</span><span class="o">()</span>
 
 
 </pre></div>
@@ -379,7 +468,7 @@ so long as the same version of the tool is used each time.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-14" id="section-14">&#182;</a>
+  <a class="pilcrow" href="#section-19" id="section-19">&#182;</a>
 </div>
 <p>Complete the finished descriptor, returning a new 
 <code>Descriptor</code> object. (<strong>required</strong>)</p>
@@ -418,7 +507,7 @@ generate the source files and write them out.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-16" id="section-16">&#182;</a>
+  <a class="pilcrow" href="#section-21" id="section-21">&#182;</a>
 </div>
 <p>Write the generated source code to a stream.</p>
         </td>
@@ -432,7 +521,7 @@ generate the source files and write them out.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-17" id="section-17">&#182;</a>
+  <a class="pilcrow" href="#section-22" id="section-22">&#182;</a>
 </div>
 <p>Write the generated source code to a directory.</p>
         </td>
@@ -446,7 +535,7 @@ generate the source files and write them out.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-18" id="section-18">&#182;</a>
+  <a class="pilcrow" href="#section-23" id="section-23">&#182;</a>
 </div>
 <p>Write each individual file to a different stream.
 The iterator should provide a potentially unlimited
@@ -533,7 +622,7 @@ the last method available in each state is marked as terminal.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-21" id="section-21">&#182;</a>
+  <a class="pilcrow" href="#section-26" id="section-26">&#182;</a>
 </div>
 <p>Start a new block. This can be called either from the top level
 descriptor (which is actually just a special kind of block) or
@@ -549,7 +638,7 @@ from within an existing block.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-22" id="section-22">&#182;</a>
+  <a class="pilcrow" href="#section-27" id="section-27">&#182;</a>
 </div>
 <p>Start a new anonymous block. The names of these blocks will be
 generated, and so they cannot be referenced.</p>
@@ -564,7 +653,7 @@ generated, and so they cannot be referenced.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-23" id="section-23">&#182;</a>
+  <a class="pilcrow" href="#section-28" id="section-28">&#182;</a>
 </div>
 <p>End the current block. Returns a <code>MethodBuilder</code> to
 configure the invocation in the parent. (<strong>required</strong>)</p>
@@ -579,7 +668,7 @@ configure the invocation in the parent. (<strong>required</strong>)</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-24" id="section-24">&#182;</a>
+  <a class="pilcrow" href="#section-29" id="section-29">&#182;</a>
 </div>
 <p>Add a new method to the block. If no return type is provided
 then <code>void</code> is inferred.</p>
@@ -595,7 +684,7 @@ then <code>void</code> is inferred.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-25" id="section-25">&#182;</a>
+  <a class="pilcrow" href="#section-30" id="section-30">&#182;</a>
 </div>
 <p>Method parameters which are within the <code>java.lang</code> and <code>java.util</code> package are inferred.
 Other types must be fully qualified.</p>
@@ -653,7 +742,7 @@ block, the use of which looks like this:</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-27" id="section-27">&#182;</a>
+  <a class="pilcrow" href="#section-32" id="section-32">&#182;</a>
 </div>
 <p>Add a method which starts a new block whose methods are
 comprised of every enum in the provided enum class.
@@ -701,7 +790,7 @@ referenced.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-29" id="section-29">&#182;</a>
+  <a class="pilcrow" href="#section-34" id="section-34">&#182;</a>
 </div>
 <p>Add a method which starts a new block, but by referencing it
 instead of defining it. Returns a <code>MethodBuilder</code> to
@@ -818,7 +907,7 @@ the block), returning the parent block, or returning
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-33" id="section-33">&#182;</a>
+  <a class="pilcrow" href="#section-38" id="section-38">&#182;</a>
 </div>
 <p>Specifies that the method can be called at most <em>x</em> times.
 After that amount, the method will no longer be available
@@ -834,7 +923,7 @@ to be called.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-34" id="section-34">&#182;</a>
+  <a class="pilcrow" href="#section-39" id="section-39">&#182;</a>
 </div>
 <p>The method must be called at least <em>x</em> times.</p>
         </td>
@@ -848,7 +937,7 @@ to be called.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-35" id="section-35">&#182;</a>
+  <a class="pilcrow" href="#section-40" id="section-40">&#182;</a>
 </div>
 <p>The method must be called between <em>x</em> and <em>y</em> times.</p>
         </td>
@@ -862,7 +951,7 @@ to be called.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-36" id="section-36">&#182;</a>
+  <a class="pilcrow" href="#section-41" id="section-41">&#182;</a>
 </div>
 <p>The method must be called exactly <em>x</em> times.</p>
         </td>
@@ -876,7 +965,7 @@ to be called.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-37" id="section-37">&#182;</a>
+  <a class="pilcrow" href="#section-42" id="section-42">&#182;</a>
 </div>
 <p>The method can be called any number of times.</p>
         </td>
@@ -890,7 +979,7 @@ to be called.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-38" id="section-38">&#182;</a>
+  <a class="pilcrow" href="#section-43" id="section-43">&#182;</a>
 </div>
 <p>The method can be called once, and will return
 the block's return type after being called. Every
@@ -908,7 +997,7 @@ in an infinite loop).</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-39" id="section-39">&#182;</a>
+  <a class="pilcrow" href="#section-44" id="section-44">&#182;</a>
 </div>
 <p>The method, in addition to being last, will also
 return the specified type. This overrides any
@@ -924,7 +1013,7 @@ return type set for the block.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-40" id="section-40">&#182;</a>
+  <a class="pilcrow" href="#section-45" id="section-45">&#182;</a>
 </div>
 <p>As above, except the type can be specified without
 creating a compile-time dependency on the class.</p>
@@ -964,7 +1053,7 @@ workflows.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-42" id="section-42">&#182;</a>
+  <a class="pilcrow" href="#section-47" id="section-47">&#182;</a>
 </div>
 <p>Members of the same group will become invisible
 as soon as this method does so.</p>
@@ -979,7 +1068,7 @@ as soon as this method does so.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-43" id="section-43">&#182;</a>
+  <a class="pilcrow" href="#section-48" id="section-48">&#182;</a>
 </div>
 <p>The method will only become visible after at
 least one member of the group has been called.</p>
@@ -994,7 +1083,7 @@ least one member of the group has been called.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-44" id="section-44">&#182;</a>
+  <a class="pilcrow" href="#section-49" id="section-49">&#182;</a>
 </div>
 <p>Members of the same group will become invisible
 after this method is called for the first time.</p>
@@ -1063,7 +1152,7 @@ the block itself.
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-46" id="section-46">&#182;</a>
+  <a class="pilcrow" href="#section-51" id="section-51">&#182;</a>
 </div>
 <p>Add a block chain to the method. Returns a <code>BlockChainBuilder</code>
 which can be used to define the sequence.</p>
@@ -1078,7 +1167,7 @@ which can be used to define the sequence.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-47" id="section-47">&#182;</a>
+  <a class="pilcrow" href="#section-52" id="section-52">&#182;</a>
 </div>
 <p>reference an existing block</p>
         </td>
@@ -1092,7 +1181,7 @@ which can be used to define the sequence.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-48" id="section-48">&#182;</a>
+  <a class="pilcrow" href="#section-53" id="section-53">&#182;</a>
 </div>
 <p>new named block</p>
         </td>
@@ -1108,7 +1197,7 @@ which can be used to define the sequence.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-49" id="section-49">&#182;</a>
+  <a class="pilcrow" href="#section-54" id="section-54">&#182;</a>
 </div>
 <p>new anonymous block</p>
         </td>
@@ -1124,7 +1213,7 @@ which can be used to define the sequence.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-50" id="section-50">&#182;</a>
+  <a class="pilcrow" href="#section-55" id="section-55">&#182;</a>
 </div>
 <p>finish defining the block chain</p>
         </td>
@@ -1182,7 +1271,7 @@ to mark a method with the <code>@Deprecated</code> annotation.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-52" id="section-52">&#182;</a>
+  <a class="pilcrow" href="#section-57" id="section-57">&#182;</a>
 </div>
 <p>Add a single line of documentation to the method.</p>
         </td>
@@ -1197,7 +1286,7 @@ to mark a method with the <code>@Deprecated</code> annotation.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-53" id="section-53">&#182;</a>
+  <a class="pilcrow" href="#section-58" id="section-58">&#182;</a>
 </div>
 <p>Add multiple lines of documentation to the method.</p>
         </td>
@@ -1211,7 +1300,7 @@ to mark a method with the <code>@Deprecated</code> annotation.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-54" id="section-54">&#182;</a>
+  <a class="pilcrow" href="#section-59" id="section-59">&#182;</a>
 </div>
 <p>Add another line of content.</p>
         </td>
@@ -1225,7 +1314,7 @@ to mark a method with the <code>@Deprecated</code> annotation.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-55" id="section-55">&#182;</a>
+  <a class="pilcrow" href="#section-60" id="section-60">&#182;</a>
 </div>
 <p>Finish defining the documentation.</p>
         </td>
@@ -1239,7 +1328,7 @@ to mark a method with the <code>@Deprecated</code> annotation.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-56" id="section-56">&#182;</a>
+  <a class="pilcrow" href="#section-61" id="section-61">&#182;</a>
 </div>
 <p>Marks the method as <code>@Deprecated</code>. Also adds
 a <code>@deprecated</code> tag to the javadocs.</p>
@@ -1298,7 +1387,7 @@ through your methods.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-58" id="section-58">&#182;</a>
+  <a class="pilcrow" href="#section-63" id="section-63">&#182;</a>
 </div>
 <p>Create a new descriptor by introspecting the class,
 first for Flapi annotations, and then as a generic bean.</p>
@@ -1313,7 +1402,7 @@ first for Flapi annotations, and then as a generic bean.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-59" id="section-59">&#182;</a>
+  <a class="pilcrow" href="#section-64" id="section-64">&#182;</a>
 </div>
 <p>Specifies that the method can be called at most <em>x</em> times.
 After that amount, the method will no longer be available
@@ -1329,7 +1418,7 @@ to be called.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-60" id="section-60">&#182;</a>
+  <a class="pilcrow" href="#section-65" id="section-65">&#182;</a>
 </div>
 <p>Members of the same group will become invisible
 as soon as this method does so.</p>
@@ -1344,7 +1433,7 @@ as soon as this method does so.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-61" id="section-61">&#182;</a>
+  <a class="pilcrow" href="#section-66" id="section-66">&#182;</a>
 </div>
 <p>The method must be called at least <em>x</em> times.</p>
         </td>
@@ -1358,7 +1447,7 @@ as soon as this method does so.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-62" id="section-62">&#182;</a>
+  <a class="pilcrow" href="#section-67" id="section-67">&#182;</a>
 </div>
 <p>The method must be called between <em>x</em> and <em>y</em> times.</p>
         </td>
@@ -1372,7 +1461,7 @@ as soon as this method does so.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-63" id="section-63">&#182;</a>
+  <a class="pilcrow" href="#section-68" id="section-68">&#182;</a>
 </div>
 <p>The method must be called exactly <em>x</em> times.</p>
         </td>
@@ -1386,7 +1475,7 @@ as soon as this method does so.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-64" id="section-64">&#182;</a>
+  <a class="pilcrow" href="#section-69" id="section-69">&#182;</a>
 </div>
 <p>The method can be called any number of times.</p>
         </td>
@@ -1400,7 +1489,7 @@ as soon as this method does so.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-65" id="section-65">&#182;</a>
+  <a class="pilcrow" href="#section-70" id="section-70">&#182;</a>
 </div>
 <p>Members of the same group will become invisible
 after this method is called for the first time.</p>
@@ -1415,7 +1504,7 @@ after this method is called for the first time.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-66" id="section-66">&#182;</a>
+  <a class="pilcrow" href="#section-71" id="section-71">&#182;</a>
 </div>
 <p>The method can be called once, and will return
 the method's return type after being called.</p>
@@ -1430,7 +1519,7 @@ the method's return type after being called.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-67" id="section-67">&#182;</a>
+  <a class="pilcrow" href="#section-72" id="section-72">&#182;</a>
 </div>
 <p>The method will only become visible after at
 least one member of the group has been called.</p>
@@ -1445,7 +1534,7 @@ least one member of the group has been called.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-68" id="section-68">&#182;</a>
+  <a class="pilcrow" href="#section-73" id="section-73">&#182;</a>
 </div>
 <p>Provide documentation for the method.</p>
         </td>
@@ -1459,7 +1548,7 @@ least one member of the group has been called.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-69" id="section-69">&#182;</a>
+  <a class="pilcrow" href="#section-74" id="section-74">&#182;</a>
 </div>
 <p>Provide an alternate name to use for the interface
 or class's corresponding generated name, instead of
@@ -1523,7 +1612,7 @@ towards the rightmost.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-71" id="section-71">&#182;</a>
+  <a class="pilcrow" href="#section-76" id="section-76">&#182;</a>
 </div>
 <p>Marks a method parameter as a container for another block's helper.
 The parameter <strong>must</strong> be of type <code>AtomicReference</code>.</p>
