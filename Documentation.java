@@ -1,4 +1,4 @@
-// # Flapi
+// # Flapi (v0.7)
 // ### _A fluent API generator for Java_
 
 /**  
@@ -31,9 +31,6 @@
  * this later)
  */
 
-import unquietcode.tools.flapi.annotations.Between;
-import unquietcode.tools.flapi.annotations.Last;
-
 EmailGenerator.compose(new EmailHelperImpl())
     .sender("HAL9000@gmail.com")
     .addRecipient("dave@unquietcode.com")
@@ -65,10 +62,7 @@ Descriptor builder = Flapi.builder()
 	.addMethod("addRecipient(String emailAddress)").atLeast(1)
 	.addMethod("sender(String emailAddress)").exactly(1)
 	.addMethod("body(String text)").atMost(1)
-	.addMethod("send()").last(EmailMessage.import java.lang.Class;
-import java.lang.String;
-
-class)
+	.addMethod("send()").last(EmailMessage.class)
 .build();
 
 builder.writeToStream(System.out);
@@ -596,10 +590,8 @@ interface MyHelper {
 
 
 
-
-
 /**
  * ## Thanks!
- * Visit the project [on GitHub](https://github.com/UnquietCode/Flapi)
+ * Visit the project page [at GitHub](https://github.com/UnquietCode/Flapi)
  * for more information.
  */
