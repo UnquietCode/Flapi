@@ -48,7 +48,19 @@ public class GraphBuilder {
 			return;
 		}
 
-		blocks.put(block.getName(), block);
+		final String blockName = block.getName();
+
+		// Defensive, but really it is never ok to have reference cycles,
+		// and usually it means the helpers were called incorrectly.
+		if (blocks.containsKey(blockName)) {
+			if (blocks.get(blockName) == block) {
+				return;
+			} else {
+				throw new DescriptorBuilderException("Duplicate block name: "+blockName);
+			}
+		}
+
+		blocks.put(blockName, block);
 
 		for (MethodOutline method : block.getAllMethods()) {
 			for (BlockOutline chain : method.getBlockChain()) {

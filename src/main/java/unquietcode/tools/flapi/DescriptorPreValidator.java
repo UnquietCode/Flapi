@@ -120,9 +120,7 @@ public class DescriptorPreValidator {
 			try {
 				MethodParser parsed = new MethodParser(method.getMethodSignature());
 				parsed.validate();
-			} catch (MethodParser.ParseException ex) {
-				throw new DescriptorBuilderException(ex);
-			} catch (MethodParser.ValidationException ex) {
+			} catch (MethodParser.ParseException | MethodParser.ValidationException ex) {
 				throw new DescriptorBuilderException(ex);
 			}
 		}
