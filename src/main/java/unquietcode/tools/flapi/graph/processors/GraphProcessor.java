@@ -157,7 +157,11 @@ public class GraphProcessor extends AbstractGenerator implements GenericVisitor<
 				// set the return to (v)oid, which is also done on the *Helper interfaces.
 
 				if (!clazz.equals(Void.class.getName())) {
-					helperReturnType.set(ctx.model.ref(clazz));
+					// TODO make better
+
+					MethodParser fakeParsed = new MethodParser(clazz+" fake()");
+					JType type = getType(fakeParsed.returnType);
+					helperReturnType.set(type);
 				}
 			}
 		});

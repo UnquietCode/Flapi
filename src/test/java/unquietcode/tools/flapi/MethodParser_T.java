@@ -302,6 +302,20 @@ public class MethodParser_T {
 	}
 
 	@Test
+	public void testFQCNReturn() {
+		MethodParser parsed = new MethodParser("java.lang.String method()");
+		assertEquals("java.lang.String", parsed.returnType.typeName);
+		assertEquals(0, parsed.returnType.arrayDepth);
+	}
+
+	@Test
+	public void testFQCNReturnArray() {
+		MethodParser parsed = new MethodParser("java.lang.String[] method()");
+		assertEquals("java.lang.String", parsed.returnType.typeName);
+		assertEquals(1, parsed.returnType.arrayDepth);
+	}
+
+	@Test
 	public void methodEqualityTests() {
 
 		// -- General --
