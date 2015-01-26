@@ -18,12 +18,13 @@ package unquietcode.tools.flapi.generator;
 
 import com.sun.codemodel.*;
 import unquietcode.tools.flapi.*;
-import unquietcode.tools.flapi.MethodParser.JavaType;
 import unquietcode.tools.flapi.generator.naming.DefaultNameGenerator;
 import unquietcode.tools.flapi.generator.naming.NameGenerator;
 import unquietcode.tools.flapi.graph.BlockMethodTracker;
 import unquietcode.tools.flapi.graph.components.StateClass;
 import unquietcode.tools.flapi.graph.components.Transition;
+import unquietcode.tools.flapi.java.JavaType;
+import unquietcode.tools.flapi.java.MethodSignature;
 import unquietcode.tools.flapi.runtime.TransitionType;
 
 import javax.annotation.Generated;
@@ -179,12 +180,12 @@ public class GeneratorContext {
 				continue;
 			}
 
-			MethodParser parsed = new MethodParser(transition.getMethodSignature());
-			String methodName = parsed.methodName;
+			MethodSignature signature = transition.getMethodSignature();
+			String methodName = signature.methodName;
 
 			// create the special method+parameter 'hash' key
 			String krazyKey = methodName;
-			for (Pair<JavaType, String> param : parsed.params) {
+			for (Pair<JavaType, String> param : signature.params) {
 				krazyKey += "|"+param.first.typeName;
 			}
 

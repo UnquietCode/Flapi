@@ -18,11 +18,11 @@ package unquietcode.tools.flapi.graph.processors;
 
 import com.sun.codemodel.JClass;
 import com.sun.codemodel.JType;
-import unquietcode.tools.flapi.MethodParser;
 import unquietcode.tools.flapi.generator.AbstractGenerator;
 import unquietcode.tools.flapi.generator.GeneratorContext;
 import unquietcode.tools.flapi.graph.TransitionVisitor;
 import unquietcode.tools.flapi.graph.components.*;
+import unquietcode.tools.flapi.java.JavaType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,18 +61,15 @@ public class ReturnTypeProcessor extends AbstractGenerator {
 
 			@Override
 			public void visit(TerminalTransition transition) {
-				String clazz = transition.getReturnType() == null
-							 ? Void.class.getName()
-							 : transition.getReturnType();
+				JavaType type = transition.getReturnType() == null
+							  ? JavaType.from(Void.class)
+							  : transition.getReturnType();
 
-				if (clazz.equals(Void.class.getName()) && transition.getStateChain().isEmpty()) {
+				// force the use of primitive void where appropriate
+				if (type.isVoid() && transition.getStateChain().isEmpty()) {
 					initialType.set(ctx.model.VOID);
 				} else {
-					// TODO this is pretty shameful
-
-					MethodParser fakeParsed = new MethodParser(clazz+" fake()");
-					JType returnType = getType(fakeParsed.returnType);
-					initialType.set(returnType);
+					initialType.set(getType(type));
 				}
 			}
 		});

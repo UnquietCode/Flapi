@@ -17,8 +17,8 @@
 package unquietcode.tools.flapi.outline;
 
 
-import unquietcode.tools.flapi.MethodParser;
 import unquietcode.tools.flapi.generator.naming.NameGenerator;
+import unquietcode.tools.flapi.java.MethodSignature;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -94,8 +94,8 @@ public class DescriptorOutline extends BlockOutline implements Outline {
 			// Only anonymous block references have these.
 			// The name is used only as a convenience.
 			if (block.getConstructor() != null) {
-				MethodParser parsed = new MethodParser(block.getConstructor().getMethodSignature());
-				name.append("_").append(parsed.methodName);
+				MethodSignature signature = block.getConstructor().getMethodSignature();
+				name.append("_").append(signature.methodName);
 			}
 
 			block.setName(name.toString());

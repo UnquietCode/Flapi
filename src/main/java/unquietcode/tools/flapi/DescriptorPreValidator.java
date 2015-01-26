@@ -16,6 +16,7 @@
 
 package unquietcode.tools.flapi;
 
+import unquietcode.tools.flapi.java.MethodSignature;
 import unquietcode.tools.flapi.outline.BlockOutline;
 import unquietcode.tools.flapi.outline.BlockReference;
 import unquietcode.tools.flapi.outline.DescriptorOutline;
@@ -69,7 +70,7 @@ public class DescriptorPreValidator {
 		// block name collisions
 		String name = block.getName();
 		if (names.contains(name)) {
-			throw new DescriptorBuilderException("Duplicate block name encountered: "+ name);
+			throw new DescriptorBuilderException("Duplicate block name encountered: "+name);
 		} else {
 			names.add(name);
 		}
@@ -81,15 +82,14 @@ public class DescriptorPreValidator {
 
 		// check method name collisions
 		for (MethodOutline method : block.getAllMethods()) {
-			String currentSignature = method.getMethodSignature();
-			MethodParser currentParsed = new MethodParser(currentSignature);
+			MethodSignature currentSignature = method.getMethodSignature();
 
 			for (MethodOutline otherMethod : block.getAllMethods()) {
 				if (method == otherMethod) { continue; }
-				MethodParser otherParsed = new MethodParser(otherMethod.getMethodSignature());
+				MethodSignature otherSignature = otherMethod.getMethodSignature();
 
-				if (currentParsed.compilerEquivalent(otherParsed)) {
-					throw new DescriptorBuilderException("Two methods with the same signature: " + currentSignature);
+				if (currentSignature.compilerEquivalent(otherSignature)) {
+					throw new DescriptorBuilderException("Two methods with the same signature: "+currentSignature);
 				}
 			}
 		}
@@ -118,9 +118,8 @@ public class DescriptorPreValidator {
 		// check method signatures
 		for (MethodOutline method : block.getAllMethods()) {
 			try {
-				MethodParser parsed = new MethodParser(method.getMethodSignature());
-				parsed.validate();
-			} catch (MethodParser.ParseException | MethodParser.ValidationException ex) {
+				method.getMethodSignature().validate();
+			} catch (MethodSignature.ValidationException ex) {
 				throw new DescriptorBuilderException(ex);
 			}
 		}

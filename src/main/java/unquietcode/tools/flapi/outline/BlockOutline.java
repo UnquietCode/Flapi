@@ -16,6 +16,11 @@
 
 package unquietcode.tools.flapi.outline;
 
+import unquietcode.tools.flapi.DescriptorBuilderException;
+import unquietcode.tools.flapi.java.JavaType;
+import unquietcode.tools.flapi.java.MethodSignature;
+import unquietcode.tools.flapi.java.ParseException;
+
 import java.util.*;
 
 /**
@@ -24,7 +29,7 @@ import java.util.*;
  */
 public class BlockOutline implements Outline {
 	private String name;
-	private String returnType;
+	private JavaType returnType;
 	private Class<?> helperClass;
 	private Class<?> beanClass;
 
@@ -55,11 +60,11 @@ public class BlockOutline implements Outline {
 		this.beanClass = beanClass;
 	}
 
-	public String getReturnType() {
+	public JavaType getReturnType() {
 		return constructor != null ? constructor.getReturnType() : returnType;
 	}
 
-	public void setReturnType(String returnType) {
+	public void setReturnType(JavaType returnType) {
 		this.returnType = returnType;
 	}
 
@@ -93,7 +98,15 @@ public class BlockOutline implements Outline {
 
 	public MethodOutline addMethod(String methodSignature) {
 		MethodOutline method = new MethodOutline();
-		method.setMethodSignature(methodSignature);
+
+		try {
+			method.setMethodSignature(new MethodSignature(methodSignature));
+		} catch (ParseException e) {
+			throw new DescriptorBuilderException(e);
+		}
+
+		// Fun Fact: this method prompts the set to call the comparator
+		// function, so the method signature must always be set first.
 		methods.add(method);
 
 		return method;

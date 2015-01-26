@@ -19,7 +19,6 @@ package unquietcode.tools.flapi.graph.processors;
 import com.google.common.base.Function;
 import com.sun.codemodel.*;
 import unquietcode.tools.flapi.Constants;
-import unquietcode.tools.flapi.MethodParser;
 import unquietcode.tools.flapi.generator.AbstractGenerator;
 import unquietcode.tools.flapi.generator.GeneratorContext;
 import unquietcode.tools.flapi.graph.GenericVisitor;
@@ -28,6 +27,7 @@ import unquietcode.tools.flapi.graph.components.LateralTransition;
 import unquietcode.tools.flapi.graph.components.StateClass;
 import unquietcode.tools.flapi.graph.components.TerminalTransition;
 import unquietcode.tools.flapi.graph.components.Transition;
+import unquietcode.tools.flapi.java.JavaType;
 import unquietcode.tools.flapi.runtime.ChainInfo;
 import unquietcode.tools.flapi.runtime.MethodInfo;
 import unquietcode.tools.flapi.runtime.Tracked;
@@ -88,7 +88,7 @@ public class GraphProcessor extends AbstractGenerator implements GenericVisitor<
 
 				// if no specific parameters, start after the last regular parameter
 				if (transition.getChainParameterPositions().isEmpty()) {
-					final int offset = new MethodParser(transition.getMethodSignature()).parameterCount();
+					final int offset = transition.getMethodSignature().parameterCount();
 
 					positionFunction = new Function<Integer, Integer>() {
 						public Integer apply(Integer idx) {
@@ -149,19 +149,16 @@ public class GraphProcessor extends AbstractGenerator implements GenericVisitor<
 
 		transition.accept(new TransitionVisitor.$() {
 			public @Override void visit(TerminalTransition transition) {
-				String clazz = transition.getReturnType() == null || transition.info().isImplicit()
-						     ? Void.class.getName()
-							 : transition.getReturnType();
+				JavaType type = transition.getReturnType() == null || transition.info().isImplicit()
+						      ? JavaType.from(Void.class)
+							  : transition.getReturnType();
 
-				// Set the return type unless it's (V)oid, in which case as a convenience we
-				// set the return to (v)oid, which is also done on the *Helper interfaces.
+				// Set the return type unless it is (V)oid, in which case as a convenience we
+				// set the return to (v)oid (done elsewhere), which is also done on the
+				// *Helper interfaces.
 
-				if (!clazz.equals(Void.class.getName())) {
-					// TODO make better
-
-					MethodParser fakeParsed = new MethodParser(clazz+" fake()");
-					JType type = getType(fakeParsed.returnType);
-					helperReturnType.set(type);
+				if (!type.isVoid()) {
+					helperReturnType.set(getType(type));
 				}
 			}
 		});

@@ -17,10 +17,14 @@
 package unquietcode.tools.flapi.generator;
 
 import com.sun.codemodel.*;
-import unquietcode.tools.flapi.*;
-import unquietcode.tools.flapi.MethodParser.JavaType;
+import unquietcode.tools.flapi.ClassReference;
+import unquietcode.tools.flapi.Constants;
+import unquietcode.tools.flapi.DescriptorBuilderException;
+import unquietcode.tools.flapi.Pair;
 import unquietcode.tools.flapi.graph.components.StateClass;
 import unquietcode.tools.flapi.graph.components.Transition;
+import unquietcode.tools.flapi.java.JavaType;
+import unquietcode.tools.flapi.java.MethodSignature;
 
 import java.lang.reflect.Array;
 import java.util.HashSet;
@@ -259,24 +263,24 @@ public abstract class AbstractGenerator {
 	}
 
 	private JMethod addMethod(JDefinedClass _class, JType returnType, int mods, Transition transition, boolean helper) {
-		MethodParser parsed = new MethodParser(transition.getMethodSignature());
-		JMethod m = _class.method(mods, returnType, parsed.methodName);
+		MethodSignature methodSignature = transition.getMethodSignature();
+		JMethod m = _class.method(mods, returnType, methodSignature.methodName);
 
 		// regular params
-		for (Pair<JavaType, String> entry : parsed.params) {
+		for (Pair<JavaType, String> entry : methodSignature.params) {
 			JType clazz = getType(entry.first);
 			m.param(clazz, entry.second);
 		}
 
 		// varargs
-		if (parsed.varargType != null) {
-			JType clazz = getType(parsed.varargType);
+		if (methodSignature.varargType != null) {
+			JType clazz = getType(methodSignature.varargType);
 
 			// for helpers, convert to an array parameter
 			if (helper) {
-				m.param(clazz.array(), parsed.varargName);
+				m.param(clazz.array(), methodSignature.varargName);
 			} else {
-				m.varParam(clazz, parsed.varargName);
+				m.varParam(clazz, methodSignature.varargName);
 			}
 		}
 

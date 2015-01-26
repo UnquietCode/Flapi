@@ -18,6 +18,7 @@ package unquietcode.tools.flapi.graph.components;
 
 import unquietcode.tools.flapi.graph.GenericVisitor;
 import unquietcode.tools.flapi.graph.TransitionVisitor;
+import unquietcode.tools.flapi.java.MethodSignature;
 import unquietcode.tools.flapi.outline.MethodInfo;
 import unquietcode.tools.flapi.runtime.TransitionType;
 
@@ -68,7 +69,7 @@ public abstract class Transition implements Comparable<Transition> {
 		return owner;
 	}
 
-	public String getMethodSignature() {
+	public MethodSignature getMethodSignature() {
 		return methodInfo.getMethodSignature();
 	}
 

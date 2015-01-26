@@ -17,7 +17,10 @@
 package unquietcode.tools.flapi;
 
 import org.junit.Test;
-import unquietcode.tools.flapi.MethodParser.JavaType;
+import unquietcode.tools.flapi.java.JavaType;
+import unquietcode.tools.flapi.java.MethodSignature;
+import unquietcode.tools.flapi.java.MethodSignature.ValidationException;
+import unquietcode.tools.flapi.java.ParseException;
 
 import static org.junit.Assert.*;
 
@@ -28,9 +31,24 @@ import static org.junit.Assert.*;
 public class MethodParser_T {
 
 	@Test
-	public void basic() {
+	public void voidTypes() throws ParseException {
+		JavaType t1 = JavaType.from("void");
+		JavaType t2 = JavaType.from("Void");
+		JavaType t3 = JavaType.from(Void.class.getName());
+		JavaType t4 = JavaType.from(void.class.getName());
+		JavaType t5 = JavaType.from("java.lang.String");
+
+		assertTrue(t1.isVoid());
+		assertTrue(t2.isVoid());
+		assertTrue(t3.isVoid());
+		assertTrue(t4.isVoid());
+		assertFalse(t5.isVoid());
+	}
+
+	@Test
+	public void basic() throws ParseException {
 		String methodSignature = "String doWork(String name)";
-		MethodParser parsed = new MethodParser(methodSignature);
+		MethodSignature parsed = new MethodSignature(methodSignature);
 		
 		assertEquals("return type", "String", parsed.returnType.typeName);
 		assertEquals("method name", "doWork", parsed.methodName);
@@ -42,9 +60,9 @@ public class MethodParser_T {
 	}
 	
 	@Test
-	public void varargOnly() {
+	public void varargOnly() throws ParseException {
 		String methodSignature = "String doWork(String...names)";
-		MethodParser parsed = new MethodParser(methodSignature);
+		MethodSignature parsed = new MethodSignature(methodSignature);
 	
 		assertEquals("return type", "String", parsed.returnType.typeName);
 		assertEquals("method name", "doWork", parsed.methodName);
@@ -56,9 +74,9 @@ public class MethodParser_T {
 	}
 	
 	@Test
-	public void withVararg() {
+	public void withVararg() throws ParseException {
 		String methodSignature = "String doWork(String greeting, String...names)";
-		MethodParser parsed = new MethodParser(methodSignature);
+		MethodSignature parsed = new MethodSignature(methodSignature);
 
 		assertEquals("return type", "String", parsed.returnType.typeName);
 		assertEquals("method name", "doWork", parsed.methodName);
@@ -73,9 +91,9 @@ public class MethodParser_T {
 	}
 
 	@Test
-	public void borked() {
+	public void borked() throws ParseException {
 		String methodSignature = "void \n something  ( \tString\t  name)\n";
-		MethodParser parsed = new MethodParser(methodSignature);
+		MethodSignature parsed = new MethodSignature(methodSignature);
 
 		assertEquals("return type", "void", parsed.returnType.typeName);
 		assertEquals("method name", "something", parsed.methodName);
@@ -86,30 +104,30 @@ public class MethodParser_T {
 		assertEquals("param name", "name", pair.second);
 	}
 
-	@Test(expected = MethodParser.ParseException.class)
-	public void duplicateName() {
+	@Test(expected = ParseException.class)
+	public void duplicateName() throws ParseException {
 		String methodSignature = "void something(String value, int value)";
-		MethodParser parsed = new MethodParser(methodSignature);
+		MethodSignature parsed = new MethodSignature(methodSignature);
 	}
 	
 	@Test
-	public void aFailedVararg() {
+	public void aFailedVararg() throws ParseException {
 		String methodSignature = "void debug(String message, Object...data)";
-		MethodParser parsed = new MethodParser(methodSignature);
+		MethodSignature parsed = new MethodSignature(methodSignature);
 		assertEquals("Object", parsed.varargType.typeName);
 		assertEquals("data", parsed.varargName);
 	}
 
-	@Test(expected = MethodParser.ParseException.class)
-	public void extraParentheses() {
+	@Test(expected = ParseException.class)
+	public void extraParentheses() throws ParseException {
 		String methodSignature = "startBlock(String one, String two()";
-		MethodParser parsed = new MethodParser(methodSignature);
+		MethodSignature parsed = new MethodSignature(methodSignature);
 	}
 
 	@Test
-	public void parameterOrder() {
+	public void parameterOrder() throws ParseException {
 		String methodSignature = "between(int atLeast, int atMost, String somethingElse, java.lang.Boolean _paramX)";
-		MethodParser parsed = new MethodParser(methodSignature);
+		MethodSignature parsed = new MethodSignature(methodSignature);
 
 		assertEquals(parsed.params.get(0).first.typeName, "int");
 		assertEquals(parsed.params.get(0).second, "atLeast");
@@ -125,48 +143,48 @@ public class MethodParser_T {
 	}
 
 	@Test
-	public void allowsNoReturnType() {
+	public void allowsNoReturnType() throws ParseException {
 		String methodSignature = "debug(String message)";
-		MethodParser parsed = new MethodParser(methodSignature);
+		MethodSignature parsed = new MethodSignature(methodSignature);
 		assertEquals("no return type", null, parsed.returnType);
 	}
 
 	@Test
-	public void emptyTest() {
+	public void emptyTest() throws ParseException {
 		String methodSignature = "method()";
-		MethodParser parsed = new MethodParser(methodSignature);
+		MethodSignature parsed = new MethodSignature(methodSignature);
 		assertEquals("no params", 0, parsed.params.size());
 	}
 
 	@Test
-	public void emptyWithReturnType() {
+	public void emptyWithReturnType() throws ParseException {
 		String methodSignature = "String method()";
-		MethodParser parsed = new MethodParser(methodSignature);
+		MethodSignature parsed = new MethodSignature(methodSignature);
 		assertEquals("no params", 0, parsed.params.size());
 	}
 
 	@Test
-	public void singleTypeParameterInFront() {
+	public void singleTypeParameterInFront() throws ParseException {
 		String methodSignature = "List<String> method()";
-		MethodParser parsed = new MethodParser(methodSignature);
+		MethodSignature parsed = new MethodSignature(methodSignature);
 
 		assertEquals("no params", 0, parsed.params.size());
 		assertEquals("type with type parameter", "List<String>", parsed.returnType.toString());
 	}
 
 	@Test
-	public void multipleTypeParameterInFront() {
+	public void multipleTypeParameterInFront() throws ParseException {
 		String methodSignature = "Map<String, Integer> method()";
-		MethodParser parsed = new MethodParser(methodSignature);
+		MethodSignature parsed = new MethodSignature(methodSignature);
 
 		assertEquals("no params", 0, parsed.params.size());
 		assertEquals("type with type parameter", "Map<String, Integer>", parsed.returnType.toString());
 	}
 
 	@Test
-	public void singleTypeParameterInside() {
+	public void singleTypeParameterInside() throws ParseException {
 		String methodSignature = "void method(List<String> param)";
-		MethodParser parsed = new MethodParser(methodSignature);
+		MethodSignature parsed = new MethodSignature(methodSignature);
 
 		assertEquals("single param", 1, parsed.params.size());
 		assertEquals("parameter type", "List<String>", parsed.params.get(0).first.toString());
@@ -174,9 +192,9 @@ public class MethodParser_T {
 	}
 
 	@Test
-	public void multipleTypeParameterInside() {
+	public void multipleTypeParameterInside() throws ParseException {
 		String methodSignature = "void method(Map<String, Integer> param)";
-		MethodParser parsed = new MethodParser(methodSignature);
+		MethodSignature parsed = new MethodSignature(methodSignature);
 
 		assertEquals("single param", 1, parsed.params.size());
 		assertEquals("parameter type", "Map<String, Integer>", parsed.params.get(0).first.toString());
@@ -184,139 +202,162 @@ public class MethodParser_T {
 	}
 
 	@Test
-	public void nestedTypeParameters() {
+	public void nestedTypeParameters() throws ParseException {
 		String methodSignature = "void method(Map<String, Set<String>> param)";
-		MethodParser parsed = new MethodParser(methodSignature);
+		MethodSignature parsed = new MethodSignature(methodSignature);
 
 		assertEquals("single param", 1, parsed.params.size());
 		assertEquals("parameter type", "Map<String, Set<String>>", parsed.params.get(0).first.toString());
 		assertEquals("parameter type", "param", parsed.params.get(0).second);
 	}
 
-	@Test(expected=MethodParser.ValidationException.class)
+	@Test(expected=ValidationException.class)
 	public void keywordsAreInvalid() throws Exception {
 		String methodSignature = "void continue(int x)";
-		MethodParser parsed = new MethodParser(methodSignature);
+		MethodSignature parsed = new MethodSignature(methodSignature);
 		parsed.validate();
 	}
 
 	@Test
-	public void arrayTypeAsReturn() {
+	public void arrayTypeAsReturn() throws ParseException {
 		String methodSignature = "int[] method()";
-		MethodParser parsed = new MethodParser(methodSignature);
+		MethodSignature parsed = new MethodSignature(methodSignature);
 		assertEquals("array type", 1, parsed.returnType.arrayDepth);
 	}
 
 	@Test
-	public void arrayTypeAsParameter() {
+	public void arrayTypeAsParameter() throws ParseException {
 		String methodSignature = "void method(int[] p1, String p2)";
-		MethodParser parsed = new MethodParser(methodSignature);
+		MethodSignature parsed = new MethodSignature(methodSignature);
 		assertEquals("array type", 1, parsed.params.get(0).first.arrayDepth);
 		assertEquals("not array type", 0, parsed.params.get(1).first.arrayDepth);
 	}
 
 	@Test
-	public void multidimensionalArrayTypeAsParameter() {
+	public void multidimensionalArrayTypeAsParameter() throws ParseException {
 		String methodSignature = "void method(int[] [] p1, String p2)";
-		MethodParser parsed = new MethodParser(methodSignature);
+		MethodSignature parsed = new MethodSignature(methodSignature);
 		assertEquals("array type", 2, parsed.params.get(0).first.arrayDepth);
 		assertEquals("not array type", 0, parsed.params.get(1).first.arrayDepth);
 	}
 
 	@Test
-	public void arrayTypeAsParameterAfterIdentifier() {
+	public void arrayTypeAsParameterAfterIdentifier() throws ParseException {
 		String methodSignature = "void method(int p1, String p2[])";
-		MethodParser parsed = new MethodParser(methodSignature);
+		MethodSignature parsed = new MethodSignature(methodSignature);
 		assertEquals("not array type", 0, parsed.params.get(0).first.arrayDepth);
 		assertEquals("array type", 1, parsed.params.get(1).first.arrayDepth);
 	}
 
 	@Test
-	public void arrayTypeAsTypeParameter() {
+	public void arrayTypeAsTypeParameter() throws ParseException {
 		String methodSignature = "void method(List<byte[]> list)";
-		MethodParser parsed = new MethodParser(methodSignature);
+		MethodSignature parsed = new MethodSignature(methodSignature);
 		assertEquals("not array type", 0, parsed.params.get(0).first.arrayDepth);
 		assertEquals("array type", 1, parsed.params.get(0).first.typeParameters.get(0).arrayDepth);
 	}
 
-	@Test(expected=MethodParser.ParseException.class)
-	public void arrayTypesWithTypeParametersNotOk() {
+	@Test(expected=ParseException.class)
+	public void arrayTypesWithTypeParametersNotOk() throws ParseException {
 		String methodSignature = "void method(List[]<String> p1)";
-		new MethodParser(methodSignature);
+		new MethodSignature(methodSignature);
 	}
 
 	@Test
-	public void arrayTypesWithTypeParametersOk1() {
+	public void arrayTypesWithTypeParametersOk1() throws ParseException {
 		String methodSignature = "void method(List<String>[] p1)";
-		MethodParser parsed = new MethodParser(methodSignature);
+		MethodSignature parsed = new MethodSignature(methodSignature);
 		assertEquals("array type", 1, parsed.params.get(0).first.arrayDepth);
 	}
 
 	@Test
-	public void arrayTypesWithTypeParametersOk2() {
+	public void arrayTypesWithTypeParametersOk2() throws ParseException {
 		String methodSignature = "void method(List<String> p1[])";
-		MethodParser parsed = new MethodParser(methodSignature);
+		MethodSignature parsed = new MethodSignature(methodSignature);
 		assertEquals("array type", 1, parsed.params.get(0).first.arrayDepth);
 	}
 
 	@Test
-	public void multidimensionalArrayTypesWithTypeParameters() {
+	public void multidimensionalArrayTypesWithTypeParameters() throws ParseException {
 		String methodSignature = "void method(List<String>[][][] p1)";
-		MethodParser parsed = new MethodParser(methodSignature);
+		MethodSignature parsed = new MethodSignature(methodSignature);
 		assertEquals("string type", "List", parsed.params.get(0).first.typeName);
 		assertEquals("string type", "String", parsed.params.get(0).first.typeParameters.get(0).typeName);
 		assertEquals("array type", 3, parsed.params.get(0).first.arrayDepth);
 	}
 
-	@Test(expected=MethodParser.ParseException.class)
-	public void duplicateArrayIndexers() {
+	@Test(expected=ParseException.class)
+	public void duplicateArrayIndexers() throws ParseException {
 		String methodSignature = "void method(int[] p1[])";
-		new MethodParser(methodSignature);
+		new MethodSignature(methodSignature);
 	}
 
-	@Test(expected=MethodParser.ParseException.class)
-	public void duplicateArrayIndexerWithTypeParam() {
+	@Test(expected=ParseException.class)
+	public void duplicateArrayIndexerWithTypeParam() throws ParseException {
 		String methodSignature = "void method(List<String>[] array[])";
-		new MethodParser(methodSignature);
+		new MethodSignature(methodSignature);
 	}
 
 	@Test
-	public void multiDimensionalArray() {
+	public void multiDimensionalArray() throws ParseException {
 		String methodSignature = "void method(int[][] p1)";
-		MethodParser parsed = new MethodParser(methodSignature);
+		MethodSignature parsed = new MethodSignature(methodSignature);
 		assertEquals("array type", 2, parsed.params.get(0).first.arrayDepth);
 	}
 
-	@Test(expected=MethodParser.ParseException.class)
-	public void multiDimensionalDuplicate() {
+	@Test(expected=ParseException.class)
+	public void multiDimensionalDuplicate() throws ParseException {
 		String methodSignature = "void method(int[][] p1[])";
-		new MethodParser(methodSignature);
+		new MethodSignature(methodSignature);
 	}
 
 	@Test
-	public void genericReturnType() {
-		MethodParser parsed = new MethodParser("List<String> method()");
+	public void genericReturnType() throws ParseException {
+		MethodSignature parsed = new MethodSignature("List<String> method()");
 		assertEquals(1, parsed.returnType.typeParameters.size());
 		assertEquals("List", parsed.returnType.typeName);
 		assertEquals("String", parsed.returnType.typeParameters.get(0).typeName);
 	}
 
 	@Test
-	public void testFQCNReturn() {
-		MethodParser parsed = new MethodParser("java.lang.String method()");
+	public void genericReturnCompilerEquivalence() throws ParseException {
+		MethodSignature p1 = new MethodSignature("List<String> method()");
+		MethodSignature p2 = new MethodSignature("List<Integer> method()");
+		MethodSignature p3 = new MethodSignature("List method()");
+
+		assertTrue(p1.compilerEquivalent(p2));
+		assertTrue(p1.compilerEquivalent(p3));
+		assertTrue(p2.compilerEquivalent(p3));
+	}
+
+	@Test
+	public void toStringTests() throws ParseException {
+		testMethodToString(true, "void method()");
+		testMethodToString(true, "void method(String a, int b)");
+		testMethodToString(true, "List<String> method()");
+		testMethodToString(true, "void method(int...vararg)");
+		testMethodToString(true, "void method(int[]...vararg)");
+		testMethodToString(true, "void method(List<String> stuff)");
+		testMethodToString(true, "void method(List<Integer> numbers, String...vararg)");
+		testMethodToString(true, "void method(List<String>...lists)");
+	}
+
+	@Test
+	public void testFQCNReturn() throws ParseException {
+		MethodSignature parsed = new MethodSignature("java.lang.String method()");
 		assertEquals("java.lang.String", parsed.returnType.typeName);
 		assertEquals(0, parsed.returnType.arrayDepth);
 	}
 
 	@Test
-	public void testFQCNReturnArray() {
-		MethodParser parsed = new MethodParser("java.lang.String[] method()");
+	public void testFQCNReturnArray() throws ParseException {
+		MethodSignature parsed = new MethodSignature("java.lang.String[] method()");
 		assertEquals("java.lang.String", parsed.returnType.typeName);
 		assertEquals(1, parsed.returnType.arrayDepth);
 	}
 
 	@Test
-	public void methodEqualityTests() {
+	public void methodEqualityTests() throws ParseException {
 
 		// -- General --
 
@@ -369,15 +410,26 @@ public class MethodParser_T {
 		testMethodEquality(true, "method(String[] p1)", "method(String...p2)");
 	}
 
+	//---o---o---o---o---o---o---o---o---o---o---o---o---o---o---o---o---o---o---o---o---o---o---//
 
-	private static void testMethodEquality(boolean expected, String method1, String method2) {
-		MethodParser m1 = new MethodParser(method1);
-		MethodParser m2 = new MethodParser(method2);
+	private static void testMethodEquality(boolean expected, String method1, String method2)  throws ParseException {
+		MethodSignature m1 = new MethodSignature(method1);
+		MethodSignature m2 = new MethodSignature(method2);
 
 		if (expected) {
 			assertTrue("expected equal methods (<"+method1+"> <"+method2+">)", m1.compilerEquivalent(m2));
 		} else {
 			assertFalse("expected unequal methods (<"+method1+"> <"+method2+">)", m1.compilerEquivalent(m2));
+		}
+	}
+
+	private static void testMethodToString(boolean expected, String method) throws ParseException {
+		MethodSignature signature = new MethodSignature(method);
+
+		if (expected) {
+			assertEquals(method, signature.toString());
+		} else {
+			assertNotEquals(method, signature.toString());
 		}
 	}
 }

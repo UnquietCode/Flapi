@@ -17,6 +17,7 @@
 package unquietcode.tools.flapi.graph.components;
 
 import unquietcode.tools.flapi.graph.TransitionVisitor;
+import unquietcode.tools.flapi.java.JavaType;
 import unquietcode.tools.flapi.runtime.TransitionType;
 
 /**
@@ -24,22 +25,22 @@ import unquietcode.tools.flapi.runtime.TransitionType;
  * @version 08-15-2012
  */
 public class TerminalTransition extends Transition {
-	String returnType;
+	private JavaType returnType;
 
 	public TerminalTransition() {
 		super(TransitionType.Terminal);
 	}
 
-	public TerminalTransition(String returnType) {
+	public TerminalTransition(JavaType returnType) {
 		this();
 		this.returnType = returnType;
 	}
 
-	public String getReturnType() {
+	public JavaType getReturnType() {
 		return returnType;
 	}
 
-	public void setReturnType(String returnType) {
+	public void setReturnType(JavaType returnType) {
 		this.returnType = returnType;
 	}
 

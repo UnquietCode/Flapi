@@ -22,6 +22,8 @@ import unquietcode.tools.flapi.generator.naming.DefaultNameGenerator;
 import unquietcode.tools.flapi.graph.components.LateralTransition;
 import unquietcode.tools.flapi.graph.components.StateClass;
 import unquietcode.tools.flapi.graph.components.Transition;
+import unquietcode.tools.flapi.java.MethodSignature;
+import unquietcode.tools.flapi.java.ParseException;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -30,13 +32,13 @@ public class GraphNaming_T {
 
 
 	@Test
-	public void twoMethodsInDifferentStatesYieldsDifferentStateNames() {
+	public void twoMethodsInDifferentStatesYieldsDifferentStateNames() throws ParseException {
 		Transition t1 = new LateralTransition();
-		t1.info().setMethodSignature("method(int a, int b)");
+		t1.info().setMethodSignature(new MethodSignature("method(int a, int b)"));
 		t1.info().setMaxOccurrences(1);
 
 		Transition t2 = new LateralTransition();
-		t2.info().setMethodSignature("method(int a)");
+		t2.info().setMethodSignature(new MethodSignature("method(int a)"));
 		t2.info().setMaxOccurrences(1);
 
 		GeneratorContext ctx = new GeneratorContext("");
@@ -63,13 +65,13 @@ public class GraphNaming_T {
 	 * We expect one to be lettered and one not to be.
 	 */
 	@Test
-	public void twoMethodsInTheSameClass() {
+	public void twoMethodsInTheSameClass() throws ParseException {
 		Transition t1 = new LateralTransition();
-		t1.info().setMethodSignature("method(int a, int b)");
+		t1.info().setMethodSignature(new MethodSignature("method(int a, int b)"));
 		t1.info().setMaxOccurrences(1);
 
 		Transition t2 = new LateralTransition();
-		t2.info().setMethodSignature("method(int a)");
+		t2.info().setMethodSignature(new MethodSignature("method(int a)"));
 		t2.info().setMaxOccurrences(1);
 
 		StateClass sc1 = new StateClass();

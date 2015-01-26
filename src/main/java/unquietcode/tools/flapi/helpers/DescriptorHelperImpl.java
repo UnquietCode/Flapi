@@ -16,9 +16,12 @@
 
 package unquietcode.tools.flapi.helpers;
 
+import unquietcode.tools.flapi.DescriptorBuilderException;
 import unquietcode.tools.flapi.builder.Block.BlockHelper;
 import unquietcode.tools.flapi.builder.Descriptor.DescriptorHelper;
 import unquietcode.tools.flapi.builder.Method.MethodHelper;
+import unquietcode.tools.flapi.java.JavaType;
+import unquietcode.tools.flapi.java.ParseException;
 import unquietcode.tools.flapi.outline.DescriptorOutline;
 
 import java.util.concurrent.atomic.AtomicReference;
@@ -46,7 +49,7 @@ public class DescriptorHelperImpl extends DescriptorConfiguratorHelperImpl imple
 		if (returnType == null) {
 			throw new IllegalArgumentException("Return type cannot be null.");
 		}
-		setReturnType(returnType.getName());
+		outline.setReturnType(JavaType.from(returnType));
 	}
 
 	@Override
@@ -54,7 +57,15 @@ public class DescriptorHelperImpl extends DescriptorConfiguratorHelperImpl imple
 		if (returnType == null) {
 			throw new IllegalArgumentException("Return type cannot be null.");
 		}
-		outline.setReturnType(returnType);
+
+		final JavaType type;
+		try {
+			type = JavaType.from(returnType);
+		} catch (ParseException e) {
+			throw new DescriptorBuilderException("invalid return type '"+returnType+"'");
+		}
+
+		outline.setReturnType(type);
 	}
 
 	@Override

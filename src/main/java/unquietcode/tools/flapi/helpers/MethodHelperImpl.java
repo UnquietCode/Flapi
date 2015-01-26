@@ -22,6 +22,8 @@ import unquietcode.tools.flapi.builder.Annotation.AnnotationHelper;
 import unquietcode.tools.flapi.builder.BlockChain.BlockChainHelper;
 import unquietcode.tools.flapi.builder.Documentation.DocumentationHelper;
 import unquietcode.tools.flapi.builder.Method.MethodHelper;
+import unquietcode.tools.flapi.java.JavaType;
+import unquietcode.tools.flapi.java.ParseException;
 import unquietcode.tools.flapi.outline.MethodOutline;
 
 import java.util.concurrent.atomic.AtomicReference;
@@ -69,7 +71,7 @@ public class MethodHelperImpl implements MethodHelper {
 			throw new DescriptorBuilderException("Intermediate return type cannot be null.");
 		}
 
-		last(returnType.getCanonicalName());
+		last(JavaType.from(returnType));
 	}
 
 	@Override
@@ -78,6 +80,17 @@ public class MethodHelperImpl implements MethodHelper {
 			throw new DescriptorBuilderException("Intermediate return type cannot be null.");
 		}
 
+		final JavaType type;
+		try {
+			type = JavaType.from(returnType);
+		} catch (ParseException e) {
+			throw new DescriptorBuilderException("invalid return type '"+returnType+"'");
+		}
+
+		last(type);
+	}
+
+	private void last(JavaType returnType) {
 		last();
 		method.setReturnType(returnType);
 	}

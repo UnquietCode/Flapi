@@ -17,6 +17,8 @@
 package unquietcode.tools.flapi.outline;
 
 
+import unquietcode.tools.flapi.java.JavaType;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,15 +30,15 @@ public class MethodOutline extends MethodInfo implements Outline {
 	private final List<BlockOutline> blockChain = new ArrayList<BlockOutline>();
 	private final List<Integer> chainParameterPositions = new ArrayList<Integer>();
 	private boolean isTerminal = false;
-	private String returnType;
+	private JavaType returnType;
 	private Integer group;
 	private Integer trigger;
 
-	public String getReturnType() {
+	public JavaType getReturnType() {
 		return returnType;
 	}
 
-	public void setReturnType(String returnType) {
+	public void setReturnType(JavaType returnType) {
 		this.returnType = returnType;
 	}
 

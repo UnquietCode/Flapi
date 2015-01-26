@@ -18,8 +18,9 @@ package unquietcode.tools.flapi.outline;
 
 
 import unquietcode.tools.flapi.DescriptorBuilderException;
-import unquietcode.tools.flapi.MethodParser;
 import unquietcode.tools.flapi.Pair;
+import unquietcode.tools.flapi.java.JavaType;
+import unquietcode.tools.flapi.java.MethodSignature;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -30,7 +31,7 @@ import java.util.Map;
 public class MethodInfo implements Comparable<MethodInfo> {
 	private Integer minOccurrences;
 	private Integer maxOccurrences;
-	private String methodSignature;
+	private MethodSignature methodSignature;
 	private String documentation;
 	private boolean isDeprecated = false;
 	private String deprecationReason;
@@ -75,12 +76,12 @@ public class MethodInfo implements Comparable<MethodInfo> {
 		this.documentation = documentation;
 	}
 
-	public String getMethodSignature() {
+	public MethodSignature getMethodSignature() {
 		return methodSignature;
 	}
 
-	public void setMethodSignature(String methodSignature) {
-		this.methodSignature = methodSignature.trim();
+	public void setMethodSignature(MethodSignature methodSignature) {
+		this.methodSignature = methodSignature;
 	}
 
 	public boolean didTrigger() {
@@ -143,17 +144,10 @@ public class MethodInfo implements Comparable<MethodInfo> {
 	public String keyString() {
 		StringBuilder sb = new StringBuilder();
 
-		final MethodParser parser;
-		try {
-			parser = new MethodParser(methodSignature);
-		} catch (MethodParser.ParseException e) {
-			throw new DescriptorBuilderException(e);
-		}
-
-		sb.append(parser.methodName).append("_1");
+		sb.append(methodSignature.methodName).append("_1");
 		boolean first = true;
 
-		for (Pair<MethodParser.JavaType, String> param : parser.params) {
+		for (Pair<JavaType, String> param : methodSignature.params) {
 			if (!first) { sb.append("$"); }
 			else { first = false; }
 

@@ -28,7 +28,7 @@ import java.util.Set;
 * @version 2013-06-29
 */
 public class BlockMethodTracker {
-	private final Map<String, Set<String>> seenMethods = new HashMap<String, Set<String>>();
+	private final Map<String, Set<String>> seenMethods = new HashMap<>();
 	private final boolean useMethodKey;
 
 	public BlockMethodTracker() {
@@ -40,14 +40,15 @@ public class BlockMethodTracker {
 	}
 
 	public boolean seen(Transition transition) {
-		String name = transition.getOwner().getName();
-		String key = transition.getMethodSignature();
-		if (useMethodKey) { key = transition.info().keyString(); }
+		final String name = transition.getOwner().getName();
+		final String key = useMethodKey
+						 ? transition.info().keyString()
+						 : transition.getMethodSignature().toString();
 
 		Set<String> methods = seenMethods.get(name);
 
 		if (methods == null) {
-			methods = new HashSet<String>();
+			methods = new HashSet<>();
 			seenMethods.put(name, methods);
 		}
 

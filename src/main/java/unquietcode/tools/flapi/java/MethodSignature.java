@@ -14,18 +14,18 @@
  limitations under the License.
  ********************************************************************/
 
-package unquietcode.tools.flapi;
+package unquietcode.tools.flapi.java;
+
+import unquietcode.tools.flapi.Pair;
 
 import javax.lang.model.SourceVersion;
 import java.util.*;
-
-import static com.google.common.base.Preconditions.checkArgument;
 
 /**
  * @author Ben Fagin
  * @version 03-03-2012
  */
-public class MethodParser {
+public class MethodSignature implements Comparable<MethodSignature> {
 	public final String methodName;
 	public final JavaType returnType;
 	public final List<Pair<JavaType, String>> params = new ArrayList<Pair<JavaType, String>>();
@@ -37,11 +37,7 @@ public class MethodParser {
 	private char[] signature;
 	private int cur = 0;
 
-	public MethodParser(String methodSignature) {
-		this(methodSignature, "");
-	}
-
-	public MethodParser(String methodSignature, String prefix) {
+	public MethodSignature(String methodSignature) throws ParseException {
 		if (methodSignature == null) {
 			throw new IllegalArgumentException("method signature cannot be null");
 		}
@@ -131,7 +127,7 @@ public class MethodParser {
 
 		// set variables
 		returnType = _returnType;
-		methodName = prefix + _methodName;
+		methodName = _methodName;
 		varargName = _varargName;
 		varargType = _varargType;
 
@@ -139,7 +135,7 @@ public class MethodParser {
 		signature = null;
 	}
 
-	private void checkForDuplicateParameters() {
+	private void checkForDuplicateParameters() throws ParseException {
 		Set<String> seen = new HashSet<String>();
 
 		for (Pair<JavaType, String> param : params) {
@@ -151,7 +147,7 @@ public class MethodParser {
 		}
 	}
 
-	private JavaType matchType() {
+	private JavaType matchType() throws ParseException {
 		String typeName;
 		int arrayDepth = 0;
 		List<JavaType> typeParameters = new ArrayList<JavaType>();
@@ -195,7 +191,7 @@ public class MethodParser {
 		return new JavaType(typeName, arrayDepth, typeParameters);
 	}
 
-	private int matchArray() {
+	private int matchArray() throws ParseException {
 		int depth = 0;
 		match(WS, -1);
 
@@ -211,7 +207,7 @@ public class MethodParser {
 		return depth;
 	}
 
-	private String matchIdentifier() {
+	private String matchIdentifier() throws ParseException {
 		StringBuilder sb = new StringBuilder();
 		match(WS, -1);
 		sb.append(match(ID_START, 1)).append(match(ID, -1));
@@ -236,7 +232,7 @@ public class MethodParser {
 		return sb.toString();
 	}
 
-	private String match(Set<Character> chars, int count) {
+	private String match(Set<Character> chars, int count) throws ParseException {
 		StringBuilder sb = new StringBuilder();
 
 		while (count != 0) {
@@ -322,112 +318,9 @@ public class MethodParser {
 		throw new ParseException(sb.toString());
 	}
 
-	public void validate() throws ValidationException {
-		// check that method name is legitimate
-		if (!SourceVersion.isName(methodName)) {
-			throw new ValidationException(
-				"Invalid method name: '"+ originalSignature +"'."
-			);
-		}
-
-		// check that parameters are also valid names
-		for (Pair<JavaType, String> param : params) {
-			if (!SourceVersion.isName(param.second)) {
-				throw new ValidationException(
-					"Invalid parameter name '"+param.second+"' in method '"+originalSignature+"'."
-				);
-			}
-		}
-
-		// check vararg name
-		if (varargName != null) {
-			if (!SourceVersion.isName(varargName)) {
-				throw new ValidationException(
-					"Invalid vararg parameter name '"+varargName+"' in method '"+originalSignature+"'."
-				);
-			}
-		}
-	}
-
-	public static class JavaType {
-		public final String typeName;
-		public final List<JavaType> typeParameters;
-		public final int arrayDepth;
-
-		public JavaType(String typeName, int arrayDepth, List<JavaType> typeParameters) {
-			this.typeName = typeName;
-			this.typeParameters = Collections.unmodifiableList(typeParameters);
-
-			checkArgument(arrayDepth >= 0);
-			this.arrayDepth = arrayDepth;
-		}
-
-		/*package*/ JavaType(JavaType other, int arrayDepth) {
-			this.typeName = other.typeName;
-			this.typeParameters = other.typeParameters;
-
-			checkArgument(arrayDepth >= 0);
-			this.arrayDepth = arrayDepth;
-		}
-
-		@Override
-		public String toString() {
-			StringBuilder sb = new StringBuilder();
-			sb.append(typeName);
-
-			for (int i=0; i < arrayDepth; ++i) {
-				sb.append("[]");
-			}
-
-			if (!typeParameters.isEmpty()) {
-				sb.append("<");
-				boolean first = true;
-
-				for (JavaType typeParameter : typeParameters) {
-					if (!first) { sb.append(", "); }
-					else { first = false; }
-					sb.append(typeParameter);
-				}
-
-				sb.append(">");
-			}
-
-			return sb.toString();
-		}
-
-		@Override
-		public boolean equals(Object obj) {
-
-			// type check
-			if (!(obj instanceof JavaType)) {
-				return false;
-			}
-
-			JavaType other = (JavaType) obj;
-
-			// array check
-			if (this.arrayDepth != other.arrayDepth) {
-				return false;
-			}
-
-			return typeName.equals(other.typeName);
-		}
-	}
-
 	public static class ValidationException extends Exception {
 		ValidationException(String message) {
 			super(message);
-		}
-	}
-
-
-	public static class ParseException extends RuntimeException {
-		ParseException(String message) {
-			super(message);
-		}
-		
-		ParseException(String message, Throwable cause) {
-			super(message, cause);
 		}
 	}
 
@@ -464,7 +357,7 @@ public class MethodParser {
 
 	//-------------------------------------------------------------------------------------------//
 
-	public boolean compilerEquivalent(MethodParser other) {
+	public boolean compilerEquivalent(MethodSignature other) {
 
 		// same name
 		if (!methodName.equals(other.methodName)) { return false; }
@@ -493,7 +386,7 @@ public class MethodParser {
 			Pair<JavaType,String> p1 = newParams.get(i);
 			Pair<JavaType,String> p2 = newOtherParams.get(i);
 
-			if (!p1.first.equals(p2.first)) { return false; }
+			if (!p1.first.compilerEquivalent(p2.first)) { return false; }
 		}
 
 		// and same return type
@@ -520,8 +413,78 @@ public class MethodParser {
 		return true;
 	}
 
+	public void validate() throws ValidationException {
+
+		// check that method name is legitimate
+		if (!SourceVersion.isName(methodName)) {
+			throw new ValidationException(
+				"Invalid method name: '"+ originalSignature +"'."
+			);
+		}
+
+		// check that parameters are also valid names
+		for (Pair<JavaType, String> param : params) {
+			if (!SourceVersion.isName(param.second)) {
+				throw new ValidationException(
+					"Invalid parameter name '"+param.second+"' in method '"+originalSignature+"'."
+				);
+			}
+		}
+
+		// check vararg name
+		if (varargName != null) {
+			if (!SourceVersion.isName(varargName)) {
+				throw new ValidationException(
+					"Invalid vararg parameter name '"+varargName+"' in method '"+originalSignature+"'."
+				);
+			}
+		}
+	}
+
 	// return the number of parameters, accounting for varargs
 	public int parameterCount() {
 		return params.size() + (varargType != null ? 1 : 0);
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder signature = new StringBuilder();
+
+		// method return type
+		if (returnType != null) {
+			signature.append(returnType.toString()).append(" ");
+		} else {
+			signature.append("void ");
+		}
+
+		// method name
+		signature.append(methodName).append("(");
+
+		// parameters
+		for (int i = 0; i < params.size(); i++) {
+			Pair<JavaType, String> param = params.get(i);
+			if (i != 0) { signature.append(", "); }
+
+			// parameter type
+			signature.append(param.first.toString());
+
+			// parameter name
+			signature.append(" ").append(param.second);
+		}
+
+		// vararg parameter
+		if (varargType != null) {
+			if (params.size() > 0) { signature.append(", "); }
+
+			signature.append(varargType.toString()).append("...").append(varargName);
+		}
+
+		signature.append(")");
+		return signature.toString();
+	}
+
+	@Override
+	public int compareTo(MethodSignature other) {
+		return this.toString().compareTo(other.toString());
 	}
 }
