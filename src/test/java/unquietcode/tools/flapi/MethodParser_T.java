@@ -357,6 +357,56 @@ public class MethodParser_T {
 	}
 
 	@Test
+	public void validWildcard() throws ParseException {
+		MethodSignature signature = new MethodSignature("void method(Class<?> clazz)");
+		assertEquals("Class", signature.params.get(0).first.typeName);
+		assertEquals("?", signature.params.get(0).first.typeParameters.get(0).typeName);
+	}
+
+	@Test(expected=ParseException.class)
+	public void invalidDoubleWildcard() throws ParseException {
+		new MethodSignature("void method(Class<??> clazz)");
+	}
+
+	@Test
+	public void validDoubleWildcard() throws ParseException {
+		MethodSignature signature = new MethodSignature("void method(Map<?, ?> map)");
+
+		JavaType param = signature.params.get(0).first;
+		assertEquals("Map", param.typeName);
+
+		assertEquals(2, param.typeParameters.size());
+		assertEquals("?", param.typeParameters.get(0).typeName);
+		assertEquals("?", param.typeParameters.get(1).typeName);
+	}
+
+	@Test
+	public void wildcardReturnType() throws ParseException {
+		MethodSignature signature = new MethodSignature("Class<?> method()");
+
+		assertEquals("Class", signature.returnType.typeName);
+		assertEquals("?", signature.returnType.typeParameters.get(0).typeName);
+	}
+
+	@Test
+	public void wildcardVarargs() throws ParseException {
+		MethodSignature signature = new MethodSignature("void method(Class<?>...classes)");
+
+		assertEquals("Class", signature.varargType.typeName);
+		assertEquals("?", signature.varargType.typeParameters.get(0).typeName);
+	}
+
+	@Test
+	public void testWildcardArray() throws ParseException {
+		MethodSignature signature = new MethodSignature("method(Class<?>[] classes)");
+		JavaType param = signature.params.get(0).first;
+
+		assertEquals("Class", param.typeName);
+		assertEquals("?", param.typeParameters.get(0).typeName);
+		assertEquals(1, param.arrayDepth);
+	}
+
+	@Test
 	public void methodEqualityTests() throws ParseException {
 
 		// -- General --

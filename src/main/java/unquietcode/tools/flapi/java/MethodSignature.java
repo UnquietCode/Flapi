@@ -16,10 +16,14 @@
 
 package unquietcode.tools.flapi.java;
 
+import com.google.common.collect.ImmutableSet;
 import unquietcode.tools.flapi.Pair;
 
 import javax.lang.model.SourceVersion;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * @author Ben Fagin
@@ -165,15 +169,25 @@ public class MethodSignature implements Comparable<MethodSignature> {
 				throwGeneralException("invalid array declaration");
 			}
 			match(LAB, 1);
-			match(WS, -1);
 
 			while (true) {
-				typeParameters.add(matchType());
+				match(WS, -1);
+
+				// wildcard
+				if (peek(QM, 1)) {
+					match(QM, 1);
+					typeParameters.add(JavaType.wildcard());
+				}
+
+				// normal
+				else {
+					typeParameters.add(matchType());
+				}
+
 				match(WS, -1);
 
 				if (peek(COMMA, 1)) {
 					match(COMMA, 1);
-					match(WS, -1);
 				} else {
 					break;
 				}
@@ -324,36 +338,28 @@ public class MethodSignature implements Comparable<MethodSignature> {
 		}
 	}
 
-	private static final Set<Character> LP = new HashSet<Character>();
-	private static final Set<Character> RP = new HashSet<Character>();
-	private static final Set<Character> WS = new HashSet<Character>();
-	private static final Set<Character> COMMA = new HashSet<Character>();
-	private static final Set<Character> DOT = new HashSet<Character>();
-	private static final Set<Character> LAB = new HashSet<Character>();
-	private static final Set<Character> RAB = new HashSet<Character>();
-	private static final Set<Character> ID_START = new HashSet<Character>();
-	private static final Set<Character> ID = new HashSet<Character>();
-	private static final Set<Character> LB = new HashSet<Character>();
-	private static final Set<Character> RB = new HashSet<Character>();
+	private static final Set<Character> LP 		= ImmutableSet.of('(');
+	private static final Set<Character> RP 		= ImmutableSet.of(')');
+	private static final Set<Character> WS 		= ImmutableSet.of('\t', ' ', '\n', '\r');
+	private static final Set<Character> COMMA 	= ImmutableSet.of(',');
+	private static final Set<Character> DOT 	= ImmutableSet.of('.');
+	private static final Set<Character> LAB 	= ImmutableSet.of('<');
+	private static final Set<Character> RAB 	= ImmutableSet.of('>');
+	private static final Set<Character> LB 		= ImmutableSet.of('[');
+	private static final Set<Character> RB 		= ImmutableSet.of(']');
+	private static final Set<Character> QM 		= ImmutableSet.of('?');
 
-	static {
-		LP.add('(');
-		RP.add(')');
-		WS.addAll(Arrays.asList('\t', ' ', '\n', '\r'));
-		COMMA.add(',');
-		DOT.add('.');
-		LAB.add('<');
-		RAB.add('>');
-		LB.add('[');
-		RB.add(']');
+	private static final Set<Character> ID_START = ImmutableSet.of(
+		'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q',
+		'R','S','T','U','V','W','X','Y','Z','a','b','c','d','e','f','g','h',
+		'i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y',
+		'z','$','_'
+	);
 
-		ID_START.addAll(Arrays.asList('A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q',
-									 'R','S','T','U','V','W','X','Y','Z','a','b','c','d','e','f','g','h',
-									 'i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y',
-									 'z','$','_'));
-		ID.addAll(ID_START);
-		ID.addAll(Arrays.asList('0','1','2','3','4','5','6','7','8','9'));
-	}
+	private static final Set<Character> ID = ImmutableSet.<Character>builder()
+		.addAll(ID_START)
+		.add('0', '1', '2', '3', '4', '5', '6', '7', '8', '9')
+	.build();
 
 	//-------------------------------------------------------------------------------------------//
 

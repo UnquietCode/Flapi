@@ -189,6 +189,11 @@ public abstract class AbstractGenerator {
 		JClass clazz;
 		String name = type.typeName;
 
+		// special handling for wildcard types
+		if ("?".equals(type.typeName)) {
+			return ctx.model.wildcard();
+		}
+
 		dance: {
 			try {
 				Class c = Thread.currentThread().getContextClassLoader().loadClass(name);

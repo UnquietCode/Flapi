@@ -49,6 +49,10 @@ public class JavaType {
 		return new JavaType(c.getName(), depth, Collections.<JavaType>emptyList());
 	}
 
+	public static JavaType wildcard() {
+		return new JavaType("?", 0, Collections.<JavaType>emptyList());
+	}
+
 	public JavaType(String typeName, int arrayDepth, List<JavaType> typeParameters) {
 		this.typeName = typeName;
 		this.typeParameters = Collections.unmodifiableList(typeParameters);
