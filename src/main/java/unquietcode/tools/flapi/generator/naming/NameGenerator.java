@@ -59,6 +59,9 @@ public interface NameGenerator {
 	// *Builder
 	String builderName(String stateName);
 
+	// Anon*
+	String anonymousName(String methodName);
+
 	// Start
 	String wrapperName(String stateName);
 }

@@ -16,6 +16,10 @@
 
 package unquietcode.tools.flapi.generator.naming;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
+import static com.google.common.base.Preconditions.checkState;
+
 /**
  * Default name generator.
  *
@@ -23,6 +27,8 @@ package unquietcode.tools.flapi.generator.naming;
  * @version 2015-01-14
  */
 public class DefaultNameGenerator implements NameGenerator {
+	private final AtomicInteger anonymousCounter = new AtomicInteger(1);
+
 
 	@Override
 	public String methodName(String methodKey) {
@@ -52,6 +58,22 @@ public class DefaultNameGenerator implements NameGenerator {
 	@Override
 	public String builderName(String stateName) {
 		return stateName+"Builder";
+	}
+
+	@Override
+	public String anonymousName(String methodName) {
+		StringBuilder name = new StringBuilder();
+
+		// Anon123
+		name.append("Anon").append(anonymousCounter.getAndIncrement());
+
+		// Anon123_someMethod
+		if (methodName != null) {
+			checkState(!methodName.trim().isEmpty(), "a valid method name is required");
+			name.append("_").append(methodName);
+		}
+
+		return name.toString();
 	}
 
 	@Override

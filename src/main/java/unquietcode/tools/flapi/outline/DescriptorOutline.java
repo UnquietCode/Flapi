@@ -16,11 +16,9 @@
 
 package unquietcode.tools.flapi.outline;
 
-
+import unquietcode.tools.flapi.generator.naming.DefaultNameGenerator;
 import unquietcode.tools.flapi.generator.naming.NameGenerator;
 import unquietcode.tools.flapi.java.MethodSignature;
-
-import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * @author Ben Fagin
@@ -28,6 +26,11 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public class DescriptorOutline extends BlockOutline implements Outline {
 	private final GeneratorOutline generator = new GeneratorOutline(this);
+
+	// one instance per outline, though it is ignored if the custom one is set
+	private final NameGenerator defaultNameGenerator = new DefaultNameGenerator();
+
+	private boolean isPrepared = false;
 	private boolean enableCondensedNames = false;
 	private boolean disableTimestamps = false;
 	private String packageName;
@@ -78,27 +81,32 @@ public class DescriptorOutline extends BlockOutline implements Outline {
 	}
 
 	public void prepare() {
-		generateNamesForAnonymousBlocks(this, new AtomicInteger(1));
+		if (isPrepared) { return; }
+
+		generateNamesForAnonymousBlocks(this);
+
+		isPrepared = true;
 	}
 
-	private static void generateNamesForAnonymousBlocks(BlockOutline block, AtomicInteger counter) {
+	private void generateNamesForAnonymousBlocks(BlockOutline block) {
+		final NameGenerator nameGenerator
+			= customNameGenerator != null ? customNameGenerator : defaultNameGenerator;
 
 		// If the name is null, generate one.
 		if (block.getName() == null || block.getName().trim().isEmpty()) {
-
-			StringBuilder name = new StringBuilder()
-				.append("Anon").append(counter.getAndIncrement())
-			;
+			final String name;
 
 			// Purely anonymous blocks have no constructor!
 			// Only anonymous block references have these.
 			// The name is used only as a convenience.
 			if (block.getConstructor() != null) {
 				MethodSignature signature = block.getConstructor().getMethodSignature();
-				name.append("_").append(signature.methodName);
+				name = nameGenerator.anonymousName(signature.methodName);
+			} else {
+				name = nameGenerator.anonymousName(null);
 			}
 
-			block.setName(name.toString());
+			block.setName(name);
 		}
 
 		// recurse
@@ -108,7 +116,7 @@ public class DescriptorOutline extends BlockOutline implements Outline {
 					continue;
 				}
 
-				generateNamesForAnonymousBlocks(chain, counter);
+				generateNamesForAnonymousBlocks(chain);
 			}
 		}
 	}
