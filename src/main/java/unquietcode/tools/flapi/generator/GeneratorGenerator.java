@@ -39,10 +39,8 @@ public class GeneratorGenerator extends AbstractGenerator {
 		JDefinedClass generator = GENERATOR_CLASS_STRATEGY.createStrongType(ctx, topLevel);
 		JClass helper = HELPER_INTERFACE_STRATEGY.createWeakType(ctx, topLevel);
 
-		// FLAPI-126 subclass the return type for consistency between descriptor changes
+		// create the 'create' method with wrapper as return type
 		JClass returnType = WRAPPER_INTERFACE_STRATEGY.createWeakType(ctx, topLevel);
-		returnType = returnType.narrow(Void.class);
-
 		JMethod createMethod = generator.method(JMod.PUBLIC+JMod.STATIC, returnType, outline.methodName);
 
 		// is this a dynamic helper? use that factory method

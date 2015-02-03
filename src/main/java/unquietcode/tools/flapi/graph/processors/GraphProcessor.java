@@ -75,7 +75,7 @@ public class GraphProcessor extends AbstractGenerator implements GenericVisitor<
 			transition.accept(new TransitionVisitor.$() {
 				public void visit(LateralTransition transition) {
 					if (!transition.getStateChain().isEmpty()) {
-						JClass next = BUILDER_OR_WRAPPER_INTERFACE_STRATEGY.createWeakType(ctx, transition.getSibling());
+						JClass next = BUILDER_OR_MARKER_INTERFACE_STRATEGY.createWeakType(ctx, transition.getSibling());
 						infoAnnotation.param("next", next);
 					}
 				}
@@ -110,7 +110,7 @@ public class GraphProcessor extends AbstractGenerator implements GenericVisitor<
 
 				for (int i=0; i < stateChain.size(); i++) {
 					StateClass sc = stateChain.get(i);
-					JClass type = BUILDER_OR_WRAPPER_INTERFACE_STRATEGY.createWeakType(ctx, sc);
+					JClass type = BUILDER_OR_MARKER_INTERFACE_STRATEGY.createWeakType(ctx, sc);
 					final int position = positionFunction.apply(i);
 
 					JAnnotationUse chainInfo = chain.annotate(ChainInfo.class);

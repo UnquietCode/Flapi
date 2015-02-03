@@ -80,4 +80,9 @@ public class DefaultNameGenerator implements NameGenerator {
 	public String wrapperName(String stateName) {
 		return "Start";
 	}
+
+	@Override
+	public String markerName(String stateName) {
+		return "Head";
+	}
 }

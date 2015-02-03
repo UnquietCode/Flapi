@@ -64,4 +64,7 @@ public interface NameGenerator {
 
 	// Start
 	String wrapperName(String stateName);
+
+	// Head
+	String markerName(String stateName);
 }

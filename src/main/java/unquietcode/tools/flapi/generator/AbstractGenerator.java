@@ -59,9 +59,9 @@ public abstract class AbstractGenerator {
 			// if newly constructed
 			if (created) {
 
-				// create the wrapper interface
+				// create the marker interface
 				if (state.isTopLevel()) {
-					WRAPPER_INTERFACE_STRATEGY.createWeakType(ctx, state);
+					MARKER_INTERFACE_STRATEGY.createWeakType(ctx, state);
 				}
 
 				// add @see annotation pointing back to helper
@@ -87,25 +87,25 @@ public abstract class AbstractGenerator {
 		}
 	};
 
-	protected static final TypeCreationStrategy BUILDER_OR_WRAPPER_INTERFACE_STRATEGY = new DefaultTypeCreationStrategy() {
+	protected static final TypeCreationStrategy BUILDER_OR_MARKER_INTERFACE_STRATEGY = new DefaultTypeCreationStrategy() {
 
 		@Override
 		public JDefinedClass createStrongType(GeneratorContext ctx, StateClass state) {
 			if (state.isTopLevel()) {
-				return WRAPPER_INTERFACE_STRATEGY.createStrongType(ctx, state);
+				return MARKER_INTERFACE_STRATEGY.createStrongType(ctx, state);
 			} else {
 				return BUILDER_INTERFACE_STRATEGY.createStrongType(ctx, state);
 			}
 		}
 	};
 
-	protected static final TypeCreationStrategy BUILDER_OR_WRAPPER_NARROWED_INTERFACE_STRATEGY = new TypeCreationStrategy() {
+	protected static final TypeCreationStrategy BUILDER_OR_MARKER_NARROWED_INTERFACE_STRATEGY = new TypeCreationStrategy() {
 
 		@Override
 		public JClass createWeakType(GeneratorContext ctx, StateClass state) {
 			if (state.isTopLevel()) {
 				JClass builder = BUILDER_NARROWED_INTERFACE_STRATEGY.createWeakType(ctx, state);
-				JClass wrapper = WRAPPER_INTERFACE_STRATEGY.createWeakType(ctx, state);
+				JClass wrapper = MARKER_INTERFACE_STRATEGY.createWeakType(ctx, state);
 				return wrapper.narrow(builder.getTypeParameters().get(0));
 			} else {
 				return BUILDER_NARROWED_INTERFACE_STRATEGY.createWeakType(ctx, state);
@@ -164,9 +164,36 @@ public abstract class AbstractGenerator {
 				return ex.getExistingClass();
 			}
 
+			// Start extends TopLevel<?>
+			JClass marker = MARKER_INTERFACE_STRATEGY.createWeakType(ctx, state);
+			startClass = startClass._extends(marker.narrow(Void.class));
+
+			// docs
+			startClass.javadoc().append("Marker interface denoting the main entry point for this descriptor.");
+			return startClass;
+		}
+	};
+
+	public static final TypeCreationStrategy MARKER_INTERFACE_STRATEGY = new DefaultTypeCreationStrategy() {
+		public @Override JDefinedClass createStrongType(GeneratorContext ctx, StateClass state) {
+			final String builderName = ctx.getNameGenerator().builderName(state.getName());
+			final JDefinedClass parent = ctx.getOrCreateInterface(state.getName(), builderName).first;
+			JDefinedClass startClass;
+
+			try {
+				String wrapperName = ctx.getNameGenerator().markerName(state.getName());
+				startClass = parent._interface(wrapperName);
+			} catch (JClassAlreadyExistsException ex) {
+				return ex.getExistingClass();
+			}
+
+			// Marker<T> extends TopLevel<T>
 			JTypeVar startReturnType = startClass.generify(Constants.RETURN_TYPE_NAME);
 			JClass builder = BUILDER_INTERFACE_STRATEGY.createWeakType(ctx, state);
 			startClass = startClass._extends(builder.narrow(startReturnType));
+
+			// docs
+			startClass.javadoc().append("Marker interface denoting the main entry point for this block.");
 
 			return startClass;
 		}
