@@ -222,6 +222,15 @@ public class MainDescriptor implements DescriptorMaker {
 				.end()
 			.any()
 
+				// Mixins
+				.addMethod("addMixin(String blockName)")
+					.withDocumentation("mix in the contents of another block by name")
+				.any()
+
+				.addMethod("addMixin(Class helper)")
+					.withDocumentation("mix in the contents of an annotated helper")
+				.any()
+
 				.addMethod("addBlockReference(String blockName, String methodSignature)")
 					.withDocumentation("add a new method which proceeds to an existing block")
 					.addBlockChain()
@@ -290,6 +299,16 @@ public class MainDescriptor implements DescriptorMaker {
 					.addBlockReference("Method")
 				.end()
 			.any()
+
+			// Mixins for the top level block
+			.addMethod("addMixin(String blockName)")
+				.withDocumentation("mix in the contents of another block by name")
+			.any()
+
+			.addMethod("addMixin(Class helper)")
+				.withDocumentation("mix in the contents of an annotated block helper")
+			.any()
+
 		.build();
 
 		return builder;

@@ -42,7 +42,11 @@ public class BlockOutline implements Outline {
 	// block methods
 	private final Set<MethodOutline> methods = new TreeSet<MethodOutline>();
 
-	// ------------------------------ //
+	// mixins
+	private final Set<String> mixinBlocks = new HashSet<>();
+	private final Set<Class<?>> mixinTypes = new HashSet<>();
+
+	// ---------------------------------------------------- //
 
 	public Class<?> getHelperClass() {
 		return helperClass;
@@ -88,6 +92,22 @@ public class BlockOutline implements Outline {
 		this.name = name.trim();
 	}
 
+	public void addMixin(String block) {
+		mixinBlocks.add(Objects.requireNonNull(block));
+	}
+
+	public void addMixin(Class<?> block) {
+		mixinTypes.add(Objects.requireNonNull(block));
+	}
+
+	public Set<String> getBlockMixins() {
+		return mixinBlocks;
+	}
+
+	public Set<Class<?>> getClassMixins() {
+		return mixinTypes;
+	}
+
 	public BlockOutline addBlock(String blockName) {
 		BlockOutline block = new BlockOutline();
 		block.name = blockName;
@@ -126,5 +146,49 @@ public class BlockOutline implements Outline {
 
 	public Set<MethodOutline> getAllMethods() {
 		return methods;
+	}
+
+	//---o---o---o---o---o---o---o---o---o---o---o---o---o---o---o---o---o---o---o---o---o---o---//
+
+	public static Map<String, BlockOutline> findAllBlocks(BlockOutline block) {
+		Map<String, BlockOutline> blocks = new HashMap<>();
+		findAllBlocks(blocks, block);
+		return blocks;
+	}
+
+	private static void findAllBlocks(Map<String, BlockOutline> blocks, BlockOutline block) {
+		if (block instanceof BlockReference) {
+			return;
+		}
+
+		final String blockName = block.getName();
+
+		// Defensive, but really it is never ok to have reference cycles,
+		// and usually it means the helpers were called incorrectly.
+		if (blocks.containsKey(blockName)) {
+			if (blocks.get(blockName) == block) {
+				return;
+			} else {
+				throw new DescriptorBuilderException("Duplicate block name: "+blockName);
+			}
+		}
+
+		blocks.put(blockName, block);
+
+		for (MethodOutline method : block.getAllMethods()) {
+			for (BlockOutline chain : method.getBlockChain()) {
+				findAllBlocks(blocks, chain);
+			}
+		}
+
+		for (BlockOutline child : block.getBlocks()) {
+			findAllBlocks(blocks, child);
+		}
+	}
+
+	protected final void applyMixin(BlockOutline other) {
+		for (MethodOutline method : other.getAllMethods()) {
+			this.methods.add(method.copy());
+		}
 	}
 }

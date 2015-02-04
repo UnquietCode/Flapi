@@ -62,8 +62,7 @@ public class Flapi {
 	public static DescriptorConfiguratorBuilder.Start<Void> create(Class<?> topBlock) {
 		checkNotNull(topBlock, "a starting block is required");
 
-		AnnotationIntrospector introspector = new AnnotationIntrospector();
-		DescriptorOutline outline = introspector.createDescriptor(topBlock);
+		DescriptorOutline outline = AnnotationIntrospector.createDescriptor(topBlock);
 		DescriptorConfiguratorHelperImpl helper = new DescriptorConfiguratorHelperImpl(outline);
 
 		return DescriptorConfiguratorGenerator.create(helper);

@@ -35,47 +35,18 @@ public class GraphBuilder {
 	private Map<BlockReference, BlockOutline> referenceMap = new IdentityHashMap<BlockReference, BlockOutline>();
 
 	public StateClass buildGraph(DescriptorOutline descriptor) {
+
 		// resolve block references
-		Map<String, BlockOutline> blocks = new HashMap<String, BlockOutline>();
-		findAllBlocks(blocks, descriptor);
+		Map<String, BlockOutline> blocks = BlockOutline.findAllBlocks(descriptor);
 		initializeReferenceMap(blocks, referenceMap, descriptor);
 
 		return convertBlock(descriptor);
 	}
 
-	private static void findAllBlocks(Map<String, BlockOutline> blocks, BlockOutline block) {
-		if (block instanceof BlockReference) {
-			return;
-		}
-
-		final String blockName = block.getName();
-
-		// Defensive, but really it is never ok to have reference cycles,
-		// and usually it means the helpers were called incorrectly.
-		if (blocks.containsKey(blockName)) {
-			if (blocks.get(blockName) == block) {
-				return;
-			} else {
-				throw new DescriptorBuilderException("Duplicate block name: "+blockName);
-			}
-		}
-
-		blocks.put(blockName, block);
-
-		for (MethodOutline method : block.getAllMethods()) {
-			for (BlockOutline chain : method.getBlockChain()) {
-				findAllBlocks(blocks, chain);
-			}
-		}
-
-		for (BlockOutline child : block.getBlocks()) {
-			findAllBlocks(blocks, child);
-		}
-	}
-
-	private static void initializeReferenceMap(Map<String, BlockOutline> blocks,
-		                                       Map<BlockReference, BlockOutline> references,
-	                                           BlockOutline block
+	private static void initializeReferenceMap(
+		Map<String, BlockOutline> blocks,
+		Map<BlockReference, BlockOutline> references,
+		BlockOutline block
 	){
 		if (block instanceof BlockReference) {
 			final BlockReference reference = (BlockReference) block;
@@ -131,7 +102,7 @@ public class GraphBuilder {
 		// create the sibling states
 		Set<StateClass> seen = Collections.newSetFromMap(new IdentityHashMap<StateClass, Boolean>());
 		Set<Set<MethodOutline>> workingSet = new HashSet<Set<MethodOutline>>();
-		workingSet.add(new TreeSet<MethodOutline>(allMethods));
+		workingSet.add(new TreeSet<>(allMethods));
 
 		while (!workingSet.isEmpty()) {
 			Set<Set<MethodOutline>> nextSet = new HashSet<Set<MethodOutline>>();

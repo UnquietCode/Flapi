@@ -29,6 +29,8 @@ import java.util.Map;
  * @author Ben Fagin
  */
 public class MethodInfo implements Comparable<MethodInfo> {
+
+	// don't forget to update the copy() method below
 	private Integer minOccurrences;
 	private Integer maxOccurrences;
 	private MethodSignature methodSignature;

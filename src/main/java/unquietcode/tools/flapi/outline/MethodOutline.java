@@ -27,8 +27,10 @@ import java.util.List;
  * @version 03-07-2012
  */
 public class MethodOutline extends MethodInfo implements Outline {
-	private final List<BlockOutline> blockChain = new ArrayList<BlockOutline>();
-	private final List<Integer> chainParameterPositions = new ArrayList<Integer>();
+
+	// remember to adjust the copy() method below
+	private final List<BlockOutline> blockChain = new ArrayList<>();
+	private final List<Integer> chainParameterPositions = new ArrayList<>();
 	private boolean isTerminal = false;
 	private JavaType returnType;
 	private Integer group;
@@ -92,8 +94,9 @@ public class MethodOutline extends MethodInfo implements Outline {
 		MethodOutline clone = new MethodOutline();
 		super.copy(clone);
 
-		clone.isTerminal = isTerminal;
 		clone.blockChain.addAll(blockChain);
+		clone.chainParameterPositions.addAll(chainParameterPositions);
+		clone.isTerminal = isTerminal;
 		clone.returnType = returnType;
 		clone.group = group;
 		clone.trigger = trigger;

@@ -45,7 +45,6 @@ import java.util.concurrent.atomic.AtomicReference;
 public class AnnotationIntrospector extends IntrospectorSupport {
 	private final Map<Class<?>, BlockOutline> blocks = new HashMap<Class<?>, BlockOutline>();
 
-
 	public static boolean isAnnotated(Class<?> clazz) {
 
 		// for every method in the class
@@ -67,15 +66,16 @@ public class AnnotationIntrospector extends IntrospectorSupport {
 
 	private static Set<Method> getAllMethods(Class<?> clazz) {
 		Method[] methods = SpringMethodUtils.getUniqueDeclaredMethods(clazz);
-		return new HashSet<Method>(Arrays.asList(methods));
+		return new HashSet<>(Arrays.asList(methods));
 	}
 
-	public DescriptorOutline createDescriptor(Class<?> clazz) {
+	public static DescriptorOutline createDescriptor(Class<?> clazz) {
 		DescriptorOutline descriptor = new DescriptorOutline();
 		descriptor.setPackageName(clazz.getPackage().getName() + ".builder");
 
 		// discover methods and set them on the blocks
-		boolean found = handleClass(descriptor, clazz);
+		AnnotationIntrospector introspector = new AnnotationIntrospector();
+		boolean found = introspector.handleClass(descriptor, clazz);
 
 		if (found) {
 			return descriptor;
@@ -85,6 +85,10 @@ public class AnnotationIntrospector extends IntrospectorSupport {
 		BeanIntrospector beanIntrospector = new BeanIntrospector();
 		descriptor = beanIntrospector.createDescriptor(clazz);
 		return descriptor;
+	}
+
+	public static BlockOutline createBlock(Class<?> clazz) {
+		return createDescriptor(clazz);
 	}
 
 	private BlockOutline handleClass(Class<?> blockClass) {

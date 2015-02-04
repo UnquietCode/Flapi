@@ -16,9 +16,16 @@
 
 package unquietcode.tools.flapi.outline;
 
+import com.google.common.base.Function;
+import unquietcode.tools.flapi.DescriptorBuilderException;
+import unquietcode.tools.flapi.Utilities;
+import unquietcode.tools.flapi.annotations.AnnotationIntrospector;
 import unquietcode.tools.flapi.generator.naming.DefaultNameGenerator;
 import unquietcode.tools.flapi.generator.naming.NameGenerator;
 import unquietcode.tools.flapi.java.MethodSignature;
+
+import java.util.Collection;
+import java.util.Map;
 
 /**
  * @author Ben Fagin
@@ -84,11 +91,14 @@ public class DescriptorOutline extends BlockOutline implements Outline {
 		if (isPrepared) { return; }
 
 		generateNamesForAnonymousBlocks(this);
+		reconcileMixins();
 
 		isPrepared = true;
 	}
 
 	private void generateNamesForAnonymousBlocks(BlockOutline block) {
+
+		// use the custom name generator if provided, otherwise the default
 		final NameGenerator nameGenerator
 			= customNameGenerator != null ? customNameGenerator : defaultNameGenerator;
 
@@ -118,6 +128,37 @@ public class DescriptorOutline extends BlockOutline implements Outline {
 
 				generateNamesForAnonymousBlocks(chain);
 			}
+		}
+	}
+
+	private void reconcileMixins() {
+		final Map<String, BlockOutline> allBlocks = BlockOutline.findAllBlocks(this);
+
+		Utilities.safeRecurse(this, new Function<BlockOutline, Collection<BlockOutline>>() {
+			public Collection<BlockOutline> apply(BlockOutline child) {
+				reconcileMixins(allBlocks, child);
+				return child.getBlocks();
+			}
+		});
+	}
+
+	private void reconcileMixins(Map<String, BlockOutline> allBlocks, BlockOutline block) {
+
+		// for every named block mixin
+		for (String mixin : block.getBlockMixins()) {
+			BlockOutline mixinBlock = allBlocks.get(mixin);
+
+			if (mixinBlock == null) {
+				throw new DescriptorBuilderException("could not find mixin block with name '"+mixin+"'");
+			}
+
+			block.applyMixin(mixinBlock);
+		}
+
+		// for every typed block mixin
+		for (Class<?> mixinType : block.getClassMixins()) {
+			BlockOutline mixinBlock = AnnotationIntrospector.createBlock(mixinType);
+			block.applyMixin(mixinBlock);
 		}
 	}
 }

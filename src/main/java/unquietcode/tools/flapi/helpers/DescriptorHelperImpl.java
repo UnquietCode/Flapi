@@ -92,4 +92,14 @@ public class DescriptorHelperImpl extends DescriptorConfiguratorHelperImpl imple
 	public void addEnumSelector(Class clazz, String methodSignature, AtomicReference<MethodHelper> _helper1) {
 		BlockHelperImpl._addEnumSelector(outline, clazz, methodSignature, _helper1);
 	}
+
+	@Override
+	public void addMixin(Class helper) {
+		BlockHelperImpl._addMixin(outline, helper);
+	}
+
+	@Override
+	public void addMixin(String blockName) {
+		BlockHelperImpl._addMixin(outline, blockName);
+	}
 }

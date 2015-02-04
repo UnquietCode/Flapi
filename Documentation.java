@@ -278,16 +278,40 @@ public enum TestEnum {
  * descriptor. (This technique can also be used recursively to
  * return a new instance of the current block.)
  *
- * When a block is declared, a name can be provided which uniquely
+ * (When a block is declared, a name can be provided which uniquely
  * identifies it within the scope of your descriptor. A block can
  * also be declared anonymously, in which case it cannot be
- * referenced.
+ * referenced.)
  */
 
 // Add a method which starts a new block, but by referencing it
 // instead of defining it. Returns a `MethodBuilder` to
 // configure the call.
 .addBlockReference(String blockName, String methodSignature)
+
+
+/**
+ * ### Block Mixins
+ *
+ * Similar to references, it is possible to combine the contents of
+ * a previously declared block with the current one by using a
+ * 'block mixin'. The mixin can be in the form of a string naming
+ * another block in the descriptor, or a class containing Flapi
+ * method annotations (see the [Annotations](#annotations) section
+ * below). Mixins are applied late, so it is possible to use
+ * forward references to blocks which have not yet been decalared.
+ *
+ * (When a block is declared, a name can be provided which uniquely
+ * identifies it within the scope of your descriptor. A block can
+ * also be declared anonymously, in which case it cannot be
+ * referenced.)
+ */
+
+// mixin the contents of another named block
+.addMixin(String blockName)
+
+// mixin the contents of an annotated interface or class
+.addMixin(Class blockType)
 
 
 /**

@@ -17,6 +17,7 @@
 package unquietcode.tools.flapi.helpers;
 
 import unquietcode.tools.flapi.DescriptorBuilderException;
+import unquietcode.tools.flapi.annotations.AnnotationIntrospector;
 import unquietcode.tools.flapi.builder.Block.BlockHelper;
 import unquietcode.tools.flapi.builder.Method.MethodHelper;
 import unquietcode.tools.flapi.outline.BlockOutline;
@@ -118,6 +119,27 @@ public class BlockHelperImpl implements BlockHelper {
 			blockHelper.get().addMethod(name+"()", methodHelper);
 			methodHelper.get().last();
 		}
+	}
+
+	@Override
+	public void addMixin(Class helper) {
+		_addMixin(block, helper);
+	}
+
+	static void _addMixin(BlockOutline block, Class mixin) {
+		if (!AnnotationIntrospector.isAnnotated(mixin)) {
+			System.err.println("the provided mixin type contains no Flapi method annotations");
+		}
+		block.addMixin(mixin);
+	}
+
+	@Override
+	public void addMixin(String blockName) {
+		_addMixin(block, blockName);
+	}
+
+	static void _addMixin(BlockOutline block, String mixin) {
+		block.addMixin(mixin);
 	}
 
 	@Override
