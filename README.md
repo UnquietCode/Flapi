@@ -1,6 +1,8 @@
 # Flapi - A fluent API generator for Java
 ## v0.7.3 [![Build Status](https://travis-ci.org/UnquietCode/Flapi.png?branch=master)](https://travis-ci.org/UnquietCode/Flapi) 
 
+[![Tip with Gratipay](https://assets.gratipay.com/gratipay.svg)](https://gratipay.com/UnquietCode) [![Tip with Bitcoin](https://assets.gratipay.com/bitcoin.png)](https://blockchain.info/address/1Ec6mzLpJQvuzXqhxfJz1h9ZwJmoHMW9BX)**Bitcoin**
+
 ### What is it?
 Flapi is a code generation library for creating fluent API's in Java.
 Fluent builders allow developers to more easily interact with your code, using a syntax
@@ -133,7 +135,7 @@ If you like this software and find it useful, then please consider supporting my
 a donation via [BitCoin](https://gratipay.com/UnquietCode) or [other means](https://gratipay.com/UnquietCode).
 
 Special thanks to [Concurrent, Inc.](http://www.concurrentinc.com) for their feedback and support
-as a power user of Flapi, which they use in their [Fluid](https://github.com/Cascading/fluid)
+as a user of Flapi, which they use in their [Fluid](https://github.com/Cascading/fluid)
 library for Cascading.
 
 ### License
