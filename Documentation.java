@@ -597,6 +597,12 @@ Descriptor descriptor = Flapi.create(Class class)
 // Provide documentation for the method.
 @Documented(String[] value)
 
+// Marks a method has being the target of an enum
+// selector. The method must accept zero arguments,
+// and return a Consumer instance which accepts the
+// enum value.
+@EnumSelector
+
 // Provide an alternate name to use for the interface
 // or class's corresponding generated name, instead of
 // the default (`XyzBuilder`).

@@ -101,7 +101,37 @@ public class BlockInvocationHandler implements InvocationHandler {
 			chain = info.chainInfo();
 		}
 
-		return invokeAndReturn(method, originalArgs, proxy, info, chain);
+		if (method.getAnnotation(EnumSelectorHint.class) != null) {
+			return invokeEnumSelector(method, originalArgs, proxy, info, chain);
+		} else {
+			return invokeAndReturn(method, originalArgs, proxy, info, chain);
+		}
+	}
+
+	private Object invokeEnumSelector(Method method, Object[] originalArgs, final Object originalProxy, final MethodInfo info, final ChainInfo[] chain) {
+		final Method helperMethod = SpringMethodUtils.findMethod(helper.getClass(), method.getName(), method.getParameterTypes());
+		final Class<? extends Enum> enumType = method.getAnnotation(EnumSelectorHint.class).value();
+
+		@SuppressWarnings("unchecked")
+		final Consumer<Enum<?>> consumer = (Consumer<Enum<?>>) invokeMethod(helperMethod, Arrays.asList(originalArgs));
+
+		if (consumer == null) {
+			throw new IllegalStateException("consumer instance cannot be null");
+		}
+
+		return Proxy.newProxyInstance(Thread.currentThread().getContextClassLoader(), new Class[]{method.getReturnType()}, new InvocationHandler() {
+			public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+
+				// lookup enum by method name
+				Enum<?> enumValue = Enum.valueOf(enumType, method.getName());
+
+				// accept
+				consumer.accept(enumValue);
+
+				// proceed
+				return computeReturnValue(method, originalProxy, info, chain.length, helperMethod, consumer);
+			}
+		});
 	}
 
 	private Object invokeAndReturn(Method method, Object[] originalArgs, Object proxy, MethodInfo info, ChainInfo[] chain) {
@@ -130,27 +160,8 @@ public class BlockInvocationHandler implements InvocationHandler {
 			throw new IllegalStateException("unable to locate method '"+method.getName()+"' on helper");
 		}
 
-		// make accessible if not (debatable as to whether this is a good idea)
-		if (!helperMethod.isAccessible()) {
-			helperMethod.setAccessible(true);
-		}
-
-		final Object[] newArgsArray = newArgs.toArray(new Object[newArgs.size()]);
-
-		// invoke method
-		Object result;
-		try {
-			result = helperMethod.invoke(helper, newArgsArray);
-		} catch (IllegalAccessException ex) {
-			throw new IllegalStateException(ex);
-		} catch (InvocationTargetException ex) {
-			if (ex.getTargetException() instanceof RuntimeException) {
-				throw (RuntimeException) ex.getTargetException();
-			} else {
-				throw new RuntimeException(ex.getTargetException());
-			}
-		}
-
+		// invoke the method
+		Object result = invokeMethod(helperMethod, newArgs);
 		Object _returnValue = computeReturnValue(method, proxy, info, depth, helperMethod, result);
 
 		// unwrap helper results
@@ -169,6 +180,31 @@ public class BlockInvocationHandler implements InvocationHandler {
 		}
 
 		return _returnValue;
+	}
+
+	private Object invokeMethod(Method helperMethod, List<Object> args) {
+
+		// make accessible if not (debatable as to whether this is a good idea)
+		if (!helperMethod.isAccessible()) {
+			helperMethod.setAccessible(true);
+		}
+
+		final Object[] argsArray = args.toArray(new Object[args.size()]);
+
+		// invoke method
+		Object result;
+		try {
+			result = helperMethod.invoke(helper, argsArray);
+		} catch (IllegalAccessException ex) {
+			throw new IllegalStateException(ex);
+		} catch (InvocationTargetException ex) {
+			if (ex.getTargetException() instanceof RuntimeException) {
+				throw (RuntimeException) ex.getTargetException();
+			} else {
+				throw new RuntimeException(ex.getTargetException());
+			}
+		}
+		return result;
 	}
 
 	private Object computeReturnValue(Method method, Object proxy, MethodInfo info, int depth, Method helperMethod, Object result) {

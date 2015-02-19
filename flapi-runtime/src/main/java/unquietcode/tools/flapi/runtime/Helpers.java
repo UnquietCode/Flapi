@@ -21,6 +21,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicReference;
 
 public final class Helpers {
 	
@@ -80,5 +81,21 @@ public final class Helpers {
 				return actualMethod;
 			}
 		});
+	}
+
+	public interface Invoker<In> {
+		void call(AtomicReference<In> in);
+	}
+
+	public static <T> T invoke(Invoker<T> invoker) {
+		AtomicReference<T> reference = new AtomicReference<>();
+
+		try {
+			invoker.call(reference);
+		} catch (Exception ex) {
+			throw new RuntimeException(ex);
+		}
+
+		return reference.get();
 	}
 }

@@ -22,12 +22,18 @@ import unquietcode.tools.flapi.Constants;
 import unquietcode.tools.flapi.DescriptorBuilderException;
 import unquietcode.tools.flapi.IntrospectorSupport;
 import unquietcode.tools.flapi.beans.BeanIntrospector;
-import unquietcode.tools.flapi.helpers.AnnotationsHelperImpl;
-import unquietcode.tools.flapi.helpers.DocumentationHelperImpl;
+import unquietcode.tools.flapi.builder.Annotation.AnnotationHelper;
+import unquietcode.tools.flapi.builder.Block.BlockHelper;
+import unquietcode.tools.flapi.builder.Documentation.DocumentationHelper;
+import unquietcode.tools.flapi.builder.Method.MethodHelper;
+import unquietcode.tools.flapi.helpers.BlockHelperImpl;
 import unquietcode.tools.flapi.helpers.MethodHelperImpl;
 import unquietcode.tools.flapi.outline.BlockOutline;
 import unquietcode.tools.flapi.outline.DescriptorOutline;
 import unquietcode.tools.flapi.outline.MethodOutline;
+import unquietcode.tools.flapi.runtime.Consumer;
+import unquietcode.tools.flapi.runtime.EnumSelectorHint;
+import unquietcode.tools.flapi.runtime.Helpers;
 import unquietcode.tools.flapi.runtime.SpringMethodUtils;
 import unquietcode.tools.spring.generics.MethodParameter;
 import unquietcode.tools.spring.generics.ResolvableType;
@@ -104,6 +110,7 @@ public class AnnotationIntrospector extends IntrospectorSupport {
 	}
 
 	private boolean handleClass(BlockOutline blockOutline, Class<?> blockClass) {
+		BlockHelper helper = new BlockHelperImpl(blockOutline);
 		Block block = blockClass.getAnnotation(Block.class);
 		blockOutline.setHelperClass(blockClass);
 
@@ -133,16 +140,14 @@ public class AnnotationIntrospector extends IntrospectorSupport {
 				);
 			}
 
-			String methodSignature = getMethodSignature(method);
-			MethodOutline methodOutline = blockOutline.addMethod(methodSignature);
-			handleMethod(methodOutline, method);
+			handleMethod(helper, method);
 			atLeastOne = true;
 		}
 
 		return atLeastOne;
 	}
 
-	private void handleMethod(MethodOutline methodOutline, Method method) {
+	private void handleMethod(final BlockHelper blockHelper, final Method method) {
 		final After after = method.getAnnotation(After.class);
 		final Any any = method.getAnnotation(Any.class);
 		final AtLeast atLeast = method.getAnnotation(AtLeast.class);
@@ -151,45 +156,97 @@ public class AnnotationIntrospector extends IntrospectorSupport {
 		final Documented documented = method.getAnnotation(Documented.class);
 		final Exactly exactly = method.getAnnotation(Exactly.class);
 		final Last last = method.getAnnotation(Last.class);
+		final EnumSelector selector = method.getAnnotation(EnumSelector.class);
 
-		final MethodHelperImpl helper = new MethodHelperImpl(methodOutline);
+		final String methodSignature = getMethodSignature(method);
+		final MethodHelper methodHelper;
+
+		// is it an enum selector?
+		if (selector != null) {
+			final Class<?>[] parameterTypes = method.getParameterTypes();
+
+			// check parameter length
+			if (parameterTypes.length != 0) {
+				throw new DescriptorBuilderException("@EnumSelector methods must have zero arguments");
+			}
+
+			// check return type
+			if (!Consumer.class.isAssignableFrom(method.getReturnType())) {
+				throw new DescriptorBuilderException("@EnumSelector methods must return Consumer<EnumType>");
+			}
+
+			final Class<?> genericEnum = ResolvableType.forMethodReturnType(method).resolveGeneric(0);
+
+			// check consumer enum type
+			if (!genericEnum.isEnum()) {
+				throw new DescriptorBuilderException("@EnumSelector methods must return a consumer of Enum types");
+			}
+
+			methodHelper = Helpers.invoke(new Helpers.Invoker<MethodHelper>() {
+				public void call(AtomicReference<MethodHelper> _helper) {
+					blockHelper.addEnumSelector(genericEnum, methodSignature, _helper);
+				}
+			});
+
+			AnnotationHelper annotationHelper = Helpers.invoke(new Helpers.Invoker<AnnotationHelper>() {
+				public void call(AtomicReference<AnnotationHelper> _helper) {
+					methodHelper.addAnnotation(EnumSelectorHint.class, _helper);
+				}
+			});
+
+			annotationHelper.withParameter("value", genericEnum);
+			annotationHelper.finish();
+		}
+
+		// regular method
+		else {
+			methodHelper = Helpers.invoke(new Helpers.Invoker<MethodHelper>() {
+				public void call(AtomicReference<MethodHelper> _helper) {
+					blockHelper.addMethod(methodSignature, _helper);
+				}
+			});
+		}
+
+		// TODO meh
+		final MethodOutline methodOutline = ((MethodHelperImpl) methodHelper).getOutline();
+
 
 		// @After
 		if (after != null) {
-			helper.after(after.value());
+			methodHelper.after(after.value());
 		}
 
 		// @Any
 		if (any != null) {
 			if (any.group() == Constants.DEFAULT_NULL_INT) {
-				helper.any();
+				methodHelper.any();
 			} else {
-				helper.any(any.group());
+				methodHelper.any(any.group());
 			}
 		}
 
 		// @AtLeast
 		if (atLeast != null) {
-			helper.atLeast(atLeast.value());
+			methodHelper.atLeast(atLeast.value());
 		}
 
 		// @AtMost
 		if (atMost != null) {
 			if (atMost.group() == Constants.DEFAULT_NULL_INT) {
-				helper.atMost(atMost.value());
+				methodHelper.atMost(atMost.value());
 			} else {
-				helper.atMost(atMost.value(), atMost.group());
+				methodHelper.atMost(atMost.value(), atMost.group());
 			}
 		}
 
 		// @Between
 		if (between != null) {
-			helper.between(between.minInc(), between.maxInc());
+			methodHelper.between(between.minInc(), between.maxInc());
 		}
 
 		// @Exactly
 		if (exactly != null) {
-			helper.exactly(exactly.value());
+			methodHelper.exactly(exactly.value());
 		}
 
 		// @Last
@@ -197,15 +254,15 @@ public class AnnotationIntrospector extends IntrospectorSupport {
 			Class<?> returnType = method.getReturnType();
 
 			if (returnType == void.class) {
-				helper.last();
+				methodHelper.last();
 			} else {
 				Class<?>[] generics = ResolvableType.forMethodReturnType(method).resolveGenerics();
-				helper.last(makeTypeWithGenerics(returnType, generics));
+				methodHelper.last(makeTypeWithGenerics(returnType, generics));
 			}
 		}
 
 		// ensure that non-terminal methods aren't returning anything
-		else {
+		else if (selector == null) {
 			Class<?> returnType = method.getReturnType();
 
 			if (returnType != void.class) {
@@ -218,7 +275,11 @@ public class AnnotationIntrospector extends IntrospectorSupport {
 
 		// @Documented
 		if (documented != null) {
-			DocumentationHelperImpl docHelper = new DocumentationHelperImpl(methodOutline);
+			DocumentationHelper docHelper = Helpers.invoke(new Helpers.Invoker<DocumentationHelper>() {
+				public void call(AtomicReference<DocumentationHelper> _helper) {
+					methodHelper.withDocumentation(_helper);
+				}
+			});
 
 			for (String docString : documented.value()) {
 				docHelper.addContent(docString);
@@ -234,7 +295,7 @@ public class AnnotationIntrospector extends IntrospectorSupport {
 			if (annotation.annotationType().getAnnotation(FlapiAnnotation.class) != null) {
 				continue;
 			}
-			handleMethodAnnotation(methodOutline, annotation);
+			handleMethodAnnotation(methodHelper, annotation);
 		}
 
 		// block chaining
@@ -260,15 +321,20 @@ public class AnnotationIntrospector extends IntrospectorSupport {
 		}
 	}
 	
-	private static void handleMethodAnnotation(MethodOutline methodOutline, Annotation annotation) {
-		Class<? extends Annotation> annotationClass = annotation.annotationType();
-		AnnotationsHelperImpl helper = new AnnotationsHelperImpl(methodOutline, annotationClass);
+	private static void handleMethodAnnotation(final MethodHelper methodHelper, Annotation annotation) {
+		final Class<? extends Annotation> annotationClass = annotation.annotationType();
+
+		AnnotationHelper annotationHelper = Helpers.invoke(new Helpers.Invoker<AnnotationHelper>() {
+			public void call(AtomicReference<AnnotationHelper> _helper) {
+				methodHelper.addAnnotation(annotationClass, _helper);
+			}
+		});
 
 		for (Method method : annotationClass.getDeclaredMethods()) {
-			helper.withParameter(method.getName(), method.getReturnType());
+			annotationHelper.withParameter(method.getName(), method.getReturnType());
 		}
 
-		helper.finish();
+		annotationHelper.finish();
 	}
 
 	private static <

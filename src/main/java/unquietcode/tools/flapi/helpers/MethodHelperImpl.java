@@ -35,10 +35,14 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * @version 03-04-2012
  */
 public class MethodHelperImpl implements MethodHelper {
-	final MethodOutline method;
+	private final MethodOutline method;
 
 	public MethodHelperImpl(MethodOutline method) {
 		this.method = method;
+	}
+
+	public MethodOutline getOutline() {
+		return method;
 	}
 
 	@Override

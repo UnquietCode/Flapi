@@ -96,6 +96,7 @@ public class IntrospectorSupport {
 			signature.append(makeTypeWithGenerics(typeName, generics));
 
 			// parameter name
+			// TODO improve in JDK8
 			signature.append(" p").append(i);
 		}
 
@@ -115,9 +116,13 @@ public class IntrospectorSupport {
 
 			for (int p = 0; p < generics.length; ++p) {
 				if (p != 0) { sb.append(", "); }
-
 				Class<?> generic = generics[p];
-				sb.append(generic.getName());
+
+				if (generic == null) {
+					sb.append("?");
+				} else {
+					sb.append(generic.getName());
+				}
 			}
 
 			sb.append("> ");
