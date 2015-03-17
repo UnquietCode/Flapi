@@ -1,0 +1,17 @@
+apply plugin: 'groovy'
+apply plugin: 'maven'
+
+group = 'unquietcode.tools.flapi'
+version = '0.0-DEVELOPMENT'
+sourceCompatibility = '1.7'
+
+repositories {
+	mavenLocal()
+}
+
+dependencies {
+	compile gradleApi()
+	compile localGroovy()
+
+	compile 'unquietcode.tools.flapi:flapi-plugin:0.0-DEVELOPMENT'
+}

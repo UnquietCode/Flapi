@@ -1,0 +1,15 @@
+apply plugin: 'java'
+apply plugin: 'maven'
+
+group = 'unquietcode.tools.flapi.test'
+version = '0.0-DEVELOPMENT'
+sourceCompatibility = '1.7'
+
+repositories {
+	mavenLocal()
+}
+
+dependencies {
+	compile 'unquietcode.tools.flapi.test:flapi-build-test-producer:0.0-DEVELOPMENT'
+	testCompile 'junit:junit:4.11'
+}

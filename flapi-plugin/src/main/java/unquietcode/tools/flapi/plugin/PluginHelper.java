@@ -50,8 +50,8 @@ public abstract class PluginHelper {
 	private boolean includeRuntime = true;
 
 	public PluginHelper(String classesDirectory, String sourcesDirectory) {
-		this.classesDirectory = Objects.requireNonNull(classesDirectory);
-		this.sourcesDirectory = Objects.requireNonNull(sourcesDirectory);
+		this.classesDirectory = Objects.requireNonNull(classesDirectory, "classes directory is required");
+		this.sourcesDirectory = Objects.requireNonNull(sourcesDirectory, "sources directory is required");
 	}
 
 	public void setWriteClasses(boolean writeClasses) {

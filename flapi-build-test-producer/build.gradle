@@ -1,0 +1,35 @@
+apply plugin: 'java'
+apply plugin: 'maven'
+
+group = 'unquietcode.tools.flapi.test'
+version = '0.0-DEVELOPMENT'
+sourceCompatibility = '1.7'
+
+// add the gradle plugin
+buildscript {
+	repositories {
+		mavenLocal()
+	}
+
+	dependencies {
+		classpath 'unquietcode.tools.flapi:flapi-gradle-plugin:0.0-DEVELOPMENT'
+	}
+}
+apply plugin: 'com.unquietcode.flapi.plugin'
+
+
+// ------------------------------------------------------- //
+
+
+repositories {
+	mavenLocal()
+}
+
+dependencies {
+	testCompile 'unquietcode.tools.flapi:flapi:0.0-DEVELOPMENT'
+}
+
+flapi {
+	descriptorClasses = ['unquietcode.tools.flapi.plugin.TestDescriptor']
+	includeRuntime = true
+}
