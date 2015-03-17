@@ -17,6 +17,12 @@
 package unquietcode.tools.flapi;
 
 /**
+ * A ClassReference is similar to a {@link Class} object, but
+ * acts only as a reference to the fully qualified type (class or
+ * interface). This special container is used within the Flapi
+ * descriptor builder to avoid requiring a class to be present
+ * at runtime.
+ *
  * @author Ben Fagin
  * @version 2014-07-22
  */
