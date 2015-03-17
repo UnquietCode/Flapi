@@ -26,21 +26,12 @@ import org.apache.maven.plugins.annotations.ResolutionScope;
 import org.apache.maven.project.MavenProject;
 import unquietcode.tools.flapi.Descriptor;
 import unquietcode.tools.flapi.DescriptorMaker;
-import unquietcode.tools.flapi.ExtractRuntime;
-import unquietcode.tools.flapi.plugin.compile.CharSequenceJavaFileObject;
-import unquietcode.tools.flapi.plugin.compile.ClassFileManager;
 
-import javax.tools.*;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Given a static method which returns a {@link Descriptor} object,
@@ -120,193 +111,50 @@ public class FlapiBuildPlugin extends AbstractMojo {
 			getLog().warn("'flapi.descriptor.class' is deprecated, please use 'flapi.descriptor.classes'");
 		}
 
-		boolean atLeastOne = false;
-
-		for (String descriptorClass : descriptorClasses.split(",")) {
-			descriptorClass = descriptorClass.trim();
-
-			if (descriptorClass.isEmpty()) {
-				continue;
+		// set up shared plugin helper
+		final PluginHelper helper = new PluginHelper(classesDirectory, sourcesDirectory) {
+			protected @Override Exception handleError(String message, Throwable cause) throws Exception {
+				throw new MojoExecutionException(message, cause);
 			}
 
-			if (descriptorClass.trim().equals("change.me")) {
-				continue;
+			protected @Override Exception handleFailure(String message, Throwable cause) throws Exception {
+				throw new MojoFailureException(message, cause);
 			}
 
-			getLog().info("processing descriptor "+descriptorClass);
-			execute(descriptorClass);
-			atLeastOne = true;
-		}
+			protected @Override void logInfo(String message) {
+				getLog().info(message);
+			}
 
-		if (!atLeastOne) {
-			getLog().warn("No descriptor classes were specified.");
-		}
-	}
+			protected @Override void logWarn(String message) {
+				getLog().warn(message);
+			}
 
-	private void execute(String descriptorClass) throws MojoExecutionException, MojoFailureException {
-		Method method;
-		DescriptorMaker descriptorMaker;
+			protected @Override void logError(String message) {
+				getLog().error(message);
+			}
 
-		// instantiate the class
-		URLClassLoader classLoader;
-		Class<?> _descriptorClass;
+			protected @Override URLClassLoader getCompiledClassloader() throws Exception {
+				List<URL> urls = new ArrayList<>();
 
+				for (Object object : project.getTestClasspathElements()) {
+					String path = (String) object;
+					urls.add(new File(path).toURI().toURL());
+				}
+
+				return new URLClassLoader(urls.toArray(new URL[urls.size()]), getClass().getClassLoader());
+			}
+		};
+
+		// configure it
+		helper.setIncludeRuntime(includeRuntime);
+		helper.setWriteClasses(writeClasses);
+		helper.setWriteSources(writeSources);
+
+		// run it
 		try {
-			classLoader = getCompiledClassloader();
-			_descriptorClass = classLoader.loadClass(descriptorClass);
-		} catch (Exception ex) {
-			throw new MojoExecutionException("could not load class", ex);
+			helper.processDescriptors(descriptorClasses.split(","));
+		} catch (Exception e) {
+			throw new MojoExecutionException("error while running plugin", e);
 		}
-
-		// ensure that it implements the interface
-		if (!DescriptorMaker.class.isAssignableFrom(_descriptorClass)) {
-			throw new MojoExecutionException("object must implement the DescriptorMaker interface");
-		}
-
-		// lookup the method
-		try {
-			method = _descriptorClass.getMethod("descriptor");
-		} catch (NoSuchMethodException ex) {
-			throw new MojoExecutionException("method cannot be found", ex);
-		}
-
-		// instantiate the object
-		try {
-			descriptorMaker = (DescriptorMaker) _descriptorClass.newInstance();
-		} catch (Exception ex) {
-			throw new MojoExecutionException("could not instantiate DescriptorMaker object", ex);
-		}
-
-		// execute and get the descriptor
-		Descriptor descriptor;
-		try {
-			descriptor = (Descriptor) method.invoke(descriptorMaker);
-		} catch (IllegalAccessException ex) {
-			throw new MojoExecutionException("method not accessible", ex);
-		} catch (InvocationTargetException ex) {
-			throw new MojoExecutionException("error while executing method", ex.getTargetException());
-		}
-
-		// ensure not null
-		if (descriptor == null) {
-			throw new MojoExecutionException("method returned null");
-		}
-
-		// compile and write out the classes
-		if (writeClasses) {
-			new File(classesDirectory).mkdirs();
-			compileAndWriteClasses(descriptor, classLoader);
-
-			if (includeRuntime) {
-				ExtractRuntime.writeRequiredClasses(classesDirectory);
-			}
-		}
-
-		// write out the source files
-		if (writeSources) {
-			new File(sourcesDirectory).mkdirs();
-			descriptor.writeToFolder(sourcesDirectory);
-
-			if (includeRuntime) {
-				ExtractRuntime.writeRequiredSources(sourcesDirectory);
-			}
-		}
-	}
-
-	private URLClassLoader getCompiledClassloader() throws Exception {
-		List<URL> urls = new ArrayList<URL>();
-
-		for (Object object : project.getTestClasspathElements()) {
-			String path = (String) object;
-			System.out.println(path);
-			urls.add(new File(path).toURI().toURL());
-		}
-
-		return new URLClassLoader(urls.toArray(new URL[urls.size()]), getClass().getClassLoader());
-	}
-
-
-	List<JavaFileObject> getSourceFiles(Descriptor descriptor) {
-		Map<String, OutputStream> streams = descriptor.writeToStreams(new Iterator<OutputStream>() {
-			public OutputStream next() { return new ByteArrayOutputStream(); }
-			public boolean hasNext() { return true; }
-			public void remove() { throw new UnsupportedOperationException("nope"); }
-		});
-
-		final List<JavaFileObject> files = new ArrayList<JavaFileObject>();
-
-		for (Map.Entry<String, OutputStream> entry : streams.entrySet()) {
-			String name = entry.getKey();
-			name = name.substring(0, name.length()-5); // removes .java
-
-			ByteArrayOutputStream stream = (ByteArrayOutputStream) entry.getValue();
-			JavaFileObject file = new CharSequenceJavaFileObject(name, stream.toString());
-			files.add(file);
-		}
-
-		return files;
-	}
-
-	private ClassLoader compileAndWriteClasses(Descriptor descriptor, URLClassLoader classLoader) throws MojoExecutionException {
-		JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
-		DiagnosticCollector<JavaFileObject> diagnostics = new DiagnosticCollector<JavaFileObject>();
-		JavaFileManager fileManager = new ClassFileManager(compiler.getStandardFileManager(null, null, null), classesDirectory);
-
-		List<String> options = new ArrayList<String>();
-		options.add("-classpath");
-		options.add(makeClasspath(classLoader));
-		options.add("-source");
-		options.add("1.6");
-		options.add("-target");
-		options.add("1.6");
-
-		Iterable<? extends JavaFileObject> compilationUnits = getSourceFiles(descriptor);
-		JavaCompiler.CompilationTask task = compiler.getTask(null, fileManager, diagnostics, options, null, compilationUnits);
-		task.call();
-
-		try {
-			fileManager.close();
-		} catch (IOException e) {
-			// nothing
-		}
-
-		boolean atLeastOneError = false;
-
-		for (Diagnostic<? extends JavaFileObject> error : diagnostics.getDiagnostics()) {
-
-			if (error.getKind() != Diagnostic.Kind.NOTE) {
-				StringBuilder message = new StringBuilder()
-					.append(error.getSource().getName())
-					.append(" (").append(error.getLineNumber()).append(",").append(error.getColumnNumber()).append(")\n")
-					.append(error.getMessage(Locale.getDefault()))
-				;
-				getLog().warn(message.toString());
-				atLeastOneError = true;
-			}
-		}
-
-		if (atLeastOneError) {
-			throw new MojoExecutionException("The compilation was completed with errors.");
-		}
-
-		return fileManager.getClassLoader(StandardLocation.CLASS_PATH);
-	}
-
-	private static String makeClasspath(URLClassLoader classLoader) {
-		StringBuilder buffer = new StringBuilder("\"");
-
-		for (URL url : classLoader.getURLs()) {
-			final File file;
-			try {
-				file = new File(url.toURI());
-			} catch (URISyntaxException e) {
-				throw new RuntimeException(e);
-			}
-
-			buffer.append(file);
-			buffer.append(System.getProperty("path.separator"));
-		}
-
-		return buffer.append("\"").toString();
 	}
 }
