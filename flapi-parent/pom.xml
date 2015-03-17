@@ -159,6 +159,7 @@
 		<module>../flapi-descriptor</module>
 		<module>../flapi-runtime</module>
 		<module>../</module>
+		<module>../flapi-plugin</module>
 		<module>../flapi-build-plugin</module>
 		<module>../flapi-build-project</module>
 		<module>../flapi-build-test-producer</module>

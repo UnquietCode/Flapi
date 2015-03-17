@@ -60,7 +60,7 @@
 		</dependency>
 		<dependency>
 			<groupId>unquietcode.tools.flapi</groupId>
-			<artifactId>flapi</artifactId>
+			<artifactId>flapi-plugin</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 	</dependencies>
