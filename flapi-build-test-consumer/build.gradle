@@ -10,6 +10,6 @@ repositories {
 }
 
 dependencies {
-	compile 'unquietcode.tools.flapi.test:flapi-build-test-producer:0.0-DEVELOPMENT'
+	compile 'unquietcode.tools.flapi.test:flapi-gradle-test-producer:0.0-DEVELOPMENT'
 	testCompile 'junit:junit:4.11'
 }
