@@ -81,7 +81,16 @@ public class AnnotationIntrospector extends IntrospectorSupport {
 
 		// discover methods and set them on the blocks
 		AnnotationIntrospector introspector = new AnnotationIntrospector();
+
+		// class
 		boolean found = introspector.handleClass(descriptor, clazz);
+
+		// interfaces (interface extensions are handled automatically by Spring)
+		if (!clazz.isInterface()) {
+			for (Class<?> intf : clazz.getInterfaces()) {
+				found |= introspector.handleClass(descriptor, intf);
+			}
+		}
 
 		if (found) {
 			return descriptor;
