@@ -35,8 +35,6 @@ public class JavaType {
 		return fake.returnType;
 	}
 
-	// TODO generics support?
-
 	public static JavaType from(Class<?> clazz) {
 		Class<?> c = clazz;
 		int depth = 0;

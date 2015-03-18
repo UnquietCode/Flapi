@@ -96,7 +96,7 @@ public class IntrospectorSupport {
 			signature.append(makeTypeWithGenerics(typeName, generics));
 
 			// parameter name
-			// TODO improve in JDK8
+			// TODO improve in JDK8 (#218)
 			signature.append(" p").append(i);
 		}
 

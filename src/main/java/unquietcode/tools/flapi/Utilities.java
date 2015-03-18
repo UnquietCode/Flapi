@@ -26,7 +26,7 @@ public final class Utilities {
 	private Utilities() { }
 
 
-	// TODO use JDK8 classes
+	// TODO use JDK8 classes (#219)
 
 	public static <T> void safeRecurse(T first, Function<T, Collection<T>> function) {
 		safeRecurse(Arrays.asList(first), function);
