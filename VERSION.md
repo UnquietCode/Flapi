@@ -1,6 +1,42 @@
+# Version 0.8
+This version includes several key features, and is also intended to be the last
+feature release before 1.0.
+
+### Gradle Plugin
+A new build plugin for Gradle is available, extending the build-time support
+for code generation offered by the Maven plugin. See the
+[wiki page](https://github.com/UnquietCode/Flapi/wiki/Gradle-Build-Plugin)
+for more information.
+
+### Block Mixins
+Using block mixins, it is possible to 'extend' one or more already existing
+blocks, reducing duplication, and covering a common use case. See the
+[Block Mixins](http://unquietcode.github.io/Flapi/#block%20mixins) section
+in the documentation for usage notes.
+
+### `Head` wrapper interface
+Similar to the `Start<Void>` wrapper interface which was removed previously,
+every descriptor now includes a simple, untyped interface for public consumption
+named `Head`. This interface will extend whatever the internal `Start` interface
+demands, creating a more shelf-stable API.
+
+### Features and Improvements
+
+	+ [#25]: new Gradle build plugin
+	+ [#44]: support for block mixins
+	+ [#216]: support for extended type hierarchies in annotated helpers
+	+ [#215]: allow customization of anonymous names via the NameGenerator API
+	+ [#214]: support for single wildcard generics in method signatures
+	+ [#213]: new `Head` convenience class, replacing confusing uses of `Start<Void>`
+
+The full list of tasks and issues included in the release is available on the project's
+[Issue Tracker](https://github.com/UnquietCode/Flapi/milestones/0.8).
+
+------------------------------------------------
+
 # Version 0.7
 The latest version includes some new features for modifying the output
-of the generated source code. As well, better type handling is availble
+of the generated source code. As well, better type handling is available
 for arrays and generics.
 
 ### Features and Improvements
@@ -57,6 +93,10 @@ You can now create descriptors from annotated helper classes and interfaces. See
 ### Bean Builders
 Similar to annotations, you can provide a class with `setXYZ(..)` and `withXYZ(..)` methods, and these will be turned into a simple builder where each method can only be called at most one time, and where a bean will be returned at the end of the chain.
 
+### BREAKING CHANGE - wrapper `Start` interface requires a type parameter
+In order to enable proper nested blocks, all `Start` interfaces now require a
+type parameter to be provided. In most cases, this value will simply be `Void`.
+
 ## Resolved Issues
 Issues are now handled through GitHub, and historical issues have been migrated from JIRA.
 
@@ -72,10 +112,6 @@ Issues are now handled through GitHub, and historical issues have been migrated 
 ### Tasks
 	+ [FLAPI-190 / #34]: Update docs and wiki with annotations info.
 	+ [FLAPI-189 / #17]: Move issues from JIRA to GitHub
-
-### BREAKING CHANGE - wrapper `Start` interface requires a type parameter
-In order to enable proper nested blocks, all `Start` interfaces now require a
-type parameter to be provided. In most cases, this value will simply be `Void`.
 
 The full list of tasks and issues included in the release is available on the project's
 [Issue Tracker](https://github.com/UnquietCode/Flapi/milestones/0.6).
@@ -223,7 +259,6 @@ The full list of tasks and issues included in the release is available on the pr
 
 ------------------------------------------------
 
-# Version 0.3
 Flapi 0.3 includes several bugfixes, as well as some new features.
 
 ## Javadocs
@@ -239,8 +274,12 @@ Methods which are marked `atMost(..)` can now be grouped together within the sam
 This means that when one goes, so does the other. Use this in place of unnecessary anonymous blocks.
 The new documentation methods, for example, make use of this.
 
-## Demonstration Video
-A screencast which attempts to explain the basic use of Flapi has been posted [here](http://vimeo.com/58855907).
+## Demos and Examples
+A screencast which attempts to explain the basic use of Flapi has been posted [here](http://vimeo.com/58855907/).
+
+As well, a new example has been added, called PipedProcessorExample. This showcases building up computation
+instead of an object, by piping processes together. Find it in the
+[test directory](https://github.com/UnquietCode/Flapi/tree/master/src/test/java/unquietcode/tools/flapi/examples/pipes).
 
 ## Resolved Issues
 
@@ -274,11 +313,24 @@ The full list of tasks and issues included in the release is available on the pr
 ------------------------------------------------
 
 # Version 0.2
-Notes also available at: https://github.com/UnquietCode/Flapi/wiki/v0_2
-JIRA: https://unquietcode.atlassian.net/secure/ReleaseNote.jspa?projectId=10160&version=10141
+Flapi 0.2 contains several bugfixes, as well as a complete rearchitecture of the code generation
+classes. More javadocs have been added, a few new features, and a few API changes. All of the examples
+have been updated. As well, tests have been improved with a suite of in-memory compilation tests, as
+well as the inclusion of example code as full-fledged tests.
 
-Stable beta release. There are still some features to be added.
-This version includes a few notable changes:
+For clarity, the `once()` method when delaring methods and blocks has been replaced with `exactly(x)`.
+`exactly(1)` is equivalent to using `between(1, 1)`.
+
+The `@Generated` annotation is now added to classes when the JDK version is set to >= 6. You can set the target JDK version in Flapi by calling `Flapi.setJDKVersion(...)` and this setting will affect how the classes are generated.
+
+The most important external change is that the 'support' classes and interfaces which comprise the
+runtime dependencies of Flapi have been reduced. The required classes are written out with the
+generated ones and can be dropped into your application.
+
+A new feature, implicit terminals, allows a block to automatically exit when there are no more methods
+left to call. See [this example](House-Builder-Example) for more information.
+
+Key Features:
 
 + StateClass rearchitecture [FLAPI-83]
 + common interface for implementation classes [FLAPI-67]
@@ -301,10 +353,17 @@ The full list of tasks and issues included in the release is available on the pr
 ------------------------------------------------
 
 # Version 0.1
-Notes also available at: https://github.com/UnquietCode/Flapi/wiki/v0_1
-JIRA: https://unquietcode.atlassian.net/secure/ReleaseNote.jspa?projectId=10160&version=10140
+Flapi is a fluent API generator for Java. By 'fluent' I primarily mean
+simplified method chaining, but also the ability to obscure methods which
+have been called a certain number of times. This allows a user to see
+compile-time errors, or helpful autocomplete suggestions while working
+with the API. As well, because the API is generated from a descriptor,
+changes are easy to integrate without spending time reworking your
+classes.
 
-Initial beta release.
+This version, 0.1, is an initial beta laying the groundwork for using
+Flapi. See the [Examples](https://github.com/UnquietCode/Flapi/wiki/Examples)
+in the wiki for more information.
 
 The full list of tasks and issues included in the release is available on the project's
 [Issue Tracker](https://github.com/UnquietCode/Flapi/issues?q=milestone%3A0.1).

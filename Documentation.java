@@ -17,9 +17,12 @@
  * the API should operate. Once constructed, the descriptor is then used to
  * generate a set of Java source files. These files are comprised of a few
  * runtime classes and generated interfaces. The generated sources should
- * be included in your project, perhaps as a module dependency. (This project
- * also contains a maven plugin which allows you to regenerate your sources
- * on the fly. See more [here](https://github.com/UnquietCode/Flapi/wiki/Maven-Build-Plugin)).
+ * be included in your project, perhaps as a module dependency.
+ *
+ * There are two build plugins availble, one for
+ * [Maven](https://github.com/UnquietCode/Flapi/wiki/Maven-Build-Plugin)
+ * and one for [Gradle](https://github.com/UnquietCode/Flapi/wiki/Gradle-Build-Plugin)
+ * which allow you to regenerate your sources on the fly.
  *
  *
  * ### At Run Time

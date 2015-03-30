@@ -1,5 +1,5 @@
 # Flapi - A fluent API generator for Java
-## v0.7.3 [![Build Status](https://travis-ci.org/UnquietCode/Flapi.png?branch=master)](https://travis-ci.org/UnquietCode/Flapi) 
+## v0.8.0 [![Build Status](https://travis-ci.org/UnquietCode/Flapi.png?branch=master)](https://travis-ci.org/UnquietCode/Flapi)
 
 [![Tip with Gratipay](https://assets.gratipay.com/gratipay.svg)](https://gratipay.com/UnquietCode) [![Tip with Bitcoin](https://assets.gratipay.com/bitcoin.png)](https://blockchain.info/address/1Ec6mzLpJQvuzXqhxfJz1h9ZwJmoHMW9BX)**Bitcoin**
 
@@ -73,7 +73,7 @@ repository and dependency in your build script:
 <dependency>
   <groupId>unquietcode.tools.flapi</groupId>
   <artifactId>flapi</artifactId>
-  <version>0.7.3</version>
+  <version>0.8</version>
   <scope>test</scope>
 </dependency>
 ```
@@ -89,18 +89,23 @@ repositories {
 ...
 
 dependencies {
-  testCompile 'unquietcode.tools.flapi:flapi:0.7.3'
+  testCompile 'unquietcode.tools.flapi:flapi:0.8'
 }
 ```
 
 In a test define your `Descriptor` object and output the generated source code. (The
 [Pizza Builder](https://github.com/UnquietCode/Flapi/wiki/Pizza-Builder-Example)
 example is a simple descriptor you can start with.) You can also make use of the
-[maven plugin](https://github.com/UnquietCode/Flapi/wiki/Maven-Build-Plugin) to
+[gradle plugin](https://github.com/UnquietCode/Flapi/wiki/Gradle-Build-Plugin), or the
+[maven plugin](https://github.com/UnquietCode/Flapi/wiki/Maven-Build-Plugin), to
 perform the code generation.
 
-At the time of writing, the project builds fine in JDK 6 and 7. However, please note that
-the automated builds are no longer being run against JDK 6.
+At the time of writing the project builds fine in JDK 6, however please note that
+the automated builds are no longer being run for that release. Future versions will
+be built using JDK 8, exposing a JDK 7 compatible public interface, and use JDK 7 as
+the default target for code generation, where the current default is JDK 6.
+
+(PSA: If you're still using JDK 6 or lower please do something about that soon.)
 
 
 ### Additional Resources
@@ -117,9 +122,8 @@ The original blog post describing Flapi.
 
 
 ### What's the project's status?
-Version 0.7 has been released, and includes enhancements for customizing the generated code, plus several
-other new features and improvements. See the
-[Release Notes](https://github.com/UnquietCode/Flapi/wiki/Version-0.7) for the full details.
+Version 0.8 has been released, and includes a new Gradle build plugin, support for
+block mixins, and more. See the [Release Notes](./VERSION.md) for the full details.
 
 ### Problems?
 Use the [issue tracker](https://github.com/UnquietCode/Flapi/issues) to report problems encountered or new
