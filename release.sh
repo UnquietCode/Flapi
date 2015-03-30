@@ -11,19 +11,22 @@ repository=$2
 # replace all development versions with release version
 replacement="s/0.0-DEVELOPMENT/$version/g"
 find . -name "pom.xml" -exec sed -i -e "$replacement" {} \;
+find . -name "build.gradle" -exec sed -i -e "$replacement" {} \;
 
 # commit tag of version name
-git add pom.xml
-git add flapi-build-plugin/pom.xml
-git add flapi-build-project/pom.xml
-git add flapi-build-test-consumer/pom.xml
-git add flapi-build-test-producer/pom.xml
-git add flapi-descriptor/pom.xml
-git add flapi-parent/pom.xml
-git add flapi-runtime/pom.xml
+#git add pom.xml
+#git add flapi-build-plugin/pom.xml
+#git add flapi-build-project/pom.xml
+#git add flapi-build-test-consumer/pom.xml
+#git add flapi-build-test-producer/pom.xml
+#git add flapi-descriptor/pom.xml
+#git add flapi-gradle-plugin/pom.xml
+#git add flapi-parent/pom.xml
+#git add flapi-plugin/pom.xml
+#git add flapi-runtime/pom.xml
 
-git commit -m"releasing version $version"
-git tag $version
+#git commit -m"releasing version $version"
+#git tag $version
 
 
 # build and release the project
@@ -36,4 +39,4 @@ cd ..
 #find . -name "pom.xml" -exec sed -i -e "$replacement" {} \;
 
 # reset to the last working commit
-git reset --hard HEAD~1
+#git reset --hard HEAD~1
