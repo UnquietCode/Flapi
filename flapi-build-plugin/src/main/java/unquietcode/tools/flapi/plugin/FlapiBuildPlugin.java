@@ -52,14 +52,6 @@ public class FlapiBuildPlugin extends AbstractMojo {
 	private MavenProject project;
 
 	/**
-	 * (deprecated) The class which contains the target method.
-	 * @deprecated use the comma separated descriptorClasses
-	 */
-	@Deprecated
-	@Parameter(required=false)
-	private String descriptorClass;
-
-	/**
 	 * The comma separated list of {@link DescriptorMaker} classes.
 	 */
 	@Parameter(required=false)
@@ -103,12 +95,6 @@ public class FlapiBuildPlugin extends AbstractMojo {
 	public void execute() throws MojoExecutionException, MojoFailureException {
 		if (descriptorClasses == null) {
 			descriptorClasses = "";
-		}
-
-		// TODO remove this legacy support and the deprecated property
-		if (descriptorClass != null && !descriptorClass.trim().isEmpty()) {
-			descriptorClasses = descriptorClass + ", " + descriptorClasses;
-			getLog().warn("'flapi.descriptor.class' is deprecated, please use 'flapi.descriptor.classes'");
 		}
 
 		// set up shared plugin helper
