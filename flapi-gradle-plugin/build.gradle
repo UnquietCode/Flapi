@@ -1,5 +1,6 @@
 apply plugin: 'groovy'
 apply plugin: 'maven'
+apply plugin: 'maven-publish'
 
 group = 'unquietcode.tools.flapi'
 version = '0.0-DEVELOPMENT'
@@ -14,4 +15,34 @@ dependencies {
 	compile localGroovy()
 
 	compile 'unquietcode.tools.flapi:flapi-plugin:0.0-DEVELOPMENT'
+}
+
+task sourceJar(type: Jar, dependsOn: classes) {
+	classifier = "sources"
+	from sourceSets.main.allJava
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+	classifier = 'javadoc'
+	from javadoc.destinationDir
+}
+
+def AorB = { String a, String b ->
+	return a != null && !a.trim().isEmpty() ? a : b;
+}
+
+publishing {
+	publications {
+		mavenJava(MavenPublication) {
+			from components.java
+			artifact sourceJar
+			artifact javadocJar
+		}
+	}
+
+	repositories {
+		maven {
+			url AorB(System.getProperty("maven.deploy.repository"), "$buildDir/repo")
+		}
+	}
 }
