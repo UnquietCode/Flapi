@@ -2,7 +2,7 @@ apply plugin: 'java'
 apply plugin: 'maven'
 
 group = 'unquietcode.tools.flapi.test'
-version = '0.0-DEVELOPMENT'
+version = '0.8'
 sourceCompatibility = '1.7'
 
 // add the gradle plugin
@@ -12,7 +12,7 @@ buildscript {
 	}
 
 	dependencies {
-		classpath 'unquietcode.tools.flapi:flapi-gradle-plugin:0.0-DEVELOPMENT'
+		classpath 'unquietcode.tools.flapi:flapi-gradle-plugin:0.8'
 	}
 }
 apply plugin: 'com.unquietcode.flapi.plugin'
@@ -26,7 +26,7 @@ repositories {
 }
 
 dependencies {
-	testCompile 'unquietcode.tools.flapi:flapi:0.0-DEVELOPMENT'
+	testCompile 'unquietcode.tools.flapi:flapi:0.8'
 }
 
 flapi {
