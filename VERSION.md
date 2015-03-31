@@ -14,10 +14,10 @@ blocks, reducing duplication, and covering a common use case. See the
 [Block Mixins](http://unquietcode.github.io/Flapi/#block%20mixins) section
 in the documentation for usage notes.
 
-### `Head` wrapper interface
-Similar to the `Start<Void>` wrapper interface which was removed previously,
-every descriptor now includes a simple, untyped interface for public consumption
-named `Head`. This interface will extend whatever the internal `Start` interface
+### Return of the `Start` wrapper interface.
+The `Start<Void>` wrapper interface which was removed previously has been restored.
+Every descriptor now includes a simple, untyped interface for public consumption
+named `Start`. This interface will extend whatever the internal `Head` interface
 demands, creating a more shelf-stable API.
 
 ### Features and Improvements
@@ -27,7 +27,7 @@ demands, creating a more shelf-stable API.
 	+ [#216]: support for extended type hierarchies in annotated helpers
 	+ [#215]: allow customization of anonymous names via the NameGenerator API
 	+ [#214]: support for single wildcard generics in method signatures
-	+ [#213]: new `Head` convenience class, replacing confusing uses of `Start<Void>`
+	+ [#213]: new `Start` wrapper type, replacing confusing uses of `Start<Void>`
 
 The full list of tasks and issues included in the release is available on the project's
 [Issue Tracker](https://github.com/UnquietCode/Flapi/milestones/0.8).
