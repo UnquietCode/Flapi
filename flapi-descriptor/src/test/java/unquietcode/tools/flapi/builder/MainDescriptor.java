@@ -66,7 +66,7 @@ public class MainDescriptor implements DescriptorMaker {
 				.withDocumentation("set the name of the top level descriptor")
 			.exactly(1)
 
-			.addMethod("setReturnType(Class returnType)")
+			.addMethod("setReturnType(Class<?> returnType)")
 				.withDocumentation("set the return type for the top level descriptor (default is void)")
 			.atMost(1, RETURN_TYPE_GROUP)
 
@@ -89,12 +89,12 @@ public class MainDescriptor implements DescriptorMaker {
 				.atMost(1)
 
    				// user Annotations
-				.startBlock("Annotation", "addAnnotation(Class annotation)")
+				.startBlock("Annotation", "addAnnotation(Class<?> annotation)")
 					.withDocumentation("Adds a custom annotation to the method.")
                 .any()
 					.addMethod("withParameter(String name, String value)").any()
-					.addMethod("withParameter(String name, Enum value)").any()
-					.addMethod("withParameter(String name, Class value)").any()
+					.addMethod("withParameter(String name, Enum<?> value)").any()
+					.addMethod("withParameter(String name, Class<?> value)").any()
 					.addMethod("withParameter(String name, unquietcode.tools.flapi.ClassReference value)").any()
 					.addMethod("withParameter(String name, boolean value)").any()
 					.addMethod("withParameter(String name, int value)").any()
@@ -106,8 +106,8 @@ public class MainDescriptor implements DescriptorMaker {
 
                     // array versions
 					.addMethod("withParameter(String name, String[] values)").any()
-					.addMethod("withParameter(String name, Enum[] values)").any()
-					.addMethod("withParameter(String name, Class[] values)").any()
+					.addMethod("withParameter(String name, Enum<?>[] values)").any()
+					.addMethod("withParameter(String name, Class<?>[] values)").any()
 					.addMethod("withParameter(String name, unquietcode.tools.flapi.ClassReference[] values)").any()
 					.addMethod("withParameter(String name, boolean[] values)").any()
 					.addMethod("withParameter(String name, int[] values)").any()
@@ -155,7 +155,7 @@ public class MainDescriptor implements DescriptorMaker {
 					.withDocumentation("mark the method as terminal, exiting the block when called")
 				.last()
 
-				.addMethod("last(Class returnType)")
+				.addMethod("last(Class<?> returnType)")
 					.withDocumentation()
 						.addContent("mark the method as terminal, returning an object of the given ")
 						.addContent("type when called")
@@ -227,7 +227,7 @@ public class MainDescriptor implements DescriptorMaker {
 					.withDocumentation("mix in the contents of another block by name")
 				.any()
 
-				.addMethod("addMixin(Class helper)")
+				.addMethod("addMixin(Class<?> helper)")
 					.withDocumentation("mix in the contents of an annotated helper")
 				.any()
 
@@ -264,7 +264,7 @@ public class MainDescriptor implements DescriptorMaker {
 					.end()
 				.any()
 
-				.addMethod("addEnumSelector(Class clazz, String methodSignature)")
+				.addMethod("addEnumSelector(Class<?> clazz, String methodSignature)")
 					.withDocumentation("Adds an enum selector, by passing in an enum class.")
 					.addBlockChain()
 						.addBlockReference("Method")
@@ -293,7 +293,7 @@ public class MainDescriptor implements DescriptorMaker {
 			.any()
 
 			// enum selector for the top level block
-			.addMethod("addEnumSelector(Class clazz, String methodSignature)")
+			.addMethod("addEnumSelector(Class<?> clazz, String methodSignature)")
 				.withDocumentation("Adds an enum selector, by passing in an enum class.")
 				.addBlockChain()
 					.addBlockReference("Method")
@@ -305,7 +305,7 @@ public class MainDescriptor implements DescriptorMaker {
 				.withDocumentation("mix in the contents of another block by name")
 			.any()
 
-			.addMethod("addMixin(Class helper)")
+			.addMethod("addMixin(Class<?> helper)")
 				.withDocumentation("mix in the contents of an annotated block helper")
 			.any()
 

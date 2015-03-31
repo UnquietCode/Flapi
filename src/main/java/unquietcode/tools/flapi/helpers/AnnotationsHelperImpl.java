@@ -47,7 +47,7 @@ public class AnnotationsHelperImpl implements AnnotationHelper {
 	}
 
 	@Override
-	public void withParameter(String name, Class value) {
+	public void withParameter(String name, Class<?> value) {
 		checkAndAdd(name, value);
 	}
 
@@ -57,7 +57,7 @@ public class AnnotationsHelperImpl implements AnnotationHelper {
 	}
 
 	@Override
-	public void withParameter(String name, Enum value) {
+	public void withParameter(String name, Enum<?> value) {
 		checkAndAdd(name, value);
 	}
 
@@ -102,7 +102,7 @@ public class AnnotationsHelperImpl implements AnnotationHelper {
 	}
 
 	@Override
-	public void withParameter(String name, Class[] values) {
+	public void withParameter(String name, Class<?>[] values) {
 		checkAndAdd(name, values);
 	}
 
@@ -112,7 +112,7 @@ public class AnnotationsHelperImpl implements AnnotationHelper {
 	}
 
 	@Override
-	public void withParameter(String name, Enum[] values) {
+	public void withParameter(String name, Enum<?>[] values) {
 		checkAndAdd(name, values);
 	}
 

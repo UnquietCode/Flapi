@@ -45,7 +45,7 @@ public class DescriptorHelperImpl extends DescriptorConfiguratorHelperImpl imple
 	}
 
 	@Override
-	public void setReturnType(Class returnType) {
+	public void setReturnType(Class<?> returnType) {
 		if (returnType == null) {
 			throw new IllegalArgumentException("Return type cannot be null.");
 		}
@@ -89,12 +89,12 @@ public class DescriptorHelperImpl extends DescriptorConfiguratorHelperImpl imple
 	}
 
 	@Override
-	public void addEnumSelector(Class clazz, String methodSignature, AtomicReference<MethodHelper> _helper1) {
+	public void addEnumSelector(Class<?> clazz, String methodSignature, AtomicReference<MethodHelper> _helper1) {
 		BlockHelperImpl._addEnumSelector(outline, clazz, methodSignature, _helper1);
 	}
 
 	@Override
-	public void addMixin(Class helper) {
+	public void addMixin(Class<?> helper) {
 		BlockHelperImpl._addMixin(outline, helper);
 	}
 

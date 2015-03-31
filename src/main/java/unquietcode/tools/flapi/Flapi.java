@@ -47,7 +47,7 @@ public class Flapi {
 	 * @param listeners any execution listeners to be included
 	 * @return a new descriptor builder
 	 */
-	public static DescriptorBuilder.Start<Void> builder(ExecutionListener...listeners) {
+	public static DescriptorBuilder.Start builder(ExecutionListener...listeners) {
 		return DescriptorGenerator.create(new DescriptorHelperImpl(), listeners);
 	}
 
@@ -59,7 +59,7 @@ public class Flapi {
 	 *
 	 * @see unquietcode.tools.flapi.annotations.AnnotationIntrospector
 	 */
-	public static DescriptorConfiguratorBuilder.Start<Void> create(Class<?> topBlock) {
+	public static DescriptorConfiguratorBuilder.Start create(Class<?> topBlock) {
 		checkNotNull(topBlock, "a starting block is required");
 
 		DescriptorOutline outline = AnnotationIntrospector.createDescriptor(topBlock);

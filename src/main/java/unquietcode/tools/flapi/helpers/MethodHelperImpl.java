@@ -26,6 +26,7 @@ import unquietcode.tools.flapi.java.JavaType;
 import unquietcode.tools.flapi.java.ParseException;
 import unquietcode.tools.flapi.outline.MethodOutline;
 
+import java.lang.annotation.Annotation;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -165,9 +166,18 @@ public class MethodHelperImpl implements MethodHelper {
 	}
 
 	@Override
-	public void addAnnotation(Class annotation, AtomicReference<AnnotationHelper> _helper1) {
+	public void addAnnotation(Class<?> annotation, AtomicReference<AnnotationHelper> _helper1) {
 		checkNotNull(annotation);
-		AnnotationHelper helper = new AnnotationsHelperImpl(method, annotation);
+
+		// ensure annotation type
+		if (!annotation.isAnnotation()) {
+			throw new DescriptorBuilderException("class must be an annotation type");
+		}
+
+		@SuppressWarnings("unchecked")
+		final Class<? extends Annotation> annotationClass = (Class<? extends Annotation>) annotation;
+
+		AnnotationHelper helper = new AnnotationsHelperImpl(method, annotationClass);
 		_helper1.set(helper);
 	}
 

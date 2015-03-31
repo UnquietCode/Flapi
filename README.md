@@ -96,16 +96,16 @@ dependencies {
 In a test define your `Descriptor` object and output the generated source code. (The
 [Pizza Builder](https://github.com/UnquietCode/Flapi/wiki/Pizza-Builder-Example)
 example is a simple descriptor you can start with.) You can also make use of the
-[gradle plugin](https://github.com/UnquietCode/Flapi/wiki/Gradle-Build-Plugin), or the
-[maven plugin](https://github.com/UnquietCode/Flapi/wiki/Maven-Build-Plugin), to
+[Gradle plugin](https://github.com/UnquietCode/Flapi/wiki/Gradle-Build-Plugin), or the
+[Maven plugin](https://github.com/UnquietCode/Flapi/wiki/Maven-Build-Plugin), to
 perform the code generation.
 
 At the time of writing the project builds fine in JDK 6, however please note that
 the automated builds are no longer being run for that release. Future versions will
-be built using JDK 8, exposing a JDK 7 compatible public interface, and use JDK 7 as
-the default target for code generation, where the current default is JDK 6.
+be built using JDK 8, while still exposing a JDK 7 compatible API, and using JDK 7
+as the default target for code generation.
 
-(PSA: If you're still using JDK 6 or lower please do something about that soon.)
+(PSA: If you are still using JDK 6 or lower, please do something about that soon.)
 
 
 ### Additional Resources

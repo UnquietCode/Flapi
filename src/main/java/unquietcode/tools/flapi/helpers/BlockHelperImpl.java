@@ -97,11 +97,11 @@ public class BlockHelperImpl implements BlockHelper {
 	}
 
 	@Override
-	public void addEnumSelector(Class clazz, String methodSignature, AtomicReference<MethodHelper> _helper1) {
+	public void addEnumSelector(Class<?> clazz, String methodSignature, AtomicReference<MethodHelper> _helper1) {
 		_addEnumSelector(block, clazz, methodSignature, _helper1);
 	}
 
-	static void _addEnumSelector(BlockOutline block, Class clazz, String methodSignature, AtomicReference<MethodHelper> _helper1) {
+	static void _addEnumSelector(BlockOutline block, Class<?> clazz, String methodSignature, AtomicReference<MethodHelper> _helper1) {
 		if (clazz == null) {
 			throw new NullPointerException("addEnumSelector: class is null");
 		} else  if (!clazz.isEnum()) {
