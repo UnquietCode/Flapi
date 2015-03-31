@@ -16,7 +16,6 @@
 
 package unquietcode.tools.flapi.runtime;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -81,34 +80,7 @@ public class BlockInvocationHandler implements InvocationHandler {
 		return invokeAndReturn(method, args, proxy, info);
 	}
 
-	// handles legacy concerns before the chainInfo() array existed by
-	// synthesizing a new array from the older values
-	@SuppressWarnings("deprecation")
-	private Object invokeAndReturn(Method method, Object[] originalArgs, Object proxy, MethodInfo info) {
-		final ChainInfo[] chain;
-
-		// true in v0.5 and before
-		if (info.chain().length > info.chainInfo().length) {
-			List<ChainInfo> chainInfo = new ArrayList<ChainInfo>();
-			int position = originalArgs.length;
-
-			for (Class<?> type : info.chain()) {
-				chainInfo.add(new ChainInfoHolder(position++, type));
-			}
-
-			chain = chainInfo.toArray(new ChainInfo[chainInfo.size()]);
-		} else {
-			chain = info.chainInfo();
-		}
-
-		if (method.getAnnotation(EnumSelectorHint.class) != null) {
-			return invokeEnumSelector(method, originalArgs, proxy, info, chain);
-		} else {
-			return invokeAndReturn(method, originalArgs, proxy, info, chain);
-		}
-	}
-
-	private Object invokeEnumSelector(Method method, Object[] originalArgs, final Object originalProxy, final MethodInfo info, final ChainInfo[] chain) {
+	private Object invokeEnumSelector(Method method, Object[] originalArgs, final Object originalProxy, final MethodInfo info) {
 		final Method helperMethod = SpringMethodUtils.findMethod(helper.getClass(), method.getName(), method.getParameterTypes());
 		final Class<? extends Enum> enumType = method.getAnnotation(EnumSelectorHint.class).value();
 
@@ -129,21 +101,25 @@ public class BlockInvocationHandler implements InvocationHandler {
 				consumer.accept(enumValue);
 
 				// proceed
-				return computeReturnValue(method, originalProxy, info, chain.length, helperMethod, consumer);
+				return computeReturnValue(method, originalProxy, info, info.chainInfo().length, helperMethod, consumer);
 			}
 		});
 	}
 
-	private Object invokeAndReturn(Method method, Object[] originalArgs, Object proxy, MethodInfo info, ChainInfo[] chain) {
-		// Don't use info.chainInfo() directly, since they might not match due
-		// to legacy considerations (will be removed in 1.0).  TODO remove in 1.0
+	private Object invokeAndReturn(Method method, Object[] originalArgs, Object proxy, MethodInfo info) {
 
+		// handle enum selectors specially
+		if (method.getAnnotation(EnumSelectorHint.class) != null) {
+			return invokeEnumSelector(method, originalArgs, proxy, info);
+		}
+
+		final ChainInfo[] chain = info.chainInfo();
 		final int depth = chain.length;
 
 		// create the new arguments and types arrays
 		Class<?>[] originalTypes = method.getParameterTypes();
-		List<Class<?>> newTypes = new ArrayList<Class<?>>(Arrays.asList(originalTypes));
-		List<Object> newArgs = new ArrayList<Object>(Arrays.asList(originalArgs));
+		List<Class<?>> newTypes = new ArrayList<>(Arrays.asList(originalTypes));
+		List<Object> newArgs = new ArrayList<>(Arrays.asList(originalArgs));
 
 		for (ChainInfo chainInfo : chain) {
 			newArgs.add(chainInfo.position(), new AtomicReference());
@@ -260,31 +236,6 @@ public class BlockInvocationHandler implements InvocationHandler {
 					cur = null;
 				}
 			}
-		}
-	}
-
-	private static class ChainInfoHolder implements ChainInfo {
-		private final int position;
-		private final Class<?> type;
-
-		public ChainInfoHolder(int position, Class<?> type) {
-			this.position = position;
-			this.type = type;
-		}
-
-		@Override
-		public Class<?> type() {
-			return type;
-		}
-
-		@Override
-		public int position() {
-			return position;
-		}
-
-		@Override
-		public Class<? extends Annotation> annotationType() {
-			return ChainInfo.class;
 		}
 	}
 }

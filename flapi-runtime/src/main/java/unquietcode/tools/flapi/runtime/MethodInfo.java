@@ -30,7 +30,6 @@ import java.lang.annotation.Target;
 public @interface MethodInfo {
 	TransitionType type();
 
-	@Deprecated Class<?>[] chain() default {};
 	ChainInfo[] chainInfo() default {};
 
 	Class<?> next() default MethodInfo.class;
