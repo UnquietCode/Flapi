@@ -7,7 +7,7 @@
 
 	<parent>
 		<groupId>unquietcode.tools.flapi</groupId>
-		<artifactId>build-project</artifactId>
+		<artifactId>flapi-build-project</artifactId>
 		<version>0.0-DEVELOPMENT</version>
 		<relativePath>../flapi-build-project</relativePath>
 	</parent>
