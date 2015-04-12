@@ -133,7 +133,7 @@ feature requests.
 Feel free to fork the project and fiddle around! Submit pull requests to improve the code.  
 Create issues to help support the project. Ask questions. (Say hello.)
 
-[![Tip with Gratipay](https://assets.gratipay.com/gratipay.svg)](https://gratipay.com/UnquietCode) [![Tip with Bitcoin](https://assets.gratipay.com/bitcoin.png)](https://blockchain.info/address/1Ec6mzLpJQvuzXqhxfJz1h9ZwJmoHMW9BX)**Bitcoin**
+[![Tip with Gratipay](https://assets.gratipay.com/gratipay.svg)](https://gratipay.com/UnquietCode) [![Tip with Bitcoin](http://www.unquietcode.com/e_e/bitcoin.png)](https://blockchain.info/address/1Ec6mzLpJQvuzXqhxfJz1h9ZwJmoHMW9BX)**Bitcoin**
 
 If you like this software and find it useful, then please consider supporting my efforts through
 a donation via [BitCoin](https://gratipay.com/UnquietCode) or [other means](https://gratipay.com/UnquietCode).
