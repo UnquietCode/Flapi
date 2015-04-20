@@ -206,7 +206,7 @@
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>unquietcode.tools.jcodemodel</groupId>
+			<groupId>com.unquietcode.tools.jcodemodel</groupId>
 			<artifactId>codemodel</artifactId>
 			<version>1.0.2</version>
 		</dependency>
