@@ -16,8 +16,6 @@
 		<flapi.includeRuntime>false</flapi.includeRuntime>
 		<flapi.version>0.0-DEVELOPMENT</flapi.version>
 
-		<!-- DEPRECATED! --> <flapi.descriptor.class/>
-
 		<flapi.descriptor.classes>change.me</flapi.descriptor.classes>
 	</properties>
 
