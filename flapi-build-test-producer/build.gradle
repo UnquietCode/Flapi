@@ -33,3 +33,5 @@ flapi {
 	descriptorClasses = ['unquietcode.tools.flapi.plugin.TestDescriptor']
 	includeRuntime = true
 }
+
+install.dependsOn test
