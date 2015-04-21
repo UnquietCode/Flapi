@@ -12,6 +12,7 @@
 	</parent>
 
 	<artifactId>flapi-builder</artifactId>
+	<groupId>com.unquietcode.tools.flapi</groupId>
 	<version>0.0-DEVELOPMENT</version>
 	<packaging>jar</packaging>
 

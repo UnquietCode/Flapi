@@ -2,7 +2,7 @@ apply plugin: 'groovy'
 apply plugin: 'maven'
 apply plugin: 'maven-publish'
 
-group = 'unquietcode.tools.flapi'
+group = 'com.unquietcode.tools.flapi'
 version = '0.0-DEVELOPMENT'
 sourceCompatibility = '1.7'
 
@@ -14,7 +14,7 @@ dependencies {
 	compile gradleApi()
 	compile localGroovy()
 
-	compile 'unquietcode.tools.flapi:flapi-plugin:0.0-DEVELOPMENT'
+	compile 'com.unquietcode.tools.flapi:flapi-plugin:0.0-DEVELOPMENT'
 }
 
 task sourceJar(type: Jar, dependsOn: classes) {

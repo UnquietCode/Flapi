@@ -6,13 +6,13 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<groupId>unquietcode.tools.flapi</groupId>
+		<groupId>com.unquietcode.tools.flapi</groupId>
 		<artifactId>flapi-build-project</artifactId>
 		<version>0.0-DEVELOPMENT</version>
 		<relativePath>../flapi-build-project</relativePath>
 	</parent>
 
-	<groupId>unquietcode.tools.flapi.test</groupId>
+	<groupId>com.unquietcode.tools.flapi.test</groupId>
 	<artifactId>build-test-producer</artifactId>
 	<packaging>jar</packaging>
 
@@ -23,7 +23,7 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>unquietcode.tools.flapi</groupId>
+			<groupId>com.unquietcode.tools.flapi</groupId>
 			<artifactId>flapi</artifactId>
 			<version>${project.version}</version>
 			<scope>test</scope>

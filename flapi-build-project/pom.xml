@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>unquietcode.tools.flapi</groupId>
+	<groupId>com.unquietcode.tools.flapi</groupId>
 	<artifactId>flapi-build-project</artifactId>
 	<version>0.0-DEVELOPMENT</version>
 	<packaging>pom</packaging>
@@ -46,7 +46,7 @@
 
 			<!-- Flapi plugin -->
 			<plugin>
-				<groupId>unquietcode.tools.flapi</groupId>
+				<groupId>com.unquietcode.tools.flapi</groupId>
 				<artifactId>flapi-build-plugin</artifactId>
 				<version>${flapi.version}</version>
 				<executions>
@@ -105,12 +105,12 @@
 				<configuration>
 					<additionalDependencies>
 						<additionalDependency>
-							<groupId>unquietcode.tools.flapi</groupId>
+							<groupId>com.unquietcode.tools.flapi</groupId>
 							<artifactId>flapi-runtime</artifactId>
 							<version>${flapi.version}</version>
 						</additionalDependency>
 						<additionalDependency>
-							<groupId>unquietcode.tools.flapi</groupId>
+							<groupId>com.unquietcode.tools.flapi</groupId>
 							<artifactId>flapi</artifactId>
 							<version>${flapi.version}</version>
 						</additionalDependency>

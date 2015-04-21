@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<groupId>unquietcode.tools.flapi</groupId>
+		<groupId>com.unquietcode.tools.flapi</groupId>
 		<artifactId>flapi-parent</artifactId>
 		<version>0.0-DEVELOPMENT</version>
 		<relativePath>../flapi-parent/pom.xml</relativePath>
