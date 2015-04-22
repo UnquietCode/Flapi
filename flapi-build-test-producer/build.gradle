@@ -17,6 +17,7 @@ buildscript {
 }
 apply plugin: 'com.unquietcode.flapi.plugin'
 
+install.dependsOn test
 
 // ------------------------------------------------------- //
 
@@ -29,9 +30,34 @@ dependencies {
 	testCompile 'com.unquietcode.tools.flapi:flapi:0.0-DEVELOPMENT'
 }
 
-flapi {
-	descriptorClasses = ['unquietcode.tools.flapi.plugin.TestDescriptor']
-	includeRuntime = true
+
+import unquietcode.tools.flapi.Descriptor
+import unquietcode.tools.flapi.DescriptorMaker
+import unquietcode.tools.flapi.Flapi
+
+import java.util.concurrent.atomic.AtomicInteger
+
+class TestInlineDescriptor implements DescriptorMaker {
+	static final def counter = new AtomicInteger(1);
+
+
+	@Override
+	Descriptor descriptor() {
+		return Flapi.builder()
+			.setPackage("unquietcode.tools.flapi.plugin.test.builder"+counter.getAndIncrement())
+			.setDescriptorName("Test")
+
+			.addMethod("done()").last()
+		.build();
+	}
 }
 
-install.dependsOn test
+flapi {
+	descriptors = [
+		'unquietcode.tools.flapi.plugin.TestDescriptor',  // DescriptorMaker FQCN
+		TestInlineDescriptor,                             // DescriptorMaker class
+		new TestInlineDescriptor(),                       // DescriptorMaker instance
+		new TestInlineDescriptor().descriptor()           // Descriptor instance
+	]
+	includeRuntime = true
+}

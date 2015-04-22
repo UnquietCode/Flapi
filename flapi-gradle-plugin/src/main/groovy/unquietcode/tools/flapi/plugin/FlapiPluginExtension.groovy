@@ -26,8 +26,21 @@ public class FlapiPluginExtension {
 
 	/**
 	 * The list of {@link unquietcode.tools.flapi.DescriptorMaker} classes.
+	 *
+	 * @deprecated use the 'descriptors' property instead
 	 */
+	@Deprecated
 	String[] descriptorClasses;
+
+	/**
+	 * The list of descriptors to generate. These can be any one of the following:
+	 *
+	 *  + {@link unquietcode.tools.flapi.DescriptorMaker} Class FQCN string
+	 *  + {@link unquietcode.tools.flapi.DescriptorMaker} Class
+	 *  + {@link unquietcode.tools.flapi.DescriptorMaker} instance
+	 *  + {@link unquietcode.tools.flapi.Descriptor} instance
+	 */
+	Object[] descriptors;
 
 	/**
 	 * The directory to which the generated classes

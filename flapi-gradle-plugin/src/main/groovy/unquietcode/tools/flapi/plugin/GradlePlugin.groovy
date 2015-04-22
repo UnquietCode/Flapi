@@ -104,7 +104,12 @@ public class GradlePlugin implements Plugin<Project> {
 	    helper.setWriteSources(properties.writeSources)
 
 	    // run it
-		helper.processDescriptors(properties.descriptorClasses)
+		if (properties.descriptorClasses != null && properties.descriptorClasses.length > 0) {
+			project.logger.warn("the 'descriptorClasses' property is deprecated, use 'descriptors' instead")
+			helper.processDescriptors(properties.descriptorClasses)
+		} else {
+			helper.processDescriptors(properties.descriptors)
+		}
 	}
 
 	private static boolean isEmpty(String s) {

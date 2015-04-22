@@ -28,8 +28,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -83,25 +81,65 @@ public abstract class PluginHelper {
 
 	protected abstract URLClassLoader getCompiledClassloader() throws Exception;
 
+	private URLClassLoader classloader() throws Exception {
+		try {
+			return getCompiledClassloader();
+		} catch (Exception ex) {
+			throw handleError("could not load classes", ex);
+		}
+	}
 
-	public void processDescriptors(String[] descriptorClasses) throws Exception {
+	public void processDescriptors(Object...descriptors) throws Exception {
 
 		// have we seen at least one descriptor?
 		boolean atLeastOne = false;
 
-		for (String descriptorClass : descriptorClasses) {
-			descriptorClass = descriptorClass.trim();
+		for (Object descriptor : descriptors) {
 
-			if (descriptorClass.isEmpty()) {
-				continue;
+			// handle class FQCN's
+			if (descriptor instanceof String) {
+				String descriptorClass = (String) descriptor;
+				descriptorClass = descriptorClass.trim();
+
+				if (descriptorClass.isEmpty()) {
+					continue;
+				}
+
+				if (descriptorClass.trim().equals("change.me")) {
+					continue;
+				}
+
+				logInfo("processing descriptor "+descriptorClass);
+				processDescriptor(descriptorClass);
 			}
 
-			if (descriptorClass.trim().equals("change.me")) {
-				continue;
+			// handle classes
+			else if (descriptor instanceof Class) {
+				Class<?> descriptorClass = (Class<?>) descriptor;
+
+				logInfo("processing descriptor "+descriptorClass.getName());
+				processDescriptor(classloader(), descriptorClass);
 			}
 
-			logInfo("processing descriptor " + descriptorClass);
-			processDescriptor(descriptorClass);
+			// handle DescriptorMaker instances
+			else if (DescriptorMaker.class.isAssignableFrom(descriptor.getClass())) {
+				logInfo("processing descriptor");
+				processDescriptor(classloader(), (DescriptorMaker) descriptor);
+			}
+
+			// handle Descriptor instances
+			else if (Descriptor.class.isAssignableFrom(descriptor.getClass())) {
+				logInfo("processing descriptor");
+				processDescriptor(classloader(), (Descriptor) descriptor);
+			}
+
+			// handle invalid
+			else {
+				String message = "invalid descriptor object type: "+descriptor.getClass().getName();
+				logError(message);
+				throw handleError(message);
+			}
+
 			atLeastOne = true;
 		}
 
@@ -110,49 +148,45 @@ public abstract class PluginHelper {
 		}
 	}
 
-	public void processDescriptor(String descriptorClass) throws Exception {
-		Method method;
-		DescriptorMaker descriptorMaker;
+	private void processDescriptor(String _descriptorClass) throws Exception {
 
 		// instantiate the class
-		URLClassLoader classLoader;
-		Class<?> _descriptorClass;
+		final URLClassLoader classLoader = classloader();
+		final Class<?> descriptorClass;
 
 		try {
-			classLoader = getCompiledClassloader();
-			_descriptorClass = classLoader.loadClass(descriptorClass);
+			descriptorClass = classLoader.loadClass(_descriptorClass);
 		} catch (Exception ex) {
-			throw handleError("could not load class", ex);
+			throw handleFailure("could not load class", ex);
 		}
 
+		processDescriptor(classLoader, descriptorClass);
+	}
+
+	private void processDescriptor(URLClassLoader classLoader, Class<?> descriptorClass) throws Exception {
+
 		// ensure that it implements the interface
-		if (!DescriptorMaker.class.isAssignableFrom(_descriptorClass)) {
+		if (!DescriptorMaker.class.isAssignableFrom(descriptorClass)) {
 			throw handleError("object must implement the DescriptorMaker interface");
 		}
 
-		// lookup the method
-		try {
-			method = _descriptorClass.getMethod("descriptor");
-		} catch (NoSuchMethodException ex) {
-			throw handleError("method cannot be found", ex);
-		}
-
 		// instantiate the object
+		final DescriptorMaker descriptorMaker;
+
 		try {
-			descriptorMaker = (DescriptorMaker) _descriptorClass.newInstance();
+			descriptorMaker = (DescriptorMaker) descriptorClass.newInstance();
 		} catch (Exception ex) {
 			throw handleError("could not instantiate DescriptorMaker object", ex);
 		}
 
-		// execute and get the descriptor
-		Descriptor descriptor;
-		try {
-			descriptor = (Descriptor) method.invoke(descriptorMaker);
-		} catch (IllegalAccessException ex) {
-			throw handleError("method not accessible", ex);
-		} catch (InvocationTargetException ex) {
-			throw handleError("error while executing method", ex.getTargetException());
-		}
+		processDescriptor(classLoader, descriptorMaker);
+	}
+
+	private void processDescriptor(URLClassLoader classLoader, DescriptorMaker descriptorMaker) throws Exception {
+		processDescriptor(classLoader, descriptorMaker.descriptor());
+	}
+
+	private void processDescriptor(URLClassLoader classLoader, Descriptor descriptor) throws Exception {
 
 		// ensure not null
 		if (descriptor == null) {
