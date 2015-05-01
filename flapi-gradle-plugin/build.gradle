@@ -1,9 +1,12 @@
 apply plugin: 'groovy'
 apply plugin: 'maven'
 apply plugin: 'maven-publish'
+apply plugin: 'signing'
 
 group = 'com.unquietcode.tools.flapi'
 version = '0.0-DEVELOPMENT'
+description = 'Flapi build plugin for Gradle'
+
 sourceCompatibility = '1.7'
 
 repositories {
@@ -32,22 +35,51 @@ artifacts {
 	archives javadocJar
 }
 
-def AorB = { String a, String b ->
-	return a != null && !a.trim().isEmpty() ? a : b;
+uploadArchives {
+	repositories {
+		mavenDeployer {
+			beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+
+			repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+				authentication(userName: ossrhUsername, password: ossrhPassword)
+			}
+
+			snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
+				authentication(userName: ossrhUsername, password: ossrhPassword)
+			}
+
+			pom.project {
+				name 'Flapi Gradle Plugin'
+				description project.description
+
+				packaging 'jar'
+				url 'https://github.com/UnquietCode/Flapi'
+
+				scm {
+					connection 'scm:git:https://github.com/UnquietCode/Flapi.git'
+					developerConnection 'scm:git:https://github.com/UnquietCode/Flapi.git'
+					url 'https://github.com/UnquietCode/Flapi'
+				}
+
+				licenses {
+					license {
+						name 'The Apache License, Version 2.0'
+						url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+					}
+				}
+
+				developers {
+					developer {
+						id 'UnquietCode'
+						name 'Benjamin Fagin'
+						email 'blouis@unquietcode.com'
+					}
+				}
+			}
+		}
+	}
 }
 
-publishing {
-	publications {
-		mavenJava(MavenPublication) {
-			from components.java
-			artifact sourceJar
-			artifact javadocJar
-		}
-	}
-
-	repositories {
-		maven {
-			url AorB(System.getProperty("maven.deploy.repository"), "$buildDir/repo")
-		}
-	}
+signing {
+	sign configurations.archives
 }
