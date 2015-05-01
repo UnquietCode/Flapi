@@ -21,10 +21,18 @@
 					<target>1.7</target>
 				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-deploy-plugin</artifactId>
+				<configuration>
+					<skip>true</skip>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
 
 	<dependencies>
+
 		<!-- runtime is included -->
 		<dependency>
 			<groupId>com.unquietcode.tools.flapi.test</groupId>
@@ -39,4 +47,5 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
+
 </project>

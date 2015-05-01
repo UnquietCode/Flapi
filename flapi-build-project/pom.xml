@@ -19,11 +19,79 @@
 		<flapi.descriptor.classes>change.me</flapi.descriptor.classes>
 	</properties>
 
+	<licenses>
+		<license>
+			<name>ASL 2.0</name>
+			<comments>Apache License, Version 2.0</comments>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+
+	<developers>
+		<developer>
+			<name>Benjamin Fagin</name>
+			<id>UnquietCode</id>
+			<email>blouis@unquietcode.com</email>
+			<url>https://github.com/UnquietCode</url>
+		</developer>
+	</developers>
+
 	<scm>
 		<url>https://github.com/UnquietCode/Flapi</url>
 		<connection>scm:git:https://github.com/UnquietCode/Flapi.git</connection>
 		<developerConnection>scm:git:https://github.com/UnquietCode/Flapi.git</developerConnection>
 	</scm>
+
+	<issueManagement>
+		<system>Github</system>
+		<url>https://github.com/UnquietCode/Flapi/issues</url>
+	</issueManagement>
+
+	<ciManagement>
+		<url>http://travis-ci.org/#!/UnquietCode/Flapi/builds</url>
+		<system>http://travis-ci</system>
+	</ciManagement>
+
+	<distributionManagement>
+		<snapshotRepository>
+			<id>ossrh</id>
+			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+		</snapshotRepository>
+		<repository>
+			<id>ossrh</id>
+			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+		</repository>
+	</distributionManagement>
+
+	<profiles>
+		<profile>
+			<id>gpg</id>
+			<activation>
+				<property>
+					<name>do.sign</name>
+				</property>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-gpg-plugin</artifactId>
+						<version>1.5</version>
+						<executions>
+							<execution>
+								<id>sign-artifacts</id>
+								<phase>verify</phase>
+								<goals>
+									<goal>sign</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 
 	<repositories>
 		<repository>
