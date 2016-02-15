@@ -8,8 +8,17 @@
 	<artifactId>flapi-build-project</artifactId>
 	<version>0.0-DEVELOPMENT</version>
 	<packaging>pom</packaging>
+
 	<name>Flapi Build Project</name>
 	<url>https://github.com/UnquietCode/Flapi</url>
+
+	<description>
+		Flapi is a code generation tool for Java which allows you to create
+		fluent API's which are easy to evolve and maintain.
+
+		This project POM can be used as the base for projects which want to
+		generate code at build-time using the Flapi maven plugin.
+	</description>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
