@@ -9,6 +9,7 @@
 	<version>0.0-DEVELOPMENT</version>
 	<packaging>pom</packaging>
 	<name>Flapi Build Project</name>
+	<url>https://github.com/UnquietCode/Flapi</url>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
