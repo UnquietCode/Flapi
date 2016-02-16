@@ -31,7 +31,6 @@ import unquietcode.tools.flapi.helpers.MethodHelperImpl;
 import unquietcode.tools.flapi.outline.BlockOutline;
 import unquietcode.tools.flapi.outline.DescriptorOutline;
 import unquietcode.tools.flapi.outline.MethodOutline;
-import unquietcode.tools.flapi.runtime.Consumer;
 import unquietcode.tools.flapi.runtime.EnumSelectorHint;
 import unquietcode.tools.flapi.runtime.Helpers;
 import unquietcode.tools.flapi.runtime.SpringMethodUtils;
@@ -43,6 +42,7 @@ import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Method;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Consumer;
 
 /**
  * @author Ben Fagin
@@ -191,16 +191,12 @@ public class AnnotationIntrospector extends IntrospectorSupport {
 				throw new DescriptorBuilderException("@EnumSelector methods must return a consumer of Enum types");
 			}
 
-			methodHelper = Helpers.invoke(new Helpers.Invoker<MethodHelper>() {
-				public void call(AtomicReference<MethodHelper> _helper) {
-					blockHelper.addEnumSelector(genericEnum, methodSignature, _helper);
-				}
+			methodHelper = Helpers.invoke((_helper) -> {
+				blockHelper.addEnumSelector(genericEnum, methodSignature, _helper);
 			});
 
-			AnnotationHelper annotationHelper = Helpers.invoke(new Helpers.Invoker<AnnotationHelper>() {
-				public void call(AtomicReference<AnnotationHelper> _helper) {
-					methodHelper.addAnnotation(EnumSelectorHint.class, _helper);
-				}
+			AnnotationHelper annotationHelper = Helpers.invoke((_helper) -> {
+				methodHelper.addAnnotation(EnumSelectorHint.class, _helper);
 			});
 
 			annotationHelper.withParameter("value", genericEnum);
@@ -209,10 +205,8 @@ public class AnnotationIntrospector extends IntrospectorSupport {
 
 		// regular method
 		else {
-			methodHelper = Helpers.invoke(new Helpers.Invoker<MethodHelper>() {
-				public void call(AtomicReference<MethodHelper> _helper) {
-					blockHelper.addMethod(methodSignature, _helper);
-				}
+			methodHelper = Helpers.invoke((_helper) -> {
+				blockHelper.addMethod(methodSignature, _helper);
 			});
 		}
 
@@ -284,10 +278,8 @@ public class AnnotationIntrospector extends IntrospectorSupport {
 
 		// @Documented
 		if (documented != null) {
-			DocumentationHelper docHelper = Helpers.invoke(new Helpers.Invoker<DocumentationHelper>() {
-				public void call(AtomicReference<DocumentationHelper> _helper) {
-					methodHelper.withDocumentation(_helper);
-				}
+			DocumentationHelper docHelper = Helpers.invoke((_helper) -> {
+				methodHelper.withDocumentation(_helper);
 			});
 
 			for (String docString : documented.value()) {
@@ -333,10 +325,8 @@ public class AnnotationIntrospector extends IntrospectorSupport {
 	private static void handleMethodAnnotation(final MethodHelper methodHelper, Annotation annotation) {
 		final Class<? extends Annotation> annotationClass = annotation.annotationType();
 
-		AnnotationHelper annotationHelper = Helpers.invoke(new Helpers.Invoker<AnnotationHelper>() {
-			public void call(AtomicReference<AnnotationHelper> _helper) {
-				methodHelper.addAnnotation(annotationClass, _helper);
-			}
+		AnnotationHelper annotationHelper = Helpers.invoke((_helper) -> {
+			methodHelper.addAnnotation(annotationClass, _helper);
 		});
 
 		for (Method method : annotationClass.getDeclaredMethods()) {

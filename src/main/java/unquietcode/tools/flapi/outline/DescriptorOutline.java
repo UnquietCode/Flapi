@@ -16,7 +16,6 @@
 
 package unquietcode.tools.flapi.outline;
 
-import com.google.common.base.Function;
 import unquietcode.tools.flapi.DescriptorBuilderException;
 import unquietcode.tools.flapi.Utilities;
 import unquietcode.tools.flapi.annotations.AnnotationIntrospector;
@@ -26,6 +25,7 @@ import unquietcode.tools.flapi.java.MethodSignature;
 
 import java.util.Collection;
 import java.util.Map;
+import java.util.function.Function;
 
 /**
  * @author Ben Fagin

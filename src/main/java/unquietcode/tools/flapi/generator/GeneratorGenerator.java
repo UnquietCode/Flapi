@@ -17,13 +17,14 @@
 package unquietcode.tools.flapi.generator;
 
 import com.sun.codemodel.*;
+import unquietcode.tools.flapi.Flapi;
 import unquietcode.tools.flapi.graph.components.StateClass;
 import unquietcode.tools.flapi.outline.GeneratorOutline;
 import unquietcode.tools.flapi.runtime.BlockInvocationHandler;
 import unquietcode.tools.flapi.runtime.ExecutionListener;
 import unquietcode.tools.flapi.runtime.Helpers;
-import unquietcode.tools.flapi.runtime.Supplier;
 
+import javax.lang.model.SourceVersion;
 
 /**
  * @author Ben Fagin
@@ -126,7 +127,11 @@ public class GeneratorGenerator extends AbstractGenerator {
 	private void createFactoryMethod(JDefinedClass generator, JMethod createMethod, JClass helper, JClass factory, JMethod factoryInterfaceMethod) {
 
 		// Supplier<Helper>
-		JClass helperSupplier = ref(Supplier.class).narrow(helper);
+		final Class<?> supplierClass = Flapi.getJDKVersion().ordinal() >= SourceVersion.RELEASE_8.ordinal()
+				  					 ? java.util.function.Supplier.class
+							   		 : unquietcode.tools.flapi.runtime.Supplier.class
+		;
+		JClass helperSupplier = ref(supplierClass).narrow(helper);
 
 		// public static Factory factory(Supplier<Helper> provider, ExecutionListener...listeners)
 		JMethod factoryMethod = generator.method(JMod.PUBLIC+JMod.STATIC, factory, "factory");
