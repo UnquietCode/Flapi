@@ -3,7 +3,7 @@ apply plugin: 'maven'
 
 group = 'com.unquietcode.tools.flapi.test'
 version = '0.0-DEVELOPMENT'
-sourceCompatibility = '1.7'
+sourceCompatibility = '1.8'
 
 repositories {
 	mavenCentral()

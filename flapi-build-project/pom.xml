@@ -103,22 +103,6 @@
 		</profile>
 	</profiles>
 
-	<repositories>
-		<repository>
-			<id>uqc</id>
-			<name>UnquietCode Repository</name>
-			<url>http://www.unquietcode.com/maven/releases</url>
-		</repository>
-	</repositories>
-
-	<pluginRepositories>
-		<pluginRepository>
-			<id>uqc</id>
-			<name>UnquietCode Repository</name>
-			<url>http://www.unquietcode.com/maven/releases</url>
-		</pluginRepository>
-	</pluginRepositories>
-
 	<build>
 		<plugins>
 
@@ -145,10 +129,10 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.2</version>
+				<version>3.5.1</version>
 				<configuration>
-					<source>1.7</source>
-					<target>1.7</target>
+					<source>1.8</source>
+					<target>1.8</target>
 				</configuration>
 			</plugin>
 

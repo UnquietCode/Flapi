@@ -6,13 +6,12 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<groupId>unquietcode.tools.flapi</groupId>
-		<artifactId>build-project</artifactId>
-		<version>0.8</version>
+		<groupId>com.unquietcode.tools.flapi</groupId>
+		<artifactId>flapi-build-project</artifactId>
+		<version>1.0</version>
 	</parent>
 
 	<artifactId>flapi-builder</artifactId>
-	<groupId>com.unquietcode.tools.flapi</groupId>
 	<version>0.0-DEVELOPMENT</version>
 	<packaging>jar</packaging>
 
@@ -101,17 +100,9 @@
 		</profile>
 	</profiles>
 
-	<repositories>
-		<repository>
-			<id>uqc</id>
-			<name>UnquietCode Repository</name>
-			<url>http://www.unquietcode.com/maven/releases</url>
-		</repository>
-	</repositories>
-
 	<dependencies>
 		<dependency>
-			<groupId>unquietcode.tools.flapi</groupId>
+			<groupId>com.unquietcode.tools.flapi</groupId>
 			<artifactId>flapi</artifactId>
 			<version>${flapi.version}</version>
 			<scope>provided</scope>
