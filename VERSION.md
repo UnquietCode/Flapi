@@ -4,11 +4,11 @@ We did it everyone. You can all go home now.
 ### Upgrade Guide (#225)
 There is an [Upgrade Guide](https://github.com/UnquietCode/Flapi/wiki/Upgrading-from-0.x-Development-Versions)
 available which can help early adopters migrate
-from a `0.x` development version to the new 1.0
+from a `0.x` development version to the new `1.0`
 release.
 
 ### Remove Deprecated Things (#212)
-Part of the upgrade to 1.0 is removing deprecated
+Part of the upgrade to `1.0` is removing deprecated
 elements from the codebase. The upgrade guide above
 goes into more detail about what to expect.
 
