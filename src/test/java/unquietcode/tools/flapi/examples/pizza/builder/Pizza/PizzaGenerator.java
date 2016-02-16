@@ -4,9 +4,9 @@ package unquietcode.tools.flapi.examples.pizza.builder.Pizza;
 import unquietcode.tools.flapi.examples.pizza.builder.Pizza.PizzaBuilder.Start;
 import unquietcode.tools.flapi.runtime.BlockInvocationHandler;
 import unquietcode.tools.flapi.runtime.ExecutionListener;
-import unquietcode.tools.flapi.runtime.Supplier;
 
 import javax.annotation.Generated;
+import java.util.function.Supplier;
 
 
 /**

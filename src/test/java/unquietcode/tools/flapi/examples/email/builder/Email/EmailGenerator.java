@@ -3,9 +3,9 @@ package unquietcode.tools.flapi.examples.email.builder.Email;
 import unquietcode.tools.flapi.examples.email.builder.Email.EmailBuilder.Start;
 import unquietcode.tools.flapi.runtime.BlockInvocationHandler;
 import unquietcode.tools.flapi.runtime.ExecutionListener;
-import unquietcode.tools.flapi.runtime.Supplier;
 
 import javax.annotation.Generated;
+import java.util.function.Supplier;
 
 
 /**

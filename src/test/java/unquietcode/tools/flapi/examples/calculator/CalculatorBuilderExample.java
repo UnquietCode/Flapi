@@ -24,10 +24,10 @@ import unquietcode.tools.flapi.examples.calculator.builder.Calculation.Calculati
 import unquietcode.tools.flapi.examples.calculator.builder.Calculator.CalculatorBuilder;
 import unquietcode.tools.flapi.examples.calculator.builder.Calculator.CalculatorFactory;
 import unquietcode.tools.flapi.examples.calculator.builder.Calculator.CalculatorGenerator;
-import unquietcode.tools.flapi.runtime.Supplier;
 
 import java.math.BigInteger;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Supplier;
 
 import static org.junit.Assert.assertEquals;
 
