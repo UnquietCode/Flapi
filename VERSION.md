@@ -1,3 +1,61 @@
+# Version 1.0
+We did it everyone. You can all go home now.
+
+### Upgrade Guide (#225)
+There is an [Upgrade Guide](https://github.com/UnquietCode/Flapi/wiki/Upgrading-from-0.x-Development-Versions)
+available which can help early adopters migrate
+from a `0.x` development version to the new 1.0
+release.
+
+### Remove Deprecated Things (#212)
+Part of the upgrade to 1.0 is removing deprecated
+elements from the codebase. The upgrade guide above
+goes into more detail about what to expect.
+
+### Gradle Plugin Handles Full Descriptors (#222)
+You can pass full descriptors to the gradle plugin.
+This is a cool feature enabled by the fact that the
+gradle plugin script is dynamic, whereas the maven
+pom file is just a lifeless XML document. So this
+small change means you can just build a descriptor
+in your build script instead of in a separate class,
+if you wish.
+
+### Group ID has Changed (#200)
+The Maven repository group ID has been changed to conform to the
+Sonatype central repository rules. Previously the high level package
+name was unquietcode.tools.flapi but now it is com.unquietcode.tools.flapi.
+The upshot of making this change is that now Flapi and all of its
+dependencies are hosted in the Maven central repository.
+
+#### Removed Deprecated `flapi.descriptor.class` Property
+The `flapi.descriptor.class` property used in the build plugin
+configurations has been removed after being deprecated for several
+releases. You can use the comma-separated version named
+`flapi.descriptor.classes` instead.
+
+#### `build-project` is Now `flapi-build-project` (#193)
+This change brings the build-project naming in line with the
+convention used by the other modules of prefixing with
+`flapi-` followed by the module name.
+
+#### Introduction of Generics in Builder Methods
+Some method signatures now have generics where before they
+did not. *This may cause warnings*. Generally wherever a
+`Class` parameter was accepted it is now `Class<?>`.
+The same goes for `Enum`, *etc*.
+
+#### `Start` Object is Now Untyped (again)
+The `Start` object is no longer typed as `Start<Void>` but just
+`Start`. The newer `Head<?>` wrapper can be used instead, either
+with `Void` or some other return type (and indeed `Start` is now
+just an alias for `Head<Void>`).
+
+The full list of tasks and issues included in the release is available on the project's
+[Issue Tracker](https://github.com/UnquietCode/Flapi/milestones/1.0).
+
+------------------------------------------------
+
 # Version 0.8
 This version includes several key features, and is also intended to be the last
 feature release before 1.0.

@@ -1,5 +1,5 @@
 # Flapi - A fluent API generator for Java
-## v0.8 [![Build Status](https://travis-ci.org/UnquietCode/Flapi.png?branch=master)](https://travis-ci.org/UnquietCode/Flapi)
+## v1.0 [![Build Status](https://travis-ci.org/UnquietCode/Flapi.png?branch=master)](https://travis-ci.org/UnquietCode/Flapi)
 
 [![Tip with Gratipay](https://assets.gratipay.com/gratipay.svg)](https://gratipay.com/UnquietCode) [![Tip with Bitcoin](http://www.unquietcode.com/e_e/bitcoin.png)](https://blockchain.info/address/1Ec6mzLpJQvuzXqhxfJz1h9ZwJmoHMW9BX)**Bitcoin**
 
@@ -57,39 +57,23 @@ composeEmail()
 
 
 ### [Getting Started](https://github.com/UnquietCode/Flapi/wiki/Getting-Started)
-If you are using Maven (or Gradle, or Ivy) you can download and install to your local repo, or include the following
-repository and dependency in your build script:
+If you are using Maven (or Gradle, or Ivy) include the following dependency
+in your build script:
 
 #### Maven
 ```xml
-<repository>
-  <id>uqc</id>
-  <name>UnquietCode Repository</name>
-  <url>http://www.unquietcode.com/maven/releases</url>
-</repository>
-
-...
-
 <dependency>
-  <groupId>unquietcode.tools.flapi</groupId>
+  <groupId>com.unquietcode.tools.flapi</groupId>
   <artifactId>flapi</artifactId>
-  <version>0.8</version>
+  <version>1.0</version>
   <scope>test</scope>
 </dependency>
 ```
 
 #### Gradle
 ```groovy
-repositories {
-  maven {
-    url 'http://www.unquietcode.com/maven/releases'
-  }
-}
-
-...
-
 dependencies {
-  testCompile 'unquietcode.tools.flapi:flapi:0.8'
+  testCompile 'com.unquietcode.tools.flapi:flapi:1.0'
 }
 ```
 
@@ -122,8 +106,11 @@ The original blog post describing Flapi.
 
 
 ### What's the project's status?
-Version 0.8 has been released, and includes a new Gradle build plugin, support for
-block mixins, and more. See the [Release Notes](./VERSION.md) for the full details.
+Version 1.0 has been released, marking a huge milestone in the stability of the code.
+If you started using Flapi before this version, check out the
+[Upgrade Guide](https://github.com/UnquietCode/Flapi/wiki/Upgrading-from-0.x-Development-Versions)
+to see how to upgrade, since some deprecated features have been removed.
+See the [Release Notes](./VERSION.md) for the full release notes.
 
 ### Problems?
 Use the [issue tracker](https://github.com/UnquietCode/Flapi/issues) to report problems encountered or new
