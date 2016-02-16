@@ -5,6 +5,8 @@ import unquietcode.tools.flapi.DescriptorMaker;
 import unquietcode.tools.flapi.Flapi;
 import unquietcode.tools.flapi.generator.naming.HashedNameGenerator;
 
+import javax.lang.model.SourceVersion;
+
 /**
  * @author Benjamin Fagin
  * @version 04-25-2012
@@ -12,6 +14,10 @@ import unquietcode.tools.flapi.generator.naming.HashedNameGenerator;
  * The main descriptor for Flapi, used to generate other descriptors.
  */
 public class MainDescriptor implements DescriptorMaker {
+	static {
+		Flapi.setJDKVersion(SourceVersion.RELEASE_7);
+	}
+
 	private static final int DOC_GROUP = 1;
 	private static final int RETURN_TYPE_GROUP = 2;
 	private static final int NAME_GROUP = 3;

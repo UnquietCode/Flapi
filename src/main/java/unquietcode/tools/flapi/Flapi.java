@@ -37,7 +37,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * @version 05-11-2012
  */
 public class Flapi {
-	private static SourceVersion JDKVersion = SourceVersion.RELEASE_7;
+	private static SourceVersion JDKVersion = SourceVersion.RELEASE_8;
 	private static boolean outputRuntime = false;
 
 
@@ -78,7 +78,7 @@ public class Flapi {
 		if (version != null && version.ordinal() >= SourceVersion.RELEASE_5.ordinal()) {
 			JDKVersion = version;
 		} else {
-			throw new DescriptorBuilderException("Only JDK versions [5,7] are supported.");
+			throw new DescriptorBuilderException("Only JDK versions [5,8] are supported.");
 		}
 	}
 

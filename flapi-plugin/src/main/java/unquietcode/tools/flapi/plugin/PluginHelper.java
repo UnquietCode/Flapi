@@ -20,6 +20,7 @@ package unquietcode.tools.flapi.plugin;
 import unquietcode.tools.flapi.Descriptor;
 import unquietcode.tools.flapi.DescriptorMaker;
 import unquietcode.tools.flapi.ExtractRuntime;
+import unquietcode.tools.flapi.Flapi;
 import unquietcode.tools.flapi.plugin.compile.CharSequenceJavaFileObject;
 import unquietcode.tools.flapi.plugin.compile.ClassFileManager;
 
@@ -239,14 +240,12 @@ public abstract class PluginHelper {
 		JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
 		DiagnosticCollector<JavaFileObject> diagnostics = new DiagnosticCollector<JavaFileObject>();
 		JavaFileManager fileManager = new ClassFileManager(compiler.getStandardFileManager(null, null, null), classesDirectory);
+		final String jdkVersion = "1."+Flapi.getJDKVersion().ordinal();
 
-		List<String> options = new ArrayList<String>();
-		options.add("-classpath");
-		options.add(makeClasspath(classLoader));
-		options.add("-source");
-		options.add("1.6");
-		options.add("-target");
-		options.add("1.6");
+		List<String> options = new ArrayList<>();
+		options.add("-classpath"); 	options.add(makeClasspath(classLoader));
+		options.add("-source"); 	options.add(jdkVersion);
+		options.add("-target"); 	options.add(jdkVersion);
 
 		Iterable<? extends JavaFileObject> compilationUnits = getSourceFiles(descriptor);
 		JavaCompiler.CompilationTask task = compiler.getTask(null, fileManager, diagnostics, options, null, compilationUnits);
