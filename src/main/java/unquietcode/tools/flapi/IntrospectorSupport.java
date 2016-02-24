@@ -22,6 +22,7 @@ import unquietcode.tools.spring.generics.ResolvableType;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
 
 import static com.google.common.base.Preconditions.checkState;
 
@@ -31,8 +32,8 @@ import static com.google.common.base.Preconditions.checkState;
  */
 public class IntrospectorSupport {
 
-	protected static <T extends Annotation> T getParameterAnnotation(Method method, int parameterIndex, Class<T> annotationClass) {
-		for (Annotation annotation : method.getParameterAnnotations()[parameterIndex]) {
+	protected static <T extends Annotation> T getParameterAnnotation(Parameter parameter, Class<T> annotationClass) {
+		for (Annotation annotation : parameter.getAnnotations()) {
 			if (annotation.annotationType() == annotationClass) {
 				@SuppressWarnings("unchecked") T annotation1 = (T) annotation;
 				return annotation1;
@@ -42,8 +43,8 @@ public class IntrospectorSupport {
 		return null;
 	}
 
-	protected static <T extends Annotation> boolean hasParameterAnnotation(Method method, int parameterIndex, Class<T> annotationClass) {
-		return getParameterAnnotation(method, parameterIndex, annotationClass) != null;
+	protected static <T extends Annotation> boolean hasParameterAnnotation(Parameter parameter, Class<T> annotationClass) {
+		return getParameterAnnotation(parameter, annotationClass) != null;
 	}
 
 	protected static String getMethodSignature(Method method) {
@@ -57,13 +58,14 @@ public class IntrospectorSupport {
 		signature.append(name).append("(");
 
 		boolean first = true;
-		Class<?>[] parameterTypes = method.getParameterTypes();
+		final Parameter[] parameters = method.getParameters();
 
-		for (int i=0; i < parameterTypes.length; i++) {
-			Class<?> parameterType = parameterTypes[i];
+		for (int i=0; i < parameters.length; ++i) {
+			final Parameter parameter = parameters[i];
+			final Class<?> parameterType = parameter.getType();
 
 			// skip BlockChain parameters
-			if (hasParameterAnnotation(method, i, BlockChain.class)) {
+			if (hasParameterAnnotation(parameter, BlockChain.class)) {
 				continue;
 			}
 
@@ -76,7 +78,7 @@ public class IntrospectorSupport {
 			final String typeName;
 
 			// varargs
-			if (i == parameterTypes.length-1 && method.isVarArgs()) {
+			if (parameter.isVarArgs()) {
 				checkState(parameterType.isArray());
 				typeName = parameterType.getComponentType().getName()+"...";
 			}
@@ -95,9 +97,8 @@ public class IntrospectorSupport {
 			Class<?>[] generics = ResolvableType.forMethodParameter(MethodParameter.forMethodOrConstructor(method, i)).resolveGenerics();
 			signature.append(makeTypeWithGenerics(typeName, generics));
 
-			// parameter name
-			// TODO improve in JDK8 (#218)
-			signature.append(" p").append(i);
+			// parameter name (or argX by default)
+			signature.append(" ").append(parameter.getName());
 		}
 
 		signature.append(")");

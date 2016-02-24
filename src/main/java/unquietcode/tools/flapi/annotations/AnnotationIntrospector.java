@@ -40,6 +40,7 @@ import unquietcode.tools.spring.generics.ResolvableType;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
@@ -300,14 +301,16 @@ public class AnnotationIntrospector extends IntrospectorSupport {
 		}
 
 		// block chaining
-		for (int i=0; i < method.getParameterTypes().length; ++i) {
-			Class<?> parameterType = method.getParameterTypes()[i];
-			BlockChain blockChain = getParameterAnnotation(method, i, BlockChain.class);
+		final Parameter[] parameters = method.getParameters();
+
+		for (int i=0; i < parameters.length; ++i) {
+			final Parameter parameter = parameters[i];
+			final BlockChain blockChain = getParameterAnnotation(parameter, BlockChain.class);
 
 			if (blockChain != null) {
 
 				// check type
-				if (parameterType != AtomicReference.class) {
+				if (parameter.getType() != AtomicReference.class) {
 					throw new DescriptorBuilderException("@BlockChain parameters must be of type AtomicReference");
 				}
 
