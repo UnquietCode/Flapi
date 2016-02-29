@@ -1,3 +1,27 @@
+# Version 2.0
+This release is all about Java 8, and is more-or-less
+identical to the recent 1.0 release but with added
+support for the latest version of Java.
+
+### JDK 8 Parameter Names (#218)
+Java 8 has built-in support for introspecting method
+parameter names when debug compilation is enabled.
+Flapi now makes use of these names where available
+when scanning an annotated descriptor class.
+
+### JDK 8 Support Classes (#219)
+The 2.0 release changes out the `Consumer`, `Supplier`,
+and `Function` classes used in Flapi interfaces for
+their built-in counterparts. This allows for greater
+compatibility and shaves a few runtime classes, at
+the expense of requiring a JDK 8 environment.
+
+
+The full list of tasks and issues included in the release is available on the project's
+[Issue Tracker](https://github.com/UnquietCode/Flapi/issues?q=milestone%3A2.0).
+
+------------------------------------------------
+
 # Version 1.0
 We did it everyone. You can all go home now.
 
@@ -51,8 +75,9 @@ The `Start` object is no longer typed as `Start<Void>` but just
 with `Void` or some other return type (and indeed `Start` is now
 just an alias for `Head<Void>`).
 
+
 The full list of tasks and issues included in the release is available on the project's
-[Issue Tracker](https://github.com/UnquietCode/Flapi/milestones/1.0).
+[Issue Tracker](https://github.com/UnquietCode/Flapi/issues?q=milestone%3A1.0).
 
 ------------------------------------------------
 
@@ -87,8 +112,9 @@ demands, creating a more shelf-stable API.
 	+ [#214]: support for single wildcard generics in method signatures
 	+ [#213]: new `Start` wrapper type, replacing confusing uses of `Start<Void>`
 
+
 The full list of tasks and issues included in the release is available on the project's
-[Issue Tracker](https://github.com/UnquietCode/Flapi/milestones/0.8).
+[Issue Tracker](https://github.com/UnquietCode/Flapi/issues?q=milestone%3A0.8).
 
 ------------------------------------------------
 
@@ -136,8 +162,9 @@ a shortcut to defining your own factory for downstream consumers.
 The value for the block chain marker annotation for use in annotated helpers
 has been removed through better resolution of generics.
 
+
 The full list of tasks and issues included in the release is available on the project's
-[Issue Tracker](https://github.com/UnquietCode/Flapi/milestones/0.7).
+[Issue Tracker](https://github.com/UnquietCode/Flapi/issues?q=milestone%3A0.7).
 
 ------------------------------------------------
 
@@ -171,8 +198,9 @@ Issues are now handled through GitHub, and historical issues have been migrated 
 	+ [FLAPI-190 / #34]: Update docs and wiki with annotations info.
 	+ [FLAPI-189 / #17]: Move issues from JIRA to GitHub
 
+
 The full list of tasks and issues included in the release is available on the project's
-[Issue Tracker](https://github.com/UnquietCode/Flapi/milestones/0.6).
+[Issue Tracker](https://github.com/UnquietCode/Flapi/issues?q=milestone%3A0.6).
 
 ------------------------------------------------
 
@@ -214,6 +242,7 @@ Previously, the wrapper interface was called `$`. Flapi 0.5 has removed all uses
     + [FLAPI-168] - Document helpers in wiki.
     + [FLAPI-173] - Document method grouping / triggering in wiki.
     + [FLAPI-182] - Create a mailing list / user group for Flapi.
+
 
 The full list of tasks and issues included in the release is available on the project's
 [Issue Tracker](https://github.com/UnquietCode/Flapi/issues?q=milestone%3A0.5+milestone%3A0.5.1).
@@ -312,6 +341,7 @@ A brand new documentation page is available at
     + [FLAPI-124] - Add java.util to class search path.
     + [FLAPI-139] - Create two-column documentation of Flapi features.
 
+
 The full list of tasks and issues included in the release is available on the project's
 [Issue Tracker](https://github.com/UnquietCode/Flapi/issues?q=milestone%3A0.4).
 
@@ -364,6 +394,7 @@ instead of an object, by piping processes together. Find it in the
     + [FLAPI-106] - Create demo and screen share.
     	+ Watch the video [here](vimeo.com/58855907)
     * [FLAPI-123] - Add PipedProcess example to project.
+
 
 The full list of tasks and issues included in the release is available on the project's
 [Issue Tracker](https://github.com/UnquietCode/Flapi/issues?q=milestone%3A0.3).
@@ -422,6 +453,7 @@ classes.
 This version, 0.1, is an initial beta laying the groundwork for using
 Flapi. See the [Examples](https://github.com/UnquietCode/Flapi/wiki/Examples)
 in the wiki for more information.
+
 
 The full list of tasks and issues included in the release is available on the project's
 [Issue Tracker](https://github.com/UnquietCode/Flapi/issues?q=milestone%3A0.1).

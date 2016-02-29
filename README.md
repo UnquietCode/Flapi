@@ -1,5 +1,5 @@
 # Flapi - A fluent API generator for Java
-## v1.0 [![Build Status](https://travis-ci.org/UnquietCode/Flapi.png?branch=master)](https://travis-ci.org/UnquietCode/Flapi)
+## v2.0 [![Build Status](https://travis-ci.org/UnquietCode/Flapi.png?branch=master)](https://travis-ci.org/UnquietCode/Flapi)
 
 [![Tip with Gratipay](https://assets.gratipay.com/gratipay.svg)](https://gratipay.com/UnquietCode) [![Tip with Bitcoin](http://www.unquietcode.com/e_e/bitcoin.png)](https://blockchain.info/address/1Ec6mzLpJQvuzXqhxfJz1h9ZwJmoHMW9BX)**Bitcoin**
 
@@ -65,7 +65,7 @@ in your build script:
 <dependency>
   <groupId>com.unquietcode.tools.flapi</groupId>
   <artifactId>flapi</artifactId>
-  <version>1.0</version>
+  <version>2.0</version>
   <scope>test</scope>
 </dependency>
 ```
@@ -73,7 +73,7 @@ in your build script:
 #### Gradle
 ```groovy
 dependencies {
-  testCompile 'com.unquietcode.tools.flapi:flapi:1.0'
+  testCompile 'com.unquietcode.tools.flapi:flapi:2.0'
 }
 ```
 
@@ -84,12 +84,12 @@ example is a simple descriptor you can start with.) You can also make use of the
 [Maven plugin](https://github.com/UnquietCode/Flapi/wiki/Maven-Build-Plugin), to
 perform the code generation.
 
-At the time of writing the project builds fine in JDK 6, however please note that
-the automated builds are no longer being run for that release. Future versions will
-be built using JDK 8, while still exposing a JDK 7 compatible API, and using JDK 7
-as the default target for code generation.
+Version 2.x of the project is built against JDK 8, while still exposing a JDK 7
+compatible API, but using JDK 8 as the default target for code generation
+(selectable down to JDK 5). Version 1.x is built against JDK 7, and has a JDK 6
+compatible API.
 
-(PSA: If you are still using JDK 6 or lower, please do something about that soon.)
+(PSA: If you are still using JDK 7 or lower, please do something about that soon.)
 
 
 ### Additional Resources
@@ -101,16 +101,22 @@ how to use them. (generated using the very nice tool [docker](https://github.com
 * [Examples](https://github.com/UnquietCode/Flapi/wiki/Examples)  
 Many helpful examples are included on the wiki, corresponding to examples and tests in the src/test directory.
 
+* [Upgrade Guide](https://github.com/UnquietCode/Flapi/wiki/Upgrading-from-0.x-Development-Versions)
+If you started using Flapi before version 1.0, check out this guide to see how to upgrade.
+
 * [Blog Post](http://www.unquietcode.com/blog/2012/software/introducing-flapi)  
 The original blog post describing Flapi.
 
 
 ### What's the project's status?
-Version 1.0 has been released, marking a huge milestone in the stability of the code.
-If you started using Flapi before this version, check out the
+Version 1.0 and 2.0 have been released, marking a huge milestone in the stability of
+the code. If you started using Flapi before this version, check out the
 [Upgrade Guide](https://github.com/UnquietCode/Flapi/wiki/Upgrading-from-0.x-Development-Versions)
 to see how to upgrade, since some deprecated features have been removed.
 See the [Release Notes](./VERSION.md) for the full release notes.
+
+Going forward, the 1.x line will only receive important fixes and updates, with all new
+development firmly rooted in 2.x / Java 8.
 
 ### Problems?
 Use the [issue tracker](https://github.com/UnquietCode/Flapi/issues) to report problems encountered or new
