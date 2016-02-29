@@ -16,10 +16,10 @@
 
 package unquietcode.tools.flapi.generator.naming;
 
-import com.google.common.base.Function;
 import com.google.common.hash.Hashing;
 
 import java.nio.charset.Charset;
+import java.util.function.Function;
 
 /**
  * Name generator implementation which shortens names into
@@ -32,11 +32,9 @@ import java.nio.charset.Charset;
  * @version 2015-01-14
  */
 public class HashedNameGenerator extends DefaultNameGenerator {
-	private final Function<String, String> stateNameHasher = new Function<String, String>() {
-		public @Override String apply(String string) {
-			String hashed = Hashing.md5().hashString(string, Charset.forName("UTF-8")).toString();
-			return "S"+hashed;
-		}
+	private final Function<String, String> stateNameHasher = string -> {
+		String hashed = Hashing.md5().hashString(string, Charset.forName("UTF-8")).toString();
+		return "S"+hashed;
 	};
 
 	@Override

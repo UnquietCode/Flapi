@@ -85,7 +85,7 @@ example is a simple descriptor you can start with.) You can also make use of the
 perform the code generation.
 
 Version 2.x of the project is built against JDK 8, while still exposing a JDK 7
-compatible API, but using JDK 8 as the default target for code generation
+compatible API, and using JDK 8 as the default target for code generation
 (selectable down to JDK 5). Version 1.x is built against JDK 7, and has a JDK 6
 compatible API.
 

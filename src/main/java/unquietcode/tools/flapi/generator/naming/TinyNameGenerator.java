@@ -16,7 +16,7 @@
 
 package unquietcode.tools.flapi.generator.naming;
 
-import com.google.common.base.Function;
+import java.util.function.Function;
 
 /**
  * Name generator implementation which shortens names into

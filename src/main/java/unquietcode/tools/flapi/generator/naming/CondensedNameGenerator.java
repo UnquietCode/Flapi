@@ -16,13 +16,13 @@
 
 package unquietcode.tools.flapi.generator.naming;
 
-import com.google.common.base.Function;
+
+import java.util.function.Function;
 
 /**
- * Name generator implementation which shortens the provided
- * method name into a smaller string. This is accomplished by
- * keeping an incrementing counter which procedurally generates
- * names.
+ * Name generator implementation which shortens
+ * method names into a smaller string, while
+ * leaving class names unaltered.
  *
  * @author Ben Fagin
  * @version 2015-01-14

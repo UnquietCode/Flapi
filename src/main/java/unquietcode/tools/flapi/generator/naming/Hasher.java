@@ -16,12 +16,12 @@
 
 package unquietcode.tools.flapi.generator.naming;
 
-import com.google.common.base.Function;
 
 import javax.lang.model.SourceVersion;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.Function;
 
 import static com.google.common.base.Preconditions.checkArgument;
 

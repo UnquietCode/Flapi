@@ -16,7 +16,6 @@
 
 package unquietcode.tools.flapi.graph.processors;
 
-import com.google.common.base.Function;
 import com.sun.codemodel.*;
 import unquietcode.tools.flapi.Constants;
 import unquietcode.tools.flapi.generator.AbstractGenerator;
@@ -37,6 +36,7 @@ import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Function;
 
 
 public class GraphProcessor extends AbstractGenerator implements GenericVisitor<StateClass> {
@@ -90,18 +90,14 @@ public class GraphProcessor extends AbstractGenerator implements GenericVisitor<
 				if (transition.getChainParameterPositions().isEmpty()) {
 					final int offset = transition.getMethodSignature().parameterCount();
 
-					positionFunction = new Function<Integer, Integer>() {
-						public Integer apply(Integer idx) {
-							return offset + idx;
-						}
+					positionFunction = (Integer idx) -> {
+						return offset + idx;
 					};
 
 				// otherwise, use the provided position
 				} else {
-					positionFunction = new Function<Integer, Integer>() {
-						public Integer apply(Integer idx) {
-							return chainParameterPositions.get(idx);
-						}
+					positionFunction = (Integer idx) -> {
+						return chainParameterPositions.get(idx);
 					};
 				}
 
