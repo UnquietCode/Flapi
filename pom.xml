@@ -213,7 +213,7 @@
 		<dependency>
 			<groupId>com.unquietcode.tools.spring</groupId>
 			<artifactId>spring-generics</artifactId>
-			<version>4.1.4</version>
+			<version>4.2.5</version>
 		</dependency>
 		<dependency>
 			<groupId>com.google.guava</groupId>
