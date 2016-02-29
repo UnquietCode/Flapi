@@ -1,4 +1,4 @@
-// # Flapi (v0.7)
+// # Flapi (v2.0)
 // ### _A fluent API generator for Java_
 
 /**  
@@ -22,7 +22,7 @@
  * There are two build plugins availble, one for
  * [Maven](https://github.com/UnquietCode/Flapi/wiki/Maven-Build-Plugin)
  * and one for [Gradle](https://github.com/UnquietCode/Flapi/wiki/Gradle-Build-Plugin)
- * which allow you to regenerate your sources on the fly.
+ * which allow you to regenerate your descriptor as part of your build.
  *
  *
  * ### At Run Time
@@ -53,7 +53,7 @@ Flapi
 
 // Set the Java source version for the generated code. Some features
 // are only enabled when the source version is set high enough. As of
-// version 0.7 the default is set at JDK 7.
+// version 2.0 the default is set at JDK 8.
     .setJDKVersion(SourceVersion version)
 
 // Get the current source version used for generating code.
@@ -122,7 +122,7 @@ Descriptor descriptor = Flapi.builder(ExecutionListener...listeners)
 
 // Set the return type for the entire descriptor. (optional,
 // default is `void`)
-    .setReturnType(Class class)
+    .setReturnType(Class<?> class)
 
 // As above, except the type can be specified without
 // creating a compile-time dependency on the class.
@@ -269,7 +269,7 @@ public enum TestEnum {
 // comprised of every enum in the provided enum class.
 // Returns a `MethodBuilder` which can be used to configure
 // the method's invocation in the parent block.
-.addEnumSelector(Class enumClass, String methodSignature)
+.addEnumSelector(Class<?> enumClass, String methodSignature)
 
 
 /**
@@ -314,7 +314,7 @@ public enum TestEnum {
 .addMixin(String blockName)
 
 // mixin the contents of an annotated interface or class
-.addMixin(Class blockType)
+.addMixin(Class<?> blockType)
 
 
 /**
@@ -329,12 +329,12 @@ public enum TestEnum {
  * methods allow a method to become _visible_ only after another 
  * method is called.
  *
- * 'visible' here means listed as a method in an interface which
+ * 'Visible' here means listed as a method in an interface which
  * the user of our descriptor will interact with. If a user
  * attempts to invoke a method which is invisible, the method will
  * not be a member of the  current class and a compile error
  * will occur! When using autocomplete it is very clear that the
- * method is no longer available to be called.
+ * method is no longer available to be invoked.
  */
 
 .addMethod("unlimited()").any()
@@ -397,7 +397,7 @@ public enum TestEnum {
 // The method, in addition to being last, will also
 // return the specified type. This overrides any
 // return type set for the block.
-.last(Class class)
+.last(Class<?> class)
 
 // As above, except the type can be specified without
 // creating a compile-time dependency on the class.
