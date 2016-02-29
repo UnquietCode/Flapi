@@ -101,7 +101,7 @@ how to use them. (generated using the very nice tool [docker](https://github.com
 * [Examples](https://github.com/UnquietCode/Flapi/wiki/Examples)  
 Many helpful examples are included on the wiki, corresponding to examples and tests in the src/test directory.
 
-* [Upgrade Guide](https://github.com/UnquietCode/Flapi/wiki/Upgrading-from-0.x-Development-Versions)
+* [Upgrade Guide](https://github.com/UnquietCode/Flapi/wiki/Upgrading-from-0.x-Development-Versions)  
 If you started using Flapi before version 1.0, check out this guide to see how to upgrade.
 
 * [Blog Post](http://www.unquietcode.com/blog/2012/software/introducing-flapi)  
@@ -116,7 +116,7 @@ to see how to upgrade, since some deprecated features have been removed.
 See the [Release Notes](./VERSION.md) for the full release notes.
 
 Going forward, the 1.x line will only receive important fixes and updates, with all new
-development firmly rooted in 2.x / Java 8.
+development firmly rooted in 2.x / JDK 8.
 
 ### Problems?
 Use the [issue tracker](https://github.com/UnquietCode/Flapi/issues) to report problems encountered or new
