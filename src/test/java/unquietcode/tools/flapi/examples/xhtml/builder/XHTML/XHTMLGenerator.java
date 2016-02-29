@@ -17,11 +17,11 @@ import java.util.function.Supplier;
  * Visit https://github.com/UnquietCode/Flapi for more information.
  * 
  * 
- * Generated using version 0.0-DEVELOPMENT
+ * Generated on February 28, 2016 16:29:18 PST using version 0.0-DEVELOPMENT
  */
-@Generated(value = "unquietcode.tools.flapi", comments = "generated using Flapi, the fluent API generator for Java, version 0.0-DEVELOPMENT")
+@Generated(value = "unquietcode.tools.flapi", date = "2016-02-28T16:29:18-08:00", comments = "generated using Flapi, the fluent API generator for Java, version 0.0-DEVELOPMENT")
 public class XHTMLGenerator {
-    public static Start<Void> createDocument(XHTMLHelper helper, ExecutionListener... listeners) {
+    public static Start createDocument(XHTMLHelper helper, ExecutionListener... listeners) {
         if (helper == null) {
             throw new IllegalArgumentException("Helper cannot be null.");
         }
@@ -33,7 +33,7 @@ public class XHTMLGenerator {
 
     public static XHTMLFactory factory(final Supplier<XHTMLHelper> provider, final ExecutionListener... listeners) {
         return new XHTMLFactory() {
-            public Start<Void> createDocument() {
+            public Start createDocument() {
                 XHTMLHelper helper = provider.get();
                 return XHTMLGenerator.createDocument(helper, listeners);
             }

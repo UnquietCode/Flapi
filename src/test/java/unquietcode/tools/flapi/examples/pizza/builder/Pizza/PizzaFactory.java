@@ -1,20 +1,4 @@
 
-/*********************************************************************
- Copyright 2015 the Flapi authors
-
- Licensed under the Apache License, Version 2.0 (the "License");
- you may not use this file except in compliance with the License.
- You may obtain a copy of the License at
-
-     http://www.apache.org/licenses/LICENSE-2.0
-
- Unless required by applicable law or agreed to in writing, software
- distributed under the License is distributed on an "AS IS" BASIS,
- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- See the License for the specific language governing permissions and
- limitations under the License.
- ********************************************************************/
-
 package unquietcode.tools.flapi.examples.pizza.builder.Pizza;
 
 import unquietcode.tools.flapi.examples.pizza.builder.Pizza.PizzaBuilder.Start;
@@ -30,9 +14,9 @@ import javax.annotation.Generated;
  * Visit https://github.com/UnquietCode/Flapi for more information.
  * 
  * 
- * Generated using version 0.0-DEVELOPMENT
+ * Generated on February 28, 2016 16:29:18 PST using version 0.0-DEVELOPMENT
  */
-@Generated(value = "unquietcode.tools.flapi", comments = "generated using Flapi, the fluent API generator for Java, version 0.0-DEVELOPMENT")
+@Generated(value = "unquietcode.tools.flapi", date = "2016-02-28T16:29:18-08:00", comments = "generated using Flapi, the fluent API generator for Java, version 0.0-DEVELOPMENT")
 public interface PizzaFactory {
-    Start<Void> makePizza();
+    Start makePizza();
 }

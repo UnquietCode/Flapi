@@ -1,3 +1,4 @@
+
 package unquietcode.tools.flapi.examples.calculator.builder.Calculator;
 
 import unquietcode.tools.flapi.runtime.ChainInfo;
@@ -15,17 +16,31 @@ import javax.annotation.Generated;
  * Visit https://github.com/UnquietCode/Flapi for more information.
  * 
  * 
- * Generated using version 0.0-DEVELOPMENT
+ * Generated on February 28, 2016 16:29:18 PST using version 0.0-DEVELOPMENT
  */
-@Generated(value = "unquietcode.tools.flapi", comments = "generated using Flapi, the fluent API generator for Java, version 0.0-DEVELOPMENT")
+@Generated(value = "unquietcode.tools.flapi", date = "2016-02-28T16:29:18-08:00", comments = "generated using Flapi, the fluent API generator for Java, version 0.0-DEVELOPMENT")
 public interface CalculatorBuilder<_ReturnType> {
     @MethodInfo(type = TransitionType.Ascending, chainInfo = {
-        @ChainInfo(type = unquietcode.tools.flapi.examples.calculator.builder.Calculation.CalculationBuilder.Start.class, position = 1)
+        @ChainInfo(type = unquietcode.tools.flapi.examples.calculator.builder.Calculation.CalculationBuilder.Head.class, position = 1)
     })
-    unquietcode.tools.flapi.examples.calculator.builder.Calculation.CalculationBuilder.Start<_ReturnType> $(int p0);
+    unquietcode.tools.flapi.examples.calculator.builder.Calculation.CalculationBuilder.Head<_ReturnType> $(int arg0);
 
-    public interface Start<_ReturnType>
+
+    /**
+     * Marker interface denoting the main entry point for this block.
+     */
+    public interface Head<_ReturnType>
         extends CalculatorBuilder<_ReturnType>
+    {
+
+    }
+
+
+    /**
+     * Marker interface denoting the main entry point for this descriptor.
+     */
+    public interface Start
+        extends CalculatorBuilder.Head<Void>
     {
 
     }

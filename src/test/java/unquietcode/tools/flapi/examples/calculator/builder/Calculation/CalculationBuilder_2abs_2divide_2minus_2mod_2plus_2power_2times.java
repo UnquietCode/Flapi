@@ -1,7 +1,8 @@
+
 package unquietcode.tools.flapi.examples.calculator.builder.Calculation;
 
 import unquietcode.tools.flapi.examples.calculator.CalculatorBuilderExample.Result;
-import unquietcode.tools.flapi.examples.calculator.builder.Calculation.CalculationBuilder.Start;
+import unquietcode.tools.flapi.examples.calculator.builder.Calculation.CalculationBuilder.Head;
 import unquietcode.tools.flapi.runtime.MethodInfo;
 import unquietcode.tools.flapi.runtime.TransitionType;
 
@@ -16,32 +17,32 @@ import javax.annotation.Generated;
  * Visit https://github.com/UnquietCode/Flapi for more information.
  * 
  * 
- * Generated using version 0.0-DEVELOPMENT
+ * Generated on February 28, 2016 16:29:18 PST using version 0.0-DEVELOPMENT
  * @see unquietcode.tools.flapi.examples.calculator.Calculation
  */
-@Generated(value = "unquietcode.tools.flapi", comments = "generated using Flapi, the fluent API generator for Java, version 0.0-DEVELOPMENT")
+@Generated(value = "unquietcode.tools.flapi", date = "2016-02-28T16:29:18-08:00", comments = "generated using Flapi, the fluent API generator for Java, version 0.0-DEVELOPMENT")
 public interface CalculationBuilder_2abs_2divide_2minus_2mod_2plus_2power_2times<_ReturnType> {
     @MethodInfo(type = TransitionType.Recursive)
-    Start<_ReturnType> abs();
+    Head<_ReturnType> abs();
 
     @MethodInfo(type = TransitionType.Recursive)
-    Start<_ReturnType> divide(int p0);
+    Head<_ReturnType> divide(int arg0);
 
     @MethodInfo(type = TransitionType.Terminal)
     Result equals();
 
     @MethodInfo(type = TransitionType.Recursive)
-    Start<_ReturnType> minus(int p0);
+    Head<_ReturnType> minus(int arg0);
 
     @MethodInfo(type = TransitionType.Recursive)
-    Start<_ReturnType> mod(int p0);
+    Head<_ReturnType> mod(int arg0);
 
     @MethodInfo(type = TransitionType.Recursive)
-    Start<_ReturnType> plus(int p0);
+    Head<_ReturnType> plus(int arg0);
 
     @MethodInfo(type = TransitionType.Recursive)
-    Start<_ReturnType> power(int p0);
+    Head<_ReturnType> power(int arg0);
 
     @MethodInfo(type = TransitionType.Recursive)
-    Start<_ReturnType> times(int p0);
+    Head<_ReturnType> times(int arg0);
 }
