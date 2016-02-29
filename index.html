@@ -19,7 +19,7 @@
     <div id="tree"></div>
     <div id="headings">
       <div class="heading h1">
-        <a href="#flapi%20(v0.7)">Flapi (v0.7)</a>
+        <a href="#flapi%20(v2.0)">Flapi (v2.0)</a>
       </div>
       <div class="heading h3">
         <a href="#a%20fluent%20api%20generator%20for%20java">A fluent API generator for Java</a>
@@ -92,10 +92,10 @@
   <tbody>
       <tr>
         <td class="docs">
-<div class="pilwrap" id="flapi%20(v0.7)">
+<div class="pilwrap" id="flapi%20(v2.0)">
   <h1>
-    <a href="#flapi%20(v0.7)" name="flapi%20(v0.7)" class="pilcrow">&#182;</a>
-    Flapi (v0.7)
+    <a href="#flapi%20(v2.0)" name="flapi%20(v2.0)" class="pilcrow">&#182;</a>
+    Flapi (v2.0)
   </h1>
 </div>
 
@@ -140,7 +140,7 @@ be included in your project, perhaps as a module dependency.</p>
 <p>There are two build plugins availble, one for
 <a href="https://github.com/UnquietCode/Flapi/wiki/Maven-Build-Plugin">Maven</a>
 and one for <a href="https://github.com/UnquietCode/Flapi/wiki/Gradle-Build-Plugin">Gradle</a>
-which allow you to regenerate your sources on the fly.</p>
+which allow you to regenerate your descriptor as part of your build.</p>
 
 
 <div class="pilwrap" id="at%20run%20time">
@@ -204,7 +204,7 @@ global configuration options.</p>
 </div>
 <p>Set the Java source version for the generated code. Some features
 are only enabled when the source version is set high enough. As of
-version 0.7 the default is set at JDK 7.</p>
+version 2.0 the default is set at JDK 8.</p>
         </td>
         <td class="code highlight"><div class="highlight"><pre>
     <span class="o">.</span><span class="na">setJDKVersion</span><span class="o">(</span><span class="n">SourceVersion</span> <span class="n">version</span><span class="o">)</span>
@@ -393,7 +393,7 @@ helpful when debugging an error)</p>
 default is <code>void</code>)</p>
         </td>
         <td class="code highlight"><div class="highlight"><pre>
-    <span class="o">.</span><span class="na">setReturnType</span><span class="o">(</span><span class="n">Class</span> <span class="n">class</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">setReturnType</span><span class="o">(</span><span class="n">Class</span><span class="o">&lt;?&gt;</span> <span class="n">class</span><span class="o">)</span>
 
 
 </pre></div>
@@ -757,7 +757,7 @@ Returns a <code>MethodBuilder</code> which can be used to configure
 the method's invocation in the parent block.</p>
         </td>
         <td class="code highlight"><div class="highlight"><pre>
-<span class="o">.</span><span class="na">addEnumSelector</span><span class="o">(</span><span class="n">Class</span> <span class="n">enumClass</span><span class="o">,</span> <span class="n">String</span> <span class="n">methodSignature</span><span class="o">)</span>
+<span class="o">.</span><span class="na">addEnumSelector</span><span class="o">(</span><span class="n">Class</span><span class="o">&lt;?&gt;</span> <span class="n">enumClass</span><span class="o">,</span> <span class="n">String</span> <span class="n">methodSignature</span><span class="o">)</span>
 
 
 
@@ -865,7 +865,7 @@ referenced.)</p>
 <p>mixin the contents of an annotated interface or class</p>
         </td>
         <td class="code highlight"><div class="highlight"><pre>
-<span class="o">.</span><span class="na">addMixin</span><span class="o">(</span><span class="n">Class</span> <span class="n">blockType</span><span class="o">)</span>
+<span class="o">.</span><span class="na">addMixin</span><span class="o">(</span><span class="n">Class</span><span class="o">&lt;?&gt;</span> <span class="n">blockType</span><span class="o">)</span>
 
 
 
@@ -892,12 +892,12 @@ in the same group causes it to disappear. Similarly, trigger
 methods allow a method to become <em>visible</em> only after another 
 method is called.</p>
 
-<p>'visible' here means listed as a method in an interface which
+<p>'Visible' here means listed as a method in an interface which
 the user of our descriptor will interact with. If a user
 attempts to invoke a method which is invisible, the method will
 not be a member of the  current class and a compile error
 will occur! When using autocomplete it is very clear that the
-method is no longer available to be called.</p>
+method is no longer available to be invoked.</p>
   </div>
 </div>
         </td>
@@ -1072,7 +1072,7 @@ return the specified type. This overrides any
 return type set for the block.</p>
         </td>
         <td class="code highlight"><div class="highlight"><pre>
-<span class="o">.</span><span class="na">last</span><span class="o">(</span><span class="n">Class</span> <span class="n">class</span><span class="o">)</span>
+<span class="o">.</span><span class="na">last</span><span class="o">(</span><span class="n">Class</span><span class="o">&lt;?&gt;</span> <span class="n">class</span><span class="o">)</span>
 
 
 </pre></div>
