@@ -97,7 +97,7 @@ public class MainDescriptor implements DescriptorMaker {
    				// user Annotations
 				.startBlock("Annotation", "addAnnotation(Class<?> annotation)")
 					.withDocumentation("Adds a custom annotation to the method.")
-                .any()
+				.any()
 					.addMethod("withParameter(String name, String value)").any()
 					.addMethod("withParameter(String name, Enum<?> value)").any()
 					.addMethod("withParameter(String name, Class<?> value)").any()
@@ -110,7 +110,7 @@ public class MainDescriptor implements DescriptorMaker {
 					.addMethod("withParameter(String name, short value)").any()
 					.addMethod("withParameter(String name, byte value)").any()
 
-                    // array versions
+					// array versions
 					.addMethod("withParameter(String name, String[] values)").any()
 					.addMethod("withParameter(String name, Enum<?>[] values)").any()
 					.addMethod("withParameter(String name, Class<?>[] values)").any()
@@ -124,7 +124,7 @@ public class MainDescriptor implements DescriptorMaker {
 					.addMethod("withParameter(String name, byte[] values)").any()
 
 					.addMethod("finish()").last()
-                .endBlock()
+				.endBlock()
 
 				.addBlockReference("Annotation", "addAnnotation(String annotation)").any()
 
@@ -315,6 +315,7 @@ public class MainDescriptor implements DescriptorMaker {
 				.withDocumentation("mix in the contents of an annotated block helper")
 			.any()
 
+		// make it so
 		.build();
 
 		return builder;

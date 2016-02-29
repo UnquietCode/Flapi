@@ -120,7 +120,7 @@ public class GeneratorGenerator extends AbstractGenerator {
 
 		// return handler._proxy(Wrapper.class);
 		createMethod.body()._return(
-		handler.invoke("_proxy").arg(returnType.dotclass())
+			handler.invoke("_proxy").arg(returnType.dotclass())
 		);
 	}
 
@@ -155,7 +155,6 @@ public class GeneratorGenerator extends AbstractGenerator {
 			generator.staticInvoke(createMethod)
 				.arg(suppliedHelper)
 				.arg(pListeners)
-			)
-		;
+		);
 	}
 }
