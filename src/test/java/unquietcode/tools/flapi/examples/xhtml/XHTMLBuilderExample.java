@@ -84,7 +84,7 @@ public class XHTMLBuilderExample implements DescriptorMaker {
 	@Test
 	public void dividedUsage() {
 		Document doc;
-		ElementBuilder.Start<XHTMLBuilder.Start<Void>> movies = XHTMLGenerator.createDocument(new XHTMLHelperImpl())
+		ElementBuilder.Head<XHTMLBuilder.Head<Void>> movies = XHTMLGenerator.createDocument(new XHTMLHelperImpl())
 			.addComment("This is a list of movies in my library.")
 			.startElement("movies");
 

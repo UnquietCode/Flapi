@@ -93,7 +93,7 @@ public class PipedProcessExample implements DescriptorMaker {
 		}
 	}
 
-	ProcessBuilder.Start<Void> newProcess() {
+	ProcessBuilder.Start newProcess() {
 		return ProcessGenerator.begin(new ProcessHelperImpl());
 	}
 }

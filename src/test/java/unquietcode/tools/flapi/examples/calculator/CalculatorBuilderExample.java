@@ -63,9 +63,9 @@ public class CalculatorBuilderExample implements DescriptorMaker {
 
 	public static class Result extends AtomicReference<BigInteger> { }
 
-	static CalculationBuilder.Start<Void> begin(int startingValue) {
-		CalculatorBuilder.Start<Void> begin = CalculatorGenerator.begin(new CalculatorHelperImpl());
-		CalculationBuilder.Start<Void> start = begin.$(startingValue);
+	static CalculationBuilder.Head<Void> begin(int startingValue) {
+		CalculatorBuilder.Start begin = CalculatorGenerator.begin(new CalculatorHelperImpl());
+		CalculationBuilder.Head<Void> start = begin.$(startingValue);
 
 		return start;
 	}
