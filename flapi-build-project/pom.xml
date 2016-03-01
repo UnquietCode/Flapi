@@ -6,7 +6,7 @@
 
 	<groupId>com.unquietcode.tools.flapi</groupId>
 	<artifactId>flapi-build-project</artifactId>
-	<version>0.0-DEVELOPMENT</version>
+	<version>2.0</version>
 	<packaging>pom</packaging>
 
 	<name>Flapi Build Project</name>
@@ -24,7 +24,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<flapi.generated.sources>${project.build.directory}/generated-sources/flapi</flapi.generated.sources>
 		<flapi.includeRuntime>false</flapi.includeRuntime>
-		<flapi.version>0.0-DEVELOPMENT</flapi.version>
+		<flapi.version>2.0</flapi.version>
 
 		<flapi.descriptor.classes>change.me</flapi.descriptor.classes>
 	</properties>

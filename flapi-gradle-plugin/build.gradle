@@ -4,7 +4,7 @@ apply plugin: 'maven-publish'
 apply plugin: 'signing'
 
 group = 'com.unquietcode.tools.flapi'
-version = '0.0-DEVELOPMENT'
+version = '2.0'
 description = 'Flapi build plugin for Gradle'
 
 sourceCompatibility = '1.8'
@@ -17,7 +17,7 @@ dependencies {
 	compile gradleApi()
 	compile localGroovy()
 
-	compile 'com.unquietcode.tools.flapi:flapi-plugin:0.0-DEVELOPMENT'
+	compile 'com.unquietcode.tools.flapi:flapi-plugin:2.0'
 }
 
 task sourceJar(type: Jar, dependsOn: classes) {
