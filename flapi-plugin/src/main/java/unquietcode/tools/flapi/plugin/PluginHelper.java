@@ -192,7 +192,7 @@ public abstract class PluginHelper {
 
 		// ensure not null
 		if (descriptor == null) {
-			throw handleError("method returned null");
+			throw handleError("descriptor method returned null");
 		}
 
 		// compile and write out the classes
