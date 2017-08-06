@@ -51,9 +51,11 @@ public class DisappearingPizzaExample implements DescriptorMaker {
 	public void usage() {
 		Pizza myDeliciousPizza = PizzaGenerator.makePizza(new PizzaHelperImpl())
 			.addSauce(SauceType.Marinara)
+
 			.addTopping(Topping.Garlic)
 			.addTopping(Topping.Green_Peppers)
 			.addTopping(Topping.Red_Onions)
+
 			.addCheese()
 		.bake();
 

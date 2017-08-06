@@ -136,9 +136,11 @@ public class FlapiBuildPlugin extends AbstractMojo {
 		helper.setWriteClasses(writeClasses);
 		helper.setWriteSources(writeSources);
 
+		String[] descriptorClassesArray = descriptorClasses.split(",");
+
 		// run it
 		try {
-			helper.processDescriptors(descriptorClasses.split(","));
+			helper.processDescriptors((Object[]) descriptorClassesArray);
 		} catch (Exception e) {
 			throw new MojoExecutionException("error while running plugin", e);
 		}

@@ -82,15 +82,24 @@ public class PipedProcessExample implements DescriptorMaker {
 				.addArgument("-c", "1-5")
 		.run();
 
+		String result = readStream(is);
+		System.out.println(result);
+	}
+
+	private static String readStream(InputStream stream) {
+		StringBuilder string = new StringBuilder();
+
 		while (true) {
 			try {
-				byte[] bytes = IOUtils.readFully(is, 256, false);
+				byte[] bytes = IOUtils.readFully(stream, 256, false);
 				if (bytes.length == 0) { break; }
-				System.out.print(new String(bytes));
+				string.append(new String(bytes));
 			} catch (IOException ex) {
 				throw new RuntimeException(ex);
 			}
 		}
+
+		return string.toString();
 	}
 
 	ProcessBuilder.Start newProcess() {

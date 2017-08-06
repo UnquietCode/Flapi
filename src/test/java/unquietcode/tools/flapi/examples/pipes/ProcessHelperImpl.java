@@ -34,7 +34,7 @@ public class ProcessHelperImpl implements ProcessHelper {
 
 
 	public ProcessHelperImpl() {
-		this(new ArrayList<ProcessHelperImpl>());
+		this(new ArrayList<>());
 	}
 
 	protected ProcessHelperImpl(List<ProcessHelperImpl> chain) {
@@ -65,10 +65,10 @@ public class ProcessHelperImpl implements ProcessHelper {
 
 	@Override
 	public InputStream run() {
-		List<Process> chain = new ArrayList<Process>();
+		List<Process> chain = new ArrayList<>();
 
 		for (ProcessHelperImpl helper : processChain) {
-			List<String> commandString = new ArrayList<String>();
+			List<String> commandString = new ArrayList<>();
 			commandString.add(helper.processName);
 			commandString.addAll(helper.arguments);
 			String[] cmd = commandString.toArray(new String[commandString.size()]);
