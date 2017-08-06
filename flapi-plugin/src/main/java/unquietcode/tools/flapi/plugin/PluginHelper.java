@@ -90,7 +90,7 @@ public abstract class PluginHelper {
 		}
 	}
 
-	public void processDescriptors(Object...descriptors) throws Exception {
+	/* package */ void processDescriptors(Object...descriptors) throws Exception {
 
 		// have we seen at least one descriptor?
 		boolean atLeastOne = false;
@@ -106,6 +106,7 @@ public abstract class PluginHelper {
 					continue;
 				}
 
+				// TODO wtf why??
 				if (descriptorClass.trim().equals("change.me")) {
 					continue;
 				}
@@ -222,7 +223,7 @@ public abstract class PluginHelper {
 			public void remove() { throw new UnsupportedOperationException("nope"); }
 		});
 
-		final List<JavaFileObject> files = new ArrayList<JavaFileObject>();
+		final List<JavaFileObject> files = new ArrayList<>();
 
 		for (Map.Entry<String, OutputStream> entry : streams.entrySet()) {
 			String name = entry.getKey();

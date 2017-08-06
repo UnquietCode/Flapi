@@ -36,6 +36,11 @@ public class GradlePlugin implements Plugin<Project> {
 		    runTask(project, properties)
 	    }
 
+	    if (flapiTask == null) {
+		    project.logger.info("no 'flapi' block found in build file")
+		    return
+	    }
+
 	    def testClassesTask = project.tasks.getByName('testClasses')
 
 		// Add a dependency to the 'flapi' task for all existing 'testClasses' dependencies.
@@ -108,7 +113,8 @@ public class GradlePlugin implements Plugin<Project> {
 			project.logger.warn("the 'descriptorClasses' property is deprecated, use 'descriptors' instead")
 			helper.processDescriptors(properties.descriptorClasses)
 		} else {
-			helper.processDescriptors(properties.descriptors)
+			Object[] descriptors = properties.descriptors ?: []
+			helper.processDescriptors(descriptors)
 		}
 	}
 
