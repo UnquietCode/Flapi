@@ -18,7 +18,6 @@ package unquietcode.tools.flapi.annotations;
 
 import com.google.common.base.Function;
 import com.google.common.base.Functions;
-import unquietcode.tools.flapi.Constants;
 import unquietcode.tools.flapi.DescriptorBuilderException;
 import unquietcode.tools.flapi.IntrospectorSupport;
 import unquietcode.tools.flapi.beans.BeanIntrospector;
@@ -31,6 +30,7 @@ import unquietcode.tools.flapi.helpers.MethodHelperImpl;
 import unquietcode.tools.flapi.outline.BlockOutline;
 import unquietcode.tools.flapi.outline.DescriptorOutline;
 import unquietcode.tools.flapi.outline.MethodOutline;
+import unquietcode.tools.flapi.runtime.Constants;
 import unquietcode.tools.flapi.runtime.EnumSelectorHint;
 import unquietcode.tools.flapi.runtime.Helpers;
 import unquietcode.tools.flapi.runtime.SpringMethodUtils;

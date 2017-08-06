@@ -14,26 +14,25 @@
  limitations under the License.
  ********************************************************************/
 
-package unquietcode.tools.flapi;
+package unquietcode.tools.flapi.annotations;
 
-import java.io.InputStream;
-import java.util.Scanner;
+import unquietcode.tools.flapi.runtime.Constants;
+
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
- * @author Ben Fagin
- * @version 04-28-2012
+ * Marks a method as being executable any number of times.
  *
- * Y'arr, here be project constants!
+ * @author Ben Fagin
+ * @version 2014-08-03
  */
-public final class Constants {
-	private Constants() { }
-
-	public static final String PROJECT_URL = "https://github.com/UnquietCode/Flapi";
-	public static final String RETURN_TYPE_NAME = "_ReturnType";
-	public static final String HELPER_VALUE_NAME = "_helper";
-
-	public static final String PROJECT_VERSION; static {
-		InputStream is = Constants.class.getClassLoader().getResourceAsStream("version/version.txt");
-		PROJECT_VERSION = new Scanner(is).useDelimiter("\\A").next();
-	}
+@FlapiAnnotation
+@MethodQuantifier
+@Target(ElementType.METHOD)
+@Retention(RetentionPolicy.RUNTIME)
+public @interface Any {
+	int group() default Constants.DEFAULT_NULL_INT;
 }
