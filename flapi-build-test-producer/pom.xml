@@ -21,20 +21,12 @@
 		<flapi.includeRuntime>true</flapi.includeRuntime>
 	</properties>
 
-	<dependencies>
-		<dependency>
-			<groupId>com.unquietcode.tools.flapi</groupId>
-			<artifactId>flapi</artifactId>
-			<version>${project.version}</version>
-			<scope>test</scope>
-		</dependency>
-	</dependencies>
-
 	<build>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-deploy-plugin</artifactId>
+				<version>2.8.2</version>
 				<configuration>
 					<skip>true</skip>
 				</configuration>

@@ -74,6 +74,15 @@
 		</repository>
 	</distributionManagement>
 
+	<dependencies>
+		<dependency>
+			<groupId>com.unquietcode.tools.flapi</groupId>
+			<artifactId>flapi</artifactId>
+			<version>${project.version}</version>
+			<scope>provided</scope>
+		</dependency>
+	</dependencies>
+
 	<profiles>
 		<profile>
 			<id>gpg</id>
@@ -191,7 +200,7 @@
 						<goals>
 							<goal>add-source</goal>
 						</goals>
-						<phase>generate-test-sources</phase>
+						<phase>process-classes</phase>
 						<configuration>
 							<sources>
 								<source>${flapi.generated.sources}</source>

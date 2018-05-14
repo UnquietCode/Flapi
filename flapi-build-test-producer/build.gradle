@@ -27,6 +27,7 @@ repositories {
 }
 
 dependencies {
+	compileOnly 'com.unquietcode.tools.flapi:flapi:0.0-DEVELOPMENT'
 	testCompile 'com.unquietcode.tools.flapi:flapi:0.0-DEVELOPMENT'
 }
 

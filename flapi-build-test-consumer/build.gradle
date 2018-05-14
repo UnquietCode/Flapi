@@ -5,12 +5,14 @@ group = 'com.unquietcode.tools.flapi.test'
 version = '0.0-DEVELOPMENT'
 sourceCompatibility = '1.8'
 
+install.dependsOn test
+
 repositories {
 	mavenCentral()
 	mavenLocal()
 }
 
 dependencies {
-	compile 'com.unquietcode.tools.flapi.test:flapi-gradle-test-producer:0.0-DEVELOPMENT'
-	testCompile 'junit:junit:4.11'
+	implementation 'com.unquietcode.tools.flapi.test:flapi-gradle-test-producer:0.0-DEVELOPMENT'
+	testImplementation 'junit:junit:4.11'
 }

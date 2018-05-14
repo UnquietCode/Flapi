@@ -1,5 +1,5 @@
 /*********************************************************************
- Copyright 2014 the Flapi authors
+ Copyright 2018 the Flapi authors
 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -43,8 +43,8 @@ import java.util.List;
  */
 @Mojo(
 	name="generate",
-	defaultPhase=LifecyclePhase.PROCESS_TEST_CLASSES,
-	requiresDependencyResolution=ResolutionScope.TEST
+	defaultPhase=LifecyclePhase.PROCESS_CLASSES,
+	requiresDependencyResolution=ResolutionScope.COMPILE
 )
 public class FlapiBuildPlugin extends AbstractMojo {
 

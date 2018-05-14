@@ -125,13 +125,13 @@ public abstract class PluginHelper {
 
 			// handle DescriptorMaker instances
 			else if (DescriptorMaker.class.isAssignableFrom(descriptor.getClass())) {
-				logInfo("processing descriptor");
+				logInfo("processing descriptor "+descriptor.getClass().getName());
 				processDescriptor(classloader(), (DescriptorMaker) descriptor);
 			}
 
 			// handle Descriptor instances
 			else if (Descriptor.class.isAssignableFrom(descriptor.getClass())) {
-				logInfo("processing descriptor");
+				logInfo("processing descriptor "+descriptor.getClass().getName());
 				processDescriptor(classloader(), (Descriptor) descriptor);
 			}
 

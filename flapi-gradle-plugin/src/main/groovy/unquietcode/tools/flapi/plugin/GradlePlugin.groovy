@@ -90,7 +90,7 @@ public class GradlePlugin implements Plugin<Project> {
 			    List<URL> urls = new ArrayList<>();
 
 			    // dependencies
-				for (def path : project.configurations['testCompile']) {
+				for (def path : project.configurations['compile']) {
 				    urls.add(path.toURI().toURL())
 				}
 
