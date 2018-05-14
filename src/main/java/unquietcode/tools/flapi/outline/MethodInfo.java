@@ -30,7 +30,7 @@ import java.util.Map;
  */
 public class MethodInfo implements Comparable<MethodInfo> {
 
-	// don't forget to update the copy() method below
+	// don't forget to update the basicCopy() method below
 	private Integer minOccurrences;
 	private Integer maxOccurrences;
 	private MethodSignature methodSignature;
@@ -113,7 +113,7 @@ public class MethodInfo implements Comparable<MethodInfo> {
         return annotations;
     }
 
-    public MethodInfo copy()  {
+    public MethodInfo basicCopy()  {
 		MethodInfo clone = new MethodInfo();
 		copy(clone);
 		return clone;

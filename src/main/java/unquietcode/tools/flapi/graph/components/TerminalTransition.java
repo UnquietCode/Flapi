@@ -50,10 +50,11 @@ public class TerminalTransition extends Transition {
 	}
 
 	@Override
-	public Transition copy() {
+	public Transition basicCopy() {
 		TerminalTransition copy = new TerminalTransition();
-		basicCopy(copy);
+		copy(copy);
 		copy.returnType = this.returnType;
+
 		return copy;
 	}
 }

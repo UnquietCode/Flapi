@@ -43,9 +43,9 @@ public class RecursiveTransition extends Transition {
 	}
 
 	@Override
-	public Transition copy() {
+	public Transition basicCopy() {
 		RecursiveTransition copy = new RecursiveTransition();
-		basicCopy(copy);
+		copy(copy);
 		return copy;
 	}
 }

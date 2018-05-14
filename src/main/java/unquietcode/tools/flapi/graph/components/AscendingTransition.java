@@ -41,9 +41,9 @@ public class AscendingTransition extends Transition {
 	}
 
 	@Override
-	public Transition copy() {
+	public Transition basicCopy() {
 		AscendingTransition copy = new AscendingTransition(isRequired);
-		basicCopy(copy);
+		copy(copy);
 		return copy;
 	}
 }

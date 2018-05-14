@@ -28,7 +28,7 @@ import java.util.List;
  */
 public class MethodOutline extends MethodInfo implements Outline {
 
-	// remember to adjust the copy() method below
+	// remember to adjust the basicCopy() method below
 	private final List<BlockOutline> blockChain = new ArrayList<>();
 	private final List<Integer> chainParameterPositions = new ArrayList<>();
 	private boolean isTerminal = false;
@@ -90,7 +90,7 @@ public class MethodOutline extends MethodInfo implements Outline {
 		return trigger == null && (getMaxOccurrences() == -1 || isTerminal);
 	}
 
-	public MethodOutline copy()  {
+	public MethodOutline basicCopy()  {
 		MethodOutline clone = new MethodOutline();
 		super.copy(clone);
 

@@ -48,10 +48,11 @@ public class LateralTransition extends Transition {
 	}
 
 	@Override
-	public Transition copy() {
+	public Transition basicCopy() {
 		LateralTransition copy = new LateralTransition();
-		basicCopy(copy);
+		copy(copy);
 		copy.sibling = this.sibling;
+
 		return copy;
 	}
 

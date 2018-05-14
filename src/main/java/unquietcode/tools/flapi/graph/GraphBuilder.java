@@ -199,7 +199,7 @@ public class GraphBuilder {
 			transition = lateral;
 		}
 
-		transition.setMethodInfo(((MethodInfo) method).copy());
+		transition.setMethodInfo(((MethodInfo) method).basicCopy());
 		transition.getChainParameterPositions().addAll(method.getChainParameterPositions());
 		state.addTransitions(transition);
 
@@ -241,7 +241,7 @@ public class GraphBuilder {
 		// it must be required in some way, but
 		// we need to make sure it doesn't 'retrigger'
 		else if (method.getMaxOccurrences() < 1) {
-			MethodOutline copy = method.copy();
+			MethodOutline copy = method.basicCopy();
 
 			nextMethods.add(copy);
 			next = copy;
@@ -249,7 +249,7 @@ public class GraphBuilder {
 
 		// only add back if it's not the last instance
 		else { /* if (method.getMaxOccurrences() > 1) */
-			MethodOutline m = method.copy();
+			MethodOutline m = method.basicCopy();
 			m.setMaxOccurrences(m.getMaxOccurrences() - 1);
 
 			nextMethods.add(m);
@@ -281,7 +281,7 @@ public class GraphBuilder {
 
 					// add the trigger to the next group
 					if (!method.didTrigger()) {
-						nextMethods.add(triggeredMethod.copy());
+						nextMethods.add(triggeredMethod.basicCopy());
 					}
 				}
 			}
@@ -292,11 +292,11 @@ public class GraphBuilder {
 			MethodOutline nextMethod = nextMethods.iterator().next();
 
 			if (!nextMethod.isTerminal() && !nextMethod.isRequired()) {
-				MethodOutline copy = nextMethod.copy();
+				MethodOutline copy = nextMethod.basicCopy();
 				copy.isImplicit(true);
 				copy.isTerminal(true);
 
-				nextMethods = new TreeSet<MethodOutline>();
+				nextMethods = new TreeSet<>();
 				nextMethods.add(copy);
 			}
 		}

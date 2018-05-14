@@ -188,7 +188,7 @@ public class BlockOutline implements Outline {
 
 	protected final void applyMixin(BlockOutline other) {
 		for (MethodOutline method : other.getAllMethods()) {
-			this.methods.add(method.copy());
+			this.methods.add(method.basicCopy());
 		}
 	}
 }

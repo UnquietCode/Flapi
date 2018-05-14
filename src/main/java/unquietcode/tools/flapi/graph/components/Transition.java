@@ -85,10 +85,10 @@ public abstract class Transition implements Comparable<Transition> {
 		this.methodInfo = methodInfo;
 	}
 
-	public abstract Transition copy();
+	public abstract Transition basicCopy();
 
-	protected void basicCopy(Transition copy) {
-		copy.methodInfo = this.methodInfo.copy();
+	protected void copy(Transition copy) {
+		copy.methodInfo = this.methodInfo.basicCopy();
 		copy.stateChain.addAll(this.stateChain);
 	}
 }
